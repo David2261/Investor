@@ -1,7 +1,6 @@
 import os, sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
-db_from_env = dj_database_url.config(conn_max_age=500)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
