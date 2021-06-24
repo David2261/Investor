@@ -71,7 +71,6 @@ PyInstaller==3.6
 PyJWT==1.7.1
 Pymem @ git+https://github.com/srounet/Pymem@d4510359f84459d677f675ad17045eaec4648620
 pyparsing==2.4.6
-pypiwin32==223
 python-dateutil==2.8.1
 python3-openid==3.2.0
 pythonanywhere==0.9.9
