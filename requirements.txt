@@ -50,12 +50,6 @@ importlib-metadata==1.5.0
 installer==0.1.1
 itypes==1.2.0
 Jinja2==2.11.2
-Kivy==1.11.1
-kivy-deps.angle==0.2.0
-kivy-deps.glew==0.2.0
-kivy-deps.gstreamer==0.2.0
-kivy-deps.sdl2==0.2.0
-Kivy-Garden==0.1.4
 MarkupSafe==1.1.1
 multidict==5.1.0
 oauthlib==3.1.0
@@ -77,7 +71,6 @@ PyInstaller==3.6
 PyJWT==1.7.1
 Pymem @ git+https://github.com/srounet/Pymem@d4510359f84459d677f675ad17045eaec4648620
 pyparsing==2.4.6
-pypiwin32==223
 python-dateutil==2.8.1
 python3-openid==3.2.0
 pythonanywhere==0.9.9
