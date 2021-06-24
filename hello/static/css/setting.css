@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300&family=Raleway:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,300&display=swap');
+html, body{
+	background-color: #1c1d21 !important;
+	font-family: 'Lato', sans-serif;
+	color: #1c1d21;
+	min-width: 100%;
+	min-height: 100%
+}
+
+h1, h2, h3, h4, h5, h6{
+	font-family: "Raleway";
+	font-weight: 300;
+	color: #F2F2F2;
+}
+
+label, p, a{
+	font-family: "Raleway";
+	color: #F2F2F2;
+}
+
+.navbar-brand img{
+	width: 150px;
+	height: 100px;
+}
+
+.navbar-nav li{
+	padding-right: 20px;
+}
+
+.nav-link{
+	font-size: 1.1em !important;
+}
+
+figure{
+	background-color: #1c1d21;
+	z-index: 1;
+}
+
+#fixed{
+	background-position: bottom-center;
+	border-top: 4px solid #1c1d21;
+	border-bottom: 4px solid #1c1d21;
+	background-blend-mode: multiply;
+	background-color: lightblue;
+	background-size: cover;
+	-o-background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+}
+
+@media only screen and (min-width : 1440px) {
+	#fixed{
+		min-height: 900px;
+		background: url(/static/img/animepint-max.gif) no-repeat center center fixed;
+	}
+}
+
+@media only screen and (min-width : 1024px) {
+	#fixed{
+		min-height: 650px;
+		background: url(/static/img/animepint-min.gif) no-repeat center center fixed;
+	}
+}
+
+@media only screen and (min-width : 720px) {
+	#fixed{
+		min-height: 650px;
+		background: url(/static/img/animepint-min.gif) no-repeat center center fixed;
+	}
+}
+
+@media only screen and (min-width : 320px) {
+	#fixed{
+		min-height: 650px;
+		background: url(/static/img/animepint-min.gif) no-repeat center center fixed;
+	}
+}
+
+.content{
+	z-index: 2;
+	color: #F2F2F2;
+}
+
+.content a{
+	color: #F2F2F2;
+	font-family: 'Lato', sans-serif;
+	text-decoration: none;
+}
+
+.content a:hover{
+	color: #F2F2F2;
+	font-family: 'Lato', sans-serif;
+	text-decoration: none;
+}
+
+
+#fixed-content{
+	min-height: 500px;
+	background-position: bottom-center;
+	border-top: 4px solid #1c1d21;
+	border-bottom: 4px solid #1c1d21;
+	background: url(/static/img/figure.jpg) no-repeat center center fixed;
+	background-blend-mode: multiply;
+	background-color: lightblue;
+	background-size: cover;
+	-o-background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+}
+
+footer{
+	background-color: #1c1d21;
+	padding-top: 50px;
+	border-top: 4px solid silver;
+	color: white;
+	min-height: 100%;
+}
+
+.social a{
+	font-size: 4em;
+	padding: 20px;
+}
+
+.map{
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+
+.footer-map-text a{
+	color: #F2F2F2;
+	font-size: 25px;
+	font-family: 'Lato', sans-serif;
+	text-decoration: none;
+}
+
+.footer-map-text a:hover{
+	color: #F2F2F2;
+	font-size: 25px;
+	font-family: 'Lato', sans-serif;
+	text-decoration: none;
+}

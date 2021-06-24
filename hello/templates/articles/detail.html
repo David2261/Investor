@@ -1,0 +1,86 @@
+{% extends 'firstapp/base.html' %}
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+{% if article %}
+{% for el in article %}
+<h2>{{el.article_title}}</h2>
+
+<p>{{el.article_text}}</p>
+
+<em>{{el.pub_date}}</em>
+
+{% if el.was_published_recently %}
+НОВАЯ СТАТЬЯ!
+{% endif %}
+
+<hr>
+
+{% if latest_comments_list %}
+	{% for c in latest_comments_list %}
+		<p>
+			<strong>{{c.author_name}}</strong>
+			<p>{{c.comment_text}}</p>
+		</p>
+	{% endfor %}
+
+{% else %}
+Комментарии не найдены! Станьте первым ;)
+{% endif %}
+
+<hr>
+
+<form action="{% url 'articles:leave_comment' article.id%}" method="POST">
+	
+	{% csrf_token %}
+
+	<input type="text" required placeholder="Ваше имя" name="name"><br>
+	<textarea name="text" required="" placeholder="Текст комментария" cols="30" rows="10"></textarea> <br>
+
+	<button type="submit">Оставить комментарий</button>
+
+</form>
+{% endif %}
+
+{% if gallery %}
+<h2>{{gallery_detail.gallery_title}}</h2>
+
+<p>{{gallery_detail.gallery_text}}</p>
+
+<em>{{gallery_detail.pub_date}}</em>
+
+{% if el.was_published_recently %}
+НОВАЯ СТАТЬЯ!
+{% endif %}
+
+<hr>
+
+{% if gallery_latest_comments_list %}
+	{% for c in gallery_latest_comments_list %}
+		<p>
+			<strong>{{c.author_name}}</strong>
+			<p>{{c.comment_text}}</p>
+		</p>
+	{% endfor %}
+
+{% else %}
+Комментарии не найдены! Станьте первым ;)
+{% endif %}
+
+<hr>
+
+<form action="{% url 'gallery:gallery_leave_comment' gallery.id%}" method="POST">
+	
+	{% csrf_token %}
+
+	<input type="text" required placeholder="Ваше имя" name="name"><br>
+	<textarea name="text" required="" placeholder="Текст комментария" cols="30" rows="10"></textarea> <br>
+
+	<button type="submit">Оставить комментарий</button>
+
+</form>
+{% endif %}
+{% endblock %}

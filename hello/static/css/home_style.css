@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300&family=Raleway:wght@100&display=swap');
+
+.carousel{
+	font-size: calc(1rem + 2vw);
+}
+
+@media (max-width: 750px){
+	.carousel{
+		font-size: 1.5em;
+		border-top: 50px;
+	}
+}
+
+.carousel-inner{
+	height: 500px;
+	background: #1c1d21;
+}
+
+.carousel-inner img{
+	transform: translateY(-30%);
+	width: 100%;
+	height: 100%;
+}
+
+.carousel-caption{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-80%);
+	text-shadow: 1px 1px 10px #000;
+	font-size: calc(1rem + 2vw);
+}
+
+.carousel-item{
+	background-color: #1c1d21;
+}
+
+.fixed-wrap{
+	width: 100%;
+  	height: 100%;
+  	line-height: 10.8em;
+  	text-align: center;
+}
+
+figure{
+	background-color: #1c1d21;
+}
+
+#fixed{
+	height: 400px;
+	border-top: 4px solid #1c1d21;
+	border-bottom: 4px solid #1c1d21;
+	background: url("https://cdn.pixabay.com/photo/2016/05/24/16/48/mountains-1412683_960_720.png") no-repeat center center fixed;
+	background-blend-mode: multiply;
+	background-color: lightblue;
+	background-size: cover;
+	-o-background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+}
+
+@media (max-width: 750px){
+	.display-4{
+		font-size: 1.5em;
+		background-color: #1c1d21;
+	}
+}
+.card-body{
+	p{
+		background-color: #1c1d21;
+	}
+}
+
+
+.fa-facebook{color: #3b5998}
+.fa-instagram{color: #517fa4}
+.fa-youtube{color: #b00}
+.fa-twitter{color: #00aced}
+.fa-google-plus-g{color: #dd4b39}
+
+.fa-facebook:hover, .fa-instagram:hover,
+.fa-instagram:hover, .fa-youtube:hover,
+.fa-google-plus-g:hover, .fa-twitter:hover{color: #ccc;}
+
+footer{
+	background-color: #1c1d21;
+	padding-top: 50px;
+	border-top: 4px solid silver;
+	color: white;
+	min-height: 100%;
+}
+
+.social a{
+	font-size: 4em;
+	padding: 20px;
+}
+
+.map{
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+
+.footer-map-text a{
+	color: #F2F2F2;
+	font-size: 25px;
+	font-family: 'Lato', sans-serif;
+	text-decoration: none;
+}
+
+.footer-map-text a:hover{
+	color: #F2F2F2;
+	font-size: 25px;
+	font-family: 'Lato', sans-serif;
+	text-decoration: none;
+}

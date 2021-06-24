@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Eagle Eye & Co/H{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/help.style.css' %}">
+
+	<div id="particles-js"></div>
+	<main>
+		<h1 class="entry-title">Поддержать проект</h1>
+		<div class="entry-meta">
+			<p>Если информация на моем блоге оказалась для вас полезной, и вы заинтересованы в появлении новых статей и материалов по трейдингу и инвестициям, вы можете поддержать мой проект.</p>
+			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-credit-card" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/>
+			<path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
+			</svg>
+		</div>
+		<div class="entry-meta">
+
+		</div>
+	</main>
+
+	<script type="text/javascript" src="{% static 'js/particles.js-master/particles.js' %}"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
+	<!-- scripts -->
+	<script type="text/javascript" src="{% static 'js/particles.js-master/demo/particles.json' %}"></script>
+	<script type="text/javascript" src="{% static 'js/particles.js-master/demo/js/app.js' %}"></script>
+	<!-- stats.js -->
+	<script type="text/javascript" src="{% static 'js/particles.js-master/demo/js/lib/stats.js' %}"></script>
+{% endblock %}
