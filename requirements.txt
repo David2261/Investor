@@ -51,7 +51,6 @@ installer==0.1.1
 itypes==1.2.0
 Jinja2==2.11.2
 Kivy==1.11.1
-kivy-deps.angle==0.2.0
 kivy-deps.glew==0.2.0
 kivy-deps.gstreamer==0.2.0
 kivy-deps.sdl2==0.2.0
