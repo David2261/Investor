@@ -1,9 +1,7 @@
 import os, sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
-import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES = { 'default': dj_database_url.config() }
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -77,7 +75,12 @@ WSGI_APPLICATION = 'hello.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
