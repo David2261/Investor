@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if mc %}{{mc.motiv_title}}{% endif %}{% if learn %}{{learn.learn_title}}{% endif %}{% if gallery %}{{gallery.gallery_title}}{% endif %}{% endblock %}
+{% block content %}
+{% autoescape off %}
+{% if motiv %}
+<div class="container mx-auto p-3">
+  <div class="grid grid-flow-auto grid-rows-max">
+    <div class="col-auto justify-center">
+      <h2>{{ motiv.motiv_title }}|{{ motiv.motiv_pub_date }}</h2>
+      <br>
+      <img src="{{ motiv.motiv_image.url }}" class="img-fluid">
+      <p class="text">{{ motiv.motiv_text }}</p>
+      <br>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% if learn_cl %}
+<div class="container mx-auto p-3">
+  <div class="grid grid-flow-auto grid-rows-max">
+    <div class="col-auto justify-center">
+      <h2><em>{{ learn_cl.learn_title }}|{{ learn_cl.learn_pub_date }}</em></h2>
+      <br>
+      <img src="{{ learn_cl.learn_image.url }}" class="img-fluid">
+      <br>
+      <p>{{ learn_cl.learn_text }}</p>
+      <br>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% if gallery %}
+<div class="container mx-auto p-3">
+  <div class="grid grid-flow-auto grid-rows-max">
+    <div class="col-auto text-center justify-center">
+      <h2>{{ gallery.gallery_title }}|{{ gallery.gallery_pub_date }}</h2>
+      <br>
+      <img src="{{ gallery.gallery_image.url }}" class="img-fluid">
+      <br>
+      <p class="text">{{ gallery.gallery_text }}</p>
+      <br>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% if idea %}
+<div class="container mx-auto p-3">
+  <div class="grid grid-flow-auto grid-rows-max">
+    <div class="col-auto text-center justify-center">
+      <h2>{{ idea.idea_title }}|{{ idea.idea_pub_date }}</h2>
+      <br>
+      <img src="{{ idea.idea_image.url }}" class="img-fluid">
+      <br>
+      <p class="text">{{ idea.idea_text }}</p>
+      <br>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endautoescape %}
+{% endblock %}
+      <br>

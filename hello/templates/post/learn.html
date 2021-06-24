@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Learn/Изучение{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/post.css' %}" type="text/css">
+<!-- Title -->
+	<div class="container-fluid padding">
+    <div class="row alert text-center">
+      <div class="col-12">
+        <h1 class="display-4">Изучение</h1>
+      </div>
+      <hr>
+    </div>
+  </div>
+<!-- Block content -->
+{% if learn %}
+{% for z in learn %}
+<div class="container mx-auto p-3">
+  <div class="grid grid-flow-auto grid-rows-max">
+    <div class="col-auto text-center justify-center">
+      <h2>{{ z.learn_title }} | {{z.learn_pub_date}}</h2>
+      <br>
+      <img src="{{ z.learn_image.url }}" class="img-fluid"/>
+      <br>
+      <a href="{% url 'articles:learn_checklist' z.id %}" class="btn btn-danger">Read next</a>
+      <br>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="container mx-auto p-3">
+  <div class="grid grid-flow-auto grid-rows-max">
+    <div class="col-auto text-center justify-center">
+      <div><h1 class="text-red-500 text-6xl italic font-semibold">Статьи не найдены</h1></div>
+      <div class="content-center col-auto"><img src='{% static "gif/crying_face.gif" %}'/></div>
+    </div>
+  </div>
+</div>
+{% endif %}
+  <!-- Block with fixed img -->
+  <figure>
+    <div class="fixed-wrap">
+      <div id="fixed"></div>
+    </div>
+  </figure>
+{% endblock %}
