@@ -36,6 +36,44 @@ label, p{
 	font-size: 1.1em !important;
 }
 
+.blog-content{
+	width: 80%;
+	margin: auto;
+	padding: 60px 0;
+}
+.blog-left{
+	flex-basis: 65%;
+}
+.blog-left img{
+	width: 100%;
+}
+.blog-left h2{
+	color: #F2F2F2;
+	font-weight: 600;
+	margin: 30px 0;
+}
+.blog-left p{
+	color: #F2F2F2;
+	padding: 0;
+}
+
+.blog-right{flex-basis: 32%;}
+.blog-right img{
+	width: 100%;
+}
+
+.fixed-wrap{
+	width: 100%;
+  	height: 100%;
+  	line-height: 10.8em;
+  	text-align: center;
+}
+
+figure{
+	background-color: #1c1d21;
+	margin: 0 0 0;
+}
+
 .fa-facebook{color: #3b5998}
 .fa-instagram{color: #517fa4}
 .fa-youtube{color: #b00}

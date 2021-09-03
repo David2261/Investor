@@ -3,7 +3,6 @@
 {% block title %} 404 an exception related to an invalid link or page{% endblock %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/exception/404.css' %}">
-<script type="text/javascript" src="{% static 'js/exception/404.js' %}"></script>
 	<div class="moon"></div>
 	<div class="moon__crater moon__crater1"></div>
 	<div class="moon__crater moon__crater2"></div>
@@ -18,7 +17,7 @@
 	<div class="error">
 	  <div class="error__title">404</div>
 	  <div class="error__subtitle">Hmmm...</div>
-	  <div class="error__description">It looks like one of the  developers fell asleep</div>
+	  <div class="error__description">Похоже, кто-то из разработчиков заснул</div>
 	</div>
 
 	<div class="astronaut">
@@ -48,4 +47,5 @@
 	    <div class="astronaut__head-visor-flare2"></div>
 	  </div>
 	</div>
+<script type="text/javascript" src="{% static 'js/exception/404.js' %}"></script>
 {% endblock %}

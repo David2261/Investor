@@ -50,44 +50,6 @@ class IdeaComment(models.Model):
 	def __str__(self):
 		return self.author_name_idea
 
-class Gallery(models.Model):
-	gallery_title = models.CharField('Название идеи', max_length = 120)
-	gallery_text = HTMLField('Текст идеи')
-	gallery_genre = models.ManyToManyField(Genre, help_text="Select a genre for this article")
-	gallery_views = models.PositiveIntegerField('Просмотры', default=0)
-	gallery_image = models.ImageField(null = True, blank=True, upload_to='Gallery', help_text='150x150px', verbose_name='Изображение')
-	gallery_pub_date = models.DateTimeField('Дата публикации', auto_now_add = True)
-	content = HTMLField(null=True)
-
-	def display_genre(self):
-		return ', '.join([ gallery_genre.name for gallery_genre in self.gallery_genre.all()[:3] ])
-		display_genre.short_description = 'Genre'
-
-	def __str__(self):
-		return self.gallery_title
-
-	def was_published_recently(self):
-		return self.gallery_pub_date >= (timezone.now() - datetime.timedelta(days = 7))
-	    
-	class Meta:
-				verbose_name = 'Галерея'
-				verbose_name_plural = 'Галереи'
-				ordering = ["-id", "-gallery_pub_date"]
-
-
-class GalleryComment(models.Model):
-	article_gallery = models.ForeignKey(Gallery, on_delete = models.CASCADE)
-	author_name_gallery = models.CharField('Имя автора', max_length = 50)
-	comment_text_gallery = models.CharField('Текст комментария', max_length = 200)
-	pub_date_gallery = models.DateTimeField('Дата написании', auto_now_add = True)
-
-	class Meta:
-			verbose_name = 'Комментарий'
-			verbose_name_plural = 'Комментарии'
-			ordering = ["-id", "-pub_date_gallery"]
-
-	def __str__(self):
-		return self.author_name_gallery
 
 class Motiv(models.Model):
 	motiv_title = models.CharField('Название идеи', max_length = 120)

@@ -3,7 +3,7 @@
 html, body{
 	background-color: #1c1d21 !important;
 	font-family: 'Lato', sans-serif;
-	color: #1c1d21;
+	color: #F2F2F2;
 	min-width: 100%;
 	min-height: 100%
 }
@@ -59,7 +59,7 @@ figure{
     text-align: left;
     padding: 10px 0 10px 0;
 }
-.contact-container.col-md-6 {
+.contact-container .col-md-6 {
   padding: 60px;
 }
 #contact-form {
@@ -92,6 +92,7 @@ figure{
   padding: 5px;
   outline: 2px #d175807a solid;
   border: 0;
+  color: #1c1d21;
 }
 
 #contact-form input:focus, #contact-form textarea:focus, #contact-form select:focus {

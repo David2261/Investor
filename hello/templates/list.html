@@ -4,60 +4,45 @@
 {% block content %}
 {% autoescape off %}
 {% if motiv %}
-<div class="container mx-auto p-3">
-  <div class="grid grid-flow-auto grid-rows-max">
-    <div class="col-auto justify-center">
+<section class="blog-content">
+  <div class="row">
+    <div class="blog-left">
+      <img src="{{ motiv.motiv_image.url }}">
+      <br>
       <h2>{{ motiv.motiv_title }}|{{ motiv.motiv_pub_date }}</h2>
       <br>
-      <img src="{{ motiv.motiv_image.url }}" class="img-fluid">
       <p class="text">{{ motiv.motiv_text }}</p>
-      <br>
     </div>
   </div>
-</div>
+</section>
 {% endif %}
 {% if learn_cl %}
-<div class="container mx-auto p-3">
-  <div class="grid grid-flow-auto grid-rows-max">
-    <div class="col-auto justify-center">
-      <h2><em>{{ learn_cl.learn_title }}|{{ learn_cl.learn_pub_date }}</em></h2>
+<section class="blog-content">
+  <div class="row">
+    <div class="blog-left">
+      <img src="{{ learn_cl.learn_image.url }}">
       <br>
-      <img src="{{ learn_cl.learn_image.url }}" class="img-fluid">
+      <h2><em>{{ learn_cl.learn_title }}|{{ learn_cl.learn_pub_date }}</em></h2>
       <br>
       <p>{{ learn_cl.learn_text }}</p>
       <br>
     </div>
   </div>
-</div>
-{% endif %}
-{% if gallery %}
-<div class="container mx-auto p-3">
-  <div class="grid grid-flow-auto grid-rows-max">
-    <div class="col-auto text-center justify-center">
-      <h2>{{ gallery.gallery_title }}|{{ gallery.gallery_pub_date }}</h2>
-      <br>
-      <img src="{{ gallery.gallery_image.url }}" class="img-fluid">
-      <br>
-      <p class="text">{{ gallery.gallery_text }}</p>
-      <br>
-    </div>
-  </div>
-</div>
+</section>
 {% endif %}
 {% if idea %}
-<div class="container mx-auto p-3">
-  <div class="grid grid-flow-auto grid-rows-max">
-    <div class="col-auto text-center justify-center">
-      <h2>{{ idea.idea_title }}|{{ idea.idea_pub_date }}</h2>
+<section class="blog-content">
+  <div class="row">
+    <div class="blog-left">
+      <img src="{{ idea.idea_image.url }}">
       <br>
-      <img src="{{ idea.idea_image.url }}" class="img-fluid">
+      <h2>{{ idea.idea_title }}|{{ idea.idea_pub_date }}</h2>
       <br>
       <p class="text">{{ idea.idea_text }}</p>
       <br>
     </div>
   </div>
-</div>
+</section>
 {% endif %}
 {% endautoescape %}
 {% endblock %}
-      <br>

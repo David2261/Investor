@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.core import serializers
-from .models import Idea, Motiv, Gallery, Learn, Genre
+from .models import Idea, Motiv, Learn, Genre
 from django.contrib.contenttypes.models import ContentType
 
 """class Idea(admin.ModelAdmin):
@@ -8,6 +8,5 @@ from django.contrib.contenttypes.models import ContentType
 
 admin.site.register(Genre)
 admin.site.register(Learn)
-admin.site.register(Gallery)
 admin.site.register(Motiv)
 admin.site.register(Idea)
