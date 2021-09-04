@@ -17,10 +17,10 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'oapf7gb5yeipka=)5sl_f%l&s5(hg5!xszsv+atk&^e4hu2s1y')
 
-# SECURITY WARNING: don't run with debug turned on in production!  'investingblog.herokuapp.com'
+# SECURITY WARNING: don't run with debug turned on in production!  
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['investingblog.herokuapp.com']
 
 
 INSTALLED_APPS = [
