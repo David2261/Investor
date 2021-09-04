@@ -1,12 +1,9 @@
 import os, sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
-<<<<<<< HEAD
-=======
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES = { 'default': dj_database_url.config() }
->>>>>>> b13084049c79b7598116d916fc4358e2f050b7c1
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +17,10 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'oapf7gb5yeipka=)5sl_f%l&s5(hg5!xszsv+atk&^e4hu2s1y')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production!  'investingblog.herokuapp.com'
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = ['investingblog.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
