@@ -17,10 +17,10 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'oapf7gb5yeipka=)5sl_f%l&s5(hg5!xszsv+atk&^e4hu2s1y')
 
-# SECURITY WARNING: don't run with debug turned on in production!  'investingblog.herokuapp.com'
+# SECURITY WARNING: don't run with debug turned on in production!  
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['investingblog.herokuapp.com']
 
 
 INSTALLED_APPS = [
@@ -75,13 +75,24 @@ WSGI_APPLICATION = 'hello.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-DATABASES = {
+
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}
+}"""
 
+DATABASES = {
+    'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'd2oj76o29h6q1v',
+    'USER': 'sbpdhrdxrqbnyk',
+    'PASSWORD': '53b512fddee9e7715b5c3b75292f48069123f81a859c90d5ca3e435200a1e628',
+    'HOST': 'ec2-34-254-120-2.eu-west-1.compute.amazonaws.com',
+    'PORT': '5432'
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
