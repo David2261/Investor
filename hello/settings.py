@@ -1,7 +1,12 @@
 import os, sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+# Configure Django App for Heroku.
+import django_heroku
 import dj_database_url
+
+django_heroku.settings(locals())
+
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES = { 'default': dj_database_url.config() }
 
