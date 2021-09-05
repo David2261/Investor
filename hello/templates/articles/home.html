@@ -42,7 +42,7 @@
         <a href="{% url 'articles:learn_checklist' 4 %}" class="btn btn-danger">Read next</a>
       </div>
       <div class="col-lg-6">
-        <img src="https://cdn.pixabay.com/photo/2016/11/23/14/37/blur-1853262_960_720.jpg" class="img-fluid">
+        <img src="{% static 'img/terminal.jpg' %}" class="img-fluid">
       </div>
     </div>
   </div>
@@ -83,7 +83,7 @@
     </div>
     <!--Card 2-->
     <div class="rounded overflow-hidden shadow-lg">
-      <a href="{% url 'articles:learn_checklist' 2 %}"><img class="w-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyu0MabBQ7wp7KZCwGkgF52C8M1zoMTwpXSw&usqp=CAU" alt="Deutsche Bundesbank"></a>
+      <a href="{% url 'articles:learn_checklist' 2 %}"><img class="w-full" src="{% static 'img/bundesbank.png' %}" alt="Deutsche Bundesbank"></a>
       <div class="px-6 py-4">
         <div class="font-bold text-xl mb-2 text-gray-200">Deutsche Bundesbank</div>
         <p class="text-gray-200 text-base">
@@ -99,7 +99,7 @@
 
     <!--Card 3-->
     <div class="rounded overflow-hidden shadow-lg">
-      <a href="{% url 'articles:learn_checklist' 3 %}"><img class="w-full" src="https://www.usnews.com/dims4/USNEWS/698275c/2147483647/thumbnail/640x420/quality/85/?url=http%3A%2F%2Fmedia.beam.usnews.com%2Fd7%2F5f8cc9f3a9be5b0c5e00736440283d%2Ftag%3Areuters.com%2C2020%3Anewsml_LYNXMPEG280O9%3A12020-03-09T095801Z_1_LYNXMPEG280O9_RTROPTP_3_SWISS-SNB.JPG" alt="Swiss National Bank"></a>
+      <a href="{% url 'articles:learn_checklist' 3 %}"><img class="w-full" src="{% static 'img/swiss.jpg' %}" alt="Swiss National Bank"></a>
       <div class="px-6 py-4">
         <div class="font-bold text-xl mb-2 text-gray-200">Swiss National Bank</div>
         <p class="text-gray-200 text-base">
