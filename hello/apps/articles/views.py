@@ -40,8 +40,8 @@ def idea(request):
 def idea_checklist(request, idea_id):
 	try:
 		idea_cl = Idea.objects.get(id = idea_id)
-		Idea.objects.filter(pk=idea_cl.pk).update(idea_views=F('idea_views') + 1)
-		idea_cl.idea_views += 1 # to show valid counter in the template
+		idea_cl.idea_views=idea_cl.idea_views+1
+		idea_cl.idea_views.save()
 		return render(request, 'list.html', {'idea':idea_cl})
 	except:
 		return redirect("pageNotFound")
@@ -56,6 +56,8 @@ def learn(request):
 def learn_checklist(request, learn_id):
 	try:
 		learn_cl = Learn.objects.get(id = learn_id)
+		learn_cl.learn_views=learn_cl.learn_views+1
+		learn_cl.learn_views.save()
 		return render(request, 'list.html', {'learn_cl':learn_cl})
 	except:
 		return redirect("pageNotFound")
@@ -71,8 +73,8 @@ def motiv(request):
 def motiv_checklist(request, motiv_id):
 	try:
 		motiv_cl = Motiv.objects.get(id = motiv_id)
-		Motiv.objects.filter(pk=motiv_cl.pk).update(motiv_views=F('motiv_views') + 1)
-		motiv_cl.motiv_views += 1 # to show valid counter in the template
+		motiv_cl.motiv_views=motiv_cl.motiv_views+1
+		motiv_cl.motiv_views.save()
 		return render(request, 'list.html', {'motiv':motiv_cl})
 	except:
 		return redirect("pageNotFound")

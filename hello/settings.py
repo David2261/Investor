@@ -18,14 +18,13 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'oapf7gb5yeipka=)5sl_f%l&s5(hg5!xszsv+atk&^e4hu2s1y')
 
-# SECURITY WARNING: don't run with debug turned on in production!  
+# SECURITY WARNING: don't run with debug turned on in production!  'investingblog.herokuapp.com'
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = ['investingblog.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
-    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,6 +35,9 @@ INSTALLED_APPS = [
     'articles',
     'chat',
     'leads',
+    # admin
+    'grappelli.dashboard',
+    'grappelli',
     'ckeditor',
     'ckeditor_uploader',
     'tinymce',
@@ -78,13 +80,13 @@ WSGI_APPLICATION = 'hello.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}"""
-
+}
+"""
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -94,7 +96,8 @@ DATABASES = {
     'HOST': 'ec2-34-254-120-2.eu-west-1.compute.amazonaws.com',
     'PORT': '5432'
     }
-}
+}"""
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -116,9 +119,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # myaccount.google.com/lesssecureapps
 # Email Settings
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'admiralgeneral2003@gmail.com'
-EMAIL_HOST_PASSWORD = 'Bulat06121978'
+DEFAULT_FROM_EMAIL = 'admiralgeneral2003@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # Internationalization
@@ -156,6 +161,11 @@ STATICFILES_FINDERS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Admin
+GRAPPELLI_INDEX_DASHBOARD = 'hello.dashboard.CustomIndexDashboard'
+GRAPPELLI_INDEX_DASHBOARD = {  # alternative method
+    'hello.admin.admin_site': 'hello.dashboard.CustomIndexDashboard',
+}
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 

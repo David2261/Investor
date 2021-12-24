@@ -15,7 +15,7 @@ class Idea(models.Model):
 	idea_title = models.CharField('Название идеи', max_length = 120)
 	idea_text = HTMLField('Текст идеи')
 	idea_genre = models.ManyToManyField(Genre, help_text="Select a genre for this article")
-	idea_views = models.PositiveIntegerField('Просмотры', default=0)
+	idea_views = models.IntegerField('Просмотры', default=0)
 	idea_image = models.ImageField(null = True, blank=True, upload_to='Idea', help_text='150x150px', verbose_name='Изображение')
 	idea_pub_date = models.DateTimeField('Дата публикации', auto_now_add = True)
 	content = HTMLField(null=True)
@@ -55,7 +55,7 @@ class Motiv(models.Model):
 	motiv_title = models.CharField('Название идеи', max_length = 120)
 	motiv_text = HTMLField('Текст идеи')
 	motiv_genre = models.ManyToManyField(Genre, help_text="Select a genre for this article")
-	motiv_views = models.PositiveIntegerField('Просмотры', default=0)
+	motiv_views = models.IntegerField('Просмотры', default=0)
 	motiv_image = models.ImageField(null = True, blank=True, upload_to='Motiv', help_text='150x150px', verbose_name='Изображение')
 	motiv_pub_date = models.DateTimeField('Дата публикации', auto_now_add = True)
 
@@ -93,7 +93,7 @@ class Learn(models.Model):
 	learn_title = models.CharField('Название идеи', max_length = 120)
 	learn_text = HTMLField('Текст идеи')
 	learn_genre = models.ManyToManyField(Genre, help_text="Select a genre for this article")
-	learn_views = models.PositiveIntegerField('Просмотры', default=0)
+	learn_views = models.IntegerField('Просмотры', default=0)
 	learn_image = models.ImageField(null = True, blank=True, upload_to='Learn', help_text='150x150px', verbose_name='Изображение')
 	learn_pub_date = models.DateTimeField('Дата публикации', auto_now_add = True)
 

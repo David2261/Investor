@@ -23,7 +23,7 @@
     <div class="row padding">
       <div class="contact-container col-md-6">
         <div id="contact-form">
-          <form action="{% url 'chat:comment' %}" method="POST">
+          <form method="POST">
             {% csrf_token %}
             <input type="hidden">
               <li><label for="id_name">Имя</label><input type="text" name="name" maxlength="120" required id="id_name"></li>
