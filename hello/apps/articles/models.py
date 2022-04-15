@@ -6,7 +6,8 @@ from django.core import serializers
 from tinymce.models import HTMLField
 
 class Genre(models.Model):
-    name = models.CharField(max_length=200, help_text="Enter a article genre (e.g. learn, idea, motivation, gallery)")
+    name = models.CharField(max_length=256, verbose_name='Категория', \
+     help_text="Enter a article genre (e.g. learn, idea, motivation, gallery)")
 
     def __str__(self):
         return self.name
