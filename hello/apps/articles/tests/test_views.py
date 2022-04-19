@@ -1,4 +1,3 @@
-from re import findall
 from requests import head, get
 from django.test import TestCase
 
@@ -37,12 +36,3 @@ class PagesTests(TestCase):
 				response = head(page) # 1
 				# После этого проверяем, равен ли статус-код страницы 200.
 				self.assertEqual(response.status_code, 200) # 2 & 3
-
-
-# Проверка ссылок на страницах
-
-# переменная с регулярным выражением для ссылки.
-LINK_REGULAR_EXPRESSION = r'<a[^>]* href="([^"]*)"'
-
-def test_links(self):
-	pass

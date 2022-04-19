@@ -8,6 +8,45 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
+# Логирование
+LOGGING = {
+    'version': 1,
+    # Отлючает логирования включенные в Django
+    'disable_existing_loggers': False,
+    # Форматы строк в логгах
+    'formatters': {
+        'console': {
+            'format': '%(name)-12s %(levelname)-8s %(message)s'
+        },
+        'file': {
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': 'log.log',
+        },
+    },
+    'loggers': {
+        'articles': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
+}
+
+"""
+%(name) – это имя пакета, которое выдает сообщение журнала
+
+%(levelname) – степень важности сообщения (ERROR, WARNING, INFO, и т.д.)
+
+%(message) – само сообщение
+"""
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 

@@ -1,14 +1,23 @@
+import logging
 from . models  import *
 from django.urls import reverse
 from django.template import RequestContext
 from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponseRedirect, HttpResponseNotFound
+from django.http import Http404, HttpResponseRedirect, HttpResponseNotFound, \
+	JsonResponse
 
 #  'exception/404.html'
+
+logger = logging.getLogger(__name__)
+
 
 def pageNotFound(request):
     return render(request, "exception/404.html")
 
+
+def log_views(request):
+	logger.warning('Hello, beta test!')
+	return JsonResponse({'success': True})
 
 def index(request):
 	return HttpResponseRedirect("home")
