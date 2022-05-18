@@ -32,23 +32,22 @@ def setting(request):
 
 
 def home(request):
-	learn = Learn.objects.filter(id=1)
-	return render(request, "articles/home.html", {'learn':learn})
+	pass
 
 
 def home_checklist(request, learn_id, idea_id, motiv_id):
-	return HttpResponseRedirect("learn_checklist")
+	pass
 
 
-def idea(request):
-	idea = Idea.objects.order_by('-idea_pub_date')
-	return render(request, "post/idea.html", {'idea':idea})
+def idea_article(request):
+	article = Article.objects.order_by('-pub_date')
+	return render(request, "post/idea.html", {'idea':article})
 
 
 # Открывает отдельную страницу статьи по id
-def idea_checklist(request, idea_id):
+def idea_checklist(request, article_id):
 	try:
-		idea_cl = Idea.objects.get(id = idea_id)
+		idea_cl = Article.objects.get(id = article_id)
 		idea_cl.idea_views=idea_cl.idea_views+1
 		idea_cl.idea_views.save()
 		return render(request, 'list.html', {'idea':idea_cl})
@@ -57,33 +56,19 @@ def idea_checklist(request, idea_id):
 
 
 def learn(request):
-	learn = Learn.objects.order_by('-learn_pub_date')
-	return render(request, "post/learn.html", {'learn':learn})
+	pass
 
 
 # Открывает отдельную страницу статьи по id
 def learn_checklist(request, learn_id):
-	try:
-		learn_cl = Learn.objects.get(id = learn_id)
-		learn_cl.learn_views=learn_cl.learn_views+1
-		learn_cl.learn_views.save()
-		return render(request, 'list.html', {'learn_cl':learn_cl})
-	except:
-		return redirect("pageNotFound")
+	pass
 	
 
 
 def motiv(request):
-	m = Motiv.objects.order_by('-motiv_pub_date')
-	return render(request, "post/motiv.html", {'m':m})
+	pass
 
 
 # Открывает отдельную страницу статьи по id
 def motiv_checklist(request, motiv_id):
-	try:
-		motiv_cl = Motiv.objects.get(id = motiv_id)
-		motiv_cl.motiv_views=motiv_cl.motiv_views+1
-		motiv_cl.motiv_views.save()
-		return render(request, 'list.html', {'motiv':motiv_cl})
-	except:
-		return redirect("pageNotFound")
+	pass
