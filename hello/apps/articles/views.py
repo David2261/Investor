@@ -32,7 +32,7 @@ def setting(request):
 
 
 def home(request):
-	pass
+	return render(request, "articels/home.html")
 
 
 def home_checklist(request, learn_id, idea_id, motiv_id):

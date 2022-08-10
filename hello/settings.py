@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'articles',
     'chat',
     'leads',
+    'frontend',
     # admin
     'grappelli.dashboard',
     'grappelli',
