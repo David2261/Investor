@@ -35,16 +35,17 @@
 - Install tools
 	- pip install -r requirements
 - Run django server
-	1. python manage.py makemigrations
-	2. python manage.py migrate
-	3. python manage.py runserver
+	1) python manage.py makemigrations
+	2) python manage.py migrate
+	3) python manage.py runserver
 - Run Node server
-	```bash
-	cd hello/apps/frontend
-	npm run dev
+```bash
+cd hello/apps/frontend
+npm run dev
 ```
 
 ## Example
+
 ```python
 # Блок для создания статей
 class Article(models.Model):
