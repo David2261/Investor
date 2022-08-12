@@ -4,9 +4,8 @@ from . import views
 
 app_name = 'frontend'
 urlpatterns = [
-	path('', views.index),
 	path('log_view/', views.log_views),
-	path('home/', views.home, name='home'),
+	path('', views.home, name='home'),
 	path('home/idea/', views.idea_article, name='idea'),
 	# path('home/idea/<int:idea_id>/', views.idea_checklist, name = 'idea_checklist'),
 	# path('home/learn/', views.learn, name='learn'),

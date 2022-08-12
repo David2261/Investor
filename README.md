@@ -39,9 +39,9 @@
 	2. python manage.py migrate
 	3. python manage.py runserver
 - Run Node server
-	```bash
-	cd hello/apps/frontend
-	npm run dev
+```bash
+cd hello/apps/frontend
+npm run dev
 ```
 
 ## Example

@@ -41,6 +41,9 @@ class App extends Component {
             </li>
           );
         })}
+        <h1>
+        Hello React
+        </h1>
       </ul>
     );
   }
