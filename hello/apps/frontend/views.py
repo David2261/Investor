@@ -19,8 +19,6 @@ def log_views(request):
 	logger.warning('Hello, beta test!')
 	return JsonResponse({'success': True})
 
-def index(request):
-	return HttpResponseRedirect("home")
 
 
 def help(request):
@@ -32,7 +30,7 @@ def setting(request):
 
 
 def home(request):
-	return render(request, "articels/home.html")
+	return render(request, "frontend/index.html")
 
 
 def home_checklist(request, learn_id, idea_id, motiv_id):
