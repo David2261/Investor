@@ -7,7 +7,12 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
-      }
+      },
+      // Additional configuration to handle *.css files
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ]
   }
 };
