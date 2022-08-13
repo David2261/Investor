@@ -5,10 +5,8 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-	path('article', include('articles.urls')), # Узел для пост - страниц
-    path('chat', include('chat.urls')), # Узел для страницы контактной формы
-    path('', include('frontend.urls')),
     path('', include('leads.urls')),
+    path('', include('articles.urls')),
 	path('grappelli/', include('grappelli.urls')),
     path('tinymce/', include('tinymce.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
