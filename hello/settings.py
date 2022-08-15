@@ -67,10 +67,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'articles',
-    'chat',
     'leads',
-    'frontend',
+    'articles',
     # admin
     'grappelli.dashboard',
     'grappelli',
@@ -97,7 +95,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(PROJECT_ROOT, 'templates'),
-            os.path.join(PROJECT_ROOT, 'apps/frontend/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
