@@ -58,7 +58,6 @@ DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'articles.UserBackend'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
