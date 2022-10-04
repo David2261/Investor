@@ -113,7 +113,7 @@ WSGI_APPLICATION = 'hello.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -124,13 +124,13 @@ DATABASES = {
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'd2oj76o29h6q1v',
-    'USER': 'sbpdhrdxrqbnyk',
+    'NAME': 'Investment',
+    'USER': 'Bulat',
     'PASSWORD': '53b512fddee9e7715b5c3b75292f48069123f81a859c90d5ca3e435200a1e628',
-    'HOST': 'ec2-34-254-120-2.eu-west-1.compute.amazonaws.com',
+    'HOST': 'localhost',
     'PORT': '5432'
     }
-}"""
+}
 
 
 # Password validation
@@ -174,6 +174,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
