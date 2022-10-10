@@ -124,10 +124,10 @@ DATABASES = {
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'Investment',
-    'USER': 'Bulat',
+    'NAME': 'investor-blog',
+    'USER': 'sbpdhrdxrqbnyk',
     'PASSWORD': '53b512fddee9e7715b5c3b75292f48069123f81a859c90d5ca3e435200a1e628',
-    'HOST': 'localhost',
+    'HOST': 'ec2-34-254-120-2.eu-west-1.compute.amazonaws.com',
     'PORT': '5432'
     }
 }
