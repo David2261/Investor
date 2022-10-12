@@ -1,7 +1,13 @@
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.views import View
+from django.shortcuts import render, redirect
+from django.db.models import Count, F, Value
 
-# Create your views here.
+from .forms import UserCreationForm
 
-class BlogView(TemplateView):
-	template_name = "about.html"
+
+
+
+
+
 
