@@ -21,7 +21,7 @@ class Category(models.Model):
 	class Meta:
 		verbose_name = 'Категория'
 		verbose_name_plural = 'Категории'
-		ordering = ['id']
+		ordering = ('id', 'name')
 
 
 class Articles(models.Model):
@@ -41,6 +41,6 @@ class Articles(models.Model):
 		return self.title
 
 	class Meta:
-		verbose_name = "Статьи"
-		verbose_name_plural= "Статья"
-		ordering = ('-time_create', 'title')
+		verbose_name = "Статья"
+		verbose_name_plural= "Статьи"
+		ordering = ('-time_create', 'title', 'category')
