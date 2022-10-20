@@ -8,12 +8,12 @@
 <div>
 	<div>
 	{% for t in topics %}
-		<p><a href="{{ t.id }}">{{ t.name }}</a></p>
+		<p><a href="{{ t.slug }}">{{ t.name }}</a></p>
 	{% endfor %}
 	</div>
 	<div>
 	{% for a in articles %}
-		<p><a href="{{ a.name }}">{{ a.name }}</a></p>
+		<p><a href="{{ a.slug }}">{{ a.title }}</a></p>
 	{% endfor %}
 	</div>
 </div>
