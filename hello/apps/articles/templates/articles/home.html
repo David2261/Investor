@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Home page{% endblock %}
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+{% endblock %}
 
 
 {% block content %}
-<h1>Home page</h1>
-<div>
-	<div>
-	{% for t in topics %}
-		<p><a href="{{ t.slug }}">{{ t.name }}</a></p>
-	{% endfor %}
+
+<div class="base_block">
+	<div class="main_category">
+		{% include 'articles/topics_component.html' %}
 	</div>
-	<div>
-	{% for a in articles %}
-		<p><a href="{{ a.slug }}">{{ a.title }}</a></p>
-	{% endfor %}
-	</div>
+	<main class="main_content"></main>
 </div>
+
 {% endblock %}
