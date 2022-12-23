@@ -11,7 +11,8 @@
 	</tt>
 	<tt>
 		{% for post in articles %}
-		<p><a href="{% url 'articles: post.slug' post.slug %}">{{post.title}}</a></p>
+		<p><a href="{% url 'articles: post.slug' post.slug %}">{{post.title}}</a> | {{post.total_views}}</p>
+		{{ description|truncatechars:50 }}
 		{% endfor %}
 	</tt>
 </td>
