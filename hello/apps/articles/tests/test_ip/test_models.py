@@ -1,10 +1,13 @@
-from django.test import TestCase
-from articles.models import Ip, Category, Articles
+import pytest
+from articles.models import Ip
 
 
 class TestIp:
-    def setup(self):
-        Ip.objects.create(ip="176.52.98.172")
-
-    def test_create_category():
+    def test_create_ip(self):
+        category = Ip.objects.create(ip="176.52.98.172")
         assert category.ip == "176.52.98.172"
+    
+    def test_create_fail_ip(self):
+        with pytest.raises(TypeError):
+            category = Ip.objects.create(ip="176.52.98.172")
+            assert category.ip == "176.52.98.001"
