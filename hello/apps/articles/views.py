@@ -67,4 +67,3 @@ class BlogPage(View):
 
 class AboutPage(TemplateView):
 	template_name = "articles/about.html"
-
