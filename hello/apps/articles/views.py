@@ -1,4 +1,5 @@
-import datetime
+from datetime import date, datetime
+import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.db.models import Count, F, Value
@@ -7,14 +8,20 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
 
+from django.conf import settings
 from .forms import UserCreationForm
 from .models import Category, Articles, Ip
 
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("dev")
+log_info = logging.getLogger("root")
 
 class ArticlesList(ListView):
 	model = Articles
 
+
 def get_client_ip(request):
+	logger.info("Включен 'get_client_ip'")
 	x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
 	if x_forwarded_for:
 		ip = x_forwarded_for.split(',')[0]
@@ -26,6 +33,7 @@ def get_client_ip(request):
 class HomePage(View):
 
 	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'HomePage'")
 		# <View logic>
 		topics = Category.objects.all()
 		articles = Articles.objects.exclude(
@@ -35,6 +43,7 @@ class HomePage(View):
 
 	# Какие данные будут передаваться
 	def get_context_data(self, **kwargs):
+		logger.info("Включен 'get_context_data' в 'HomePage'")
 		context = super().get_context_data(**kwargs)
 		context['today'] = date.today()
 		return context
@@ -43,6 +52,7 @@ class HomePage(View):
 class BlogPage(View):
 
 	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'BlogPage'")
 		ip = get_client_ip(request)
 		q = request.GET.get('q') if request.get('q') != None else ''
 		articles = Articles.objects.filter(
@@ -60,6 +70,7 @@ class BlogPage(View):
 		return render(request, "articles/blog.html", context)
 
 	def get_context_data(self, **kwargs):
+		logger.info("Включен 'get_context_data' в 'HomePage'")
 		context = super().get_context_data(**kwargs)
 		context['today'] = date.today()
 		return context

@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
+import logging
 from django.db import models
 from django.urls import reverse
 
+from django.conf import settings
+
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("dev")
+log_info = logging.getLogger("root")
 
 STATUS_CHOICES = (
    ('draft', 'Draft'),
@@ -9,10 +15,12 @@ STATUS_CHOICES = (
 )
 
 class Ip(models.Model):
+	logger.info("Включен 'Ip models'")
 	ip = models.CharField(max_length=100)
 
 
 class Category(models.Model):
+	logger.info("Включен 'Category models'")
 	name = models.CharField(verbose_name = "Категория", max_length = 255)
 	slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
@@ -29,6 +37,7 @@ class Category(models.Model):
 
 
 class Articles(models.Model):
+	logger.info("Включен 'Articles models'")
 	title = models.CharField(verbose_name = "Заголовок статьи", help_text = "Название статьи", max_length = 255, null = False, blank = False, primary_key = True)
 	description = models.TextField(verbose_name = "Текст статьи", null = False, blank = False)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
