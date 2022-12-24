@@ -1,4 +1,5 @@
 import os, sys
+import logging
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -10,42 +11,43 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 # Логирование
 LOGGING = {
-    'version': 1,
-    # Отлючает логирования включенные в Django
-    'disable_existing_loggers': False,
-    # Форматы строк в логгах
-    'formatters': {
-        'console': {
-            'format': '%(name)-12s %(levelname)-8s %(message)s'
+    "disable_existing_loggers": False,
+    "version": 1,
+    "formatters": {
+        "standart": {
+            "format": "%(asctime)s - %(filename)s - %(name)s - %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         },
-        'file': {
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        "exception": {
+            "format": "%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s((%lineno)d) - %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         }
     },
-    'handlers': {
-        'file': {
-            'level': 'WARNING',
-            'class': 'logging.FileHandler',
-            'filename': 'log.log',
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "formatter": "standart",
+			"filename": '__logs__/main.log',
+        },
+        "dev_file": {
+            "level": "NOTSET",
+            "class": "logging.FileHandler",
+            "formatter": "exception",
+			"filename": '__logs__/error.log',
         },
     },
-    'loggers': {
-        'articles': {
-            'handlers': ['file'],
-            'level': 'WARNING',
-            'propagate': True,
+    "loggers": {
+        "root": {
+            "level": "INFO",
+            "handlers": ["file"],
+        },
+        "dev": {
+            "level": "ERROR",
+            "handlers": ["dev_file"],
         },
     },
 }
-
-"""
-%(name) – это имя пакета, которое выдает сообщение журнала
-
-%(levelname) – степень важности сообщения (ERROR, WARNING, INFO, и т.д.)
-
-%(message) – само сообщение
-"""
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
