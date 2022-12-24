@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from .models import Category, Articles
+from .models import Category, Articles, Ip
 
 
 admin.site.site_title = "Investor Site Admin"
 admin.site.site_header = "Investor Site Admin"
 
 
+admin.site.register(Ip)
 admin.site.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
 	list_display = ("name",)

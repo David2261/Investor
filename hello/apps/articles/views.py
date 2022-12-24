@@ -8,11 +8,19 @@ from django.views.generic import TemplateView
 from django.views.generic.list import ListView
 
 from .forms import UserCreationForm
-from .models import Category, Articles
+from .models import Category, Articles, Ip
 
 
 class ArticlesList(ListView):
 	model = Articles
+
+def get_client_ip(request):
+	x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+	if x_forwarded_for:
+		ip = x_forwarded_for.split(',')[0]
+	else:
+		ip = request.META.get('REMOTE_ADDR')
+	return ip
 
 
 class HomePage(View):
@@ -35,6 +43,7 @@ class HomePage(View):
 class BlogPage(View):
 
 	def get(self, request, *args, **kwargs):
+		ip = get_client_ip(request)
 		q = request.GET.get('q') if request.get('q') != None else ''
 		articles = Articles.objects.filter(
 			Q(category__name__icontains=q) |
@@ -42,6 +51,11 @@ class BlogPage(View):
 			Q(descrition__icontains=q)
 		)
 		topics = Category.objects()[0:5]
+		if Ip.objects.filter(ip=ip).exists():
+			articles.views.add(Ip.objects.get(ip=ip))
+		else:
+			Ip.objects.create(ip=ip)
+			articles.views.add(Ip.objects.get(ip=ip))
 		context = {'articles': articles, 'topics': topics}
 		return render(request, "articles/blog.html", context)
 
@@ -53,4 +67,3 @@ class BlogPage(View):
 
 class AboutPage(TemplateView):
 	template_name = "articles/about.html"
-

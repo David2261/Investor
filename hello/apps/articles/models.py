@@ -8,6 +8,9 @@ STATUS_CHOICES = (
    ('published', 'Published'),
 )
 
+class Ip(models.Model):
+	ip = models.CharField(max_length=100)
+
 
 class Category(models.Model):
 	name = models.CharField(verbose_name = "Категория", max_length = 255)
@@ -33,10 +36,14 @@ class Articles(models.Model):
 	time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
 	time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
 	is_published = models.BooleanField(default=True, verbose_name="Публикация")
+	views = models.ManyToManyField(Ip, related_name="post_views", blank=True)
 	slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
 	def get_absolute_url(self):
 		return reverse("post", kwargs={'post_slug': self.slug})
+	
+	def total_views(self):
+		return self.views.count()
 
 	def __str__(self):
 		return self.title
