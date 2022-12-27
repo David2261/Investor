@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Profile
+page{%endblock %} {% block content %}
+
+<h1>Login page</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <span>User</span>
+        <input type="text", name="username", id="userName", placehorder="Password"></input>
+    </div>
+    <div>
+        <span>Email</span>
+        <input type="email", name="email", id="email", placehorder="Email"></input>
+    </div>
+    <div>
+        <span>Password</span>
+        <input type="password", name="password", id="pwd", placehorder="Password"></input>
+    </div>
+    {{ form.errors }}
+    <button>Login</button>
+</form>
+<a href="{% url 'articles:register' %}">Sign-up</a>
+
+{% endblock %}
