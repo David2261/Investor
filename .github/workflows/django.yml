@@ -8,6 +8,13 @@ on:
 
 jobs:
   build:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -33,3 +40,21 @@ jobs:
       - run: |
           source .venv/bin/activate
           flake8
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry install
+    - name: Run Tests
+      run: |
+        source .venv/bin/activate
+        pytest
+    - name: Run Lint
+    - run: |
+        source .venv/bin/activate
+        flake8
