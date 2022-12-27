@@ -1,7 +1,7 @@
 from rest_framework import routers
 from .api import IpViewSet, CategoryViewSet, ArticlesViewSet
 from django.urls import path
-from .views import HomePage, BlogPage, AboutPage
+from .views import HomePage, BlogPage, AboutPage, ProfilePage, RegisterPage
 
 
 # Api
@@ -16,5 +16,7 @@ urlpatterns = [
     path('', HomePage.as_view(), name="home_page"),
     path('articles/', BlogPage.as_view(), name='articles'),
     path('about/', AboutPage.as_view(), name="about_page"),
+    path('profile/', ProfilePage.as_view(), name="profile"),
+    path('register/', RegisterPage.as_view(), name="register"),
 ]
 # urlpatterns = router.urls

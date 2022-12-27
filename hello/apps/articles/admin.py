@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from .models import Category, Articles, Ip
+from django.contrib.auth.admin import UserAdmin
+from .models import Category, Articles, Ip, User
 
 
 admin.site.site_title = "Investor Site Admin"
 admin.site.site_header = "Investor Site Admin"
 
+admin.site.register(User, UserAdmin)
 
 admin.site.register(Ip)
 admin.site.register(Category)

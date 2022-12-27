@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import User
 
-
-class UserCreationForm(forms.Form):
-	name = forms.CharField(label='Your name', max_length=100)
+class RegisterForm(UserCreationForm):
+	class Meta(UserCreationForm.Meta):
+		model = User
+		fields = UserCreationForm.Meta.fields + ("email", )

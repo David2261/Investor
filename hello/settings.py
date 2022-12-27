@@ -2,6 +2,7 @@ import os, sys
 import logging
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -153,13 +154,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Default redirect after auth
+LOGIN_REDIRECT_URL = reverse_lazy("articles:home_page")
+AUTH_USER_MODEL = 'articles.User'
+
 # myaccount.google.com/lesssecureapps
 # Email Settings
-DEFAULT_FROM_EMAIL = 'admiralgeneral2003@gmail.com'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
+DEFAULT_FROM_EMAIL = ''
+EMAIL_BACKEND = ''
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # Internationalization

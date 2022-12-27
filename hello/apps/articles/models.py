@@ -2,6 +2,7 @@
 import logging
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import AbstractUser
 
 from django.conf import settings
 
@@ -13,6 +14,10 @@ STATUS_CHOICES = (
    ('draft', 'Draft'),
    ('published', 'Published'),
 )
+
+class User(AbstractUser):
+	...
+
 
 class Ip(models.Model):
 	logger.info("Включен 'Ip models'")
