@@ -1,10 +1,6 @@
 name: Django CI
 
-on:
-  push:
-    branches: ["develop"]
-  pull_request:
-    branches: ["develop"]
+on: workflow_dispatch
 
 jobs:
   build:
@@ -30,13 +26,13 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install poetry
-          poetry install
+          pip install -r requirements.txt
       - name: Run Tests
-        run: |
-          source .venv/bin/activate
-          pytest
+        run: pytest hello
       - name: Run Lint
+<<<<<<< HEAD
+      - run: flake8 hello 
+=======
       - run: |
           source .venv/bin/activate
           flake8
@@ -58,3 +54,4 @@ jobs:
     - run: |
         source .venv/bin/activate
         flake8
+>>>>>>> 05ed0b64aab82dedee7118ce3cc246320a6acebc
