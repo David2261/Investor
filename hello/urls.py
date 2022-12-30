@@ -5,13 +5,13 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-	path('article', include('articles.urls')), # Узел для пост - страниц
-    path('chat', include('chat.urls')), # Узел для страницы контактной формы
-    path('', include('frontend.urls')),
     path('', include('leads.urls')),
+    path('', include('articles.urls')),
 	path('grappelli/', include('grappelli.urls')),
-    path('tinymce/', include('tinymce.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
               + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

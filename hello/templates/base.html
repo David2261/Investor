@@ -1,65 +1,48 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
 	<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Eagle Eye & Co{% block title %}{% endblock %}</title>
-	<!-- CSS -->
-  <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css">
-  <link rel="shortcut icon" href="{% static 'img/Nb.gif' %}" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/preloader.css' %}"/>
-  <link href="{% static 'tailwind/css/tailwind.min.css' %}" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" crossorigin="anonymous">
-  <!-- JS -->
-  <script src="{% static 'js/fontawesome.js' %}" data-auto-a11y="true" ></script>
-  <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}{% endblock %} / InvestorHome</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+	{% block style %}{% endblock %}
 </head>
 <body>
-<!-- Header -->
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-    <div class="container-fluid bg-dark">
-      <a href="{% url 'articles:home' %}" class="navbar-brand"><img style="width: 64px;height: 60px;" src="{% static 'img/Nb-logo.gif' %}"></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a href="{% url 'articles:home' %}" class="nav-link">Главная</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Чат</a></li>
-          <li class="nav-item"><a href="{% url 'articles:learn' %}" class="nav-link">Обучение</a></li>
-          <li class="nav-item"><a href="{% url 'articles:idea' %}" class="nav-link">Идеи</a></li>
-          <li class="nav-item"><a href="{% url 'articles:motiv' %}" class="nav-link">Мотивация</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-{% block content %}{% endblock %}
-
-  <!-- Футер сайта -->
-  <footer class="container-fluid">
-    <div class="map">
-      <div class="container-fluid padding">
-        <div class="footer-map-text d-flex justify-content-around">
-          <div class="size-footer">
-            <a href="{% url 'articles:help' %}">Поддержка</a>
-            <a href="{% url 'chat:comment' %}">Рекомендации</a>
-            <a href="{% url 'articles:setting' %}">Настройки</a>
-            <a href="{% url 'articles:home' %}">Главная</a>
-            <a href="#">Чат</a>
-            <a href="{% url 'articles:learn' %}">Обучение</a>
-            <a href="{% url 'articles:idea' %}">Идеи</a>
-            <a href="{% url 'articles:motiv' %}">Мотивация</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="text-center container-fluid-padding p-3" style="color: #F2F2F2;">© 2020 Copyright: <a href="{% url 'articles:home' %}" class="text-light">Eagle Eye & Co</a></div>
-  </footer>
-<div id="zzz"><div id="xxx"></div></div>
-<script type="text/javascript" src="{% static 'js/preloader.js' %}"></script>
+<header>
+	<div class="logo">InvestorHome</div>
+	<ul>
+		<li><a href="{% url 'articles:home_page' %}">Home</a></li>
+		<li><a href="#">Contact</a></li>
+		<li><a href="{% url 'articles:articles' %}">Blog</a></li>
+		<li><a href="#">Idea</a></li>
+		<li><a href="#">Sign-in</a></li>
+	</ul>
+</header>
+<content>
+{% block content %}
+{% endblock %}
+</content>
+<footer>
+	<div class="footer-content">
+		<h3>Investor Home</h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<ul class="social">
+			<li><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
+			<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+			<li><a href="#"><i class="fa-brands fa-telegram"></i></a></li>
+			<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+		</ul>
+	</div>
+	<div class="footer-bottom">
+		<p>Copyright &copy;2022 InvestorHome. Build by <span>Bulat Nasyrov</span></p>
+	</div>
+</footer>
 </body>
 </html>

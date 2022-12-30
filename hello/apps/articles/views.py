@@ -1,74 +1,100 @@
+from datetime import date, datetime
 import logging
-from . models  import *
-from django.urls import reverse
-from django.template import RequestContext
 from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponseRedirect, HttpResponseNotFound, \
-	JsonResponse
+from django.contrib.auth import authenticate, login
+from django.db.models import Count, F, Value
+from django.db.models import Q
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic import TemplateView
+from django.views.generic.list import ListView
+from django.views.generic.edit import FormView
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
-#  'exception/404.html'
+from .forms import RegisterForm
+from .models import Category, Articles, Ip, User
 
-logger = logging.getLogger(__name__)
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("dev")
+log_info = logging.getLogger("root")
 
-
-def pageNotFound(request):
-    return render(request, "exception/404.html")
-
-
-def log_views(request):
-	logger.warning('Hello, beta test!')
-	return JsonResponse({'success': True})
-
-def index(request):
-	return HttpResponseRedirect("home")
-
-
-def help(request):
-	return render(request, "articles/help.html")
+class ArticlesList(ListView):
+	model = Articles
 
 
-def setting(request):
-	return render(request, "articles/setting.html")
+def get_client_ip(request):
+	logger.info("Включен 'get_client_ip'")
+	x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+	if x_forwarded_for:
+		ip = x_forwarded_for.split(',')[0]
+	else:
+		ip = request.META.get('REMOTE_ADDR')
+	return ip
 
 
-def home(request):
-	return render(request, "articels/home.html")
+class HomePage(View):
+
+	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'HomePage'")
+		# <View logic>
+		topics = Category.objects.all()
+		# articles = Articles.objects.exclude(
+		# 	time_create__gt=datetime.date(2022, 10, 3))[0:5]
+		articles = Articles.objects.all()
+		context = {'topics': topics, 'articles': articles}
+		return render(request, "articles/home.html", context)
+
+	# Какие данные будут передаваться
+	def get_context_data(self, **kwargs):
+		logger.info("Включен 'get_context_data' в 'HomePage'")
+		context = super().get_context_data(**kwargs)
+		context['today'] = date.today()
+		return context
 
 
-def home_checklist(request, learn_id, idea_id, motiv_id):
-	pass
+class BlogPage(View):
+
+	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'BlogPage'")
+		ip = get_client_ip(request)
+		q = request.GET.get('q') if request.get('q') != None else ''
+		articles = Articles.objects.filter(
+			Q(category__name__icontains=q) |
+			Q(title__icontains=q) |
+			Q(descrition__icontains=q)
+		)
+		topics = Category.objects()[0:5]
+		if Ip.objects.filter(ip=ip).exists():
+			articles.views.add(Ip.objects.get(ip=ip))
+		else:
+			Ip.objects.create(ip=ip)
+			articles.views.add(Ip.objects.get(ip=ip))
+		context = {'articles': articles, 'topics': topics}
+		return render(request, "articles/blog.html", context)
+
+	def get_context_data(self, **kwargs):
+		logger.info("Включен 'get_context_data' в 'HomePage'")
+		context = super().get_context_data(**kwargs)
+		context['today'] = date.today()
+		return context
 
 
-def idea_article(request):
-	article = Article.objects.order_by('-pub_date')
-	return render(request, "post/idea.html", {'idea':article})
+class ProfilePage(View):
+	@login_required
+	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'ProfilePage'")
+		return render(request, "user/profile.html")
 
 
-# Открывает отдельную страницу статьи по id
-def idea_checklist(request, article_id):
-	try:
-		idea_cl = Article.objects.get(id = article_id)
-		idea_cl.idea_views=idea_cl.idea_views+1
-		idea_cl.idea_views.save()
-		return render(request, 'list.html', {'idea':idea_cl})
-	except:
-		return redirect("pageNotFound")
+class RegisterPage(FormView):
+	form_class = RegisterForm
+	template_name = 'registration/register.html'
+	success_url = reverse_lazy("articles:profile")
 
+	def form_valid(self, form):
+		form.save()
+		return super().form_valid(form)
 
-def learn(request):
-	pass
-
-
-# Открывает отдельную страницу статьи по id
-def learn_checklist(request, learn_id):
-	pass
-	
-
-
-def motiv(request):
-	pass
-
-
-# Открывает отдельную страницу статьи по id
-def motiv_checklist(request, motiv_id):
-	pass
+class AboutPage(TemplateView):
+	template_name = "articles/about.html"

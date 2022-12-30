@@ -1,10 +1,24 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
-from django.core import serializers
-from .models import Article, Genre
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.admin import UserAdmin
+from .models import Category, Articles, Ip, User
 
-"""class Idea(admin.ModelAdmin):
-    list_display = ('title', 'author', 'display_genre')"""
 
-admin.site.register(Genre)
-admin.site.register(Article)
+admin.site.site_title = "Investor Site Admin"
+admin.site.site_header = "Investor Site Admin"
+
+admin.site.register(User, UserAdmin)
+
+admin.site.register(Ip)
+admin.site.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+	list_display = ("name",)
+	exclude = ("slug",)
+
+
+admin.site.register(Articles)
+class ArticlesAdmin(admin.ModelAdmin):
+	list_display = ("title", "category", "time_create", "is_published")
+	ordering = ("title", "time_create", "category", "is_published")
+	list_filter = ("title", "time_create", "category", "is_published")
+	exclude = ("description", "slug")

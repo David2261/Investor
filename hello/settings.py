@@ -1,6 +1,8 @@
 import os, sys
+import logging
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,42 +12,43 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 # Логирование
 LOGGING = {
-    'version': 1,
-    # Отлючает логирования включенные в Django
-    'disable_existing_loggers': False,
-    # Форматы строк в логгах
-    'formatters': {
-        'console': {
-            'format': '%(name)-12s %(levelname)-8s %(message)s'
+    "disable_existing_loggers": False,
+    "version": 1,
+    "formatters": {
+        "standart": {
+            "format": "%(asctime)s - %(filename)s - %(name)s - %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         },
-        'file': {
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        "exception": {
+            "format": "%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s((%lineno)d) - %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         }
     },
-    'handlers': {
-        'file': {
-            'level': 'WARNING',
-            'class': 'logging.FileHandler',
-            'filename': 'log.log',
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "formatter": "standart",
+			"filename": '__logs__/main.log',
+        },
+        "dev_file": {
+            "level": "NOTSET",
+            "class": "logging.FileHandler",
+            "formatter": "exception",
+			"filename": '__logs__/error.log',
         },
     },
-    'loggers': {
-        'articles': {
-            'handlers': ['file'],
-            'level': 'WARNING',
-            'propagate': True,
+    "loggers": {
+        "root": {
+            "level": "INFO",
+            "handlers": ["file"],
+        },
+        "dev": {
+            "level": "ERROR",
+            "handlers": ["dev_file"],
         },
     },
 }
-
-"""
-%(name) – это имя пакета, которое выдает сообщение журнала
-
-%(levelname) – степень важности сообщения (ERROR, WARNING, INFO, и т.д.)
-
-%(message) – само сообщение
-"""
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -67,10 +70,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'articles',
-    'chat',
     'leads',
-    'frontend',
+    'articles',
     # admin
     'grappelli.dashboard',
     'grappelli',
@@ -97,7 +98,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(PROJECT_ROOT, 'templates'),
-            os.path.join(PROJECT_ROOT, 'apps/frontend/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -127,14 +127,14 @@ DATABASES = {
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'd2oj76o29h6q1v',
+    'NAME': 'investor-blog',
     'USER': 'sbpdhrdxrqbnyk',
     'PASSWORD': '53b512fddee9e7715b5c3b75292f48069123f81a859c90d5ca3e435200a1e628',
     'HOST': 'ec2-34-254-120-2.eu-west-1.compute.amazonaws.com',
     'PORT': '5432'
     }
-}"""
-
+}
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -154,13 +154,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Default redirect after auth
+LOGIN_REDIRECT_URL = reverse_lazy("articles:home_page")
+AUTH_USER_MODEL = 'articles.User'
+
 # myaccount.google.com/lesssecureapps
 # Email Settings
-DEFAULT_FROM_EMAIL = 'admiralgeneral2003@gmail.com'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
+DEFAULT_FROM_EMAIL = ''
+EMAIL_BACKEND = ''
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # Internationalization
@@ -176,7 +180,9 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

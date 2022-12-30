@@ -1,19 +1,22 @@
-# from django.contrib.auth.decorators import login_required
-from django.urls import path, include
-from . import views
+from rest_framework import routers
+from .api import IpViewSet, CategoryViewSet, ArticlesViewSet
+from django.urls import path
+from .views import HomePage, BlogPage, AboutPage, ProfilePage, RegisterPage
+
+
+# Api
+router = routers.DefaultRouter()
+router.register('api/ip', IpViewSet, 'ip')
+router.register('api/category', CategoryViewSet, 'category')
+router.register('api/articles', ArticlesViewSet, 'articles')
 
 app_name = 'articles'
 urlpatterns = [
-	path('', views.index),
-	path('log_view/', views.log_views),
-	path('home/', views.home, name='home'),
-	path('home/idea/', views.idea_article, name='idea'),
-	# path('home/idea/<int:idea_id>/', views.idea_checklist, name = 'idea_checklist'),
-	# path('home/learn/', views.learn, name='learn'),
-	# path('home/learn/<int:learn_id>/', views.learn_checklist, name='learn_checklist'),
-	# path('home/motiv/', views.motiv, name='motiv'),
-	# path('home/motiv/<int:motiv_id>/', views.motiv_checklist, name='motiv_checklist'),
-	path("help/", views.help, name='help'),
-	path("setting/", views.setting, name='setting'),
-	path("404/", views.pageNotFound, name="404")
+    # path('', views.index, name="main-view" ),
+    path('', HomePage.as_view(), name="home_page"),
+    path('articles/', BlogPage.as_view(), name='articles'),
+    path('about/', AboutPage.as_view(), name="about_page"),
+    path('profile/', ProfilePage.as_view(), name="profile"),
+    path('register/', RegisterPage.as_view(), name="register"),
 ]
+# urlpatterns = router.urls
