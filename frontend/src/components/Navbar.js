@@ -9,8 +9,14 @@ export const Navbar = () => (
                 <NavLink className="nav-link" to="/">
                     Home
                 </NavLink>
-                <NavLink className="nav-link" to="/about">
-                    About
+                <NavLink className="nav-link" to="/community">
+                    Community
+                </NavLink>
+                <NavLink className="nav-link" to="/blog">
+                    Blog
+                </NavLink>
+                <NavLink className="nav-link" to="/login">
+                    Login
                 </NavLink>
             </li>
         </ul>
