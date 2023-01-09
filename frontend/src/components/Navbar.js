@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {NavLink} from 'react-router-dom'
 import classnames from 'classnames'
-import Anime from 'react-anime';
+import Anime, { anime } from 'react-anime';
 
 
 class SearchBtn extends Component {
@@ -28,10 +28,12 @@ class SearchBtn extends Component {
 
     render() {
         return (
+            <>
             <form className="input-group" onSubmit={this.handleSubmit}>
                 <input type="text" className="form-control" placeholder="Search..." value={this.state.value} onChange={this.handleChange} />
                 <button className="btn btn-outline-secondary" type="button" id="button-addon2">Кнопка</button>
             </form>
+            </>
         )
     }
 }
@@ -59,7 +61,9 @@ class ToggleBtn extends Component {
                 :
                 <Anime easing='easeInOutQuad'
                     duration={1000}
+                    delay={anime.stagger(100)}
                     loop={false}
+                    scale={[ 0.1, 0.9 ]}
                 >
                     <SearchBtn />
                 </Anime>
@@ -145,8 +149,13 @@ export class Navbar extends Component {
                         </NavLink>
                     </li>
                     <li className="nav-item">
+                        <NavLink className="nav-link" to="/tools">
+                            Tools
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
                         <NavLink className="nav-link" to="/login">
-                            Login
+                            Login <i className="bi bi-box-arrow-in-right"></i>
                         </NavLink>
                     </li>
                 </ul>
