@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {NavLink} from 'react-router-dom'
 import classnames from 'classnames'
+import Anime from 'react-anime';
 
 
 class SearchBtn extends Component {
@@ -56,7 +57,12 @@ class ToggleBtn extends Component {
             {this.state.position ?
                 <button onClick={this.handleClick} type="button" className="btn btn-outline-light"><i className="bi bi-search"></i></button>
                 :
-                <SearchBtn />
+                <Anime easing='easeInOutQuad'
+                    duration={1000}
+                    loop={false}
+                >
+                    <SearchBtn />
+                </Anime>
             }
             </>
         )
