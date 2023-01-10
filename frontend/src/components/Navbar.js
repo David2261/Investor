@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {NavLink} from 'react-router-dom'
 import classnames from 'classnames'
 import Anime, { anime } from 'react-anime';
+import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown'
 
 
 class SearchBtn extends Component {
@@ -133,11 +134,7 @@ export class Navbar extends Component {
             <nav className='navbar px-4 fixed-top navbar-dark navbar-expand-lg bg-primary'>
                 <div className="navbar-brand col d-flex justify-content-center">App</div>
                 <ul className="navbar-nav col-5 d-flex justify-content-evenly">
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/">
-                            Home
-                        </NavLink>
-                    </li>
+                    <HomeDownBox />
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/community">
                             Community
@@ -148,11 +145,7 @@ export class Navbar extends Component {
                             Blog
                         </NavLink>
                     </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/tools">
-                            Tools
-                        </NavLink>
-                    </li>
+                    <ToolsDownBox />
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/login">
                             Login <i className="bi bi-box-arrow-in-right"></i>

@@ -13,6 +13,7 @@
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.3",
     "classnames": "^2.3.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "node-sass": "^8.0.0",
     "react": "^18.2.0",
     "react-anime": "^4.1.1",
