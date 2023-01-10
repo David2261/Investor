@@ -2535,6 +2535,11 @@ ajv@^8.0.0, ajv@^8.6.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
+animejs@^3.2.x:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/animejs/-/animejs-3.2.1.tgz#de9fe2e792f44a777a7fdf6ae160e26604b0cdda"
+  integrity sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==
+
 ansi-escapes@^4.2.1, ansi-escapes@^4.3.1:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-4.3.2.tgz#6b2291d1db7d98b6521d5f1efa42d0f3a9feb65e"
@@ -4283,7 +4288,7 @@ eslint-plugin-jsx-a11y@^6.5.1:
     minimatch "^3.1.2"
     semver "^6.3.0"
 
-eslint-plugin-react-hooks@^4.3.0:
+eslint-plugin-react-hooks@^4.3.0, eslint-plugin-react-hooks@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.6.0.tgz#4c3e697ad95b77e93f8646aaa1630c1ba607edd3"
   integrity sha512-oFc7Itz9Qxh2x4gNHStv3BqJq54ExXmfC+a1NjAta66IAN87Wu0R/QArgIS9qKzX3dXKPI9H5crl9QchNMY9+g==
@@ -8036,6 +8041,13 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-anime@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-anime/-/react-anime-4.1.1.tgz#83542d1ce108a33cd9579cfcb2d77a845c1840c5"
+  integrity sha512-w6oe/6PZ3Swm2Z0EKvawJzvK8iN2gC0NbevjSIEguxY8KuDg/HaDROksLHVrPO5tFpRSEQg2jzy48gcfquDREQ==
+  dependencies:
+    animejs "^3.2.x"
+
 react-app-polyfill@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-3.0.0.tgz#95221e0a9bd259e5ca6b177c7bb1cb6768f68fd7"
@@ -8047,6 +8059,13 @@ react-app-polyfill@^3.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.9"
     whatwg-fetch "^3.6.2"
+
+react-awesome-slider@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-awesome-slider/-/react-awesome-slider-4.1.0.tgz#6a800300cb3edd556d2388090f65ac731467639a"
+  integrity sha512-cbPI1MTpVLKbEH6gf9bwtJb8Ja6R/YJonKbUQehfq2B2AAJkgDMeHntaa4SgGCRqWd55xKiT+CkjfKau1QRsKw==
+  dependencies:
+    web-animation-club "^0.6.0"
 
 react-dev-utils@^12.0.1:
   version "12.0.1"
@@ -9595,6 +9614,11 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   integrity sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA==
   dependencies:
     minimalistic-assert "^1.0.0"
+
+web-animation-club@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/web-animation-club/-/web-animation-club-0.6.0.tgz#c1dd79646b21e4265b5f95ae9cb8b93b73e05e47"
+  integrity sha512-9W+EQu1HiaPLe/7WZlhJ2ULqQ4VL80RPDYW+ZcjfTKp6ayOuT1k3SVO6+tu0VBRmOqueJ/mrG+rjjInIv8Aglg==
 
 web-vitals@^2.1.4:
   version "2.1.4"

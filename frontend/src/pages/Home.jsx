@@ -1,9 +1,28 @@
-import React, {Fragment} from 'react'
+import React, { Component } from 'react'
+import AwesomeSlider from 'react-awesome-slider'
+import AwsSliderStyles from 'react-awesome-slider/src/styles';
+import Saxo from '../assets/img/saxo_bank_wall.webp'
+import Paris from '../assets/img/paris_wall.webp'
+import Mountain from '../assets/img/mountain_wall.webp'
 
-export const Home = () => {
+
+function Slider() {
     return (
-        <Fragment>
-            <h1>Home page</h1>
-        </Fragment>
+        <AwesomeSlider cssModule={AwsSliderStyles}>
+            <div data-src={Saxo} />
+            <div data-src={Paris} />
+            <div data-src={Mountain} />
+        </AwesomeSlider>
     )
+}
+
+export class Home extends Component {
+    render() {
+        return (
+            <>
+            <h1>Home page</h1>
+            <Slider />
+            </>
+        )
+    }
 }
