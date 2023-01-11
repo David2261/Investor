@@ -7,11 +7,11 @@ export const Footer = () => (
             <div className='col-md-4 mb-0 text-decoration-none'>
                 <p className='text-muted'>Проект Investor Home создан трейдером и инвестором Булатом Насыровым для написания аналитических материалов и создания общего блога по финансовым рынкам.</p>
                 <div className="row row-cols-1 row-cols-md-5">
-                   <NavLink to='https://developers.facebook.com/'><i className="col mb-3 bi bi-messenger"></i></NavLink>
-                   <NavLink to='https://github.com/David2261/Investor'><i className="col mb-3 bi bi-github"></i></NavLink>
-                   <NavLink to='https://www.instagram.com/'><i className="col mb-3 bi bi-instagram"></i></NavLink>
-                   <NavLink to='https://web.telegram.org/'><i className="col mb-3 bi bi-telegram"></i></NavLink>
-                   <NavLink to='https://twitter.com/'><i className="col mb-3 bi bi-twitter"></i></NavLink>
+                   <a href='https://developers.facebook.com/'><i className="col mb-3 bi bi-messenger"></i></a>
+                   <a href='https://github.com/David2261/Investor'><i className="col text-dark mb-3 bi bi-github"></i></a>
+                   <a href='https://www.instagram.com/'><i className="col text-danger mb-3 bi bi-instagram"></i></a>
+                   <a href='https://web.telegram.org/'><i className="col mb-3 bi bi-telegram"></i></a>
+                   <a href='https://twitter.com/'><i className="col mb-3 bi bi-twitter"></i></a>
                 </div>
             </div>
             <div className='col-md-4 d-flex align-items-center justify-content-center mb-0 mb-md-0 me-md-auto'>

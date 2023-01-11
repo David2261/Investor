@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {NavLink} from 'react-router-dom'
-import classnames from 'classnames'
 import Anime, { anime } from 'react-anime';
 import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown'
 
@@ -86,62 +85,11 @@ class ToggleBtn extends Component {
 
 
 export class Navbar extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            windowHight: "",
-            visible: true
-        };
-        this.handleScroll = this.handleScroll.bind(this)
-    }
-
-    getWindowHight(){
-        let deviceWindow = document.getElementById('close-block');
-        let deviceWindowHight = deviceWindow.clientHeight;
-
-        this.setState({
-            windowHight: deviceWindowHight
-        });
-    }
-
-    // Открытие
-    componentDidMount() {
-        window.addEventListener("scroll", this.handleScroll);
-        this.getWindowHight();
-    }
-
-    // Закрытие
-    componentWillUnmount() {
-        window.removeEventListener("scroll", this.handleScroll);
-    }
-
-    // Hide or show the menu.
-    handleScroll = () => {
-        let heightToHideFrom = 60;
-        const { prevScrollpos } = this.state;
-        const currentScrollPos = window.pageYOffset;
-        const visible = prevScrollpos > heightToHideFrom;
-
-        this.setState({
-            prevScrollpos: currentScrollPos,
-            visible
-      });
-    }
 
     render() {
         return (
             <>
-            <div
-            className={
-                classnames("p-4 container", {
-                    "d-none": this.state.visible
-                })
-            } id="close-block"
-            >
-                <div className='border px-4'></div>
-            </div>
-            <nav className='navbar px-4 fixed-top navbar-dark navbar-expand-lg bg-primary'>
+            <nav className='navbar fixed-top px-4 navbar-dark navbar-expand-lg bg-primary'>
                 <div className="navbar-brand col d-flex justify-content-center">App</div>
                 <ul className="navbar-nav col-5 d-flex justify-content-evenly">
                     <HomeDownBox />
