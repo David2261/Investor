@@ -57,18 +57,28 @@ class ToggleBtn extends Component {
     render() {
         return (
             <>
-            {this.state.position ?
-                <button onClick={this.handleClick} type="button" className="btn btn-outline-light"><i className="bi bi-search"></i></button>
-                :
-                <Anime easing='easeInOutQuad'
-                    duration={1000}
-                    delay={anime.stagger(100)}
-                    loop={false}
-                    scale={[ 0.1, 0.9 ]}
-                >
-                    <SearchBtn />
-                </Anime>
-            }
+            <div
+            onMouseLeave={() => this.handleClick()}
+            className="col-md-auto d-flex justify-content-center">
+                {this.state.position ?
+                    <button onClick={this.handleClick} type="button" className="btn btn-outline-light"><i className="bi bi-search"></i></button>
+                    :
+                    <Anime easing='easeInOutQuad'
+                        duration={1000}
+                        delay={anime.stagger(100)}
+                        loop={false}
+                        scale={[ 0.1, 0.9 ]}
+                    >
+                        <SearchBtn />
+                    </Anime>
+                }
+                <button type="button" className="px-3 btn btn-primary">
+                    <NavLink className="nav-link text-uppercase" to="/login">
+                        Login <i className="bi bi-box-arrow-in-right"></i>
+                    </NavLink>
+                </button>
+                </div>
+            
             </>
         )
     }
@@ -136,25 +146,18 @@ export class Navbar extends Component {
                 <ul className="navbar-nav col-5 d-flex justify-content-evenly">
                     <HomeDownBox />
                     <li className="nav-item">
-                        <NavLink className="nav-link" to="/community">
+                        <NavLink className="nav-link text-uppercase" to="/community">
                             Community
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link" to="/blog">
+                        <NavLink className="nav-link text-uppercase" to="/blog">
                             Blog
                         </NavLink>
                     </li>
                     <ToolsDownBox />
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/login">
-                            Login <i className="bi bi-box-arrow-in-right"></i>
-                        </NavLink>
-                    </li>
                 </ul>
-                <div className="col d-flex justify-content-center">
-                    <ToggleBtn />
-                </div>
+                <ToggleBtn />
             </nav>
             </>
         )
