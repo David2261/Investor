@@ -10,8 +10,8 @@ function HomeDownBox() {
             onMouseLeave={() => setIsShown(false)}>
             <NavLink
             onMouseEnter={() => setIsShown(true)}
-            className="nav-link" to="/">
-                <span>Home</span>
+            className="nav-link text-uppercase" to="/">
+                <span>О нас</span>
                 <span><i className="bi bi-chevron-down"></i></span>
             </NavLink>
             {isShown && (
@@ -22,13 +22,13 @@ function HomeDownBox() {
                     scale={[ 0.1, 0.9 ]}>
             <ul className="position-fixed text-bg-light list-group list-group-flush">
                 <li className="list-group-item"><NavLink className="nav-link" to="/about">
-                    <span className="text-dark">About</span>
+                    <span className="text-dark text-uppercase">О проекте</span>
                 </NavLink></li>
-                <li className="list-group-item"><NavLink className="nav-link" to="/some...">
-                    <span className="text-dark">Some...</span>
+                <li className="list-group-item"><NavLink className="nav-link" to="/contact">
+                    <span className="text-dark text-uppercase">Контакты</span>
                 </NavLink></li>
-                <li className="list-group-item"><NavLink className="nav-link" to="/some...">
-                    <span className="text-dark">Some...</span>
+                <li className="list-group-item"><NavLink className="nav-link" to="/subscription">
+                    <span className="text-dark text-uppercase">Поддержка проекта</span>
                 </NavLink></li>
             </ul>
             </Anime>
@@ -58,10 +58,10 @@ function ToolsDownBox() {
                     scale={[ 0.1, 0.9 ]}>
             <ul className="position-fixed text-bg-light list-group list-group-flush">
                 <li className="list-group-item"><NavLink className="nav-link" to="/corpcalendar">
-                    <span className="text-dark">Календарь отчетность</span>
+                    <span className="text-dark text-uppercase">Календарь отчетность</span>
                 </NavLink></li>
                 <li className="list-group-item"><NavLink className="nav-link" to="/dividendcalendar">
-                    <span className="text-dark">Календарь дивидендов</span>
+                    <span className="text-dark text-uppercase">Календарь дивидендов</span>
                 </NavLink></li>
             </ul>
             </Anime>
