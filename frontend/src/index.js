@@ -5,6 +5,20 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+/*
+Это можно добавить для настройки векторной карты, добавление маркеров и т.д.
+
+// import ReactMapboxGl, {Layer, Feature} from "react-mapbox-gl";
+import Map from "react-mapbox-gl";
+import 'mapbox-gl/dist/mapbox-gl.css'
+
+// const Map = ReactMapboxGl({
+//   accessToken: "sk.eyJ1IjoiYWRtaXJhbGdlbmVyYWwiLCJhIjoiY2xjczVzOWtsMDJzdDNvbWNzNjZpdGhvYSJ9.TMhwAobWuyP3SBixQlCf5w"
+// });
+// const MAPBOX_TOKEN = "sk.eyJ1IjoiYWRtaXJhbGdlbmVyYWwiLCJhIjoiY2xjczVzOWtsMDJzdDNvbWNzNjZpdGhvYSJ9.TMhwAobWuyP3SBixQlCf5w";
+ 
+*/
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
