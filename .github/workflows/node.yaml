@@ -6,4 +6,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: Get the directory code
-      - uses: frontend/.github/workflows/actions.yml
+      - name: Add directory
+        uses: ./frontend/.github/workflows/actions.yml
