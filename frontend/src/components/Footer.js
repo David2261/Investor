@@ -1,5 +1,7 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
+import "../assets/sass/Footer.scss"
+import PatreonIcon from '../assets/img/patreon.svg'
 
 export const Footer = () => (
     <footer className='container'>
@@ -15,8 +17,19 @@ export const Footer = () => (
                 </div>
             </div>
             <div className='col-md-4 d-flex align-items-center justify-content-center mb-0 mb-md-0 me-md-auto'>
-                <p>Мы принимаем к оплате</p>
-                <NavLink to='#'><i className="col mb-3 bi bi-paypal"></i></NavLink>
+                <div>
+                    <div className="row textFooter"><p>Мы принимаем к оплате</p></div>
+                    <div className="row">
+                        <NavLink to='#'>
+                            <img
+                                className="patreonIcon"
+                                src={PatreonIcon}
+                                decoding="async"
+                                loading="lazy" 
+                                alt="" />
+                        </NavLink>
+                    </div>
+                </div>
             </div>
             <div className='col mb-3'>
                 <ul className="nav flex-column justify-content-end">
