@@ -4,5 +4,6 @@ jobs:
   check_node:
     runs-on: ubuntu-latest
     steps:
-      - name: Get the directory code
-        uses: frontend/.github/workflows/actions.yml
+      - uses: actions/checkout@v3
+        name: Get the directory code
+      - uses: frontend/.github/workflows/actions.yml
