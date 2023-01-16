@@ -5,7 +5,7 @@ import PatreonIcon from '../assets/img/patreon.svg'
 
 export const Footer = () => (
     <footer className='container'>
-        <div className='d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top'>
+        <div className='d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top subFooter'>
             <div className='col-md-4 mb-0 text-decoration-none'>
                 <p className='text-muted'>Проект Investor Home создан трейдером и инвестором Булатом Насыровым для написания аналитических материалов и создания общего блога по финансовым рынкам.</p>
                 <div className="row row-cols-1 row-cols-md-5">
@@ -18,7 +18,7 @@ export const Footer = () => (
             </div>
             <div className='col-md-4 d-flex align-items-center justify-content-center mb-0 mb-md-0 me-md-auto'>
                 <div>
-                    <div className="row textFooter"><p>Мы принимаем к оплате</p></div>
+                    <div className="row"><h3 className="textFooter">Мы принимаем к оплате</h3></div>
                     <div className="row">
                         <NavLink to='#'>
                             <img
@@ -42,7 +42,7 @@ export const Footer = () => (
                 </ul>
             </div>
         </div>
-        <div className='align-items-center border-top'>
+        <div className='align-items-center border-top footerBottom'>
             <div className='mb-3align-items-center'>
                 <ul className="nav justify-content-between">
                     <li className="nav-item"><NavLink to="/agreement" className="nav-link px-2 text-muted">Agreement</NavLink></li>
