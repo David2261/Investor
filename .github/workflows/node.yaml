@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get the directory code
-        uses: ./frontend
+        uses: ./frontend/
         uses: actions/checkout@v3
       - name: Install dependencies
         run: npm ci
