@@ -8,3 +8,8 @@ jobs:
         name: Get the directory code
       - name: Add directory
         uses: ./frontend/.github/workflows/
+      - uses: ./frontend/
+      - name: Install dependencies
+        run: npm ci
+      - name: Test application
+        run: npm run test
