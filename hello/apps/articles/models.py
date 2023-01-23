@@ -2,7 +2,7 @@
 import logging
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import AbstractUser
+# from django.contrib.auth.models import AbstractUser
 
 from django.conf import settings
 
@@ -15,8 +15,33 @@ STATUS_CHOICES = (
    ('published', 'Published'),
 )
 
-class User(AbstractUser):
-	...
+# class User(AbstractUser):
+# 	...
+
+# class User(models.Model):
+# 	choices = (
+# 		('M', 'Male'),
+# 		('F', 'Female')
+# 	)
+# 	name = models.CharField(verbose_name="Имя", max_length=255)
+# 	password = models.CharField(verbose_name="Пароль", max_length=255)
+# 	img = models.ImageField(upload_to='User/% Y/% m/% d/', verbose_name="Иконка", height_field=None, width_field=None, max_length=100)
+# 	time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+# 	slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+# 	sex = models.CharField(max_length=255, choices=choices)
+# 	age = models.SmallIntegerField()
+
+# 	def get_absolute_url(self):
+# 		return reverse("user", kwargs={'user_slug': self.slug})
+
+# 	def __str__(self):
+# 		return '%s & %s' % (self.name, self.sex)
+
+# 	class Meta:
+# 		unique_together = [['name', 'slug']]
+# 		verbose_name = 'Пользователь'
+# 		verbose_name_plural = 'Пользователи'
+# 		ordering = ('id', 'name')
 
 
 class Ip(models.Model):
@@ -26,7 +51,7 @@ class Ip(models.Model):
 
 class Category(models.Model):
 	logger.info("Включен 'Category models'")
-	name = models.CharField(verbose_name = "Категория", max_length = 255)
+	name = models.CharField(verbose_name="Категория", max_length=255)
 	slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
 	def __str__(self):

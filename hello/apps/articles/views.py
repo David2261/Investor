@@ -12,8 +12,8 @@ from django.views.generic.edit import FormView
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
-from .forms import RegisterForm
-from .models import Category, Articles, Ip, User
+# from .forms import RegisterForm
+from .models import Category, Articles, Ip
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
@@ -87,14 +87,14 @@ class ProfilePage(View):
 		return render(request, "user/profile.html")
 
 
-class RegisterPage(FormView):
-	form_class = RegisterForm
-	template_name = 'registration/register.html'
-	success_url = reverse_lazy("articles:profile")
+# class RegisterPage(FormView):
+# 	form_class = RegisterForm
+# 	template_name = 'registration/register.html'
+# 	success_url = reverse_lazy("articles:profile")
 
-	def form_valid(self, form):
-		form.save()
-		return super().form_valid(form)
+# 	def form_valid(self, form):
+# 		form.save()
+# 		return super().form_valid(form)
 
 class AboutPage(TemplateView):
 	template_name = "articles/about.html"

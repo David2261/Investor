@@ -11,6 +11,14 @@ class IpViewSet(viewsets.ModelViewSet):
     serializer_class = IpSerializer
 
 
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     permissions_classes = [
+#         permissions.AllowAny
+#     ]
+#     serializer_class = UserSerializer
+
+
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     permissions_classes = [

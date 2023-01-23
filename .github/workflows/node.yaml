@@ -1,5 +1,5 @@
 name: Node CI/CD
-on: push
+on: workflow_dispatch
 jobs:
   check_node:
     runs-on: ubuntu-latest
