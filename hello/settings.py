@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 import logging
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -70,8 +71,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'leads',
-    'articles',
+    # apps
+    'leads.apps.LeadsConfig',
+    'articles.apps.ArticlesConfig',
+    'authentication.apps.AuthenticationConfig',
     # admin
     'grappelli.dashboard',
     'grappelli',
@@ -156,7 +159,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Default redirect after auth
 LOGIN_REDIRECT_URL = reverse_lazy("articles:home_page")
-AUTH_USER_MODEL = 'articles.User'
+AUTH_USER_MODEL = 'authentication.User'
+
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+        ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'authentication.backends.JWTAuthentication',
+        )
+}
 
 # myaccount.google.com/lesssecureapps
 # Email Settings

@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: ./
       - name: Set up Python ${{ matrix.python-version }}
-        uses: ./
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Dependencies

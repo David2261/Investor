@@ -3,6 +3,9 @@ import {NavLink} from 'react-router-dom'
 import "../assets/sass/Footer.scss"
 import PatreonIcon from '../assets/img/patreon.svg'
 
+let today = new Date();
+let Year = today.getFullYear();
+
 export const Footer = () => (
     <footer className='container'>
         <div className='d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top subFooter'>
@@ -52,7 +55,7 @@ export const Footer = () => (
                     <li className="nav-item"><NavLink to="/responsibility" className="nav-link px-2 text-muted">Resposibility</NavLink></li>
                 </ul>
             </div>
-            <p>Investor Home 2020 – наст. Год. Копирование и распространение информации с этого сайта разрешено только с письменного согласия владельца сайта. Запросы отправляйте на bulatnasirov2003@gmail.com</p>
+            <p>Investor Home 2020 – <Year /> год Копирование и распространение информации с этого сайта разрешено только с письменного согласия владельца сайта. Запросы отправляйте на bulatnasirov2003@gmail.com</p>
             <p>Обзоры на этом сайте – это лишь мнение автора относительно финансовых показателей того или иного актива. Обзоры не должны рассматриваться как побуждение к покупке или продаже ценных бумаг. Помните, что торговля на финансовых рынках связана с риском как частично, так и полной потере денег. Перед тем, как самостоятельно инвестировать денежные средства рекомендуем получить достаточные знания и опыт.</p>
         </div>
     </footer>

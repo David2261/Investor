@@ -1,9 +1,10 @@
 name: Node CI/CD
-on: push
+on: workflow_dispatch
 jobs:
   check_node:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         name: Get the directory code
+      - name: Run actions
         run: frontend/.github/workflows/actions.yml
