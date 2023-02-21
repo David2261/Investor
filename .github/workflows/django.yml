@@ -2,4 +2,12 @@ name: Django CI
 # workflow_dispatch
 
 # Событие при котором запускается Trigger
-on:
+on: [workflow_dispatch]
+
+# Задача
+jobs:
+  Output:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output to console
+        run: echo This shts work
