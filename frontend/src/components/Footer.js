@@ -3,8 +3,10 @@ import {NavLink} from 'react-router-dom'
 import "../assets/sass/Footer.scss"
 import PatreonIcon from '../assets/img/patreon.svg'
 
-let today = new Date();
-let Year = today.getFullYear();
+function Year() {
+    let today = new Date();
+    return <p>{today.getFullYear()}</p>
+};
 
 export const Footer = () => (
     <footer className='container'>
@@ -51,7 +53,7 @@ export const Footer = () => (
                     <li className="nav-item"><NavLink to="/agreement" className="nav-link px-2 text-muted">Agreement</NavLink></li>
                     <li className="nav-item"><NavLink to="/emailagreement" className="nav-link px-2 text-muted">Email Agreement</NavLink></li>
                     <li className="nav-item"><NavLink to="/payanddelivery" className="nav-link px-2 text-muted">Pay & Delivery</NavLink></li>
-                    <li className="nav-item"><NavLink to="/confidrntiality" className="nav-link px-2 text-muted">Confidentiality</NavLink></li>
+                    <li className="nav-item"><NavLink to="/confidentiality" className="nav-link px-2 text-muted">Confidentiality</NavLink></li>
                     <li className="nav-item"><NavLink to="/responsibility" className="nav-link px-2 text-muted">Resposibility</NavLink></li>
                 </ul>
             </div>
