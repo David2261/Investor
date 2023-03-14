@@ -159,6 +159,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Default redirect after auth
 LOGIN_REDIRECT_URL = reverse_lazy("articles:home_page")
+LOGOUT_REDIRECT_URL = reverse_lazy("articles:home_page")
 AUTH_USER_MODEL = 'authentication.User'
 
 # DRF
