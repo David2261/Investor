@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import {NavLink} from 'react-router-dom'
 import Anime, { anime } from 'react-anime';
 import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown'
@@ -83,14 +83,25 @@ class ToggleBtn extends Component {
     }
 }
 
+function HeaderMap() {
+    return (
+        <>
+            <nav className='navbar relative px-4 navbar-dark justify-content-center'>
+                <img
+                src="https://placehold.co/600x600" alt=""
+                className="rounded" />
+            </nav>
+        </>
+    );
+}
 
-export class Navbar extends Component {
-
-    render() {
-        return (
-            <>
+function Header() {
+    return (
+        <>
             <nav className='navbar fixed-top px-4 navbar-dark navbar-expand-lg bg-primary'>
-                <div className="navbar-brand col d-flex justify-content-center">App</div>
+                <div className="navbar-brand col d-flex justify-content-center">
+                    <img src="https://placehold.co/300x50" alt="" />
+                </div>
                 <ul className="navbar-nav col-5 d-flex justify-content-evenly">
                     <HomeDownBox />
                     <li className="nav-item">
@@ -107,6 +118,40 @@ export class Navbar extends Component {
                 </ul>
                 <ToggleBtn />
             </nav>
+        </>
+    );
+}
+
+const HeaderCheck = () => {
+    constructor(props) {
+        super(props);
+
+        this.inputRef = React.createRef();
+    }
+    const [scroll, setScroll] = useState(0);
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    const handleScroll = () => {
+        setScroll(window.scrollY);
+    };
+
+    return (
+        <>
+
+        {scroll > document.documentElement.clientHeight ? <Header /> : <HeaderMap /> }
+        </>
+    );
+}
+
+export class Navbar extends Component {
+    render() {
+        return (
+            <>
+            <HeaderCheck />
             </>
         )
     }
