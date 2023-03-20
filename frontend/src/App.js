@@ -14,13 +14,25 @@ import {Agreement} from './pages/stable/Agreement'
 // Components
 import {Navbar} from './components/Navbar'
 import {Footer} from './components/Footer'
+// Hooks
+import { useInView } from 'react-intersection-observer';
+// SCSS
+import "./assets/sass/Header.scss"
 
 
 function App() {
+  const {ref, inView} = useInView({
+        threshold: 0.8,
+    });
+
   return (
     <BrowserRouter >
-    <Navbar />
-    <div className="container py-5">
+    <nav
+    className={`navbar fixed-top px-4 navbar-dark navbar-expand-lg bg-primary ${inView == true ? 'h_header' : 'l_header'}`}>
+      <Navbar />
+    </nav>
+    <div className="container py-7" ref={ref}>
+    <div className="empty_box"></div>
       <Routes >
         <Route path="/" exact element={ <Home /> } />
         <Route path="/about" element={ <About /> } />

@@ -1,0 +1,45 @@
+
+
+.h_header {
+	box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+
+	@media (min-width: 902px) {
+    	height: 120px;
+		line-height: 120px;
+		transition-property: transform,background,box-shadow,line-height,height;
+	    transition-duration: .3s;
+	    transition-timing-function: cubic-bezier(.78,.13,.15,.86);
+	}
+	@media (min-width: 601px) and (max-width: 1024px) {
+    	height: 80px;
+	    line-height: 80px;
+		transition-property: transform,background,box-shadow,line-height,height;
+	    transition-duration: .3s;
+	    transition-timing-function: cubic-bezier(.78,.13,.15,.86);
+	}
+}
+
+.l_header {
+	box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+	height: 60px;
+	line-height: 60px;
+	@media (min-width: 902px) {
+		transition-property: transform,background,box-shadow,line-height,height;
+	    transition-duration: .3s;
+	    transition-timing-function: cubic-bezier(.78,.13,.15,.86);
+	}
+	@media (min-width: 601px) and (max-width: 1024px) {
+		transition-property: transform,background,box-shadow,line-height,height;
+	    transition-duration: .3s;
+	    transition-timing-function: cubic-bezier(.78,.13,.15,.86);
+	}
+}
+
+.empty_box {
+	@media (min-width: 902px) {
+    	height: 110px;
+	}
+	@media (min-width: 601px) and (max-width: 1024px) {
+    	height: 80px;
+	}
+}

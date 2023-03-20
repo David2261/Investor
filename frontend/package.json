@@ -21,6 +21,7 @@
     "react-anime": "^4.1.1",
     "react-awesome-slider": "^4.1.0",
     "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.4.3",
     "react-mapbox-gl": "^5.1.1",
     "react-router-dom": "^6.6.1",
     "react-scripts": "^5.0.1",
