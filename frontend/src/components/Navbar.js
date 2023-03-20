@@ -1,7 +1,7 @@
-import React, { Component, useState, useEffect } from 'react'
-import {NavLink} from 'react-router-dom'
+import React, { Component, useState, useEffect } from 'react';
+import {NavLink} from 'react-router-dom';
 import Anime, { anime } from 'react-anime';
-import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown'
+import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown';
 
 
 class SearchBtn extends Component {
@@ -83,22 +83,11 @@ class ToggleBtn extends Component {
     }
 }
 
-function HeaderMap() {
-    return (
-        <>
-            <nav className='navbar relative px-4 navbar-dark justify-content-center'>
-                <img
-                src="https://placehold.co/600x600" alt=""
-                className="rounded" />
-            </nav>
-        </>
-    );
-}
 
-function Header() {
-    return (
-        <>
-            <nav className='navbar fixed-top px-4 navbar-dark navbar-expand-lg bg-primary'>
+export class Navbar extends Component {
+    render() {
+        return (
+            <>
                 <div className="navbar-brand col d-flex justify-content-center">
                     <img src="https://placehold.co/300x50" alt="" />
                 </div>
@@ -117,41 +106,6 @@ function Header() {
                     <ToolsDownBox />
                 </ul>
                 <ToggleBtn />
-            </nav>
-        </>
-    );
-}
-
-const HeaderCheck = () => {
-    constructor(props) {
-        super(props);
-
-        this.inputRef = React.createRef();
-    }
-    const [scroll, setScroll] = useState(0);
-
-    useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    const handleScroll = () => {
-        setScroll(window.scrollY);
-    };
-
-    return (
-        <>
-
-        {scroll > document.documentElement.clientHeight ? <Header /> : <HeaderMap /> }
-        </>
-    );
-}
-
-export class Navbar extends Component {
-    render() {
-        return (
-            <>
-            <HeaderCheck />
             </>
         )
     }
