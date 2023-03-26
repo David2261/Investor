@@ -1,8 +1,7 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import Anime, { anime } from 'react-anime';
 import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown';
-
 
 class SearchBtn extends Component {
     constructor(props) {
@@ -76,8 +75,7 @@ class ToggleBtn extends Component {
                         Login <i className="bi bi-box-arrow-in-right"></i>
                     </NavLink>
                 </button>
-                </div>
-            
+            </div>
             </>
         )
     }
@@ -88,24 +86,26 @@ export class Navbar extends Component {
     render() {
         return (
             <>
-                <div className="navbar-brand col d-flex justify-content-center">
-                    <img src="https://placehold.co/300x50" alt="" />
+                <div className="container flex-row columns-3 justify-content-evenly text-align-center">
+                    <div className="navbar-brand justify-content-center">
+                        <img src="https://placehold.co/300x50" alt="" />
+                    </div>
+                    <div className="navbar-nav flex-row px-3 justify-between">
+                        <HomeDownBox />
+                        <div className="nav-item mx-3">
+                            <NavLink className="nav-link text-uppercase" to="/community">
+                                Community
+                            </NavLink>
+                        </div>
+                        <div className="nav-item mx-3">
+                            <NavLink className="nav-link text-uppercase" to="/blog">
+                                Blog
+                            </NavLink>
+                        </div>
+                        <ToolsDownBox />
+                    </div>
+                    <ToggleBtn />
                 </div>
-                <ul className="navbar-nav col-5 d-flex justify-content-evenly">
-                    <HomeDownBox />
-                    <li className="nav-item">
-                        <NavLink className="nav-link text-uppercase" to="/community">
-                            Community
-                        </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link text-uppercase" to="/blog">
-                            Blog
-                        </NavLink>
-                    </li>
-                    <ToolsDownBox />
-                </ul>
-                <ToggleBtn />
             </>
         )
     }
