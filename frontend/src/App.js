@@ -28,8 +28,8 @@ function App() {
   return (
     <BrowserRouter >
     <nav
-    className={`navbar fixed-top px-4 navbar-dark navbar-expand-lg bg-primary ${inView == true ? 'h_header' : 'l_header'}`}>
-      <Navbar />
+    className={`navbar fixed-top glass_header navbar-dark gradient_header ${inView === true ? 'h_header' : 'l_header'}`}>
+        <Navbar />
     </nav>
     <div className="container py-7" ref={ref}>
     <div className="empty_box"></div>

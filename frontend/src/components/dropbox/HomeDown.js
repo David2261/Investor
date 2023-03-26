@@ -6,7 +6,7 @@ function HomeDownBox() {
     const [isShown, setIsShown] = useState(false);
     return (
         <>
-            <li className="nav-item"
+            <div className="nav-item mx-3"
             onMouseLeave={() => setIsShown(false)}>
             <NavLink
             onMouseEnter={() => setIsShown(true)}
@@ -33,7 +33,7 @@ function HomeDownBox() {
             </ul>
             </Anime>
             )}
-            </li>
+            </div>
         </>
     )
 }
@@ -42,7 +42,7 @@ function ToolsDownBox() {
     const [isShown, setIsShown] = useState(false);
     return (
         <>
-            <li className="nav-item"
+            <div className="nav-item mx-3"
             onMouseLeave={() => setIsShown(false)}>
             <NavLink
             onMouseEnter={() => setIsShown(true)}
@@ -66,7 +66,7 @@ function ToolsDownBox() {
             </ul>
             </Anime>
             )}
-            </li>
+            </div>
         </>
     )
 }
