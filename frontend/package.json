@@ -35,10 +35,12 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "root": true,
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "ignorePatterns": ["*/react-anime.modern.js.map", "*/react-anime.modern.js"]
   },
   "browserslist": {
     "production": [
