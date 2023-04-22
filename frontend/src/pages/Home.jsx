@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import AwesomeSlider from 'react-awesome-slider'
+
+// Carousel
 import AwsSliderStyles from 'react-awesome-slider/src/styles';
 import Saxo from '../assets/img/saxo_bank_wall.webp'
 import Paris from '../assets/img/paris_wall.webp'
 import Mountain from '../assets/img/mountain_wall.webp'
+
+// Articles
+import { Articles } from '../components/main/Articles'
 
 
 function Slider() {
@@ -22,6 +27,7 @@ export class Home extends Component {
             <>
             <h1>Home page</h1>
             <Slider />
+            <Articles />
             </>
         )
     }
