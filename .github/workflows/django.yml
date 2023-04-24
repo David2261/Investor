@@ -29,6 +29,7 @@ jobs:
           echo "SECRET_KEY=%SECRET_KEY%" >> .env
           echo "DEBUG=%DEBUG%" >> .env
           python3 manage.py test
+          sudo chmod 777 -R .
           pytest
       - name: Run Linting
         run: flake8 hello
