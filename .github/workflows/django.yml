@@ -26,8 +26,10 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DEBUG: ${{ secrets.DEBUG }}
         run: |
+          chmod 777 -R .
           echo "SECRET_KEY=%SECRET_KEY%" >> .env
           echo "DEBUG=%DEBUG%" >> .env
           python3 manage.py test
+          pytest hello
       - name: Run Linting
         run: flake8 hello
