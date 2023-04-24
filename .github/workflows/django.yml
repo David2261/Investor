@@ -22,9 +22,14 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run Tests
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: ${{ secrets.DEBUG }}
         run: |
-          echo "SECRET_KEY = 'django-insecure-dummy-secret'" > ./.env
+          chmod 777 -R .
+          echo "SECRET_KEY=%SECRET_KEY%" >> .env
+          echo "DEBUG=%DEBUG%" >> .env
           python3 manage.py test
-          pytest
+          pytest hello
       - name: Run Linting
         run: flake8 hello
