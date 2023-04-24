@@ -35,7 +35,7 @@ LOGGING = {
 			"level": "NOTSET",
 			"class": "logging.FileHandler",
 			"formatter": "exception",
-			"filename": '__logs__/error.log',
+			"filename": '__logs__/main.log',
 		},
 	},
 	"loggers": {
