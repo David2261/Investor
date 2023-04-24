@@ -4,6 +4,7 @@ import logging
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from django.urls import reverse_lazy
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -13,8 +14,8 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 # Логирование
 LOGGING = {
-    "disable_existing_loggers": False,
     "version": 1,
+    "disable_existing_loggers": False,
     "formatters": {
         "standart": {
             "format": "%(asctime)s - %(filename)s - %(name)s - %(message)s",
@@ -41,12 +42,12 @@ LOGGING = {
     },
     "loggers": {
         "root": {
-            "level": "INFO",
             "handlers": ["file"],
+            "level": "INFO",
         },
         "dev": {
-            "level": "ERROR",
             "handlers": ["dev_file"],
+            "level": "ERROR",
         },
     },
 }
@@ -54,11 +55,13 @@ LOGGING = {
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+env = environ.Env()
+environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'oapf7gb5yeipka=)5sl_f%l&s5(hg5!xszsv+atk&^e4hu2s1y')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!  'investingblog.herokuapp.com'
-DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
