@@ -1,7 +1,7 @@
 from rest_framework import routers
 from .api import IpViewSet, CategoryViewSet, ArticlesViewSet
-from django.urls import path
-from .views import HomePage, BlogPage, AboutPage, ProfilePage
+# from django.urls import path
+# from .views import HomePage, BlogPage, AboutPage, ProfilePage
 
 # https://webdevblog.ru/sozdanie-django-api-ispolzuya-django-rest-framework-apiview/
 

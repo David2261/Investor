@@ -1,14 +1,10 @@
-from datetime import date, datetime
+from datetime import date
 import logging
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.db.models import Count, F, Value
+from django.shortcuts import render
 from django.db.models import Q
-from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import FormView
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
@@ -18,6 +14,7 @@ from .models import Category, Articles, Ip
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
 log_info = logging.getLogger("root")
+
 
 class ArticlesList(ListView):
 	model = Articles
@@ -58,11 +55,10 @@ class BlogPage(View):
 	def get(self, request, *args, **kwargs):
 		logger.info("Включен 'get' в 'BlogPage'")
 		ip = get_client_ip(request)
-		q = request.GET.get('q') if request.get('q') != None else ''
+		q = request.GET.get('q') if request.get('q') is not None else ''
 		articles = Articles.objects.filter(
-			Q(category__name__icontains=q) |
-			Q(title__icontains=q) |
-			Q(descrition__icontains=q)
+			Q(category__name__icontains=q) | Q(
+				title__icontains=q) | Q(descrition__icontains=q)
 		)
 		topics = Category.objects()[0:5]
 		if Ip.objects.filter(ip=ip).exists():
