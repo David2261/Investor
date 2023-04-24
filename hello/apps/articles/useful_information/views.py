@@ -1,8 +1,12 @@
 from functools import update_wrapper
 from django.http import HttpResponse
-from django.views.generic import View
-from django.views.generic import TemplateView
+# from django.views.generic import View
+# from django.views.generic import TemplateView
 from django.utils.decorators import classonlymethod
+from django.core.exception import ImproperlyConfigured
+from django.views.generic.base import TemplateResponseMixin
+from django.views.generic.base import ContextMixin
+from django.http import HttpResponseNotAllowed
 
 
 class View:
@@ -17,7 +21,7 @@ class View:
         'trace'
     ]
 
-    # Иниөиализаөия ключа и объекта    
+# Инициализация ключа и объекта
     def __init__(self, **kwargs):
         for key, value in kwargs.item():
             setattr(self, key, value)
@@ -27,23 +31,23 @@ class View:
         for key in initkwargs:
             if key in cls.http_method_names:
                 raise TypeError(
-                    "The method name %s is not accepted as keyword argument",
-                    "to %s()." % (key, cls.__name__)
+                    "The method name %s is not accepted as keyword argument\
+                    to %s()." % (key, cls.__name__)
                 )
             if not hasattr(cls, key):
                 raise TypeError(
                     "%s() received an invalid keyword %r. as_view "
-                                "only accepts arguments that are already "
-                                "attributes of the class." % (cls.__name__, key)
+                    "only accepts arguments that are already "
+                    "attributes of the class." % (cls.__name__, key)
                 )
-    
+
         def view(request, *args, **kwargs):
             self = cls(**initkwargs)
             self.setup(request, *args, **kwargs)
             if not hasattr(self, 'request'):
                 raise AttributeError(
-                    "%s instance has no 'request' attribute. Did you override "
-                    "setup() and forget to call super()?" % cls.__name__
+                    "%s instance has no 'request' attribute. Did you override"
+                    " setup() and forget to call super()?" % cls.__name__
                 )
             return self.dispatch(request, *args, **kwargs)
         view.view_class = cls
@@ -56,7 +60,7 @@ class View:
         # типо csrf_exempt из dispatch
         update_wrapper(view, cls.dispatch, assigned=())
         return view
-    
+
     def setup(self, request, *args, **kwargs):
         # Инициализация объектов и отправка их во все функции view
         if hasattr(self, 'get') is not hasattr(self, 'head'):
@@ -64,7 +68,7 @@ class View:
         self.request = request
         self.args = args
         self.kwargs = kwargs
-    
+
     def dispatch(self, request, *args, **kwargs):
         # Проверяет верный ли метод, если верный,
         #           то добавляет в верный список.
@@ -77,12 +81,12 @@ class View:
         else:
             handler = self.http_method_not_allowed
         return handler(request, *args, **kwargs)
-    
+
     def http_method_not_allowed(self, request, *args, **kwargs):
-        logger.warning(
-            'Method Not Allowed (%s): %s', request.method, request.path,
-            extra={'status_code': 405, 'request': request}
-        )
+        # logger.warning(
+        #     'Method Not Allowed (%s): %s', request.method, request.path,
+        #     extra={'status_code': 405, 'request': request}
+        # )
         return HttpResponseNotAllowed(self._allowed_methods())
 
     def options(self, request, *args, **kwargs):
@@ -91,7 +95,7 @@ class View:
         response.headers['Allow'] = ', '.join(self._allowed_methods())
         response.headers['Content-Length'] = "0"
         return response
-    
+
     def _allowed_methods(self):
         return [m.upper() for m in self.http_method_names if hasattr(self, m)]
 
@@ -99,10 +103,13 @@ class View:
 """
 TemplateView расширяет базовый класс, чтобы он также отображал шаблон.
 """
-class TemplateView(TemplateResponseMixin, ContextMixin, View):    
+
+
+class TemplateView(TemplateResponseMixin, ContextMixin, View):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
+
 
 """
 Миксин берёт словарь ключевых аргументов, полученных из URL адреса,
@@ -111,6 +118,8 @@ class TemplateView(TemplateResponseMixin, ContextMixin, View):
         прямо из шаблона), и под конец примешивает словарь extra_context,
                                     если вы вдруг его переопределяли.
 """
+
+
 class ContextMixin:
     extra_context = None
 
@@ -144,13 +153,13 @@ class TemplateResponseMixin:
     def render_to_response(self, context, **response_kwargs):
         response_kwargs.setdefault('content_type', self.content_type)
         return response_class(
-            request = self.request,
-            template = self.get_template_names,
-            context = context,
-            using = self.template_engine,
+            request=self.request,
+            template=self.get_template_names,
+            context=context,
+            using=self.template_engine,
             **response_kwargs
         )
-    
+
     """
     Возвращает список имен шаблонов, которые будут использоваться
                                                       для запроса.
@@ -161,7 +170,8 @@ class TemplateResponseMixin:
         if self.template_name is None:
             raise ImproperlyConfigured(
                 "TemplateResponseMixin requires either a definition of "
-                "'template_name' or an implementation of 'get_template_names()'"
+                "'template_name' or an implementation \
+                    of 'get_template_names()'"
             )
         else:
             return [self.template_name]

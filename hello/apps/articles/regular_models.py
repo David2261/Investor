@@ -11,8 +11,16 @@ log_info = logging.getLogger("root")
 
 
 class BasePost(models.Model):
-	title = models.CharField(verbose_name = "Заголовок статьи", help_text = "Название статьи", max_length = 255, null = False, blank = False, primary_key = True)
-	time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+	title = models.CharField(
+			verbose_name="Заголовок статьи",
+			help_text="Название статьи",
+			max_length=255,
+			null=False,
+			blank=False,
+			primary_key=True)
+	time_create = models.DateTimeField(
+			auto_now_add=True,
+			verbose_name="Время создания")
 
 	class Meta:
 		abstract = True

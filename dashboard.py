@@ -26,7 +26,7 @@ class CustomIndexDashboard(Dashboard):
             _('Group: Administration & Applications'),
             column=1,
             collapsible=True,
-            children = [
+            children=[
                 modules.AppList(
                     _('Administration'),
                     column=1,

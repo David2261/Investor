@@ -1,5 +1,4 @@
 import pytest
-from articles.views import get_client_ip
 
 
 @pytest.mark.skip("UserWarning: No directory at: ~/Investor/static/")

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import User
 
+
 class RegistrationSerializer(serializers.ModelSerializer):
 	# Пароль должен быть подтвержден и не должен быть прочитан клиентом
 	password = serializers.CharField(
@@ -55,4 +56,4 @@ class LoginSerializer(serializers.Serializer):
 				'This user has been deactivated.'
 			)
 
-		return {'token': user.token,}
+		return {'token': user.token, }

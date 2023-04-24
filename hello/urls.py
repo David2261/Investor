@@ -5,14 +5,12 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', include('leads.urls')),
-    path('', include('articles.urls')),
-    path('', include('authentication.urls')),
+	path('', include('leads.urls')),
+	path('', include('articles.urls')),
+	path('', include('authentication.urls')),
 	path('grappelli/', include('grappelli.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
+	path('ckeditor/', include('ckeditor_uploader.urls')),
+	path('admin/', admin.site.urls),
+	path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
-              + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
+		+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

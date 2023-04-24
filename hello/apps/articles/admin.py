@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+# from django.contrib.auth.admin import UserAdmin
 from .models import Category, Articles, Ip
 
 
@@ -15,6 +15,8 @@ admin.site.site_header = "Investor Site Admin"
 
 admin.site.register(Ip)
 admin.site.register(Category)
+
+
 class CategoryAdmin(admin.ModelAdmin):
 	list_display = ("name",)
 	exclude = ("slug",)
@@ -22,6 +24,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Articles)
+
+
 class ArticlesAdmin(admin.ModelAdmin):
 	list_display = ("title", "category", "time_create", "is_published")
 	ordering = ("title", "time_create", "category", "is_published")

@@ -70,7 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 		validators=[validators.validate_email],
 		unique=True,
 		blank=False
-		)
+	)
 	is_staff = models.BooleanField(default=False)
 	is_active = models.BooleanField(default=True)
 	USERNAME_FIELD = 'email'
