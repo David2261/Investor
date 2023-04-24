@@ -22,9 +22,12 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run Tests
+        env:
+        	SECRET_KEY: ${{secrets.SECRET_KEY}}
+            DEBUG: ${{secrets.DEBUG}}
         run: |
-          SECRET_KEY:: ${{ secrets.SECRET_KEY }}
-          DEBUG: ${{ env.DEBUG }}
+          echo "SECRET_KEY=%SECRET_KEY%" >> .env
+          echo "DEBUG=%DEBUG%" >> .env
           python3 manage.py test
           pytest
       - name: Run Linting
