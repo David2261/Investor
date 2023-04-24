@@ -29,7 +29,6 @@ jobs:
           echo "SECRET_KEY=%SECRET_KEY%" >> .env
           echo "DEBUG=%DEBUG%" >> .env
           python3 manage.py test
-          ls -la
-          pytest hello
+          # pytest hello
       - name: Run Linting
         run: flake8 hello
