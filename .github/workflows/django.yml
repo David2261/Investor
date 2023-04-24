@@ -23,7 +23,8 @@ jobs:
           pip install -r requirements.txt
       - name: Run Tests
         run: |
-          echo "SECRET_KEY = 'django-insecure-dummy-secret'" > ./.env
+          echo "SECRET_KEY='oapf7gb5yeipka=)5sl_f%l&s5(hg5!xszsv+atk&^e4hu2s1y'" > ./.env
+          echo "DEBUG=True" > ./.env
           python3 manage.py test
           pytest
       - name: Run Linting
