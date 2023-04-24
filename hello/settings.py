@@ -29,13 +29,13 @@ LOGGING = {
 			"level": "INFO",
 			"class": "logging.FileHandler",
 			"formatter": "standart",
-			"filename": './__logs__/main.log',
+			"filename": '__logs__/main.log',
 		},
 		"dev_file": {
 			"level": "NOTSET",
 			"class": "logging.FileHandler",
 			"formatter": "exception",
-			"filename": './__logs__/error.log',
+			"filename": '__logs__/error.log',
 		},
 	},
 	"loggers": {
