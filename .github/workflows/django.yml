@@ -4,12 +4,32 @@ run-name: ${{ github.actor }} is testing out Github CI/CD
 on: [pull_request]
 
 jobs:
+  flake8:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ["3.9", "3.10"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+      - run: |
+          python3 -m pip install --upgrade pip
+          python -m pip install flake8
+      - name: flake8
+        uses: liskin/gh-problem-matcher-wrap@d8afa2cfb66dd3f982b1950429e652bc14d0d7d2
+        with:
+          linters: flake8
+          run: flake8
+
   run_tests:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ['3.9', '3.10']
+        python-version: ["3.9", "3.10"]
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3
@@ -26,10 +46,5 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DEBUG: ${{ secrets.DEBUG }}
         run: |
-          chmod 777 -R .
-          echo "SECRET_KEY=%SECRET_KEY%" >> .env
-          echo "DEBUG=%DEBUG%" >> .env
           python3 manage.py test
           pytest hello
-      - name: Run Linting
-        run: flake8 hello
