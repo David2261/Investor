@@ -21,6 +21,7 @@ jobs:
       - name: flake8
         uses: liskin/gh-problem-matcher-wrap@d8afa2cfb66dd3f982b1950429e652bc14d0d7d2
         with:
+          cache: "pip"
           linters: flake8
           run: flake8
 
@@ -37,6 +38,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: "pip"
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip
@@ -46,5 +48,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DEBUG: ${{ secrets.DEBUG }}
         run: |
+          mkdir /home/runner/work/Investor/Investor/__logs__
+          touch /home/runner/work/Investor/Investor/__logs__/error.log
           python3 manage.py test
           pytest hello
