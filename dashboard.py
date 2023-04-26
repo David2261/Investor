@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 # from django.urls import reverse
 
 from grappelli.dashboard import modules, Dashboard
-from grappelli.dashboard.utils import get_admin_site_name
+# from grappelli.dashboard.utils import get_admin_site_name
 
 
 class CustomIndexDashboard(Dashboard):
