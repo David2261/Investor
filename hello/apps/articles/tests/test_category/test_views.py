@@ -12,11 +12,11 @@ class TestViewCategory(TestCase):
     def setUp(self):
         self.client = Client()
 
-    def test_get_category(self):
-        response = self.client.get("/")
+    def test_get_category(client):
+        response = client("/")
         assert response.status_code == 403
 
-    def test_get_fail_category(self):
-        response = self.client.get("/")
+    def test_get_fail_category(client):
+        response = client.get("/")
         with pytest.raises(AssertionError):
             assert response == 404
