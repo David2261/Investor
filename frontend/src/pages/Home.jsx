@@ -21,7 +21,7 @@ function Slider() {
     )
 }
 
-export class Home extends Component {
+export default class Home extends Component {
     render() {
         return (
             <>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 // Dynamic pages
-import {Home} from './pages/Home'
+import Home from './pages/Home'
 import {About} from './pages/About'
 import {Contact} from './pages/Contact'
 import {Login} from './pages/Login'
