@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "src/assets/sass/main/Main.scss";
+import "../../assets/sass/main/Main.scss";
 
 
 export class Articles extends Component {

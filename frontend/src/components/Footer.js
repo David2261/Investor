@@ -5,7 +5,8 @@ import PatreonIcon from '../assets/img/patreon.svg'
 
 function Year() {
     let today = new Date();
-    return <p>{today.getFullYear()}</p>
+    let tag = <>{today.getFullYear()}</>
+    return tag;
 };
 
 export const Footer = () => (

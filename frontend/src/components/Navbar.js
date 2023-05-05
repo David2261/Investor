@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import Anime, { anime } from 'react-anime';
 import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown';
+import Logo from '../assets/img/logo/logo.svg'
 
 class SearchBtn extends Component {
     constructor(props) {
@@ -88,7 +89,7 @@ export class Navbar extends Component {
             <>
                 <div className="container flex-row columns-3 justify-content-evenly text-align-center">
                     <div className="navbar-brand justify-content-center">
-                        <img src="https://placehold.co/300x50" alt="" />
+                        <img data-src={Logo} alt="" />
                     </div>
                     <div className="navbar-nav flex-row px-3 justify-between">
                         <HomeDownBox />
