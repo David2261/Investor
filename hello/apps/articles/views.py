@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 # from .forms import RegisterForm
 from .models import Category, Articles, Ip
+from .serializers import UserSerializer, GroupSerializer
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")

@@ -34,6 +34,7 @@ class Category(models.Model):
 		max_length=255,
 		unique=True,
 		db_index=True,
+		null=True,
 		verbose_name='URL')
 
 	def __str__(self):
@@ -70,6 +71,7 @@ class Articles(BasePost):
 			max_length=255,
 			unique=True,
 			db_index=True,
+			null=True,
 			verbose_name='URL')
 
 	def get_absolute_url(self):

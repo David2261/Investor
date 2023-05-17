@@ -7,7 +7,7 @@ export class Articles extends Component {
 		return(
 			<>
 			<div className="articles_box">
-				<div className="articles_header">
+				<div className="articles_header content-center">
 					<h2>
 						<strong>ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</strong>
 					</h2>
