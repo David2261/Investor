@@ -20,4 +20,3 @@ urlpatterns = [
         name='user_registration'),
     re_path(r'^login/?$', LoginAPIView.as_view(), name='user_login'),
 ]
-
