@@ -13,8 +13,8 @@ class TestViewCategory(TestCase):
         self.client = Client()
 
     def test_get_category(client):
-        response = client("/")
-        assert response.status_code == 403
+        response = client.get("/")
+        assert response.status_code == 200
 
     def test_get_fail_category(client):
         response = client.get("/")

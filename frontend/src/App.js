@@ -12,7 +12,7 @@ import {Payanddelivery} from './pages/stable/Payanddelivery'
 import {Emailagreement} from './pages/stable/Emailagreement'
 import {Agreement} from './pages/stable/Agreement'
 // Components
-import {Navbar} from './components/Navbar'
+import Navbar from './components/Navbar'
 import {Footer} from './components/Footer'
 // Hooks
 import { useInView } from 'react-intersection-observer';
@@ -28,7 +28,7 @@ function App() {
   return (
     <BrowserRouter >
     <nav
-    className={`navbar fixed-top navbar-dark header ${inView === true ? 'h_header' : 'l_header'}`}>
+    className="bg-gray-800">
         <Navbar />
     </nav>
     <div className="container py-7" ref={ref}>
