@@ -83,7 +83,7 @@ class ToggleBtn extends Component {
 }
 
 
-export class Navbar extends Component {
+export default class Navbar extends Component {
     render() {
         return (
             <>

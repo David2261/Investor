@@ -71,7 +71,9 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	# Authentication and API
 	'rest_framework',
+	'rest_framework.authtoken',
 	# apps
 	'leads.apps.LeadsConfig',
 	'articles.apps.ArticlesConfig',
@@ -170,6 +172,7 @@ REST_FRAMEWORK = {
 	'DEFAULT_PERMISSION_CLASSES': (
 		'rest_framework.permissions.IsAuthenticated',
 	),
+	# Check authentication app
 	'DEFAULT_AUTHENTICATION_CLASSES': (
 		'authentication.backends.JWTAuthentication',
 	)
