@@ -2,19 +2,28 @@ from datetime import date
 import logging
 from django.shortcuts import render
 from django.db.models import Q
+from django.conf import settings
+from django.views.generic import ListView
 from django.views import View
 from django.views.generic import TemplateView
-from django.views.generic.list import ListView
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
+# DRF - API
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 # from .forms import RegisterForm
 from .models import Category, Articles, Ip
+from .serializers import CategorySerializer
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
 log_info = logging.getLogger("root")
 
+
+# https://dev.to/earthcomfy/class-based-views-in-drf-are-powerful-19dg
+# https://www.cdrf.co/3.13/rest_framework.views/APIView.html
+# https://fixmypc.ru/post/realizatsiia-token-autentifikatsii-s-django-rest-framework/
 
 class ArticlesList(ListView):
 	model = Articles
@@ -30,24 +39,25 @@ def get_client_ip(request):
 	return ip
 
 
-class HomePage(View):
+class HomePage(ModelViewSet):
+	queryset = Category.objects.all()
+	serializer_class = CategorySerializer
 
-	def get(self, request, *args, **kwargs):
-		logger.info("Включен 'get' в 'HomePage'")
-		# <View logic>
-		topics = Category.objects.all()
-		# articles = Articles.objects.exclude(
-		# 	time_create__gt=datetime.date(2022, 10, 3))[0:5]
-		articles = Articles.objects.all()
-		context = {'topics': topics, 'articles': articles}
-		return render(request, "articles/home.html", context)
+	# def get(self, request, *args, **kwargs):
+	# 	logger.info("Включен 'get' в 'HomePage'")
+	# 	topics = Category.objects.all()
+	# 	# articles = Articles.objects.exclude(
+	# 	# 	time_create__gt=datetime.date(2022, 10, 3))[0:5]
+	# 	articles = Articles.objects.all()
+	# 	context = {'topics': topics, 'articles': articles}
+	# 	return render(request, "articles/home.html", context)
 
-	# Какие данные будут передаваться
-	def get_context_data(self, **kwargs):
-		logger.info("Включен 'get_context_data' в 'HomePage'")
-		context = super().get_context_data(**kwargs)
-		context['today'] = date.today()
-		return context
+	# # Какие данные будут передаваться
+	# def get_context_data(self, **kwargs):
+	# 	logger.info("Включен 'get_context_data' в 'HomePage'")
+	# 	context = super().get_context_data(**kwargs)
+	# 	context['today'] = date.today()
+	# 	return context
 
 
 class BlogPage(View):
