@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import Anime, { anime } from 'react-anime';
 import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown';
-import { ReactComponent as Logo } from '../assets/img/logo/logo.svg'
+// import { ReactComponent as Logo } from '../assets/img/logo/logo.svg'
+import { LogoSvg } from './svg/LogoSvg'
+
+
 
 class SearchBtn extends Component {
     constructor(props) {
@@ -29,7 +32,7 @@ class SearchBtn extends Component {
     render() {
         return (
             <>
-            <form className="input-group" onSubmit={this.handleSubmit}>
+            <form className="input-group px-6" onSubmit={this.handleSubmit}>
                 <input type="text" className="form-control" placeholder="Search..." value={this.state.value} onChange={this.handleChange} />
                 <button className="btn btn-outline-secondary" type="button" id="button-addon2">Кнопка</button>
             </form>
@@ -57,21 +60,28 @@ class ToggleBtn extends Component {
         return (
             <>
             <div
-            onMouseLeave={() => this.handleClick()}
+            // onClick={() => this.handleClick()}
             className="col-md-auto d-flex justify-content-center">
                 {this.state.position ?
-                    <button onClick={this.handleClick} type="button" className="btn btn-outline-light"><i className="bi bi-search"></i></button>
+                    <button onClick={this.handleClick} type="button" className="px-3 py-2 m-2 btn btn-outline-dark"><i className="bi bi-search"></i></button>
                     :
                     <Anime easing='easeInOutQuad'
                         duration={1000}
                         delay={anime.stagger(100)}
                         loop={false}
                         scale={[ 0.1, 0.9 ]}
+                        className="m-2"
                     >
+                        <button
+                        type="button"
+                        className="btn px-3"
+                        onClick={this.handleClick}>
+                            <i className="bi bi-x-circle"></i>
+                        </button>
                         <SearchBtn />
                     </Anime>
                 }
-                <button type="button" className="px-3 btn btn-primary">
+                <button type="button" className="m-2 px-3 py-2 btn btn-primary">
                     <NavLink className="nav-link text-uppercase" to="/login">
                         Login <i className="bi bi-box-arrow-in-right"></i>
                     </NavLink>
@@ -88,8 +98,8 @@ export default class Navbar extends Component {
         return (
             <>
                 <div className="container flex-row columns-3 justify-content-evenly text-align-center">
-                    <div className="navbar-brand justify-content-center px-3">
-                        <Logo />
+                    <div className="navbar-brand py-3 px-3 logo">
+                        <LogoSvg />
                     </div>
                     <div className="navbar-nav flex-row px-3 justify-between">
                         <HomeDownBox />
