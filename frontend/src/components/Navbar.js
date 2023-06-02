@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 import Anime, { anime } from 'react-anime';
 import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown';
 // import { ReactComponent as Logo } from '../assets/img/logo/logo.svg'
-import { LogoSvg } from './svg/LogoSvg'
+// import { LogoSvg } from './svg/LogoSvg'
 
 
 
@@ -61,7 +61,7 @@ class ToggleBtn extends Component {
             <>
             <div
             // onClick={() => this.handleClick()}
-            className="col-md-auto d-flex justify-content-center">
+            className="justify-content-center col-2">
                 {this.state.position ?
                     <button onClick={this.handleClick} type="button" className="px-3 py-2 m-2 btn btn-outline-dark"><i className="bi bi-search"></i></button>
                     :
@@ -97,11 +97,11 @@ export default class Navbar extends Component {
     render() {
         return (
             <>
-                <div className="container flex-row columns-3 justify-content-evenly text-align-center">
-                    <div className="navbar-brand py-3 px-3 logo">
-                        <LogoSvg />
+                <div className="container justify-content-evenly text-align-center row">
+                    <div className="navbar-brand logo col-2">
+                        <img src={require('../assets/img/logo/logo.webp')} alt="" width={150}/>
                     </div>
-                    <div className="navbar-nav flex-row px-3 justify-between">
+                    <div className="navbar-nav flex-row justify-between col-6">
                         <HomeDownBox />
                         <div className="nav-item mx-3">
                             <NavLink className="nav-link text-uppercase" to="/community">

@@ -10,7 +10,7 @@ function HomeDownBox() {
             onMouseLeave={() => setIsShown(false)}>
             <NavLink
             onMouseEnter={() => setIsShown(true)}
-            className="bg-gray-300 text-white rounded-md px-3 py-2 text-sm font-medium" to="/">
+            className="rounded-md nav-link text-uppercase" to="/">
                 <span>О нас</span>
                 <span><i className="bi bi-chevron-down"></i></span>
             </NavLink>
