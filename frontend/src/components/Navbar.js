@@ -2,17 +2,24 @@ import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import Anime, { anime } from 'react-anime';
 import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown';
-import { ReactComponent as Logo } from '../assets/img/logo/logo.svg'
 
-class SearchBtn extends Component {
+
+class ToggleBtn extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            position: true,
             value: ""
         };
-
+        this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleClick() {
+        this.setState(prevState => ({
+            position: !prevState.position
+        }));
     }
 
     handleChange(event) {
@@ -29,38 +36,9 @@ class SearchBtn extends Component {
     render() {
         return (
             <>
-            <form className="input-group" onSubmit={this.handleSubmit}>
-                <input type="text" className="form-control" placeholder="Search..." value={this.state.value} onChange={this.handleChange} />
-                <button className="btn btn-outline-secondary" type="button" id="button-addon2">Кнопка</button>
-            </form>
-            </>
-        )
-    }
-}
-
-class ToggleBtn extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            position: true
-        };
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick() {
-        this.setState(prevState => ({
-            position: !prevState.position
-        }));
-    }
-
-    render() {
-        return (
-            <>
-            <div
-            onMouseLeave={() => this.handleClick()}
-            className="col-md-auto d-flex justify-content-center">
+                <div className="col-auto">
                 {this.state.position ?
-                    <button onClick={this.handleClick} type="button" className="btn btn-outline-light"><i className="bi bi-search"></i></button>
+                    <button onClick={this.handleClick} type="button" className="btn btn-lg btn-outline-dark"><i className="bi bi-search"></i></button>
                     :
                     <Anime easing='easeInOutQuad'
                         duration={1000}
@@ -68,15 +46,34 @@ class ToggleBtn extends Component {
                         loop={false}
                         scale={[ 0.1, 0.9 ]}
                     >
-                        <SearchBtn />
+                        <form className="navbar-form" onSubmit={this.handleSubmit}>
+                            <div className="input-group">
+                                <span className="input-group-btn">
+                                    <button
+                                    type="button"
+                                    className="btn btn-lg"
+                                    onClick={this.handleClick}>
+                                        <i className="bi bi-x-circle"></i>
+                                    </button>
+                                </span>
+                                <input type="text" className="form-control" placeholder="Поиск..." value={this.state.value} onChange={this.handleChange} />
+                                <span className="input-group-btn">
+                                    <button className="btn btn-outline-secondary" type="button">
+                                        <i className="bi bi-search" aria-hidden="true"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
                     </Anime>
                 }
-                <button type="button" className="px-3 btn btn-primary">
-                    <NavLink className="nav-link text-uppercase" to="/login">
-                        Login <i className="bi bi-box-arrow-in-right"></i>
+                </div>
+                <div className="col-auto">
+                    <NavLink to="/login">
+                        <button type="button" className="btn btn-lg btn-primary text-white text-uppercase">
+                            Вход <i className="bi bi-box-arrow-in-right"></i>
+                        </button>
                     </NavLink>
-                </button>
-            </div>
+                </div>
             </>
         )
     }
@@ -87,25 +84,29 @@ export default class Navbar extends Component {
     render() {
         return (
             <>
-                <div className="container flex-row columns-3 justify-content-evenly text-align-center">
-                    <div className="navbar-brand justify-content-center px-3">
-                        <Logo />
+                <div className="container justify-content-evenly text-align-center row">
+                    <div className="navbar-brand logo col-3">
+                        <NavLink to="/">
+                            <img src={require('../assets/img/logo/logo.webp')} alt="" width={150}/>
+                        </NavLink>
                     </div>
-                    <div className="navbar-nav flex-row px-3 justify-between">
+                    <div className="navbar-nav flex-row justify-center col-auto">
                         <HomeDownBox />
                         <div className="nav-item mx-3">
                             <NavLink className="nav-link text-uppercase" to="/community">
-                                Community
+                                Сообщество
                             </NavLink>
                         </div>
                         <div className="nav-item mx-3">
                             <NavLink className="nav-link text-uppercase" to="/blog">
-                                Blog
+                                Блог
                             </NavLink>
                         </div>
                         <ToolsDownBox />
                     </div>
-                    <ToggleBtn />
+                    <div className="navbar-nav flex-row justify-between col-auto">
+                        <ToggleBtn />
+                    </div>
                 </div>
             </>
         )

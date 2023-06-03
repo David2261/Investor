@@ -5,6 +5,9 @@ import Home from './pages/Home'
 import {About} from './pages/About'
 import {Contact} from './pages/Contact'
 import {Login} from './pages/Login'
+// Admin pages
+import {LoginAdmin} from './pages/admin/Login'
+import {RegisterAdmin} from './pages/admin/Signup'
 // Static pages
 import {Resposibility} from './pages/stable/Resposibility'
 import {Confidentiality} from './pages/stable/Confidentiality'
@@ -21,7 +24,7 @@ import "./assets/sass/Header.scss"
 
 
 function App() {
-  const {ref, inView} = useInView({
+  const {ref} = useInView({
         threshold: 0.8,
     });
 
@@ -43,6 +46,9 @@ function App() {
         <Route path="/payanddelivery" element={ <Payanddelivery /> } />
         <Route path="/emailagreement" element={ <Emailagreement /> } />
         <Route path="/agreement" element={ <Agreement /> } />
+        {/*Admin pages*/}
+        <Route path="/admin/login" element={ <LoginAdmin /> } />
+        <Route path="/admin/register" element={ <RegisterAdmin /> } />
       </Routes>
     </div>
     <Footer />
