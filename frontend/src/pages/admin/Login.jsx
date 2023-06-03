@@ -8,12 +8,12 @@ export const LoginAdmin = () => (
                 <form action="">
                     <h2>Login</h2>
                     <div className="inputBox">
-                        <i class="bi bi-envelope"></i>
+                        <i className="bi bi-envelope"></i>
                         <input type="email" required />
                         <label htmlFor="">Email</label>
                     </div>
                     <div className="inputBox">
-                        <i class="bi bi-lock"></i>
+                        <i className="bi bi-lock"></i>
                         <input type="password" required />
                         <label htmlFor="">Password</label>
                     </div>

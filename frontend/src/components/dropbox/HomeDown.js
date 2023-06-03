@@ -47,7 +47,7 @@ function ToolsDownBox() {
             <NavLink
             onMouseEnter={() => setIsShown(true)}
             className="nav-link" to="/tools">
-                <span>Tools</span>
+                <span>Инструменты</span>
                 <span><i className="bi bi-chevron-down"></i></span>
             </NavLink>
             {isShown && (
