@@ -1,13 +1,40 @@
 import React from 'react'
+import {NavLink} from 'react-router-dom'
+import '../../assets/sass/admin/register.scss'
 
-export const Signup = () => (
-    <div className='row g-0 bg-body-secondary position-relative'>
-        <div className="col-md-6 mb-md-0 p-md-4">
-            <img src="https://via.placeholder.com/125" className="w-100 rounded mx-auto d-block" alt="" />
+
+export const RegisterAdmin = () => (
+    <section>
+        <div className="form-box">
+            <div className="form-value">
+                <form action="">
+                    <h2>Register</h2>
+                    <div className="inputBox">
+                        <i className="bi bi-person-circle"></i>
+                        <input type="text" required />
+                        <label htmlFor="">Username</label>
+                    </div>
+                    <div className="inputBox">
+                        <i className="bi bi-envelope"></i>
+                        <input type="email" required />
+                        <label htmlFor="">Email</label>
+                    </div>
+                    <div className="inputBox">
+                        <i className="bi bi-lock"></i>
+                        <input type="password" required />
+                        <label htmlFor="">Password</label>
+                    </div>
+                    <div className="forget">
+                        <label htmlFor="">
+                            <input type="checkbox" />I agree to the terms & conditions
+                        </label>
+                    </div>
+                    <button>Log in</button>
+                    <div className="register">
+                        <p>Already have an account? <NavLink to="/admin/login">Login</NavLink></p>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div className='col-md-6 p-4 ps-md-0'>
-            <h1 className='mt-0'>Best React App</h1>
-            <p className='lead'>Version 1.0</p>
-        </div>
-    </div>
+    </section>
 )

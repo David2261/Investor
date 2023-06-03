@@ -1,5 +1,7 @@
 import React from 'react'
+import {NavLink} from 'react-router-dom'
 import '../../assets/sass/admin/login.scss'
+
 
 export const LoginAdmin = () => (
     <section>
@@ -19,12 +21,13 @@ export const LoginAdmin = () => (
                     </div>
                     <div className="forget">
                         <label htmlFor="">
-                            <input type="checkbox" />Remember me <a href="#">Forget Password</a>
+                            <input type="checkbox" />Remember me
+                            <NavLink to="#">Forget Password</NavLink>
                         </label>
                     </div>
                     <button>Log in</button>
                     <div className="register">
-                        <p>Don't have a account <a href="#">Register</a></p>
+                        <p>Don't have a account <NavLink to="/admin/register">Register</NavLink></p>
                     </div>
                 </form>
             </div>

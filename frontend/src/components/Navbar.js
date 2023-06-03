@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import Anime, { anime } from 'react-anime';
 import {HomeDownBox, ToolsDownBox} from './dropbox/HomeDown';
-// import { ReactComponent as Logo } from '../assets/img/logo/logo.svg'
-// import { LogoSvg } from './svg/LogoSvg'
-
 
 
 class ToggleBtn extends Component {
@@ -89,7 +86,9 @@ export default class Navbar extends Component {
             <>
                 <div className="container justify-content-evenly text-align-center row">
                     <div className="navbar-brand logo col-3">
-                        <img src={require('../assets/img/logo/logo.webp')} alt="" width={150}/>
+                        <NavLink to="/">
+                            <img src={require('../assets/img/logo/logo.webp')} alt="" width={150}/>
+                        </NavLink>
                     </div>
                     <div className="navbar-nav flex-row justify-center col-auto">
                         <HomeDownBox />
