@@ -58,9 +58,9 @@ class ToggleBtn extends Component {
                                 </span>
                                 <input type="text" className="form-control" placeholder="Поиск..." value={this.state.value} onChange={this.handleChange} />
                                 <span className="input-group-btn">
-                                <button className="btn btn-outline-secondary" type="button">
-                                    <i className="bi bi-search" aria-hidden="true"></i>
-                                </button>
+                                    <button className="btn btn-outline-secondary" type="button">
+                                        <i className="bi bi-search" aria-hidden="true"></i>
+                                    </button>
                                 </span>
                             </div>
                         </form>
@@ -68,11 +68,11 @@ class ToggleBtn extends Component {
                 }
                 </div>
                 <div className="col-auto">
-                        <NavLink to="/login">
-                    <button type="button" className="btn btn-lg btn-primary text-white text-uppercase">
+                    <NavLink to="/login">
+                        <button type="button" className="btn btn-lg btn-primary text-white text-uppercase">
                             Вход <i className="bi bi-box-arrow-in-right"></i>
-                    </button>
-                        </NavLink>
+                        </button>
+                    </NavLink>
                 </div>
             </>
         )

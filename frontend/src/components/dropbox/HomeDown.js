@@ -1,12 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {NavLink} from 'react-router-dom'
 import Anime, { anime } from 'react-anime';
 
+
+function DropdownItem(props) {
+    return (
+        <li className="dropdownItem">
+            {props.class_icon}
+            <NavLink
+            className="text-dark bg-white"
+            to={`${props.url}`}>{props.text}</NavLink>
+        </li>
+    )
+}
+
+
 function HomeDownBox() {
     const [isShown, setIsShown] = useState(false);
+    let menuRef = useRef();
+    
+    useEffect(() => {
+        let handler = (e) => {
+            if (!menuRef.current.contains(e.target)){
+                setIsShown(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handler);
+
+        return() => {
+            document.removeEventListener("mousedown", handler);
+        }
+    });
     return (
         <>
-            <div className="nav-item mx-3"
+            <div className="nav-item mx-3 dropdown"
+            ref={menuRef}
             onMouseLeave={() => setIsShown(false)}>
             <NavLink
             onMouseEnter={() => setIsShown(true)}
@@ -20,16 +49,10 @@ function HomeDownBox() {
                     delay={anime.stagger(100)}
                     loop={false}
                     scale={[ 0.1, 0.9 ]}>
-            <ul className="position-fixed text-bg-light list-group list-group-flush">
-                <li className="list-group-item"><NavLink className="nav-link" to="/about">
-                    <span className="text-dark text-uppercase">О проекте</span>
-                </NavLink></li>
-                <li className="list-group-item"><NavLink className="nav-link" to="/contact">
-                    <span className="text-dark text-uppercase">Контакты</span>
-                </NavLink></li>
-                <li className="list-group-item"><NavLink className="nav-link" to="/subscription">
-                    <span className="text-dark text-uppercase">Поддержка проекта</span>
-                </NavLink></li>
+            <ul className={`position-fixed dropdown-menu ${isShown ? 'active' : 'inactive'}`} aria-labelledby="book-dropdown">
+                <DropdownItem url="/about" text="О проекте" />
+                <DropdownItem url="/contact" text="Контакты" />
+                <DropdownItem url="/subscription" text="Поддержка проекта" />
             </ul>
             </Anime>
             )}
