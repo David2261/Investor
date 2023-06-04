@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
+import os
+import uuid
 import logging
+
 from django.db import models
 from django.urls import reverse
-from authentication.models import User
-
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+
+from authentication.models import User
 from .regular_models import BasePost
+from .fields import WEBPField
 
 
 logging.config.dictConfig(settings.LOGGING)
@@ -29,7 +34,7 @@ class Ip(models.Model):
 
 class Category(models.Model):
 	logger.info("Включен 'Category models'")
-	name = models.CharField(verbose_name="Категория", max_length=255)
+	name = models.CharField(verbose_name=_("Category"), max_length=255)
 	slug = models.SlugField(
 		max_length=255,
 		unique=True,
@@ -44,28 +49,35 @@ class Category(models.Model):
 		return reverse("category", kwargs={'cat_slug': self.slug})
 
 	class Meta:
-		verbose_name = 'Категория'
-		verbose_name_plural = 'Категории'
+		verbose_name = _('Category')
+		verbose_name_plural = _('Categories')
 		ordering = ('id', 'name')
+
+
+def image_folder(instance, filename):
+	""" Generate random name with UUID """
+	return 'photos/{}.webp'.format(uuid.uuid4().hex)
 
 
 class Articles(BasePost):
 	logger.info("Включен 'Articles models'")
 	description = models.TextField(
-			verbose_name="Текст статьи",
+			verbose_name=_("The text of the article"),
 			null=False,
 			blank=False)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
-	img = models.ImageField(
-			upload_to='Articles/% Y/% m/% d/',
-			verbose_name="Изображение",
+	img = WEBPField(
+			upload_to=image_folder,
+			verbose_name=_("Image"),
 			height_field=None,
 			width_field=None,
 			max_length=100)
 	time_update = models.DateTimeField(
 			auto_now=True,
-			verbose_name="Время изменения")
-	is_published = models.BooleanField(default=True, verbose_name="Публикация")
+			verbose_name=_("Time of change"))
+	is_published = models.BooleanField(
+			default=True,
+			verbose_name=_("Publication"))
 	views = models.ManyToManyField(Ip, related_name="post_views", blank=True)
 	slug = models.SlugField(
 			max_length=255,
@@ -85,8 +97,8 @@ class Articles(BasePost):
 		return self.comment_set.all()
 
 	class Meta:
-		verbose_name = "Статья"
-		verbose_name_plural = "Статьи"
+		verbose_name = _("Article")
+		verbose_name_plural = _("Articles")
 		ordering = ('-time_update', '-time_create')
 
 
