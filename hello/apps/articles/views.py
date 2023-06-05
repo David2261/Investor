@@ -10,11 +10,13 @@ from django.contrib.auth.decorators import login_required
 # DRF - API
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions, viewsets
 
 # from .forms import RegisterForm
 from .models import Category, Articles, Ip
-from .serializers import CategorySerializer
+from .serializers import CategorySerializer, ArticlesSerializer
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
@@ -25,8 +27,9 @@ log_info = logging.getLogger("root")
 # https://www.cdrf.co/3.13/rest_framework.views/APIView.html
 # https://fixmypc.ru/post/realizatsiia-token-autentifikatsii-s-django-rest-framework/
 
-class ArticlesList(ListView):
-	model = Articles
+class ArticlesList(ListCreateAPIView):
+	queryset = Articles.objects.all()
+	serializer_class = ArticlesSerializer
 
 
 def get_client_ip(request):
@@ -39,18 +42,19 @@ def get_client_ip(request):
 	return ip
 
 
-class HomePage(ModelViewSet):
-	queryset = Category.objects.all()
-	serializer_class = CategorySerializer
+class HomePage(ListCreateAPIView):
+	queryset = Articles.objects.all()
+	serializer_class = ArticlesSerializer
+	permission_classes = [permissions.IsAuthenticated]
 
-	# def get(self, request, *args, **kwargs):
-	# 	logger.info("Включен 'get' в 'HomePage'")
-	# 	topics = Category.objects.all()
-	# 	# articles = Articles.objects.exclude(
-	# 	# 	time_create__gt=datetime.date(2022, 10, 3))[0:5]
-	# 	articles = Articles.objects.all()
-	# 	context = {'topics': topics, 'articles': articles}
-	# 	return render(request, "articles/home.html", context)
+	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'HomePage'")
+		topics = Category.objects.all()
+		articles = Articles.objects.exclude(
+			time_create__gt=datetime.date(2022, 10, 3))[0:5]
+		articles = Articles.objects.all()
+		context = {'topics': topics, 'articles': articles}
+		return render(request, "articles/home.html", context)
 
 	# # Какие данные будут передаваться
 	# def get_context_data(self, **kwargs):
