@@ -1,20 +1,24 @@
-from datetime import date
+from datetime import datetime, date
 import logging
 from django.shortcuts import render
 from django.db.models import Q
 from django.conf import settings
-from django.views.generic import ListView
 from django.views import View
-from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 # DRF - API
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListCreateAPIView
+# from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 
 # from .forms import RegisterForm
+from authentication.models import User
 from .models import Category, Articles, Ip
-from .serializers import CategorySerializer
+from .serializers import (
+	IpSerializer,
+	CategorySerializer,
+	ArticlesSerializer,
+	UserSerializer
+)
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
@@ -24,9 +28,6 @@ log_info = logging.getLogger("root")
 # https://dev.to/earthcomfy/class-based-views-in-drf-are-powerful-19dg
 # https://www.cdrf.co/3.13/rest_framework.views/APIView.html
 # https://fixmypc.ru/post/realizatsiia-token-autentifikatsii-s-django-rest-framework/
-
-class ArticlesList(ListView):
-	model = Articles
 
 
 def get_client_ip(request):
@@ -39,18 +40,44 @@ def get_client_ip(request):
 	return ip
 
 
-class HomePage(ModelViewSet):
+class ArticlesList(ListCreateAPIView):
+	queryset = Articles.objects.all()
+	serializer_class = ArticlesSerializer
+
+
+class CategoriesList(ListCreateAPIView):
 	queryset = Category.objects.all()
+	permissions_classes = permissions.AllowAny
 	serializer_class = CategorySerializer
 
-	# def get(self, request, *args, **kwargs):
-	# 	logger.info("Включен 'get' в 'HomePage'")
-	# 	topics = Category.objects.all()
-	# 	# articles = Articles.objects.exclude(
-	# 	# 	time_create__gt=datetime.date(2022, 10, 3))[0:5]
-	# 	articles = Articles.objects.all()
-	# 	context = {'topics': topics, 'articles': articles}
-	# 	return render(request, "articles/home.html", context)
+
+class IpList(ListCreateAPIView):
+	queryset = Ip.objects.all()
+	permissions_classes = permissions.AllowAny
+	serializer_class = IpSerializer
+
+
+class UserList(ListCreateAPIView):
+	queryset = User.objects.all()
+	permissions_classes = [
+		permissions.AllowAny
+	]
+	serializer_class = UserSerializer
+
+
+class HomePage(ListCreateAPIView):
+	queryset = Articles.objects.all()
+	serializer_class = ArticlesSerializer
+	permission_classes = [permissions.IsAuthenticated]
+
+	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'HomePage'")
+		topics = Category.objects.all()
+		articles = Articles.objects.exclude(
+			time_create__gt=datetime.date(2022, 10, 3))[0:5]
+		articles = Articles.objects.all()
+		context = {'topics': topics, 'articles': articles}
+		return render(request, "articles/home.html", context)
 
 	# # Какие данные будут передаваться
 	# def get_context_data(self, **kwargs):
@@ -101,6 +128,3 @@ class ProfilePage(View):
 # 	def form_valid(self, form):
 # 		form.save()
 # 		return super().form_valid(form)
-
-class AboutPage(TemplateView):
-	template_name = "articles/about.html"

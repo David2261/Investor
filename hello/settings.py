@@ -172,10 +172,9 @@ REST_FRAMEWORK = {
 	'DEFAULT_PERMISSION_CLASSES': (
 		'rest_framework.permissions.IsAuthenticated',
 	),
-	# Check authentication app
-	'DEFAULT_AUTHENTICATION_CLASSES': (
-		'authentication.backends.JWTAuthentication',
-	)
+	'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 # myaccount.google.com/lesssecureapps
