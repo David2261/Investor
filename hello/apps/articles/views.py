@@ -15,8 +15,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions, viewsets
 
 # from .forms import RegisterForm
+from authentication.models import User
 from .models import Category, Articles, Ip
-from .serializers import CategorySerializer, ArticlesSerializer
+from .serializers import IpSerializer, CategorySerializer, ArticlesSerializer, UserSerializer
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
@@ -27,10 +28,6 @@ log_info = logging.getLogger("root")
 # https://www.cdrf.co/3.13/rest_framework.views/APIView.html
 # https://fixmypc.ru/post/realizatsiia-token-autentifikatsii-s-django-rest-framework/
 
-class ArticlesList(ListCreateAPIView):
-	queryset = Articles.objects.all()
-	serializer_class = ArticlesSerializer
-
 
 def get_client_ip(request):
 	logger.info("Включен 'get_client_ip'")
@@ -40,6 +37,31 @@ def get_client_ip(request):
 	else:
 		ip = request.META.get('REMOTE_ADDR')
 	return ip
+
+
+class ArticlesList(ListCreateAPIView):
+	queryset = Articles.objects.all()
+	serializer_class = ArticlesSerializer
+
+
+class CategoriesList(ListCreateAPIView):
+	queryset = Category.objects.all()
+	permissions_classes = permissions.AllowAny
+	serializer_class = CategorySerializer
+
+
+class IpList(ListCreateAPIView):
+	queryset = Ip.objects.all()
+	permissions_classes = permissions.AllowAny
+	serializer_class = IpSerializer
+
+
+class UserList(ListCreateAPIView):
+	queryset = User.objects.all()
+	permissions_classes = [
+		permissions.AllowAny
+	]
+	serializer_class = UserSerializer
 
 
 class HomePage(ListCreateAPIView):
@@ -105,6 +127,3 @@ class ProfilePage(View):
 # 	def form_valid(self, form):
 # 		form.save()
 # 		return super().form_valid(form)
-
-class AboutPage(TemplateView):
-	template_name = "articles/about.html"
