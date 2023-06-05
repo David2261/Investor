@@ -1,5 +1,5 @@
-from rest_framework import routers
-from django.urls import include, path
+# from rest_framework import routers
+from django.urls import path
 
 from .views import HomePage, ArticlesList, CategoriesList, IpList, UserList
 

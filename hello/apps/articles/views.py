@@ -1,23 +1,24 @@
-from datetime import date
+from datetime import datetime, date
 import logging
 from django.shortcuts import render
 from django.db.models import Q
 from django.conf import settings
-from django.views.generic import ListView
 from django.views import View
-from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 # DRF - API
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import permissions, viewsets
+# from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 
 # from .forms import RegisterForm
 from authentication.models import User
 from .models import Category, Articles, Ip
-from .serializers import IpSerializer, CategorySerializer, ArticlesSerializer, UserSerializer
+from .serializers import (
+	IpSerializer,
+	CategorySerializer,
+	ArticlesSerializer,
+	UserSerializer
+)
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
