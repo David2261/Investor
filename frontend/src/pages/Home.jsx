@@ -25,7 +25,7 @@ export default class Home extends Component {
     render() {
         return (
             <>
-            <h1>Home page</h1>
+            <h1 className="text-center text-uppercase">investor home</h1>
             <Slider />
             <Articles />
             </>
