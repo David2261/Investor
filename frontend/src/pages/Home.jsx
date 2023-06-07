@@ -9,6 +9,8 @@ import Mountain from '../assets/img/mountain_wall.webp'
 
 // Articles
 import { Articles } from '../components/main/Articles'
+// scss
+import '../assets/sass/main/Home.scss'
 
 
 function Slider() {
@@ -25,9 +27,11 @@ export default class Home extends Component {
     render() {
         return (
             <>
-            <h1>Home page</h1>
-            <Slider />
-            <Articles />
+            <h1 className="text-center text-uppercase">investor home</h1>
+            <div className="pb-4">
+            <div className="position-relative pb-4 mt-4"><Slider /></div>
+            <div className="position-relative mt-4 pb-4"><Articles /></div>
+            </div>
             </>
         )
     }
