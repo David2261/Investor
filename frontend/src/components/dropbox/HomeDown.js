@@ -53,7 +53,7 @@ function HomeDownBox() {
                     delay={anime.stagger(100)}
                     loop={false}
                     scale={[ 0.1, 0.9 ]}>
-            <ul className="position-absolute list-group">
+            <ul className="position-absolute list-group shadow bg-body-tertialy">
                 <DropdownItem url="/about" text="О проекте" />
                 <DropdownItem url="/contact" text="Контакты" />
                 <DropdownItem url="/subscription" text="Поддержка проекта" />
@@ -83,7 +83,7 @@ function ToolsDownBox() {
                     delay={anime.stagger(100)}
                     loop={false}
                     scale={[ 0.1, 0.9 ]}>
-            <ul className="position-absolute list-group">
+            <ul className="position-absolute list-group shadow bg-body-tertialy">
                 <DropdownItem url="/corpcalendar" text="Календарь отчетность" />
                 <DropdownItem url="/dividendcalendar" text="Календарь дивидендов" />
             </ul>
