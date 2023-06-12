@@ -12,8 +12,9 @@ from .views import HomePage, ArticlesList, CategoriesList, IpList, UserList
 # router.register(r'^category/$', CategoryViewSet, 'category')
 # router.register(r'^articles/$', ArticlesViewSet, 'articles')
 
+app_name = 'articles'
 urlpatterns = [
-	path('home/', HomePage.as_view(), name='home'),
+	path('home/', HomePage.as_view(), name='home_page'),
 	path('ip/list/', IpList.as_view(), name='ip_list'),
 	path('articles/list/', ArticlesList.as_view(), name='article_list'),
 	path('categories/list/', CategoriesList.as_view(), name='category_list'),
