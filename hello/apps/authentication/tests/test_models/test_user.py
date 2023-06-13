@@ -6,7 +6,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 # from rest_framework.authtoken.models import Token
 
-# from authentication.models import User
+from authentication.models import User
 
 
 @pytest.mark.auth
@@ -57,3 +57,34 @@ class UserRegistrationAPIViewTestCase(APITestCase):
 		}
 		response = self.client.post(self.url, user_data_2)
 		assert 400 == response.status_code
+
+
+class UserLoginAPIViewTestCase(APITestCase):
+	url = reverse("authentication:user_login")
+
+	def setUp(self):
+		self.username = "john"
+		self.email = "john@gmail.com"
+		self.password = "john12345"
+		self.user = User.objects.create_user(
+			self.username,
+			self.email,
+			self.password)
+
+	def test_authentication_without_password(self):
+		response = self.client.post(self.url, {"username": "john"})
+		assert 400 == response.status_code
+
+	def test_authentication_with_wrong_password(self):
+		response = self.client.post(self.url, {
+			"username": self.username,
+			"password": "Aloha"})
+		assert 400 == response.status_code
+
+	def test_authentication_with_valid_data(self):
+		response = self.client.post(self.url, {
+			"username": self.username,
+			"email": self.email,
+			"password": self.password})
+		assert 200 == response.status_code
+		assert "token" in json.loads(response.content)
