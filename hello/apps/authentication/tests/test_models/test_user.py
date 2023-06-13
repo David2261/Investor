@@ -59,6 +59,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
 		assert 400 == response.status_code
 
 
+@pytest.mark.auth
 class UserLoginAPIViewTestCase(APITestCase):
 	url = reverse("authentication:user_login")
 
