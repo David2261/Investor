@@ -1,5 +1,5 @@
-import json
-import pytest
+# import json
+# import pytest
 
 from django.urls import reverse
 
@@ -13,6 +13,7 @@ from articles.models import Category
 
 class HomePageAPIViewTestCase(APITestCase):
 	url = reverse("articles:home_page")
+
 	def setUp(self):
 		self.username = "john"
 		self.email = "john@gmail.com"
