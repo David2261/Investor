@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth import authenticate
 
 from .models import User
 
@@ -34,6 +35,7 @@ class LoginSerializer(serializers.Serializer):
 	token = serializers.CharField(max_length=255, read_only=True)
 
 	def validate(self, data):
+		username = data.get('username', None)
 		email = data.get('email', None)
 		password = data.get('password', None)
 
@@ -47,7 +49,7 @@ class LoginSerializer(serializers.Serializer):
 				'A password is required to log in.'
 			)
 
-		user = authenticate(username=email, password=password)
+		user = authenticate(username=username, email=email, password=password)
 
 		if user is None:
 			raise serializers.ValidationError(

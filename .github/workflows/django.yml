@@ -50,5 +50,6 @@ jobs:
         run: |
           mkdir /home/runner/work/Investor/Investor/__logs__
           touch /home/runner/work/Investor/Investor/__logs__/error.log
+          chmod 777 -R .
           python3 manage.py test
-          pytest hello
+          pytest --ff -v hello
