@@ -1,0 +1,29 @@
+from rest_framework import serializers
+from django.contrib.auth.models import User, Group
+
+from authentication.models import User
+from .models import Ip, Category, Articles
+
+
+class IpSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Ip
+		fields = '__all__'
+
+
+class CategorySerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Category
+		fields = '__all__'
+
+
+class ArticlesSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Articles
+		fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = User
+		fields = '__all__'

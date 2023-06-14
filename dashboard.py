@@ -7,10 +7,10 @@
 """
 
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
+# from django.urls import reverse
 
 from grappelli.dashboard import modules, Dashboard
-from grappelli.dashboard.utils import get_admin_site_name
+# from grappelli.dashboard.utils import get_admin_site_name
 
 
 class CustomIndexDashboard(Dashboard):
@@ -19,14 +19,14 @@ class CustomIndexDashboard(Dashboard):
     """
 
     def init_with_context(self, context):
-        site_name = get_admin_site_name(context)
+        # site_name = get_admin_site_name(context)
 
         # добавить группу для "Administration" & "Applications"
         self.children.append(modules.Group(
             _('Group: Administration & Applications'),
             column=1,
             collapsible=True,
-            children = [
+            children=[
                 modules.AppList(
                     _('Administration'),
                     column=1,

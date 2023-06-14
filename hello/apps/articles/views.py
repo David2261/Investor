@@ -1,74 +1,130 @@
+from datetime import datetime, date
 import logging
-from . models  import *
-from django.urls import reverse
-from django.template import RequestContext
-from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponseRedirect, HttpResponseNotFound, \
-	JsonResponse
+from django.shortcuts import render
+from django.db.models import Q
+from django.conf import settings
+from django.views import View
+from django.contrib.auth.decorators import login_required
+# DRF - API
+from rest_framework.generics import ListCreateAPIView
+# from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 
-#  'exception/404.html'
+# from .forms import RegisterForm
+from authentication.models import User
+from .models import Category, Articles, Ip
+from .serializers import (
+	IpSerializer,
+	CategorySerializer,
+	ArticlesSerializer,
+	UserSerializer
+)
 
-logger = logging.getLogger(__name__)
-
-
-def pageNotFound(request):
-    return render(request, "exception/404.html")
-
-
-def log_views(request):
-	logger.warning('Hello, beta test!')
-	return JsonResponse({'success': True})
-
-def index(request):
-	return HttpResponseRedirect("home")
-
-
-def help(request):
-	return render(request, "articles/help.html")
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("dev")
+log_info = logging.getLogger("root")
 
 
-def setting(request):
-	return render(request, "articles/setting.html")
+# https://dev.to/earthcomfy/class-based-views-in-drf-are-powerful-19dg
+# https://www.cdrf.co/3.13/rest_framework.views/APIView.html
+# https://fixmypc.ru/post/realizatsiia-token-autentifikatsii-s-django-rest-framework/
 
 
-def home(request):
-	return render(request, "articels/home.html")
+def get_client_ip(request):
+	logger.info("Включен 'get_client_ip'")
+	x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+	if x_forwarded_for:
+		ip = x_forwarded_for.split(',')[0]
+	else:
+		ip = request.META.get('REMOTE_ADDR')
+	return ip
 
 
-def home_checklist(request, learn_id, idea_id, motiv_id):
-	pass
+class ArticlesList(ListCreateAPIView):
+	queryset = Articles.objects.all()
+	serializer_class = ArticlesSerializer
 
 
-def idea_article(request):
-	article = Article.objects.order_by('-pub_date')
-	return render(request, "post/idea.html", {'idea':article})
+class CategoriesList(ListCreateAPIView):
+	queryset = Category.objects.all()
+	permissions_classes = permissions.AllowAny
+	serializer_class = CategorySerializer
 
 
-# Открывает отдельную страницу статьи по id
-def idea_checklist(request, article_id):
-	try:
-		idea_cl = Article.objects.get(id = article_id)
-		idea_cl.idea_views=idea_cl.idea_views+1
-		idea_cl.idea_views.save()
-		return render(request, 'list.html', {'idea':idea_cl})
-	except:
-		return redirect("pageNotFound")
+class IpList(ListCreateAPIView):
+	queryset = Ip.objects.all()
+	permissions_classes = permissions.AllowAny
+	serializer_class = IpSerializer
 
 
-def learn(request):
-	pass
+class UserList(ListCreateAPIView):
+	queryset = User.objects.all()
+	permissions_classes = [
+		permissions.AllowAny
+	]
+	serializer_class = UserSerializer
 
 
-# Открывает отдельную страницу статьи по id
-def learn_checklist(request, learn_id):
-	pass
-	
+class HomePage(ListCreateAPIView):
+	queryset = Articles.objects.all()
+	serializer_class = ArticlesSerializer
+	permission_classes = [permissions.IsAuthenticated]
+
+	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'HomePage'")
+		topics = Category.objects.all()
+		articles = Articles.objects.exclude(
+			time_create__gt=datetime.date(2022, 10, 3))[0:5]
+		articles = Articles.objects.all()
+		context = {'topics': topics, 'articles': articles}
+		return render(request, "articles/home.html", context)
+
+	# # Какие данные будут передаваться
+	# def get_context_data(self, **kwargs):
+	# 	logger.info("Включен 'get_context_data' в 'HomePage'")
+	# 	context = super().get_context_data(**kwargs)
+	# 	context['today'] = date.today()
+	# 	return context
 
 
-def motiv(request):
-	pass
+class BlogPage(View):
+
+	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'BlogPage'")
+		ip = get_client_ip(request)
+		q = request.GET.get('q') if request.get('q') is not None else ''
+		articles = Articles.objects.filter(
+			Q(category__name__icontains=q) | Q(
+				title__icontains=q) | Q(descrition__icontains=q)
+		)
+		topics = Category.objects()[0:5]
+		if Ip.objects.filter(ip=ip).exists():
+			articles.views.add(Ip.objects.get(ip=ip))
+		else:
+			Ip.objects.create(ip=ip)
+			articles.views.add(Ip.objects.get(ip=ip))
+		context = {'articles': articles, 'topics': topics}
+		return render(request, "articles/blog.html", context)
+
+	def get_context_data(self, **kwargs):
+		logger.info("Включен 'get_context_data' в 'HomePage'")
+		context = super().get_context_data(**kwargs)
+		context['today'] = date.today()
+		return context
 
 
-# Открывает отдельную страницу статьи по id
-def motiv_checklist(request, motiv_id):
-	pass
+class ProfilePage(View):
+	@login_required
+	def get(self, request, *args, **kwargs):
+		logger.info("Включен 'get' в 'ProfilePage'")
+		return render(request, "user/profile.html")
+
+
+# class RegisterPage(FormView):
+# 	form_class = RegisterForm
+# 	template_name = 'registration/register.html'
+# 	success_url = reverse_lazy("articles:profile")
+
+# 	def form_valid(self, form):
+# 		form.save()
+# 		return super().form_valid(form)

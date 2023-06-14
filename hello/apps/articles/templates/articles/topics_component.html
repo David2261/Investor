@@ -1,0 +1,14 @@
+
+<nav class="category">
+	<ul class="category_list">
+		<li>
+	    	<a href="{% url 'articles:home_page' %}" class="active">All <span>{{topics.count}}</span></a>
+	    </li>
+		{% for topic in topics %}
+		<li class="category_item">
+			<a href="{% url 'articles:home_page' %}?q={{topic.name}}">{{topic.name}} <span>{{topic.articles_set.all.count}}</span></a>
+		</li>
+		{% endfor %}
+	</ul>
+</nav>
+

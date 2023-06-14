@@ -1,89 +1,108 @@
-import datetime
+# -*- coding: utf-8 -*-
+import uuid
+import logging
+
 from django.db import models
-from django.contrib.contenttypes.models import ContentType
-from django.utils import timezone
-from django.core import serializers
-from tinymce.models import HTMLField
+from django.urls import reverse
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+
+from authentication.models import User
+from .regular_models import BasePost
+from .fields import WEBPField
 
 
-# Блок по созданию Топиков для статей.
-class Genre(models.Model):
-    name = models.CharField(max_length=256, verbose_name='Категория', \
-    	help_text="Enter a article genre (e.g. learn, idea, motivation, gallery)")
-
-    def __str__(self):
-        return self.name
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("dev")
+log_info = logging.getLogger("root")
 
 
-# Блок для создания статей
-class Article(models.Model):
-	Idea = 'ID'
-	Learn = 'LN'
-	Motivation = 'mt'
-	Blog = 'bl'
-
-	# Переменная по созданию определенных категорий, т.е.
-	# на каждой странице своя тема.
-	CATEGORY = [
-		(Idea, 'Idea'),
-		(Learn, 'Learn'),
-		(Motivation, 'Motivation'),
-		(Blog, 'Blog'),
-	]
-
-	title = models.CharField('Название статьи', max_length = 120)
-	text = HTMLField('Текст статьи')
-	genre = models.ManyToManyField(
-		Genre,
-		help_text="Select a genre for this article"
+STATUS_CHOICES = (
+		('draft', 'Draft'),
+		('published', 'Published'),
 	)
-	category = models.CharField(
-        max_length=2,
-        choices=CATEGORY,
-        default=Blog,
-    )
-	views = models.IntegerField('Просмотры', default=0)
-	image = models.ImageField(
-		null = True,
-		blank=True,
-		upload_to='Article',
-		help_text='150x150px',
-		verbose_name='Изображение'
-	)
-	pub_date = models.DateTimeField('Дата публикации', auto_now_add = True)
-	content = HTMLField(null=True)
 
-	def display_genre(self):
-		return ', '.join([ genre.name for genre in self.genre.all()[:3] ])
-		display_genre.short_description = 'Genre'
+
+class Ip(models.Model):
+	logger.info("Включен 'Ip models'")
+	ip = models.CharField(max_length=100)
 
 	def __str__(self):
-		return self.title
-
-	def was_published_recently(self):
-		return self.pub_date >= (
-			timezone.now() - datetime.timedelta(days = 7)
-		)
-	    
-	class Meta:
-				verbose_name = 'Статья'
-				verbose_name_plural = 'Статьи'
-				ordering = ["-id", "-pub_date"]
+		return self.ip
 
 
-class ArticleComment(models.Model):
-	article = models.ForeignKey(Article, on_delete = models.CASCADE)
-	author_name = models.CharField('Имя автора', max_length = 50)
-	comment_text = models.CharField('Текст комментария', max_length = 200)
-	pub_date_comment = models.DateTimeField(
-		'Дата написании',
-		auto_now_add = True
-	)
-
-	class Meta:
-			verbose_name = 'Комментарий'
-			verbose_name_plural = 'Комментарии'
-			ordering = ["-id", "-pub_date_comment"]
+class Category(models.Model):
+	logger.info("Включен 'Category models'")
+	name = models.CharField(verbose_name=_("Category"), max_length=255)
+	slug = models.SlugField(
+		max_length=255,
+		unique=True,
+		db_index=True,
+		null=True,
+		verbose_name='URL')
 
 	def __str__(self):
-		return self.author_name
+		return self.name
+
+	def get_absolute_url(self):
+		return reverse("category", kwargs={'cat_slug': self.slug})
+
+	class Meta:
+		verbose_name = _('Category')
+		verbose_name_plural = _('Categories')
+		ordering = ('id', 'name')
+
+
+def image_folder(instance, filename):
+	""" Generate random name with UUID """
+	return 'photos/{}.webp'.format(uuid.uuid4().hex)
+
+
+class Articles(BasePost):
+	logger.info("Включен 'Articles models'")
+	description = models.TextField(
+			verbose_name=_("The text of the article"),
+			null=False,
+			blank=False)
+	category = models.ForeignKey(Category, on_delete=models.CASCADE)
+	img = WEBPField(
+			upload_to=image_folder,
+			verbose_name=_("Image"),
+			height_field=None,
+			width_field=None,
+			max_length=100)
+	time_update = models.DateTimeField(
+			auto_now=True,
+			verbose_name=_("Time of change"))
+	is_published = models.BooleanField(
+			default=True,
+			verbose_name=_("Publication"))
+	views = models.ManyToManyField(Ip, related_name="post_views", blank=True)
+	slug = models.SlugField(
+			max_length=255,
+			unique=True,
+			db_index=True,
+			null=True,
+			verbose_name='URL')
+
+	def get_absolute_url(self):
+		return reverse("post", kwargs={'post_slug': self.slug})
+
+	def total_views(self):
+		return self.views.count()
+
+	@property
+	def comments(self):
+		return self.comment_set.all()
+
+	class Meta:
+		verbose_name = _("Article")
+		verbose_name_plural = _("Articles")
+		ordering = ('-time_update', '-time_create')
+
+
+class Comment(BasePost):
+	logger.info("Включен 'Comment models'")
+	post = models.ForeignKey(Articles, on_delete=models.CASCADE)
+	text = models.CharField(max_length=280, blank=False)
+	author = models.ForeignKey(User, on_delete=models.CASCADE)

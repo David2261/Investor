@@ -1,19 +1,24 @@
-# from django.contrib.auth.decorators import login_required
-from django.urls import path, include
-from . import views
+# from rest_framework import routers
+from django.urls import path
+
+from .views import HomePage, ArticlesList, CategoriesList, IpList, UserList
+
+# Api
+# router = routers.DefaultRouter()
+
+# router.register(r'^ip/$', IpViewSet, 'ip')
+# # router.register(r'home/', HomePage, 'home')
+# # router.register(r'home/list/', ArticlesList, 'list')
+# router.register(r'^category/$', CategoryViewSet, 'category')
+# router.register(r'^articles/$', ArticlesViewSet, 'articles')
 
 app_name = 'articles'
 urlpatterns = [
-	path('', views.index),
-	path('log_view/', views.log_views),
-	path('home/', views.home, name='home'),
-	path('home/idea/', views.idea_article, name='idea'),
-	# path('home/idea/<int:idea_id>/', views.idea_checklist, name = 'idea_checklist'),
-	# path('home/learn/', views.learn, name='learn'),
-	# path('home/learn/<int:learn_id>/', views.learn_checklist, name='learn_checklist'),
-	# path('home/motiv/', views.motiv, name='motiv'),
-	# path('home/motiv/<int:motiv_id>/', views.motiv_checklist, name='motiv_checklist'),
-	path("help/", views.help, name='help'),
-	path("setting/", views.setting, name='setting'),
-	path("404/", views.pageNotFound, name="404")
+	path('home/', HomePage.as_view(), name='home_page'),
+	path('ip/list/', IpList.as_view(), name='ip_list'),
+	path('articles/list/', ArticlesList.as_view(), name='article_list'),
+	path('categories/list/', CategoriesList.as_view(), name='category_list'),
+	path('user/list/', UserList.as_view(), name='user_list'),
 ]
+
+# urlpatterns += router.urls

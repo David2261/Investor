@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home page{% endblock %}
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="base_block">
+	<div class="main_category">
+		{% include 'articles/topics_component.html' %}
+	</div>
+	<main class="main_content"></main>
+</div>
+
+{% endblock %}
