@@ -34,7 +34,7 @@ function App() {
     className="bg-gray-800">
         <Navbar />
     </nav>
-    <div className="container py-7" ref={ref}>
+    <div className="py-7" ref={ref}>
     <div className="empty_box"></div>
       <Routes >
         <Route path="/" exact element={ <Home /> } />
