@@ -13,6 +13,13 @@ $screen_phone: 'max_width: 425px';
 $screen_phoneMid: 'max_width: 375px';
 $screen_phoneSmall: 'max_width: 320px';
 
+
+
+h1, h2, h3,
+h4, h5, p {
+  font-family: $ff-text;
+}
+
 body {
   margin: 0;
   font-family: $ff-text;

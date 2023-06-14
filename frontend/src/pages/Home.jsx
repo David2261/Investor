@@ -28,10 +28,9 @@ export default class Home extends Component {
         return (
             <>
             <h1 className="text-center text-uppercase">investor home</h1>
-            <div className="pb-4">
-            <div className="position-relative pb-4 mt-4"><Slider /></div>
+
+            <div className="position-relative pb-4 mt-4 container"><Slider /></div>
             <div className="position-relative mt-4 pb-4"><Articles /></div>
-            </div>
             </>
         )
     }

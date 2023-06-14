@@ -50,10 +50,10 @@ function Posts(props) {
 	const content = props.data.map((data) =>
 		<div className="col d-flex align-items-start">
 		<div>
-			<h3>
+			<h3 className="articles-link-h3">
 				<NavLink to={data.url}>{data.name}</NavLink>
 			</h3>
-			<p>{data.date}</p>
+			<p><em>{data.date}</em></p>
 		</div>
 		</div>
 	);
@@ -68,15 +68,21 @@ export class Articles extends Component {
 	render() {
 		return(
 			<>
-			<div className="articles_box container">
-				<div className="articles_header content-center mt-2">
-					<h2>
+			<div className="articles_box container ">
+				<div className="articles_header content-center">
+					<h2 className="pt-2">
 						<strong className="text-dark">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</strong>
 					</h2>
 				</div>
 				<div className="mt-2"></div>
-				<div className="row row-cols-1 row-cols-sm-4 row-cols-md-3 row-cols-lg-2 g-4 py-5">
+				<div className="row px-4 row-cols-1 row-cols-sm-4 row-cols-md-3 row-cols-lg-2 g-4 py-5">
 					<Posts data={Data} />
+				</div>
+				<div className="mt-2"></div>
+				<div className="articles_header content-center">
+					<NavLink to="#" className="btn btn-success">
+						<span>Все последние материалы сайта</span>
+					</NavLink>
 				</div>
 			</div>
 			</>
