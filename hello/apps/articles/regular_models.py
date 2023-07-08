@@ -21,6 +21,10 @@ class BasePost(models.Model):
 	time_create = models.DateTimeField(
 			auto_now_add=True,
 			verbose_name="Время создания")
+	slug = models.SlugField(
+			unique=True,
+			null=True,
+			verbose_name='URL')
 
 	class Meta:
 		abstract = True

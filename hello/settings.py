@@ -29,13 +29,13 @@ LOGGING = {
 			"level": "INFO",
 			"class": "logging.FileHandler",
 			"formatter": "standart",
-			"filename": './__logs__/main.log',
+			"filename": f'{BASE_DIR}/__logs__/main.log',
 		},
 		"dev_file": {
 			"level": "NOTSET",
 			"class": "logging.FileHandler",
 			"formatter": "exception",
-			"filename": './__logs__/error.log',
+			"filename": f'{BASE_DIR}/__logs__/error.log',
 		},
 	},
 	"loggers": {
@@ -87,6 +87,7 @@ INSTALLED_APPS = [
 ]
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
 	'whitenoise.middleware.WhiteNoiseMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
@@ -129,6 +130,12 @@ DATABASES = {
 		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 	}
 }
+
+CORS_ALLOWED_ORIGINS = [
+	"http://localhost:8080",
+	"http://127.0.0.1:8000",
+]
+
 """
 DATABASES = {
 	'default': {
@@ -172,8 +179,8 @@ REST_FRAMEWORK = {
 		'rest_framework.permissions.IsAuthenticated',
 	),
 	'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
+		'rest_framework.renderers.JSONRenderer',
+	)
 }
 
 # myaccount.google.com/lesssecureapps
