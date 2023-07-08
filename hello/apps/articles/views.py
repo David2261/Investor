@@ -1,13 +1,12 @@
-from datetime import datetime, date
 import logging
-from django.shortcuts import render
-from django.db.models import Q
+# from django.db.models import Q
 from django.conf import settings
-from django.views import View
-from django.contrib.auth.decorators import login_required
 # DRF - API
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
-# from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 
 # from .forms import RegisterForm
@@ -41,8 +40,97 @@ def get_client_ip(request):
 
 
 class ArticlesList(ListCreateAPIView):
+	permission_classes = [permissions.AllowAny]
 	queryset = Articles.objects.all()
 	serializer_class = ArticlesSerializer
+
+	def get(self, request, *args, **kwargs):
+		""" List with all articles """
+		return self.list(self.serializer_class.data, status=status.HTTP_200_OK)
+
+	def post(self, request, *args, **kwargs):
+		data = {
+			"title": request.data.get('title'),
+			"description": request.data.get('description'),
+			"category": request.data.get('category'),
+			"img": request.data.get('img'),
+			"user": request.user.id
+		}
+		serializer = ArticlesSerializer(data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return self.create(
+					serializer.data,
+					status=status.HTTP_201_CREATED)
+		return self.create(
+					serializer.errors,
+					status=status.HTTP_400_BAD_REQUEST)
+
+
+class ArticleDetail(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def get_object(self, article_id, category_id):
+		try:
+			return Articles.objects.get(id=article_id, category=category_id)
+		except Articles.DoesNotExist:
+			return None
+
+	def get(self, request, article_id, *args, **kwargs):
+		'''
+		Retrieves the Articles with given article_id
+		'''
+		article_instance = self.get_object(article_id, request.category.id)
+		if not article_instance:
+			return Response(
+				{"res": "Object with article id does not exists"},
+				status=status.HTTP_400_BAD_REQUEST
+			)
+
+		serializer = ArticlesSerializer(article_instance)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+	def put(self, request, article_id, *args, **kwargs):
+		'''
+		Updates the article item with given article_id if exists
+		'''
+		article_instance = self.get_object(article_id, request.user.id)
+		if not article_instance:
+			return Response(
+				{"res": "Object with article id does not exists"},
+				status=status.HTTP_400_BAD_REQUEST
+			)
+		data = {
+			"title": request.data.get('title'),
+			"description": request.data.get('description'),
+			"category": request.data.get('category'),
+			"img": request.data.get('img')
+		}
+		serializer = ArticlesSerializer(
+				instance=article_instance,
+				data=data,
+				partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_200_OK)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+	# 5. Delete
+	def delete(self, request, article_id, *args, **kwargs):
+		'''
+		Deletes the article item with given article_id if exists
+		'''
+		article_instance = self.get_object(article_id, request.user.id)
+		if not article_instance:
+			return Response(
+				{"res": "Object with article id does not exists"},
+				status=status.HTTP_400_BAD_REQUEST
+			)
+		article_instance.delete()
+		return Response(
+			{"res": "Object deleted!"},
+			status=status.HTTP_200_OK
+		)
 
 
 class CategoriesList(ListCreateAPIView):
@@ -65,59 +153,37 @@ class UserList(ListCreateAPIView):
 	serializer_class = UserSerializer
 
 
-class HomePage(ListCreateAPIView):
-	queryset = Articles.objects.all()
-	serializer_class = ArticlesSerializer
-	permission_classes = [permissions.IsAuthenticated]
+# class BlogPage(View):
 
-	def get(self, request, *args, **kwargs):
-		logger.info("Включен 'get' в 'HomePage'")
-		topics = Category.objects.all()
-		articles = Articles.objects.exclude(
-			time_create__gt=datetime.date(2022, 10, 3))[0:5]
-		articles = Articles.objects.all()
-		context = {'topics': topics, 'articles': articles}
-		return render(request, "articles/home.html", context)
+# 	def get(self, request, *args, **kwargs):
+# 		logger.info("Включен 'get' в 'BlogPage'")
+# 		ip = get_client_ip(request)
+# 		q = request.GET.get('q') if request.get('q') is not None else ''
+# 		articles = Articles.objects.filter(
+# 			Q(category__name__icontains=q) | Q(
+# 				title__icontains=q) | Q(descrition__icontains=q)
+# 		)
+# 		topics = Category.objects()[0:5]
+# 		if Ip.objects.filter(ip=ip).exists():
+# 			articles.views.add(Ip.objects.get(ip=ip))
+# 		else:
+# 			Ip.objects.create(ip=ip)
+# 			articles.views.add(Ip.objects.get(ip=ip))
+# 		context = {'articles': articles, 'topics': topics}
+# 		return render(request, "articles/blog.html", context)
 
-	# # Какие данные будут передаваться
-	# def get_context_data(self, **kwargs):
-	# 	logger.info("Включен 'get_context_data' в 'HomePage'")
-	# 	context = super().get_context_data(**kwargs)
-	# 	context['today'] = date.today()
-	# 	return context
-
-
-class BlogPage(View):
-
-	def get(self, request, *args, **kwargs):
-		logger.info("Включен 'get' в 'BlogPage'")
-		ip = get_client_ip(request)
-		q = request.GET.get('q') if request.get('q') is not None else ''
-		articles = Articles.objects.filter(
-			Q(category__name__icontains=q) | Q(
-				title__icontains=q) | Q(descrition__icontains=q)
-		)
-		topics = Category.objects()[0:5]
-		if Ip.objects.filter(ip=ip).exists():
-			articles.views.add(Ip.objects.get(ip=ip))
-		else:
-			Ip.objects.create(ip=ip)
-			articles.views.add(Ip.objects.get(ip=ip))
-		context = {'articles': articles, 'topics': topics}
-		return render(request, "articles/blog.html", context)
-
-	def get_context_data(self, **kwargs):
-		logger.info("Включен 'get_context_data' в 'HomePage'")
-		context = super().get_context_data(**kwargs)
-		context['today'] = date.today()
-		return context
+# 	def get_context_data(self, **kwargs):
+# 		logger.info("Включен 'get_context_data' в 'HomePage'")
+# 		context = super().get_context_data(**kwargs)
+# 		context['today'] = date.today()
+# 		return context
 
 
-class ProfilePage(View):
-	@login_required
-	def get(self, request, *args, **kwargs):
-		logger.info("Включен 'get' в 'ProfilePage'")
-		return render(request, "user/profile.html")
+# class ProfilePage(View):
+# 	@login_required
+# 	def get(self, request, *args, **kwargs):
+# 		logger.info("Включен 'get' в 'ProfilePage'")
+# 		return render(request, "user/profile.html")
 
 
 # class RegisterPage(FormView):

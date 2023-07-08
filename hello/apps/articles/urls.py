@@ -1,7 +1,12 @@
 # from rest_framework import routers
 from django.urls import path
 
-from .views import HomePage, ArticlesList, CategoriesList, IpList, UserList
+from .views import (
+	ArticleDetail,
+	ArticlesList,
+	CategoriesList,
+	IpList,
+	UserList)
 
 # Api
 # router = routers.DefaultRouter()
@@ -14,9 +19,12 @@ from .views import HomePage, ArticlesList, CategoriesList, IpList, UserList
 
 app_name = 'articles'
 urlpatterns = [
-	path('home/', HomePage.as_view(), name='home_page'),
 	path('ip/list/', IpList.as_view(), name='ip_list'),
-	path('articles/list/', ArticlesList.as_view(), name='article_list'),
+	path('articles/list/', ArticlesList.as_view(), name='articles_list'),
+	path(
+			'articles/<slug:post_slug>/',
+			ArticleDetail.as_view(),
+			name='article_detail'),
 	path('categories/list/', CategoriesList.as_view(), name='category_list'),
 	path('user/list/', UserList.as_view(), name='user_list'),
 ]

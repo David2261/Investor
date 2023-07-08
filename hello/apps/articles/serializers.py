@@ -21,6 +21,10 @@ class ArticlesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Articles
 		fields = '__all__'
+		lookup_field = 'slug'
+		extra_kwargs = {
+			'url': {'lookup_field': 'slug'}
+		}
 
 
 class UserSerializer(serializers.ModelSerializer):

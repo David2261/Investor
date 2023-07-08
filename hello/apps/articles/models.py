@@ -6,6 +6,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 from authentication.models import User
 from .regular_models import BasePost
@@ -78,12 +79,6 @@ class Articles(BasePost):
 			default=True,
 			verbose_name=_("Publication"))
 	views = models.ManyToManyField(Ip, related_name="post_views", blank=True)
-	slug = models.SlugField(
-			max_length=255,
-			unique=True,
-			db_index=True,
-			null=True,
-			verbose_name='URL')
 
 	def get_absolute_url(self):
 		return reverse("post", kwargs={'post_slug': self.slug})
@@ -94,6 +89,10 @@ class Articles(BasePost):
 	@property
 	def comments(self):
 		return self.comment_set.all()
+
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		super(Articles, self).save(*args, **kwargs)
 
 	class Meta:
 		verbose_name = _("Article")
@@ -106,3 +105,7 @@ class Comment(BasePost):
 	post = models.ForeignKey(Articles, on_delete=models.CASCADE)
 	text = models.CharField(max_length=280, blank=False)
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		super(Articles, self).save(*args, **kwargs)
