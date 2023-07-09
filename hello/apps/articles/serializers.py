@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 
 from authentication.models import User
 from .models import Ip, Category, Articles
@@ -21,10 +21,6 @@ class ArticlesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Articles
 		fields = '__all__'
-		lookup_field = 'slug'
-		extra_kwargs = {
-			'url': {'lookup_field': 'slug'}
-		}
 
 
 class UserSerializer(serializers.ModelSerializer):
