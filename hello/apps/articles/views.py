@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 
@@ -41,11 +41,10 @@ def get_client_ip(request):
 	return ip
 
 
-class ArticlesList(ListCreateAPIView):
+class ArticlesList(ListAPIView):
 	permissions_classes = permissions.AllowAny
 	queryset = Articles.objects.all()
 	serializer_class = ArticlesSerializer
-	lookup_url_kwarg = 'post_slug'
 
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
@@ -79,26 +78,32 @@ class ArticleDetail(APIView):
 		return Response(serializer.data)
 
 
-class CategoriesList(ListCreateAPIView):
+class CategoriesList(ListAPIView):
 	queryset = Category.objects.all()
 	permissions_classes = permissions.AllowAny
 	serializer_class = CategorySerializer
 
 
-class CategoryDetail(APIView):
-	def get(self, request, cat_slug):
-		category = Category.objects.get(slug=cat_slug)
-		serializer = CategorySerializer(category)
-		return Response(serializer.data)
+class CategoryDetail(ListAPIView):
+	permissions_classes = permissions.AllowAny
+	serializer_class = ArticlesSerializer
+	lookup_field = 'slug'
+	lookup_url_kwarg = 'cat_slug'
+
+	def get_queryset(self):
+		posts = Articles.objects.filter(
+				category__slug=self.kwargs['cat_slug'],
+				is_published=True).select_related('category')
+		return posts
 
 
-class IpList(ListCreateAPIView):
+class IpList(ListAPIView):
 	queryset = Ip.objects.all()
 	permissions_classes = permissions.AllowAny
 	serializer_class = IpSerializer
 
 
-class UserList(ListCreateAPIView):
+class UserList(ListAPIView):
 	queryset = User.objects.all()
 	permissions_classes = [
 		permissions.AllowAny
