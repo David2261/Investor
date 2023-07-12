@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils.text import slugify
 
+from .options import check_lang
 from django.conf import settings
 import logging
 
@@ -30,7 +31,7 @@ class BasePost(models.Model):
 
 	def save(self, *args, **kwargs):
 		value = self.title
-		self.slug = slugify(value, allow_unicode=True)
+		self.slug = slugify(check_lang(value), allow_unicode=False)
 		super().save(*args, **kwargs)
 
 	class Meta:

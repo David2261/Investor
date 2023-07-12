@@ -11,6 +11,7 @@ from django.utils.text import slugify
 from authentication.models import User
 from .segregation.base_models import BasePost
 from .segregation.fields import WEBPField
+from .segregation.options import check_lang
 
 
 logging.config.dictConfig(settings.LOGGING)
@@ -51,7 +52,7 @@ class Category(models.Model):
 
 	def save(self, *args, **kwargs):
 		value = self.name
-		self.slug = slugify(value, allow_unicode=True)
+		self.slug = slugify(check_lang(value), allow_unicode=False)
 		super().save(*args, **kwargs)
 
 	class Meta:
@@ -100,7 +101,7 @@ class Articles(BasePost):
 		return self.comment_set.all()
 
 	def save(self, *args, **kwargs):
-		self.slug = slugify(self.title)
+		self.slug = slugify(check_lang(self.title))
 		super(Articles, self).save(*args, **kwargs)
 
 	class Meta:
@@ -116,5 +117,5 @@ class Comment(BasePost):
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def save(self, *args, **kwargs):
-		self.slug = slugify(self.title)
+		self.slug = slugify(check_lang(self.title))
 		super(Articles, self).save(*args, **kwargs)

@@ -2,13 +2,9 @@ import logging
 # from django.db.models import Q
 from django.conf import settings
 # DRF - API
-# from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 
 # from .forms import RegisterForm

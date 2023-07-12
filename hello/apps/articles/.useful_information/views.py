@@ -152,13 +152,13 @@ class TemplateResponseMixin:
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs.setdefault('content_type', self.content_type)
-        return response_class(
-            request=self.request,
-            template=self.get_template_names,
-            context=context,
-            using=self.template_engine,
-            **response_kwargs
-        )
+        # return response_class(
+        #     request=self.request,
+        #     template=self.get_template_names,
+        #     context=context,
+        #     using=self.template_engine,
+        #     **response_kwargs
+        # )
 
     """
     Возвращает список имен шаблонов, которые будут использоваться
