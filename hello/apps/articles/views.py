@@ -18,7 +18,8 @@ from .serializers import (
 	IpSerializer,
 	CategorySerializer,
 	ArticlesSerializer,
-	UserSerializer
+	UserSerializer,
+	ArticleDetailSerializer
 )
 
 logging.config.dictConfig(settings.LOGGING)
@@ -43,7 +44,7 @@ def get_client_ip(request):
 
 class ArticlesList(ListAPIView):
 	permissions_classes = permissions.AllowAny
-	queryset = Articles.objects.all()
+	queryset = Articles.objects.filter(is_published=True)
 	serializer_class = ArticlesSerializer
 
 	def get(self, request, *args, **kwargs):
@@ -71,11 +72,17 @@ class ArticlesList(ListAPIView):
 				status=status.HTTP_400_BAD_REQUEST)
 
 
-class ArticleDetail(APIView):
-	def get(self, request, post_slug):
-		article = Articles.objects.get(slug=post_slug)
-		serializer = ArticlesSerializer(article)
-		return Response(serializer.data)
+class ArticleDetail(RetrieveAPIView):
+	permissions_classes = permissions.AllowAny
+	queryset = Articles.objects.filter(is_published=True)
+	serializer_class = ArticleDetailSerializer
+	lookup_field = 'slug'
+	lookup_url_kwarg = 'post_slug'
+
+	# def get(self, request, post_slug):
+	# 	post = self.get_object(post_slug)
+	# 	serializer = ArticlesSerializer(post)
+	# 	return Response(serializer.data)
 
 
 class CategoriesList(ListAPIView):
