@@ -9,8 +9,9 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
 from authentication.models import User
-from .regular_models import BasePost
-from .fields import WEBPField
+from .segregation.base_models import BasePost
+from .segregation.fields import WEBPField
+from .segregation.options import check_lang
 
 
 logging.config.dictConfig(settings.LOGGING)
@@ -26,7 +27,7 @@ STATUS_CHOICES = (
 
 class Ip(models.Model):
 	logger.info("Включен 'Ip models'")
-	ip = models.CharField(max_length=100)
+	ip = models.CharField(editable=False, max_length=100)
 
 	def __str__(self):
 		return self.ip
@@ -34,19 +35,25 @@ class Ip(models.Model):
 
 class Category(models.Model):
 	logger.info("Включен 'Category models'")
-	name = models.CharField(verbose_name=_("Category"), max_length=255)
+	name = models.CharField(
+			verbose_name=_("Category"),
+			max_length=255)
 	slug = models.SlugField(
-		max_length=255,
-		unique=True,
-		db_index=True,
-		null=True,
-		verbose_name='URL')
+			default='',
+			editable=False,
+			max_length=255,
+			verbose_name="URL")
 
 	def __str__(self):
 		return self.name
 
 	def get_absolute_url(self):
 		return reverse("category", kwargs={'cat_slug': self.slug})
+
+	def save(self, *args, **kwargs):
+		value = self.name
+		self.slug = slugify(check_lang(value), allow_unicode=False)
+		super().save(*args, **kwargs)
 
 	class Meta:
 		verbose_name = _('Category')
@@ -78,7 +85,10 @@ class Articles(BasePost):
 	is_published = models.BooleanField(
 			default=True,
 			verbose_name=_("Publication"))
-	views = models.ManyToManyField(Ip, related_name="post_views", blank=True)
+	views = models.ManyToManyField(
+			Ip, related_name="post_views",
+			editable=False,
+			blank=True)
 
 	def get_absolute_url(self):
 		return reverse("post", kwargs={'post_slug': self.slug})
@@ -91,7 +101,7 @@ class Articles(BasePost):
 		return self.comment_set.all()
 
 	def save(self, *args, **kwargs):
-		self.slug = slugify(self.title)
+		self.slug = slugify(check_lang(self.title))
 		super(Articles, self).save(*args, **kwargs)
 
 	class Meta:
@@ -107,5 +117,5 @@ class Comment(BasePost):
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def save(self, *args, **kwargs):
-		self.slug = slugify(self.title)
+		self.slug = slugify(check_lang(self.title))
 		super(Articles, self).save(*args, **kwargs)

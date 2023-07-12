@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.utils.text import slugify
 
+from .options import check_lang
 from django.conf import settings
 import logging
 
@@ -22,9 +24,15 @@ class BasePost(models.Model):
 			auto_now_add=True,
 			verbose_name="Время создания")
 	slug = models.SlugField(
-			unique=True,
-			null=True,
-			verbose_name='URL')
+			default='',
+			editable=False,
+			max_length=255,
+			verbose_name="URL")
+
+	def save(self, *args, **kwargs):
+		value = self.title
+		self.slug = slugify(check_lang(value), allow_unicode=False)
+		super().save(*args, **kwargs)
 
 	class Meta:
 		abstract = True

@@ -2,11 +2,9 @@ import logging
 # from django.db.models import Q
 from django.conf import settings
 # DRF - API
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework import permissions
 
 # from .forms import RegisterForm
@@ -16,7 +14,8 @@ from .serializers import (
 	IpSerializer,
 	CategorySerializer,
 	ArticlesSerializer,
-	UserSerializer
+	UserSerializer,
+	ArticleDetailSerializer
 )
 
 logging.config.dictConfig(settings.LOGGING)
@@ -39,14 +38,16 @@ def get_client_ip(request):
 	return ip
 
 
-class ArticlesList(ListCreateAPIView):
-	permission_classes = [permissions.AllowAny]
-	queryset = Articles.objects.all()
+class ArticlesList(ListAPIView):
+	permissions_classes = permissions.AllowAny
+	queryset = Articles.objects.filter(is_published=True)
 	serializer_class = ArticlesSerializer
 
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
-		return self.list(self.serializer_class.data, status=status.HTTP_200_OK)
+		return self.list(
+				self.serializer_class.data,
+				status=status.HTTP_200_OK)
 
 	def post(self, request, *args, **kwargs):
 		data = {
@@ -63,89 +64,49 @@ class ArticlesList(ListCreateAPIView):
 					serializer.data,
 					status=status.HTTP_201_CREATED)
 		return self.create(
-					serializer.errors,
-					status=status.HTTP_400_BAD_REQUEST)
+				serializer.errors,
+				status=status.HTTP_400_BAD_REQUEST)
 
 
-class ArticleDetail(APIView):
-	permission_classes = [IsAuthenticated]
+class ArticleDetail(RetrieveAPIView):
+	permissions_classes = permissions.AllowAny
+	queryset = Articles.objects.filter(is_published=True)
+	serializer_class = ArticleDetailSerializer
+	lookup_field = 'slug'
+	lookup_url_kwarg = 'post_slug'
 
-	def get_object(self, article_id, category_id):
-		try:
-			return Articles.objects.get(id=article_id, category=category_id)
-		except Articles.DoesNotExist:
-			return None
-
-	def get(self, request, article_id, *args, **kwargs):
-		'''
-		Retrieves the Articles with given article_id
-		'''
-		article_instance = self.get_object(article_id, request.category.id)
-		if not article_instance:
-			return Response(
-				{"res": "Object with article id does not exists"},
-				status=status.HTTP_400_BAD_REQUEST
-			)
-
-		serializer = ArticlesSerializer(article_instance)
-		return Response(serializer.data, status=status.HTTP_200_OK)
-
-	def put(self, request, article_id, *args, **kwargs):
-		'''
-		Updates the article item with given article_id if exists
-		'''
-		article_instance = self.get_object(article_id, request.user.id)
-		if not article_instance:
-			return Response(
-				{"res": "Object with article id does not exists"},
-				status=status.HTTP_400_BAD_REQUEST
-			)
-		data = {
-			"title": request.data.get('title'),
-			"description": request.data.get('description'),
-			"category": request.data.get('category'),
-			"img": request.data.get('img')
-		}
-		serializer = ArticlesSerializer(
-				instance=article_instance,
-				data=data,
-				partial=True)
-		if serializer.is_valid():
-			serializer.save()
-			return Response(serializer.data, status=status.HTTP_200_OK)
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-	# 5. Delete
-	def delete(self, request, article_id, *args, **kwargs):
-		'''
-		Deletes the article item with given article_id if exists
-		'''
-		article_instance = self.get_object(article_id, request.user.id)
-		if not article_instance:
-			return Response(
-				{"res": "Object with article id does not exists"},
-				status=status.HTTP_400_BAD_REQUEST
-			)
-		article_instance.delete()
-		return Response(
-			{"res": "Object deleted!"},
-			status=status.HTTP_200_OK
-		)
+	# def get(self, request, post_slug):
+	# 	post = self.get_object(post_slug)
+	# 	serializer = ArticlesSerializer(post)
+	# 	return Response(serializer.data)
 
 
-class CategoriesList(ListCreateAPIView):
+class CategoriesList(ListAPIView):
 	queryset = Category.objects.all()
 	permissions_classes = permissions.AllowAny
 	serializer_class = CategorySerializer
 
 
-class IpList(ListCreateAPIView):
+class CategoryDetail(ListAPIView):
+	permissions_classes = permissions.AllowAny
+	serializer_class = ArticlesSerializer
+	lookup_field = 'slug'
+	lookup_url_kwarg = 'cat_slug'
+
+	def get_queryset(self):
+		posts = Articles.objects.filter(
+				category__slug=self.kwargs['cat_slug'],
+				is_published=True).select_related('category')
+		return posts
+
+
+class IpList(ListAPIView):
 	queryset = Ip.objects.all()
 	permissions_classes = permissions.AllowAny
 	serializer_class = IpSerializer
 
 
-class UserList(ListCreateAPIView):
+class UserList(ListAPIView):
 	queryset = User.objects.all()
 	permissions_classes = [
 		permissions.AllowAny

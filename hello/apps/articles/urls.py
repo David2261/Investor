@@ -1,4 +1,3 @@
-# from rest_framework import routers
 from django.urls import path
 
 from .views import (
@@ -6,27 +5,21 @@ from .views import (
 	ArticlesList,
 	CategoriesList,
 	IpList,
-	UserList)
-
-# Api
-# router = routers.DefaultRouter()
-
-# router.register(r'^ip/$', IpViewSet, 'ip')
-# # router.register(r'home/', HomePage, 'home')
-# # router.register(r'home/list/', ArticlesList, 'list')
-# router.register(r'^category/$', CategoryViewSet, 'category')
-# router.register(r'^articles/$', ArticlesViewSet, 'articles')
+	UserList,
+	CategoryDetail)
 
 app_name = 'articles'
 urlpatterns = [
-	path('ip/list/', IpList.as_view(), name='ip_list'),
-	path('articles/list/', ArticlesList.as_view(), name='articles_list'),
+	path('ip/list/', IpList.as_view(), name='ip-list'),
+	path('posts/all/', ArticlesList.as_view(), name='articles-list'),
 	path(
-			'articles/<slug:post_slug>/',
+			'article/<slug:post_slug>/',
 			ArticleDetail.as_view(),
-			name='article_detail'),
-	path('categories/list/', CategoriesList.as_view(), name='category_list'),
-	path('user/list/', UserList.as_view(), name='user_list'),
+			name='article-detail'),
+	path('category/all/', CategoriesList.as_view(), name='category-list'),
+	path(
+			'category/<slug:cat_slug>/',
+			CategoryDetail.as_view(),
+			name='category-detail'),
+	path('user/list/', UserList.as_view(), name='user-list'),
 ]
-
-# urlpatterns += router.urls
