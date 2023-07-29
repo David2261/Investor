@@ -1,9 +1,12 @@
-import { useState } from 'react'
-import { NavLink, Link } from "react-router-dom"
-import HeadLink from './Link.tsx'
+import { useState } from 'react';
+import { NavLink, Link } from "react-router-dom";
+// Components
+import HeadLink from './Link.tsx';
+// Hooks
 import useMediaQuery from "/src/hooks/useMediaQuery";
-
-import IH from '/src/assets/logo/IH.webp'
+// Assets
+import IH from '/src/assets/logo/IH.webp';
+import '/src/styles/Navbar.css';
 
 
 type Props = {};
@@ -14,7 +17,8 @@ const Navbar = (props: Props) => {
 	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
 
-	return <nav className="bg-white py-2 md:py-4">
+
+	return <nav className="bg-white py-2 md:py-4 w-full">
 			<div className="ml-4 flex px-4 mx-auto md:flex md:items-center w-full">
 				<div className="flex justify-between items-center w-32 md:w-44">
 					{/* LEFT SIDE */}
@@ -43,7 +47,7 @@ const Navbar = (props: Props) => {
 			</div>
 			{/* MOBILE MENU MODAL */}
 			{!isAboveMediumScreens && isMenuToggled && (
-				<div className="fixed right-0 bottom-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl">
+				<div className="fixed navbar-menu transition ease-out md:ease-in duration-500 right-0 bottom-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl">
 					{/* CLOSE ICON */}
 					<div className="flex justify-end p-12">
 						<button onClick={() => setIsMenuToggled(!isMenuToggled)}>

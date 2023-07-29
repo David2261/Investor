@@ -1,0 +1,10 @@
+
+.navbar-menu {
+	transform: translateX(150%);
+	animation: ani 0.3s forwards;
+}
+
+@keyframes ani {
+	0% {transform: translateX(150%);}
+	100% {transform: translateY(0);}
+}
