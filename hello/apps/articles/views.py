@@ -1,5 +1,7 @@
+import csv
 import logging
 # from django.db.models import Q
+from django.http import HttpResponse
 from django.conf import settings
 # DRF - API
 from rest_framework import status
@@ -75,11 +77,6 @@ class ArticleDetail(RetrieveAPIView):
 	lookup_field = 'slug'
 	lookup_url_kwarg = 'post_slug'
 
-	# def get(self, request, post_slug):
-	# 	post = self.get_object(post_slug)
-	# 	serializer = ArticlesSerializer(post)
-	# 	return Response(serializer.data)
-
 
 class CategoriesList(ListAPIView):
 	queryset = Category.objects.all()
@@ -112,6 +109,26 @@ class UserList(ListAPIView):
 		permissions.AllowAny
 	]
 	serializer_class = UserSerializer
+
+
+def generate_csv(request):
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename="file.csv"'
+	articles = Articles.objects.all()
+	categories = Category.objects.all()
+	writer = csv.writer(response)
+	for article in articles:
+		writer.writerow([
+			article.title,
+			article.description,
+			article.slug,
+			article.img,
+			article.is_published])
+	for category in categories:
+		writer.writerow([
+			category.name,
+			article.slug])
+	return response
 
 
 # class BlogPage(View):
