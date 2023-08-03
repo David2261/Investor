@@ -19,7 +19,8 @@ const Navbar = (props: Props) => {
 	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
 
 
-	return <nav className="bg-white py-2 md:py-4 w-full">
+	return <>
+		<nav className="bg-white py-2 md:py-4 w-full border-b-2 border-stone-200">
 			<div className="ml-4 flex px-4 mx-auto md:flex md:items-center w-full">
 				<div className="flex justify-between items-center w-32 md:w-44">
 					{/* LEFT SIDE */}
@@ -61,9 +62,10 @@ const Navbar = (props: Props) => {
 					<div className="ml-[33%] flex flex-col gap-10 text-2xl">
 					</div>
 				</div>
-          )}
-			<LiveStock />
+          	)}
 		</nav>
+		<LiveStock />
+		</>
 };
 
 export default Navbar;
