@@ -1,0 +1,19 @@
+
+version: '2'
+
+services:
+  web:
+    image: registry.github.com/David2261/Investor:${CI_BUILD_REF_NAME}
+    build: ./web
+    environment:
+      - SECRET_KEY
+    command: uwsgi /usr/src/app/uwsgi.ini
+    volumes:
+      - static:/srv/static
+    restart: unless-stopped
+
+  test:
+    image: registry.github.com/David2261/Investor:${CI_BUILD_REF_NAME}
+    command: python3 manage.py test
+    restart: 'no'
+
