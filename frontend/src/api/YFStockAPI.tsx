@@ -1,27 +1,23 @@
-// Alpha Vantage API for stock market prices
+// Yahoo Finance API for stock market prices
 import axios from 'axios';
 
 
 const URL = axios.create({
-	baseURL: 'https://alpha-vantage.p.rapidapi.com',
+	baseURL: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete',
 	headers: {
-		'content-type':'application/octet-stream',
-		'x-rapidapi-host': import.meta.env.VITE_X_RapidAPI_Host_API_AV,
-		'x-rapidapi-key': import.meta.env.VITE_X_RapidAPI_KeyAPI_AV,
+		'X-RapidAPI-Key': import.meta.env.VITE_X_RapidAPI_KeyAPI_YF,
+		'X-RapidAPI-Host': import.meta.env.VITE_X_RapidAPI_Host_API_YF
 	},
 });
 
 
 export default {
-	stockMarket: (ticker) =>
+	YFStockMarket: (ticker) =>
 	URL({
 		'method': 'GET',
-		'url': '/query',
 		'params': {
-			'outputsize':'compact',
-			'datatype':'json',
-			'function': 'TIME_SERIES_DAILY',
-			'symbol': ticker.toUpperCase()
+			'region': 'US',
+			'symbols': ticker.toUpperCase()
 		},
 		transformResponse: [function (data) {
 			// Делайте все, что вы хотите, чтобы преобразовать данные

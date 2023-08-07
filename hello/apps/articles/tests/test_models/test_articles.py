@@ -12,7 +12,6 @@ from articles.models import Category
 
 
 class HomePageAPIViewTestCase(APITestCase):
-	url = reverse("articles:home_page")
 
 	def setUp(self):
 		self.username = "john"
