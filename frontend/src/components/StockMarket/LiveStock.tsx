@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import api from '/src/api/AVStockAPI.tsx';
+import apiYF from '/src/api/YFStockAPI.tsx';
 
 
 interface IndexMarketProps {
@@ -25,9 +26,21 @@ export default function LiveStock() {
 	let [message, setMessage] = useState('')
     let [ticker, setTicker] = useState('')
 
+    // const fetchData = (name: string) => {
+    // 	setMessage('Loading...')
+    // 	api.stockMarket(name)
+    // 	.then((response) => {
+    // 		setResponseData(response.data)
+    // 		setMessage('')
+    // 	})
+    // 	.catch((error) => {
+    // 		setMessage('None')
+    // 		console.log(error)
+    // 	})
+    // }
     const fetchData = (name: string) => {
     	setMessage('Loading...')
-    	api.stockMarket(name)
+    	apiYF.YFStockMarket(name)
     	.then((response) => {
     		setResponseData(response.data)
     		setMessage('')
@@ -46,7 +59,7 @@ export default function LiveStock() {
 				<div><p className="text-gray-600 font-light">In the news</p></div>
 			</div>
 			<div className="flex flex-row">
-				<IndexMarket ticker="Dow Jones" percent={`${fetchData('fb') ? responseData.refreshed : ''}`} />
+				<IndexMarket ticker="Dow Jones" percent={`${fetchData('meta') ? responseData.refreshed : ''}`} />
 				<IndexMarket ticker="Nasdaq" percent="-0.12" />
 				<IndexMarket ticker="S&P 500" percent="0.43" />
 				<IndexMarket ticker="META" percent="-0.73" />
