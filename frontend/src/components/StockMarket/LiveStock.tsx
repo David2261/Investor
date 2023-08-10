@@ -52,8 +52,8 @@ export default function LiveStock() {
     }
 
 	return (
-		<div className="hiden md:flex w-full ml-4 py-4 items-center border-b-2 border-stone-200">
-			<div className="flex flex-col justify-between items-center w-auto">
+		<div className="hiden md:flex w-full py-4 items-center border-b-2 border-stone-200">
+			<div className="ml-4 flex flex-col justify-between items-center w-auto">
 				<div><p className="uppercase text-gray-400 font-bold">us markets open in:</p></div>
 				<div><p className="text-gray-400 font-bold">TIMER</p></div>
 				<div><p className="text-gray-600 font-light">In the news</p></div>
