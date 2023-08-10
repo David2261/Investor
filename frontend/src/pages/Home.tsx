@@ -47,6 +47,38 @@ const DATANEWS = [
 	},
 ];
 
+const DATAPOSTS = [
+	{
+		id: 1,
+		category: 'Markets',
+		title: 'Bearish investor Boaz Weinstein is feeling the pain from this year\'s unexpected stock rally',
+		text: "The Enneagram is the latest personality typology to penetrate the zeitgeist. From Hogwarts houses to horoscopes, humans love to categorize ourselves.",
+		img: "http://dummyimage.com/300x200/4d494d/686a82.gif&text=placeholder+image",
+	},
+	{
+		id: 2,
+		category: 'NEWS',
+		title: 'Enneagrams are the new horoscopes',
+		text: "Tracy Anderson memberships are the ultimate Hamptons status symbol. But some devotees say the classes have turned into a chaotic, overpriced mess.",
+		img: "http://dummyimage.com/300x200/4d494d/686a82.gif&text=placeholder+image",
+	},
+	{
+		id: 3,
+		category: 'RETAIL',
+		title: 'Chaos in the Hamptons: Tracy Anderson devotees gripe about $5,500 mats, $90 classes, and power struggles among \'queen bees\'',
+		text: "PAK'nSAVE's money-saving bot used ChatGPT to recommend recipes based on leftover ingredients, but it offered up some potentially deadly combinations.",
+		img: "http://dummyimage.com/300x200/4d494d/686a82.gif&text=placeholder+image",
+	},
+	{
+		id: 4,
+		category: 'TECH',
+		title: 'Months after an AI deepfake of the pontiff in a puffy coat went viral, Pope Francis is warning about the dangers of AI',
+		text: "The Vatican released a statement where Pope Francis speaks on AI, its potential harm, and need for tech to service humanity.",
+		img: "http://dummyimage.com/300x200/4d494d/686a82.gif&text=placeholder+image",
+	},
+];
+
+
 const contentList = DATA.map(value => 
 	// return <div><ContentPost title={value.title} /></div>;
 	<Fragment key={value.id}>
@@ -73,8 +105,19 @@ const ContentNews = DATANEWS.map(value =>
 		<div className="w-full mb-4">
 			<h2 className="font-bold text-2xl hover:underline">{value.title}</h2>
 		</div>
-		<div className="w-full mb-6">
-			<img className="object-cover w-auto h-auto" src="http://dummyimage.com/600x300/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
+		<div className="w-full pb-6 border-b-2">
+			<img className="object-cover w-full h-auto" src="http://dummyimage.com/600x300/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
+		</div>
+	</Fragment>
+);
+
+const ContentPost = DATAPOSTS.map(value =>
+	<Fragment key={value.id}>
+		<div className="w-full flex flex-col">
+			<p className="text-lg uppercase text-sky-500">{value.category}</p>
+			<p className="text-lg font-bold">{value.title}</p>
+			<p className="text-lg text-slate-700">{value.text}</p>
+			<img className="w-full h-auto pb-4 border-b-2" src={value.img} alt="" />
 		</div>
 	</Fragment>
 );
@@ -125,8 +168,11 @@ export default class Home extends Component {
 				</div>
 				<div className="grid grid-cols-3 w-full gap-20">
 					<div className="mt-10 col-span-2">
-						<div className="w-full flex flex-col ml-10 border-b-2">
+						<div className="w-full flex flex-col ml-10">
 							{ContentNews}
+							<div className="w-full grid grid-cols-2 gap-4">
+								{ ContentPost }
+							</div>
 						</div>
 					</div>
 					<div className="flex flex-col mx-4">
