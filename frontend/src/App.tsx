@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 // Components
 import Navbar from './components/Navbar.tsx';
+import Footer from './components/Footer.tsx';
+
 // pages
 import Home from './pages/Home.tsx';
 
@@ -24,6 +26,7 @@ function App() {
         <Route path="/admin/register" element={ <RegisterAdmin /> } />
         */}
       </Routes>
+      <Footer />
     </>
   )
 }
