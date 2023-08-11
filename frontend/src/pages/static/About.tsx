@@ -29,6 +29,40 @@ const About = () => {
 				</div>
 			</div>
 		</div>
+		<div className="py-12 px-10">
+			<div className="bg-slate-100 rounded-md px-2 py-2">
+				<p className="italic text-gray text-xl">&#171;Покупай, когда остальные продают, и удерживай до тех пор, пока кто-нибудь не захочет это купить. Это не просто лозунг. Это суть успешного инвестирования.&#187;</p>
+			</div>
+			<div className="py-4 px-2 flex flex-row">
+				<img className="rounded-full" src="http://dummyimage.com/50x50/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
+				<div className="px-4 flex flex-col">
+					<p className="font-bold text-lg">Пол Гетти (J. Paul Getty)</p>
+					<p className="text-gray font-light text-sm">Американский промышленник, один из первых в истории долларовых миллиардеров</p>
+				</div>
+			</div>
+		</div>
+		<div className="py-10 px-10">
+			<div className="flex justify-center">
+				<p className="font-bold text-2xl">Основные цели проекта</p>
+			</div>
+			<div className="py-4 grid grid-cols-3 gap-10">
+				<div className="flex flex-col justify-center gap-5">
+					<img className="rounded-md" src="http://dummyimage.com/200x150/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
+					<p className="text-xl text-center">Дивиденды</p>
+					<p className="font-light text-center">Поиск компаний, которые платят стабильно высокие дивиденды акционерам</p>
+				</div>
+				<div className="flex flex-col justify-center gap-5">
+					<img className="rounded-md" src="http://dummyimage.com/200x150/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
+					<p className="text-xl text-center">Инвестирование</p>
+					<p className="font-light text-center">Поиск и инвестирование в недооцененные компании с большим потенциалом</p>
+				</div>
+				<div className="flex flex-col justify-center gap-5">
+					<img className="rounded-md" src="http://dummyimage.com/200x150/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
+					<p className="text-xl text-center">Обучение</p>
+					<p className="font-light text-center">Помощь людям, которые только начинают свой путь в инвестировании</p>
+				</div>
+			</div>
+		</div>
 	</div>
 };
 
