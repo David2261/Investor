@@ -11,6 +11,7 @@ import Home from './pages/Home.tsx';
 import About from './pages/static/About.tsx';
 import Contact from './pages/static/Contact.tsx';
 import Responsibility from './pages/static/Responsibility.tsx';
+import Payanddelivery from './pages/static/Payanddelivery.tsx';
 
 
 function App() {
@@ -22,9 +23,9 @@ function App() {
         <Route path="/about" element={ <About /> } />
         <Route path="/contact" element={ <Contact /> } />
         <Route path="/responsibility" element={ <Responsibility /> } />
+        <Route path="/payanddelivery" element={ <Payanddelivery /> } />
 {/*        <Route path="/login" element={ <Login /> } />
         <Route path="/confidentiality" element={ <Confidentiality /> } />
-        <Route path="/payanddelivery" element={ <Payanddelivery /> } />
         <Route path="/emailagreement" element={ <Emailagreement /> } />
         <Route path="/agreement" element={ <Agreement /> } />
         <Route path="/admin/login" element={ <LoginAdmin /> } />
