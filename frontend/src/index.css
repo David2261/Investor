@@ -19,3 +19,11 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;*/
 }
+
+::-moz-selection {
+  background-color: #85BB65;
+}
+
+::selection{
+  background-color: #85BB65;
+}

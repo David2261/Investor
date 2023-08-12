@@ -7,7 +7,9 @@ import Footer from './components/Footer.tsx';
 
 // pages
 import Home from './pages/Home.tsx';
+// static pages
 import About from './pages/static/About.tsx';
+import Contact from './pages/static/Contact.tsx';
 
 function App() {
   return (
@@ -16,8 +18,8 @@ function App() {
       <Routes >
         <Route path="/" exact element={ <Home /> } />
         <Route path="/about" element={ <About /> } />
-{/*        <Route path="/contact" element={ <Contact /> } />
-        <Route path="/login" element={ <Login /> } />
+        <Route path="/contact" element={ <Contact /> } />
+{/*        <Route path="/login" element={ <Login /> } />
         <Route path="/responsibility" element={ <Resposibility /> } />
         <Route path="/confidentiality" element={ <Confidentiality /> } />
         <Route path="/payanddelivery" element={ <Payanddelivery /> } />
