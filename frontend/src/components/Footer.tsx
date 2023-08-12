@@ -45,15 +45,15 @@ const Messangers = (
 const GlobalLinks = (
 	<div className="mx-4 flex flex-col">
 		<div className="flex flex-row py-10 gap-4 border-b-2">
-			<div className="px-4">Disclosures</div>
+			<div className="px-4">Agreement</div>
 			{ DOT }
-			<div className="px-4">Investor Relations</div>
+			<div className="px-4">Email Agreement</div>
 			{ DOT }
-			<div className="px-4">Corporate Governance</div>
+			<div className="px-4">Pay & Delivery</div>
 			{ DOT }
-			<div className="px-4">Newsroom</div>
+			<div className="px-4">Confidentiality</div>
 			{ DOT }
-			<div className="px-4">Careers</div>
+			<div className="px-4">Responsibility</div>
 		</div>
 	</div>
 );
