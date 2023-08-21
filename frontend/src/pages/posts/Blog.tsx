@@ -205,7 +205,9 @@ const postsList = DATAPOSTS.map(value =>
 	</Fragment>
 );
 
-const Blog = () => {
+type Props = {};
+
+const Blog = (props: Props) => {
 	return <div className="w-full h-auto">
 		<div className="flex flex-row px-10 py-10">
 			<div className="basis-1/3">
