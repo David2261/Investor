@@ -29,7 +29,6 @@ const Navbar = (props: Props) => {
 				{/* RIGHT SIDE */}
 				{isAboveMediumScreens ? (
 					<div className="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" id="navbar-collapse">
-						<HeadLink page="home" />
 						<HeadLink page="blog" />
 						<HeadLink page="community" />
 						<HeadLink page="contact" />

@@ -1,6 +1,7 @@
 
+type Props = {};
 
-const Responsibility = () => {
+const Responsibility = (props: Props) => {
 	return <div className="w-full h-auto">
 		<div className="flex flex-col px-10 py-10 gap-6 text-lg text-slate-600">
 			<h1 className="text-5xl text-slate-900">Отказ от ответственности</h1>

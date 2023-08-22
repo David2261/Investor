@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+type Props = {};
 
-const About = () => {
+const About = (props: Props) => {
 	return <div className="w-full h-auto flex flex-col pb-4 justify-center">
 		<div className="w-full bg-slate-100 pb-4 px-4">
 			<div className="py-32"><p className="uppercase text-center text-4xl">ЭТОТ ПРОЕКТ О ТОМ:</p></div>

@@ -1,5 +1,7 @@
 
-const Agreement = () => {
+type Props = {};
+
+const Agreement = (props: Props) => {
 	return <div className="w-full h-auto">
 		<div className="flex flex-col px-10 py-10 text-lg text-slate-600 gap-4">
 			<h1 className="font-bold pt-3 text-5xl text-slate-900">Оферта и договор</h1>

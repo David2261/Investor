@@ -78,7 +78,6 @@ const DATAPOSTS = [
 	},
 ];
 
-
 const contentList = DATA.map(value => 
 	// return <div><ContentPost title={value.title} /></div>;
 	<Fragment key={value.id}>

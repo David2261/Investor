@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
 
+type Props = {};
 
-const Contact = () => {
+const Contact = (props: Props) => {
 	return <div className="w-full h-auto px-20">
 		<div className="py-10">
 			<h1 className="text-5xl font-bold">Контакт</h1>
