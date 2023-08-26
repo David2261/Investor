@@ -4,12 +4,12 @@ import './App.css';
 // Components
 import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
+import Login from './components/Login/ModalWin.tsx';
 
 // pages
 import Home from './pages/Home.tsx';
 // static pages
 import About from './pages/static/About.tsx';
-import Login from './pages/Login.tsx';
 import Contact from './pages/static/Contact.tsx';
 import Responsibility from './pages/static/Responsibility.tsx';
 import Payanddelivery from './pages/static/Payanddelivery.tsx';
@@ -18,17 +18,23 @@ import Agreement from './pages/static/Agreement.tsx';
 import Emailagreement from './pages/static/Emailagreement.tsx';
 //posts
 import Blog from './pages/posts/Blog.tsx';
+// assets
+import BGLogin from './assets/login_bg.jpg';
 
 
 function App() {
   return (
     <>
+      <div className="w-full h-full backdrop-blur-sm bg-white/30 fixed">
+        <div className="grid align-center justify-center p-4 rounded-md bg-red">
+        <img src={BGLogin} alt="" />
+        </div>
+      </div>
       <Navbar />
       <Routes >
         <Route path="/" exact element={ <Home /> } />
         {/* Static pages */}
         <Route path="/about" element={ <About /> } />
-        <Route path="/login" element={ <Login /> } />
         <Route path="/contact" element={ <Contact /> } />
         <Route path="/responsibility" element={ <Responsibility /> } />
         <Route path="/payanddelivery" element={ <Payanddelivery /> } />
