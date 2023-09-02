@@ -31,8 +31,8 @@ const Navbar = (props: Props) => {
 
 	return <>
 		{isOpen ?
-			<div onClick={closeModal} className="w-full h-full backdrop-blur-sm bg-white/30 fixed">
-				<div className="grid items-center justify-center rounded-lg">
+			<div className="w-full h-full backdrop-blur-sm bg-white/30 fixed">
+				<div className="transition-opacity duration-300 ease-out opacity-0 hover:opacity-100 grid items-center justify-center rounded-lg">
 				  <div className="fixed z-10 inset-x-1/3 inset-y-1/3 backdrop-blur-sm bg-white/30 rounded-md">
 				    <h1 className="text-4xl text-amber-600 py-4 px-32">Login</h1>
 				    <form action="" className="grid grid-cols-1 gap-4 px-2">
@@ -43,7 +43,7 @@ const Navbar = (props: Props) => {
 				      <button type="button" data-ripple-light="true" className="mx-32 items-center rounded-md bg-pink-500 py-3 px-6 w-1/3 font-sans text-xl font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Press</button>
 				    </form>
 				  </div>
-				  <div className="h-12">
+				  <div onClick={closeModal} className="h-12">
 				    <img className="rounded-md" src={BGLogin} alt="" />
 				  </div>
 				</div>
