@@ -4,12 +4,12 @@ import './App.css';
 // Components
 import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
+import Login from './components/Login/ModalWin.tsx';
 
 // pages
 import Home from './pages/Home.tsx';
 // static pages
 import About from './pages/static/About.tsx';
-import Login from './pages/Login.tsx';
 import Contact from './pages/static/Contact.tsx';
 import Responsibility from './pages/static/Responsibility.tsx';
 import Payanddelivery from './pages/static/Payanddelivery.tsx';
@@ -28,7 +28,6 @@ function App() {
         <Route path="/" exact element={ <Home /> } />
         {/* Static pages */}
         <Route path="/about" element={ <About /> } />
-        <Route path="/login" element={ <Login /> } />
         <Route path="/contact" element={ <Contact /> } />
         <Route path="/responsibility" element={ <Responsibility /> } />
         <Route path="/payanddelivery" element={ <Payanddelivery /> } />
