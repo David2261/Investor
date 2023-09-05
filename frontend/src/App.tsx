@@ -22,7 +22,7 @@ import Blog from './pages/posts/Blog.tsx';
 
 function App() {
   return (
-    <>
+    <div className="relative w-full h-full">
       <Navbar />
       <Routes >
         <Route path="/" exact element={ <Home /> } />
@@ -41,7 +41,7 @@ function App() {
         */}
       </Routes>
       <Footer />
-    </>
+    </div>
   )
 }
 

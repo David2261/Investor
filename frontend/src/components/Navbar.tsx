@@ -31,7 +31,7 @@ const Navbar = (props: Props) => {
 
 	return <>
 		{isOpen ?
-			<div className="w-full h-full backdrop-blur-sm bg-white/30 fixed">
+			<div className="w-full h-full backdrop-blur-sm bg-white/30 h-12">
 				<div className="transition-opacity duration-300 ease-out opacity-0 hover:opacity-100 grid items-center justify-center rounded-lg">
 				  <div className="fixed z-10 inset-x-1/3 inset-y-1/3 backdrop-blur-sm bg-white/30 rounded-md">
 				    <h1 className="text-4xl text-amber-600 py-4 px-32">Login</h1>
@@ -51,15 +51,15 @@ const Navbar = (props: Props) => {
 			:
 			""
 		}
-		<nav className="bg-white py-2 md:py-4 w-full border-b-2 border-stone-200">
-			<div className="ml-4 flex px-4 mx-auto md:flex md:items-center w-full">
-				<div className="flex justify-between items-center w-32 md:w-44">
+		<nav className="relative bg-white py-2 md:py-4 w-full border-b-2 border-stone-200">
+			<div className="ml-4 md:px-4 mx-auto md:flex md:items-center w-full">
+				<div className="justify-between items-center w-32 md:w-44">
 					{/* LEFT SIDE */}
 					<Link to="/"><img alt="logo" src={IH} /></Link>
 				</div>
 				{/* RIGHT SIDE */}
 				{isAboveMediumScreens ? (
-					<div className="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" id="navbar-collapse">
+					<div className="fixed md:relative md:flex flex-col md:flex-row md:ml-auto md:mt-0" id="navbar-collapse">
 						<HeadLink page="blog" />
 						<HeadLink page="community" />
 						<HeadLink page="contact" />
@@ -68,7 +68,20 @@ const Navbar = (props: Props) => {
 					</div>
 				) : (
 					<button
-						className={`${isMenuToggled ? 'hidden': ''} fixed right-0 mr-10 border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden`}
+						className={`${isMenuToggled ? 'hidden': ''}
+							fixed
+							right-10
+							top-2
+							border
+							border-solid
+							border-gray-600
+							px-3
+							py-1
+							rounded
+							text-gray-600
+							opacity-50
+							hover:opacity-75
+							md:hidden`}
 						id="navbar-toggle"
 						onClick={() => setIsMenuToggled(!isMenuToggled)}>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -79,7 +92,7 @@ const Navbar = (props: Props) => {
 			</div>
 			{/* MOBILE MENU MODAL */}
 			{!isAboveMediumScreens && isMenuToggled && (
-				<div className="fixed navbar-menu transition ease-out md:ease-in duration-500 right-0 bottom-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl">
+				<div className="fixed transition ease-out md:ease-in duration-500 right-0 bottom-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl">
 					{/* CLOSE ICON */}
 					<div className="flex justify-end p-12">
 						<button onClick={() => setIsMenuToggled(!isMenuToggled)}>
