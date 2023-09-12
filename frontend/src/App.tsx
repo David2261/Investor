@@ -22,7 +22,7 @@ import Blog from './pages/posts/Blog.tsx';
 
 function App() {
   return (
-    <div className="relative w-full h-full">
+    <div className="w-full h-full relative">
       <Navbar />
       <Routes >
         <Route path="/" exact element={ <Home /> } />
