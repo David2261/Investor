@@ -57,7 +57,7 @@ export default function LiveStock() {
 				<div className="px-2"><p className="uppercase text-gray-400 font-bold">us markets open in:</p></div>
 				<div><p className="text-gray-400 font-bold">TIMER</p></div>
 			</div>
-			<div className="flex flex-nowrap h-12">
+			<div className="flex flex-wrap justify-center gap-4 md:flex-nowrap h-24 md:h-12">
 				{/*<IndexMarket ticker="Dow Jones" percent={`${fetchData('meta') ? responseData.refreshed : ''}`} />*/}
 				<IndexMarket ticker="Dow Jones" percent="1.09" />
 				<IndexMarket ticker="Nasdaq" percent="-0.12" />
