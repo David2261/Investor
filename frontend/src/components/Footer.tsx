@@ -86,10 +86,6 @@ const LocalLinks = (
 				<NavLink to="contact/">Contact Us</NavLink>
 			</div>
 			{ DOT }
-			<div className="px-4">Global Offices</div>
-			{ DOT }
-			<div className="px-4">Equal Employment Opportunity</div>
-			{ DOT }
 			<div className="px-4">Cybersecurity</div>
 			{ DOT }
 			<div className="px-4">Terms of Use</div>
