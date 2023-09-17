@@ -3,7 +3,6 @@ import { NavLink, Link } from "react-router-dom";
 // Components
 import HeadLink from './Link.tsx';
 import MenuLink from './MenuLink.tsx';
-import LiveStock from './StockMarket/LiveStock.tsx';
 // Hooks
 import useMediaQuery from "/src/hooks/useMediaQuery";
 // Assets
@@ -119,7 +118,6 @@ const Navbar = (props: Props) => {
 				</div>
           	)}
 		</nav>
-		<LiveStock />
 		
 		</>
 };
