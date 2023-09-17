@@ -100,7 +100,7 @@ const LocalLinks = (
 const Footer = (props: Props) => {
 
 	return <>
-		<div className="w-full bg-blue-100 flex flex-col my-4">
+		<div className="w-full bg-blue-100 flex flex-col mt-4">
 			<div className="text-slate-800 flex flex-row md:mx-32 justify-center">
 				{Messangers}
 			</div>
