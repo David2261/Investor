@@ -189,8 +189,8 @@ const DATAPOSTS = [
 
 const categoriesList = DATA.map(value =>
 	<Fragment key={value.id}>
-		<div className="py-4">
-			<p className="text-xl text-slate-700 hover:text-green-500">{value.category}</p>
+		<div className="py-4 flex hover:bg-neutral-950 justify-center">
+			<p className="text-xl text-slate-700 hover:text-white">{value.category}</p>
 		</div>
 	</ Fragment>
 );
@@ -208,15 +208,16 @@ const postsList = DATAPOSTS.map(value =>
 type Props = {};
 
 const Blog = (props: Props) => {
-	return <div className="w-full h-auto">
-		<div className="flex flex-row px-10 py-10">
-			<div className="basis-1/3">
-				<div className="px-4 flex flex-col justify-center rounded-lg border border-black">
-					<h1 className="text-3xl text-center text-bold">Категории</h1>
+	return <div className="w-full h-auto font-mono">
+		<h1 className="flex flex-row justify-center text-7xl py-10 font-bold uppercase">news</h1>
+		<div className="grid md:grid-cols-3 gap-4 px-10 py-10">
+			<div className="pt-4 col-span-2 md:col-span-1">
+				<div className="px-4 grid grid-cols-4 md:flex md:flex-col justify-center md:border border-b border-slate-200">
+					<h1 className="text-3xl col-span-4 text-bold">Категории</h1>
 					{ categoriesList }
 				</div>
 			</div>
-			<div className="basis-2/3 flex flex-col">
+			<div className="col-span-2">
 				<div className="grid grid-cols-2 gap-6">
 					{ postsList }
 				</div>
