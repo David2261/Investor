@@ -81,18 +81,18 @@ const GlobalLinks = (
 
 const LocalLinks = (
 	<div className="md:mx-4 flex flex-col">
-		<div className="flex flex-row py-10 gap-2 md:gap-4 border-b-2">
+		<div className="flex flex-wrap md:flex-nowrap md:flex-row py-10 gap-2 md:gap-4 border-b-2 justify-center">
 			<div className="px-2 md:px-4 hover:text-slate-900">
 				<NavLink to="contact/">Contact Us</NavLink>
 			</div>
 			{ DOT }
-			<div className="px-2 md:px-4">Cybersecurity</div>
+			<div className="px-2 md:px-4 hover:text-slate-900">Cybersecurity</div>
 			{ DOT }
-			<div className="px-2 md:px-4">Terms of Use</div>
+			<div className="px-2 md:px-4 hover:text-slate-900">Terms of Use</div>
 			{ DOT }
-			<div className="px-2 md:px-4">Privacy & Cookies</div>
+			<div className="px-2 md:px-4 hover:text-slate-900">Privacy & Cookies</div>
 			{ DOT }
-			<div className="md:px-4">Your Privacy Choices</div>
+			<div className="md:px-4 hover:text-slate-900">Your Privacy Choices</div>
 		</div>
 	</div>
 );

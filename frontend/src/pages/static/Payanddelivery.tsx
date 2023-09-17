@@ -3,7 +3,7 @@ type Props = {};
 
 const Payanddelivery = (props: Props) => {
 	return <div className="w-full h-auto py-10">
-		<div className="px-10 flex flex-col gap-5 text-xl text-slate-600">
+		<div className="px-10 flex flex-col gap-5 text-xl text-slate-600 text-justify">
 			<h1 className="text-5xl pb-5 text-slate-900">Условия доставки и оплаты</h1>
 			<p className="text-3xl text-slate-900">Условия оплаты</p>
 			<p>Вы можете оплатить свои заказы в режиме он-лайн следующими платежными средствами:</p>
