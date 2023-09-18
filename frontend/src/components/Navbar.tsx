@@ -32,8 +32,8 @@ const Navbar = (props: Props) => {
 	return <>
 		{isOpen ?
 			<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
-				<div className="transition-opacity duration-300 ease-out opacity-0 hover:opacity-100 grid items-center justify-center rounded-lg">
-				  <div className="fixed inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
+				<div className="transition-opacity duration-300 ease-out md:opacity-0 md:hover:opacity-100 grid items-center justify-center rounded-lg">
+				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
 					 	<div className="fixed top-32">
 					    <div className="py-4 text-5xl px-32">
 					    	<h1 className="text-amber-600">Login</h1>
