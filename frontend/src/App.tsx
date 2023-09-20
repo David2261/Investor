@@ -16,6 +16,7 @@ import Payanddelivery from './pages/static/Payanddelivery.tsx';
 import Confidentiality from './pages/static/Confidentiality.tsx';
 import Agreement from './pages/static/Agreement.tsx';
 import Emailagreement from './pages/static/Emailagreement.tsx';
+import SignUp from './pages/static/SignUp.tsx';
 //posts
 import Blog from './pages/posts/Blog.tsx';
 
@@ -35,8 +36,8 @@ function App() {
         <Route path="/agreement" element={ <Agreement /> } />
         <Route path="/emailagreement" element={ <Emailagreement /> } />
         <Route path="/blog" element={ <Blog /> } />
-{/*        <Route path="/login" element={ <Login /> } />
-        <Route path="/admin/login" element={ <LoginAdmin /> } />
+        <Route path="/sign-up" element={ <SignUp /> } />
+        {/*<Route path="/admin/login" element={ <LoginAdmin /> } />
         <Route path="/admin/register" element={ <RegisterAdmin /> } />
         */}
       </Routes>
