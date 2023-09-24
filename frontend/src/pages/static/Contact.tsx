@@ -9,7 +9,7 @@ const Contact = (props: Props) => {
 			<h1 className="text-5xl font-bold">Контакт</h1>
 		</div>
 		<div className="pb-5 flex flex-col md:flex-row">
-			<div className="flex flex-col md:basis-1/2">
+			<div className="flex flex-col pr-4 md:basis-1/2">
 				<div className="pb-5 grid gap-4">
 					<h1 className="text-xl font-bold">Отправить чаевые</h1>
 					<p className="text-lg">Как независимая новостная организация, Investor Home зависит от источников в расследовании важных учреждений. В то время как мы ищем наши источники, чтобы говорить под запись, источники могут иногда полагаться на нас, чтобы защитить свою личность, когда они опасаются негативных последствий за высказывание. Узнайте, как безопасно связаться с журналистами Investor Home, здесь.</p>
@@ -25,7 +25,7 @@ const Contact = (props: Props) => {
 					<p className="text-lg">Если вам интересно узнать, как сотрудничать с Investor Home в специальных редакционных проектах, свяжитесь с Булат Насыровым.</p>
 				</div>
 				<div className="pb-5 grid gap-4">
-					<h1 className="text-xl font-bold">Карьера в Инсайдер</h1>
+					<h1 className="text-xl font-bold">Карьера в IH</h1>
 					<p className="text-lg">Если вы хотите узнать больше о работе в Investor Home, ознакомьтесь с полным списком открытых вакансий на нашей странице вакансий .</p>
 				</div>
 			</div>
