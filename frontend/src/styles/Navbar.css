@@ -8,3 +8,15 @@
 	0% {transform: translateX(150%);}
 	100% {transform: translateY(0);}
 }
+
+.text-color-navbar-label {
+	color: #5BE625;
+}
+
+.text-color-navbar-form {
+	color: #3D5A80;
+}
+
+.bg-color-navbar-form {
+	background-color: #E39A0B;
+}

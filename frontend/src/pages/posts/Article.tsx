@@ -29,3 +29,4 @@ const Article = (props: Props) => {
 	</div>
 };
 
+export default Article

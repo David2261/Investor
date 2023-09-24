@@ -35,8 +35,8 @@ function App() {
         <Route path="/agreement" element={ <Agreement /> } />
         <Route path="/emailagreement" element={ <Emailagreement /> } />
         <Route path="/blog" element={ <Blog /> } />
-{/*        <Route path="/login" element={ <Login /> } />
-        <Route path="/admin/login" element={ <LoginAdmin /> } />
+        {/*<Route path="/sign-up" element={ <SignUp /> } />*/}
+        {/*<Route path="/admin/login" element={ <LoginAdmin /> } />
         <Route path="/admin/register" element={ <RegisterAdmin /> } />
         */}
       </Routes>
