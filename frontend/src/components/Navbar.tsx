@@ -4,11 +4,11 @@ import { NavLink, Link } from "react-router-dom";
 import HeadLink from './Link.tsx';
 import MenuLink from './MenuLink.tsx';
 // Hooks
-import useMediaQuery from "/src/hooks/useMediaQuery";
+import useMediaQuery from "src/hooks/useMediaQuery.ts";
 // Assets
-import IH from '/src/assets/logo/IH.webp';
-import '/src/styles/Navbar.css';
-import BGLogin from '/src/assets/login_bg.jpg';
+import IH from 'src/assets/logo/IH.webp';
+import 'src/styles/Navbar.css';
+import BGLogin from 'src/assets/login_bg.jpg';
 
 
 type Props = {};
