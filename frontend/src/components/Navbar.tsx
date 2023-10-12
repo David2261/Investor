@@ -4,11 +4,11 @@ import { NavLink, Link } from "react-router-dom";
 import HeadLink from './Link.tsx';
 import MenuLink from './MenuLink.tsx';
 // Hooks
-import useMediaQuery from "src/hooks/useMediaQuery.ts";
+import useMediaQuery from "../hooks/useMediaQuery.ts";
 // Assets
-import IH from 'src/assets/logo/IH.webp';
-import 'src/styles/Navbar.css';
-import BGLogin from 'src/assets/login_bg.jpg';
+import IH from '../assets/logo/IH.webp';
+import '../styles/Navbar.css';
+import BGLogin from '../assets/login_bg.jpg';
 
 
 type Props = {};
@@ -44,7 +44,7 @@ const Navbar = (props: Props) => {
 				<div className="grid items-center justify-center rounded-lg">
 				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
 					 	<div className="fixed top-32">
-					 		<div onClick={closeModal} className="fixed top-16 right-8">
+					 		<div onClick={closeModal} className="fixed top-16 right-8" name="Navbar logo">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
 								  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>

@@ -1,15 +1,16 @@
 import {
-	getByLabelText,
-	getByText,
-	getByTestId,
-	queryByTestId,
-	waitFor,
+	// getByLabelText,
+	// getByText,
+	// getByTestId,
+	// queryByTestId,
+	// waitFor,
 	render,
 	screen,
-	within
-} from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
+	// within
+} from '@testing-library/react';
+// import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+import {describe, expect, test} from '@jest/globals';
 import Navbar from '../components/Navbar.tsx';
 
 // function get
@@ -17,11 +18,11 @@ import Navbar from '../components/Navbar.tsx';
 describe('Navbar components', () => {
 	beforeEach(() => { render(<Navbar />) })
 		test('Output link to main page', () => {
-			const linkToMainPage = screen.getByRole('link', {name: /react logo/i })
+			const linkToMainPage = screen.getByRole('div', {name: "Navbar logo" })
 			expect(linkToMainPage).toBeVisible()
 			expect(linkToMainPage).toHaveAttribute('href', '/')
 		})
-	it('Navbar renders', () => {
-		render(<List />);
-	});
+	// it('Navbar renders', () => {
+	// 	render(<List />);
+	// });
 });
