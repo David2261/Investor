@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "rootDir": "src",
     "esModuleInterop": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "types": ["node", "jest", "jsdom", "@testing-library/jest-dom", "vite/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -19,9 +19,9 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": false
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

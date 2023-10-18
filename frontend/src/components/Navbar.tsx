@@ -23,19 +23,19 @@ const Navbar = (props: Props) => {
 
 	function closeModal() {
 		setIsOpen(false);
-	};
+	}
 
 	function openModal() {
 		setIsOpen(true);
-	};
+	}
 
 	function closeSignUp() {
 		setOpenSignUp(false);
-	};
+	}
 
 	function upSignUp() {
 		setOpenSignUp(true);
-	};
+	}
 
 
 	return <>
@@ -43,27 +43,27 @@ const Navbar = (props: Props) => {
 			<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 				<div className="grid items-center justify-center rounded-lg">
 				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
-					 	<div className="fixed top-32">
-					 		<div onClick={closeModal} className="fixed top-16 right-8" name="Navbar logo">
+						<div className="fixed top-32">
+							<div onClick={closeModal} className="fixed top-16 right-8" data-name="Navbar logo">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
 								  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
 							</div>
-						    <div className="py-4 text-5xl px-32">
-						    	<h1 className="text-emerald-300">Login</h1>
-						    </div>
-						    <form action="" className="grid grid-cols-1 gap-4 px-2">
-						      <input type="email" name="username" id="username" className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-2xl font-normal text-cyan-600 outline outline-0 transition-all placeholder-shown:border-cyan-400 focus:border-yellow-500 focus:outline-0 disabled:border-0 disabled:bg-yellow-500" />
-						      <label htmlFor="username" className="text-color-navbar-label after:content[' '] pointer-events-none absolute top-16 text-xl font-normal text-blue-gray-500 transition-all">Your email...</label>
-						      <input type="password" name="password" id="password" className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-2xl font-normal text-cyan-600 outline outline-0 transition-all placeholder-shown:border-cyan-200 focus:border-yellow-500 focus:outline-0 disabled:border-0 disabled:bg-yellow-500" />
-						      <label htmlFor="password" className="text-color-navbar-label after:content[' '] pointer-events-none absolute top-36 text-xl font-normal text-blue-gray-500 transition-all">Your password...</label>
-						      <p className="text-slate-300 font-sans text-xl decoration-solid italic">Forgot your password?</p>
-						      <button type="button" data-ripple-light="true" className="mx-32 items-center rounded-md bg-pink-500 py-3 px-6 w-1/3 font-sans text-xl font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Press</button>
-						    </form>
+							<div className="py-4 text-5xl px-32">
+								<h1 className="text-emerald-300">Login</h1>
+							</div>
+							<form action="" className="grid grid-cols-1 gap-4 px-2">
+							  <input type="email" name="username" id="username" className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-2xl font-normal text-cyan-600 outline outline-0 transition-all placeholder-shown:border-cyan-400 focus:border-yellow-500 focus:outline-0 disabled:border-0 disabled:bg-yellow-500" />
+							  <label htmlFor="username" className="text-color-navbar-label after:content[' '] pointer-events-none absolute top-16 text-xl font-normal text-blue-gray-500 transition-all">Your email...</label>
+							  <input type="password" name="password" id="password" className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-2xl font-normal text-cyan-600 outline outline-0 transition-all placeholder-shown:border-cyan-200 focus:border-yellow-500 focus:outline-0 disabled:border-0 disabled:bg-yellow-500" />
+							  <label htmlFor="password" className="text-color-navbar-label after:content[' '] pointer-events-none absolute top-36 text-xl font-normal text-blue-gray-500 transition-all">Your password...</label>
+							  <p className="text-slate-300 font-sans text-xl decoration-solid italic">Forgot your password?</p>
+							  <button type="button" data-ripple-light="true" className="mx-32 items-center rounded-md bg-pink-500 py-3 px-6 w-1/3 font-sans text-xl font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Press</button>
+							</form>
 					  </div>
 				  </div>
 				  <div onClick={closeModal} className="h-12">
-				    <img className="rounded-md" src={BGLogin} alt="" />
+					<img className="rounded-md" src={BGLogin} alt="" />
 				  </div>
 				</div>
 			</div>
@@ -112,7 +112,7 @@ const Navbar = (props: Props) => {
 						</div>
 				  </div>
 				  <div onClick={closeSignUp} className="h-12">
-				    <img className="rounded-md" src={BGLogin} alt="" />
+					<img className="rounded-md" src={BGLogin} alt="" />
 				  </div>
 				</div>
 			</div>
@@ -179,7 +179,7 @@ const Navbar = (props: Props) => {
 						</div>
 					</div>
 				</div>
-          	)}
+			)}
 		</nav>
 		
 		</>

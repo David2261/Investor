@@ -22,34 +22,34 @@ const IndexMarket: React.FC = ({ticker, percent}): IndexMarketProps => {
 };
 
 export default function LiveStock() {
-	let [responseData, setResponseData] = useState('')
-	let [message, setMessage] = useState('')
-    let [ticker, setTicker] = useState('')
+	const [responseData, setResponseData] = useState('')
+	const [message, setMessage] = useState('')
+	const [ticker, setTicker] = useState('')
 
-    // const fetchData = (name: string) => {
-    // 	setMessage('Loading...')
-    // 	api.stockMarket(name)
-    // 	.then((response) => {
-    // 		setResponseData(response.data)
-    // 		setMessage('')
-    // 	})
-    // 	.catch((error) => {
-    // 		setMessage('None')
-    // 		console.log(error)
-    // 	})
-    // }
-    const fetchData = (name: string) => {
-    	setMessage('Loading...')
-    	apiYF.YFStockMarket(name)
-    	.then((response) => {
-    		setResponseData(response.data)
-    		setMessage('')
-    	})
-    	.catch((error) => {
-    		setMessage('None')
-    		console.log(error)
-    	})
-    }
+	// const fetchData = (name: string) => {
+	// 	setMessage('Loading...')
+	// 	api.stockMarket(name)
+	// 	.then((response) => {
+	// 		setResponseData(response.data)
+	// 		setMessage('')
+	// 	})
+	// 	.catch((error) => {
+	// 		setMessage('None')
+	// 		console.log(error)
+	// 	})
+	// }
+	const fetchData = (name: string) => {
+		setMessage('Loading...')
+		apiYF.YFStockMarket(name)
+		.then((response) => {
+			setResponseData(response.data)
+			setMessage('')
+		})
+		.catch((error) => {
+			setMessage('None')
+			console.log(error)
+		})
+	}
 
 	return (
 		<div className="relative flex-col w-full py-4 items-center border-b-2 border-stone-200 px-6">
