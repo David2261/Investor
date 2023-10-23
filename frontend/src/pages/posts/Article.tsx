@@ -7,7 +7,7 @@ const Article = (props: Props) => {
 		<p className="flex flex-row justify-center uppercase text-green-500 text-lg pt-10">banks</p>
 		<h1 className="flex flex-row justify-center text-3xl uppercase">Every Next Level of Your Life Will Demand a Different You</h1>
 		<div className="flex flex-row justify-center">
-			<img className="rounded-full" src="http://dummyimage.com/150x150/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image" />
+			<img className="rounded-full" aria-label="logo" src="http://dummyimage.com/150x150/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image" />
 			<div className="flex-col px-4">
 				<p className="text-lg">Bulat Nasyrov</p>
 				<p className="text-lg text-slate-500">October 20, 2022 · 8 min read</p>
