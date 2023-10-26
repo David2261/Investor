@@ -2,7 +2,11 @@ import csv
 import logging
 # from django.db.models import Q
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.conf import settings
+from django.shortcuts import render
+from django.contrib import messages
 # DRF - API
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
@@ -120,15 +124,49 @@ def generate_csv(request):
 	for article in articles:
 		writer.writerow([
 			article.title,
+			article.category,
 			article.description,
-			article.slug,
 			article.img,
 			article.is_published])
-	for category in categories:
-		writer.writerow([
-			category.name,
-			article.slug])
 	return response
+
+
+def upload_csv(request):
+	data = {}
+	if "GET" == request.method:
+		return render(request, "options/upload.html", data)
+
+	try:
+		csv_file = request.FILES["csv_file"]
+		if not csv_file.name.endswith('.csv'):
+			messages.error(request, "File isn't a CSV")
+			return HttpResponseRedirect(reverse("articles:upload_csv"))
+		if csv_file.multiple_chunks():
+			messages.error(request, "Uploaded file is too big (%.2f MB). " % (csv_file.size/(1000*1000),))
+			return HttpResponseRedirect(reverse("articles:upload_csv"))
+
+		file_data = csv_file.read().decode("utf-8")
+
+		lines = file_data.split("\n")
+
+		for line in lines:
+			fields = line.split(",")
+
+			try:
+				article = Articles(
+					title=fields[0],
+					description=fields[1],
+					img=fields[3],
+					is_published=fields[4])
+				article.save()
+
+			except Exception as e:
+				messages.error(request, "Unable to upload file. "+repr(e))
+				pass
+	except Exception as e:
+		messages.error(request, "Unable to upload file. "+repr(e))
+
+	return HttpResponseRedirect(reverse("articles:upload_csv"))
 
 
 # class BlogPage(View):

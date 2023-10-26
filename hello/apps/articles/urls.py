@@ -7,7 +7,8 @@ from .views import (
 	IpList,
 	UserList,
 	CategoryDetail,
-	generate_csv)
+	generate_csv,
+	upload_csv)
 
 
 app_name = 'articles'
@@ -26,4 +27,5 @@ urlpatterns = [
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
 	path('generate/csv', generate_csv, name='db-list'),
+	path('upload_csv/', upload_csv, name='upload_csv'),
 ]
