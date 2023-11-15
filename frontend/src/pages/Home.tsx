@@ -1,5 +1,5 @@
 import { Component, Fragment } from 'react';
-import LiveStock from '/src/components/StockMarket/LiveStock.tsx';
+import LiveStock from '../components/StockMarket/LiveStock';
 
 
 const centerContent = `flex justify-center`;
@@ -143,17 +143,17 @@ export default class Home extends Component {
 				</div>
 				<div className="columns-3 md:mx-6 mb-10">
 					<div className="ml-4 mr-2">
-						<div className={`${centerContent}`}><img src="http://dummyimage.com/128x128/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
+						<div className={`${centerContent} w-full`}><img src="http://dummyimage.com/256x256/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
 						<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Реальные и модельные портфели</p></div>
 						<div><p className="font-sans text-lg md:text-xl">Не знаете что покупать в свой портфель? Посмотрите на наши инвестиции</p></div>
 					</div>
 					<div className="mx-2">
-						<div className={`${centerContent}`}><img src="http://dummyimage.com/128x128/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
+						<div className={`${centerContent}`}><img src="http://dummyimage.com/256x256/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
 						<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Текущая ситуация</p></div>
 						<div><p className="font-sans text-lg md:text-xl">Еженедельные обзоры главных тенденций на российских и глобальных финансовых площадках</p></div>
 					</div>
 					<div className="mr-4 ml-2">
-						<div className={`${centerContent}`}><img src="http://dummyimage.com/128x128/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
+						<div className={`${centerContent}`}><img src="http://dummyimage.com/256x256/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
 						<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Прокачайте себя</p></div>
 						<div><p className="font-sans text-lg md:text-xl">Инвестируйте сначала в себя, а потом уже в другие активы. Сделайте Upgrade своих навыков</p></div>
 					</div>
