@@ -232,7 +232,12 @@ STATICFILES_FINDERS = [
 	"django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STORAGES = {
+	"staticfiles": {
+		"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+	},
+}
 
 # Admin
 GRAPPELLI_INDEX_DASHBOARD = 'hello.dashboard.CustomIndexDashboard'
