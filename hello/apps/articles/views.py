@@ -119,7 +119,6 @@ def generate_csv(request):
 	response = HttpResponse(content_type='text/csv')
 	response['Content-Disposition'] = 'attachment; filename="file.csv"'
 	articles = Articles.objects.all()
-	categories = Category.objects.all()
 	writer = csv.writer(response)
 	for article in articles:
 		writer.writerow([
@@ -142,7 +141,9 @@ def upload_csv(request):
 			messages.error(request, "File isn't a CSV")
 			return HttpResponseRedirect(reverse("articles:upload_csv"))
 		if csv_file.multiple_chunks():
-			messages.error(request, "Uploaded file is too big (%.2f MB). " % (csv_file.size/(1000*1000),))
+			messages.error(
+				request,
+				"Uploaded file is too big (%.2f MB). " % (csv_file.size / (1000 * 1000),))
 			return HttpResponseRedirect(reverse("articles:upload_csv"))
 
 		file_data = csv_file.read().decode("utf-8")
@@ -161,10 +162,10 @@ def upload_csv(request):
 				article.save()
 
 			except Exception as e:
-				messages.error(request, "Unable to upload file. "+repr(e))
+				messages.error(request, "Unable to upload file. " + repr(e))
 				pass
 	except Exception as e:
-		messages.error(request, "Unable to upload file. "+repr(e))
+		messages.error(request, "Unable to upload file. " + repr(e))
 
 	return HttpResponseRedirect(reverse("articles:upload_csv"))
 
