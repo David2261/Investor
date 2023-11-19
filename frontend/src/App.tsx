@@ -4,7 +4,6 @@ import './App.css';
 // Components
 import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
-import Login from './components/Login/ModalWin.tsx';
 
 // pages
 import Home from './pages/Home.tsx';
@@ -18,6 +17,7 @@ import Agreement from './pages/static/Agreement.tsx';
 import Emailagreement from './pages/static/Emailagreement.tsx';
 //posts
 import Blog from './pages/posts/Blog.tsx';
+import Quote from './pages/posts/Quote.tsx';
 
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
       <Navbar />
       <Routes >
         <Route path="/" exact element={ <Home /> } />
+        <Route path="/community" element={ <Quote /> } />
         {/* Static pages */}
         <Route path="/about" element={ <About /> } />
         <Route path="/contact" element={ <Contact /> } />
@@ -35,8 +36,8 @@ function App() {
         <Route path="/agreement" element={ <Agreement /> } />
         <Route path="/emailagreement" element={ <Emailagreement /> } />
         <Route path="/blog" element={ <Blog /> } />
-        {/*<Route path="/sign-up" element={ <SignUp /> } />*/}
-        {/*<Route path="/admin/login" element={ <LoginAdmin /> } />
+        {/*<Route path="/sign-up" element={ <SignUp /> } />
+        <Route path="/admin/login" element={ <LoginAdmin /> } />
         <Route path="/admin/register" element={ <RegisterAdmin /> } />
         */}
       </Routes>
