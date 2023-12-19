@@ -25,7 +25,7 @@ function App() {
     <div className="w-full h-full relative">
       <Navbar />
       <Routes >
-        <Route path="/" exact element={ <Home /> } />
+        <Route path="/" element={ <Home /> } />
         <Route path="/community" element={ <Quote /> } />
         {/* Static pages */}
         <Route path="/about" element={ <About /> } />

@@ -44,11 +44,11 @@ const Navbar = (props: Props) => {
 				<div className="grid items-center justify-center rounded-lg">
 				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
 						<div className="fixed top-32">
-							<div onClick={closeModal} className="fixed top-16 right-8" data-name="Navbar logo">
+							<button onClick={closeModal} className="fixed top-16 right-8" data-name="Navbar logo">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
 								  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
-							</div>
+							</button>
 							<div className="py-4 text-5xl px-32">
 								<h1 className="text-emerald-300">Login</h1>
 							</div>
@@ -62,7 +62,7 @@ const Navbar = (props: Props) => {
 							</form>
 					  </div>
 				  </div>
-				  <div onClick={closeModal} className="h-12">
+				  <div className="h-12">
 					<img className="rounded-md" src={BGLogin} alt="" />
 				  </div>
 				</div>
@@ -75,11 +75,11 @@ const Navbar = (props: Props) => {
 				<div className="flex items-center justify-center rounded-lg">
 				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
 						<div className="fixed top-32">
-							<div onClick={closeSignUp} className="fixed top-16 right-8">
+							<button onClick={closeSignUp} className="fixed top-16 right-8">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
 								  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
-							</div>
+							</button>
 
 							<h1 className="text-emerald-300 px-16 py-6 text-5xl w-full">Sign-Up</h1>
 							<form action="" className="flex flex-col list-none">
@@ -111,7 +111,7 @@ const Navbar = (props: Props) => {
 							</form>
 						</div>
 				  </div>
-				  <div onClick={closeSignUp} className="h-12">
+				  <div className="h-12">
 					<img className="rounded-md" src={BGLogin} alt="" />
 				  </div>
 				</div>
