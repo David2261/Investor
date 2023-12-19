@@ -1,5 +1,4 @@
 import { Component, Fragment } from 'react';
-import LiveStock from '../components/StockMarket/LiveStock';
 
 
 const centerContent = `flex justify-center`;
@@ -128,7 +127,6 @@ export default class Home extends Component {
 	render() {
 		return (
 			<div className="bg-white flex flex-col pb-4 py-2 md:py-4 w-full">
-				<LiveStock />
 				<div className="flex flex-wrap md:flex-nowrap md:flex-row mx-6">
 					<div className="flex flex-col md:w-3/5 md:mx-6 font-sans text-xl space-y-4 leading-7">
 						<h1 className="uppercase text-5xl"><b>ИНВЕСТИРУЕМ</b> В АКТИВЫ ГЛОБАЛЬНО</h1>
