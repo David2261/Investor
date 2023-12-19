@@ -1,0 +1,120 @@
+
+ul {
+    list-style: none;
+}
+
+/* Title */
+.blog-header {
+    position: relative;
+    text-align: center;
+    font-size: 46px;
+    font-weight: 700;
+}
+
+.blog-content {
+    display: grid;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-left: 10%;
+    justify-content: space-between;
+    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 4;
+}
+
+/* Post */
+.blog-content-post {
+    display: grid;
+    text-align: center;
+    justify-content: center;
+    place-items: center;
+    font-size: 16px;
+    width: 80%;
+    margin: 20px;
+}
+
+.blog-content-post img {
+    width: 400px;
+    border-radius: 10px;
+}
+
+/* Sidebar */
+#navigation-bar {
+    position: sticky;
+    --icon-horizontal-margin: 1em;
+    --icons-size: 1.5em;
+    --open-nav-width: 10em;
+    --closed-nav-width: 4em;
+    --controller-right-position: 50%;
+     
+    flex-grow: 1;
+    flex-shrink: 0;
+     
+    overflow-x: hidden;
+    background: #F7F7F7;
+    width: var(--closed-nav-width);
+    height: 100%;
+    top: 0;
+    left: 0;
+     
+    transition: width .1s ease-in;
+}
+   
+#navigation-bar.open {
+    width: var(--open-nav-width);
+}
+   
+#navigation-bar .controller {
+    background: none;
+    border: none;
+    cursor: pointer;
+     
+    position: absolute;
+    right: var(--controller-right-position);
+    top: 1.5em;
+    transform: translate(50%, 0);
+}
+   
+#navigation-bar .controller span {
+    color: black;
+    font-size: 2rem;
+}
+   
+#navigation-bar .items-container {
+    height: fit-content;
+    margin-top: 5em;
+}
+   
+#navigation-bar .items-container .item {
+    width: 100%;
+    height: 3em;
+}
+
+#navigation-bar .items-container .item:hover {
+    background: rgba(252, 252, 252, 1);
+}
+
+#navigation-bar .items-container .item .hyper-link {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+#navigation-bar .items-container .item .hyper-link .icon-wrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+     
+    width: var(--closed-nav-width);
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
