@@ -43,23 +43,27 @@ const Navbar = (props: Props) => {
 			<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 				<div className="grid items-center justify-center rounded-lg">
 				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
-						<div className="fixed top-32">
+						<div className="fixed top-32 login-form">
 							<button onClick={closeModal} className="fixed top-16 right-8" data-name="Navbar logo">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
 								  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
 							</button>
-							<div className="py-4 text-5xl px-32">
-								<h1 className="text-emerald-300">Login</h1>
+							<div className='wrapper-login'>
+								<form action="">
+									<h1 className="navbar-title-login">Login</h1>
+									<div className="input-sign-up">
+										<input type="text" className='table-login' placeholder="Username" required />
+									</div>
+									<div className="input-sign-up">
+										<input type="password" className='table-login' placeholder="Password" required />
+									</div>
+								<button type="submit" className="btn-login">Sign up</button>
+								<p className='text-login'>Forgot your password?<br />
+								<a href="#">Reset</a>
+								</p>
+								</form>
 							</div>
-							<form action="" className="grid grid-cols-1 gap-4 px-2">
-							  <input type="email" name="username" id="username" className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-2xl font-normal text-cyan-600 outline outline-0 transition-all placeholder-shown:border-cyan-400 focus:border-yellow-500 focus:outline-0 disabled:border-0 disabled:bg-yellow-500" />
-							  <label htmlFor="username" className="text-color-navbar-label after:content[' '] pointer-events-none absolute top-16 text-xl font-normal text-blue-gray-500 transition-all">Your email...</label>
-							  <input type="password" name="password" id="password" className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-2xl font-normal text-cyan-600 outline outline-0 transition-all placeholder-shown:border-cyan-200 focus:border-yellow-500 focus:outline-0 disabled:border-0 disabled:bg-yellow-500" />
-							  <label htmlFor="password" className="text-color-navbar-label after:content[' '] pointer-events-none absolute top-36 text-xl font-normal text-blue-gray-500 transition-all">Your password...</label>
-							  <p className="text-slate-300 font-sans text-xl decoration-solid italic">Forgot your password?</p>
-							  <button type="button" data-ripple-light="true" className="mx-32 items-center rounded-md bg-pink-500 py-3 px-6 w-1/3 font-sans text-xl font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Press</button>
-							</form>
 					  </div>
 				  </div>
 				  <div className="h-12">
@@ -74,41 +78,34 @@ const Navbar = (props: Props) => {
 			<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 				<div className="flex items-center justify-center rounded-lg">
 				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
-						<div className="fixed top-32">
+						<div className="fixed top-32 sign-up-form">
 							<button onClick={closeSignUp} className="fixed top-16 right-8">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
 								  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
 							</button>
 
-							<h1 className="text-emerald-300 px-16 py-6 text-5xl w-full">Sign-Up</h1>
-							<form action="" className="flex flex-col list-none">
-								<div className="grid grid-cols-2">
-									<li className="mb-2.5 w-24">
-										<label className="text-sm font-semibold text-color-navbar-label p-2 w-full">Name:</label>
-										<input className="p-2.5 w-32 rounded-md text-color-navbar-form bg-color-navbar-form outline-none" type="text" placeholder="John" />
-									</li>
-									<li>
-										<label className="text-sm font-semibold text-color-navbar-label p-2 w-full">Last Name:</label>
-										<input className="p-2.5 w-32 rounded-md text-color-navbar-form bg-color-navbar-form outline-none" type="text" placeholder="Doe" />
-									</li>
-								</div>
-								<label className="text-sm font-semibold text-color-navbar-label p-2 w-full">Email:</label>
-								<input className="mb-2.5 p-2.5 rounded-md text-color-navbar-form bg-color-navbar-form outline-none" type="email" placeholder="johndoe123@gmail.com" />
-								<div className="grid grid-cols-1">
-									<li className="mb-2.5">
-										<label className="text-sm font-semibold text-color-navbar-label p-2 w-full">Password:</label>
-										<input className="mb-2.5 p-2.5 rounded-md text-color-navbar-form bg-color-navbar-form outline-none" type="password" />
-									</li>
-									<li className="mb-2.5">
-										<label className="text-sm font-semibold text-color-navbar-label p-2 w-full">Password Again:</label>
-										<input className="mb-2.5 p-2.5 rounded-md text-color-navbar-form bg-color-navbar-form outline-none" type="password" />
-									</li>
-								</div>
-								<div className="flex items-center justify-center">
-									<button className="w-32 bg-transparent hover:bg-red-200 text-red-500 font-semibold hover:text-red-500 py-2 px-4 border border-red-200 hover:border-transparent rounded" type="submit">Sign Up</button>
-								</div>
-							</form>
+							<div className='wrapper-sign-up'>
+								<form action="">
+									<h1 className="navbar-title-sign-up">Sign-Up</h1>
+									<div className="input-sign-up">
+										<input type="text" className='table-sign-up' placeholder="Full Name" required />
+									</div>
+									<div className="input-sign-up">
+										<input type="text" className='table-sign-up' placeholder="Username" required />
+									</div>
+									<div className="input-sign-up">
+										<input type="text" className='table-sign-up' placeholder="Email" required />
+									</div>
+									<div className="input-sign-up">
+										<input type="password" className='table-sign-up' placeholder="Password" required />
+									</div>
+								<button type="submit" className="btn-sign-up">Sign up</button>
+								<p className='text-sign-up'> Already have an account?<br />
+								<a href="#">Login</a>
+								</p>
+								</form>
+							</div>
 						</div>
 				  </div>
 				  <div className="h-12">
