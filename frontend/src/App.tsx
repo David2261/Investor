@@ -17,16 +17,16 @@ import Agreement from './pages/static/Agreement.tsx';
 import Emailagreement from './pages/static/Emailagreement.tsx';
 //posts
 import Blog from './pages/posts/Blog.tsx';
-import Quote from './pages/posts/Quote.tsx';
+import Bonds from './pages/posts/Bond.tsx';
 
 
 function App() {
   return (
     <div className="w-full h-full relative">
       <Navbar />
-      <Routes >
+      <Routes > 
         <Route path="/" element={ <Home /> } />
-        <Route path="/community" element={ <Quote /> } />
+        <Route path="/bonds" element={ <Bonds /> } />
         {/* Static pages */}
         <Route path="/about" element={ <About /> } />
         <Route path="/contact" element={ <Contact /> } />
