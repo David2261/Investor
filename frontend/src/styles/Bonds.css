@@ -21,13 +21,16 @@
     padding-bottom: 20px;
 }
 
+/* Block News */
 .bonds-news-body {
     display: grid;
     grid-template-columns: 3fr 1fr;
     place-items: center;
     padding-inline: 10%;
+    padding-bottom: 2.5%;
 }
 
+/* Block Ad in News */
 .bonds-news-add-block {
     display: grid;
     padding-left: 20px;
@@ -62,6 +65,7 @@
     text-align: right;
 }
 
+/* Block Articles in News */
 .bonds-news-content-block {
     display: grid;
     width: 100%;
@@ -97,4 +101,68 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
+}
+
+/* Block Bonds */
+.bonds-content-body {
+    display: grid;
+    padding-inline: 10%;
+    padding-bottom: 2.5%;
+    text-align: left;
+}
+
+.bonds-content-title {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.bonds-content-under-title {
+    font-size: 14px;
+    font-weight: 200;
+    color: darkgray;
+}
+
+.bonds-content-categories-block {
+    padding-top: 20px;
+    display: flex;
+    text-align: left;
+}
+
+.bonds-content-categories-old-btn {
+    border: none;
+    padding-left: 25px;
+    color: darkgray;
+    font-weight: 200;
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: 0.5s;
+}
+
+.bonds-content-categories-old-btn:hover {
+    color: black;
+}
+
+.bcc-category {
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-bottom: 14px;
+    background: #9da6f15d;
+}
+
+.bcc-category-btn-active {
+    background: #fff;
+    color: #000;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.bcc-category-btn {
+    color: darkgray;
+    text-transform: uppercase;
+    font-weight: 200;
+    padding-inline: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

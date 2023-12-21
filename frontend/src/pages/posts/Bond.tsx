@@ -1,6 +1,8 @@
 import { Component, Fragment } from "react";
 import '/src/styles/Bonds.css';
 
+var months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
+
 const DATA = [
     {
         id: 1,
@@ -34,7 +36,7 @@ const DATA = [
     },
 ]
 
-const Article =  DATA.map(value =>
+const Article = DATA.map(value =>
 	<Fragment key={value.id}>
 		<div className="bonds-news-content-block-article">
             <img src={value.img} alt="" />
@@ -64,6 +66,22 @@ class Bonds extends Component {
                             <img src="http://dummyimage.com/50x50/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
                         </div>
                         <p className="bonds-news-add-under-text">@investorhome - официальный канал по облигациям.</p>
+                    </div>
+                </div>
+                {/* Block content bonds */}
+                <div className="bonds-content-body">
+                    <h1 className="bonds-content-title">Облигации: календарь на {new Date().getFullYear()}-{new Date().getFullYear() + 1}</h1>
+                    <p className="bonds-content-under-title">
+                    Дивидендный календарь в {new Date().getFullYear()}-{new Date().getFullYear() + 1} годах. Ближайшие купоны на одну облигацию в {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
+                    </p>
+                    <div className="bonds-content-categories-block">
+                        <div className="bcc-category" role="group">
+                            <button className="bcc-category-btn">Все</button>
+                            <button className="bcc-category-btn">ОФЗ</button>
+                            <button className="bcc-category-btn">Муниципальные</button>
+                            <button className="bcc-category-btn">Корпоративные</button>
+                        </div>
+                        <button className="bonds-content-categories-old-btn">прошедшие купоны</button>
                     </div>
                 </div>
             </div> 
