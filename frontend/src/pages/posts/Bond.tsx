@@ -83,6 +83,32 @@ class Bonds extends Component {
                         </div>
                         <button className="bonds-content-categories-old-btn">прошедшие купоны</button>
                     </div>
+                    <div className="bonds-content-table">
+                        <div className="tbl-header">
+                            <table cellPadding="0" cellSpacing="0">
+                                <thead>
+                                    <tr>
+                                    <th>Облигация</th>
+                                    <th>Реестр</th>
+                                    <th>Купон</th>
+                                    <th>Лет до погашения</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div className="tbl-content">
+                        <table cellPadding="0" cellSpacing="0" >
+                            <tbody>
+                                <tr>
+                                <td>AAC</td>
+                                <td>AUSTRALIAN COMPANY </td>
+                                <td>+2.01</td>
+                                <td>-0.36%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div> 
             </>
