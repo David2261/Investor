@@ -1,0 +1,100 @@
+
+.bonds-body {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.bonds-title {
+    display: flex;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 700;
+    padding-top: 20px;
+}
+
+.bonds-under-title {
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 200;
+    color: darkgray;
+    padding-bottom: 20px;
+}
+
+.bonds-news-body {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    place-items: center;
+    padding-inline: 10%;
+}
+
+.bonds-news-add-block {
+    display: grid;
+    padding-left: 20px;
+}
+
+.bonds-news-add-header {
+    padding-left: 15%;
+    display: flex;
+    justify-content: center;
+}
+
+.bonds-news-add-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.bonds-news-add-header img {
+    width: 64px;
+    height: 64px;
+    margin-left: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.bonds-news-add-under-text {
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 200;
+    color: darkgray;
+    text-align: right;
+}
+
+.bonds-news-content-block {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+}
+
+.bonds-news-content-block-header {
+    font-size: 36px;
+    font-weight: 700;
+    transition: 0.5s;
+    padding-bottom: 10px;
+}
+
+.bonds-news-content-block-header:hover {
+    color: firebrick;
+}
+
+.bonds-news-content-block-article {
+    display: flex;
+    color: dimgray;
+    font-size: 18px;
+    font-weight: 300;
+    transition: 0.5s;
+    padding-bottom: 10px;
+}
+
+.bonds-news-content-block-article:hover{
+    color: firebrick;
+}
+
+.bonds-news-content-block-article img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}

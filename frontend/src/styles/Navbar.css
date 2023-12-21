@@ -65,7 +65,12 @@
 	border-radius: 40px ;
 	font-size: 16px;
 	color: #fff;
-	
+	transition: 0.5s;
+}
+
+.btn-login:hover {
+	background: #98FF98;
+	color: #A52A2A;
 }
 
 .navbar-title-login {
@@ -121,7 +126,12 @@
 	border-radius: 40px ;
 	font-size: 16px;
 	color: #fff;
-	
+	transition: 0.5s;	
+}
+
+.btn-sign-up:hover {
+	background: #98FF98;
+	color: #A52A2A;
 }
 
 .navbar-title-sign-up {

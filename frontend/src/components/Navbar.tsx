@@ -125,7 +125,7 @@ const Navbar = (props: Props) => {
 				{isAboveMediumScreens ? (
 					<div className="relative flex flex-row ml-auto mt-0" id="navbar-collapse">
 						<HeadLink page="blog" />
-						<HeadLink page="community" />
+						<HeadLink page="bonds" />
 						<HeadLink page="contact" />
 						<button onClick={openModal} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
 						<button onClick={upSignUp} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
@@ -169,7 +169,7 @@ const Navbar = (props: Props) => {
 					<div className="flex text-2xl justify-center">
 						<div className="flex gap-8 flex-col items-center" id="navbar-collapse">
 							<MenuLink page="blog" />
-							<MenuLink page="community" />
+							<MenuLink page="bonds" />
 							<MenuLink page="contact" />
 							<button onClick={openModal} className={`uppercase text-zinc-600`}>Login</button>
 							<NavLink to="sign-up/" className={`uppercase text-zinc-600`}>Sign In</NavLink>
