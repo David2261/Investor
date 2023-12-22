@@ -44,6 +44,75 @@ const Article = DATA.map(value =>
         </div>
 	</Fragment>
 );
+const ARR = (
+    [
+        {
+            id: 0,
+            category: 'Сбер',
+            number: 26220
+        },
+        {
+            id: 1,
+            category: 'Сбер',
+            number: 26221
+        },
+        {
+            id: 2,
+            category: 'Сбер',
+            number: 26222
+        },
+        {
+            id: 3,
+            category: 'Сбер',
+            number: 26223
+        },
+        {
+            id: 4,
+            category: 'Сбер',
+            number: 26224
+        },
+        {
+            id: 5,
+            category: 'Сбер',
+            number: 26225
+        },
+        {
+            id: 6,
+            category: 'Сбер',
+            number: 26226
+        },
+        {
+            id: 7,
+            category: 'Сбер',
+            number: 26227
+        },
+        {
+            id: 8,
+            category: 'Сбер',
+            number: 26228
+        },
+        {
+            id: 9,
+            category: 'Сбер',
+            number: 26229
+        },
+        {
+            id: 10,
+            category: 'Сбер',
+            number: 26230
+        },
+    ]
+);
+
+const DataTab = ARR.map(value => 
+    <Fragment key={value.id}>
+        <tr>
+            <td>{value.category}</td>
+            <td>AUSTRALIAN COMPANY </td>
+            <td>{value.number}</td>
+            <td>-0.36%</td>
+        </tr>
+    </Fragment>);
 
 class Bonds extends Component {
 
@@ -100,12 +169,7 @@ class Bonds extends Component {
                     <div className="tbl-content">
                         <table cellPadding="0" cellSpacing="0" >
                             <tbody>
-                                <tr>
-                                <td>AAC</td>
-                                <td>AUSTRALIAN COMPANY </td>
-                                <td>+2.01</td>
-                                <td>-0.36%</td>
-                                </tr>
+                                {DataTab}
                             </tbody>
                         </table>
                     </div>
