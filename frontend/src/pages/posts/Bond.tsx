@@ -5,7 +5,12 @@ import DATA_ARTICLES from "/src/alpha_test_data/bond_article_data.tsx";
 
 var months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
 
-const Article = DATA_ARTICLES.map((value: { id: Key | null | undefined; img: string | undefined; text: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) =>
+const Article = DATA_ARTICLES.map((value: {
+    id: Key;
+    img: string | undefined;
+    text: string;
+    category: string;
+}) =>
 	<Fragment key={value.id}>
 		<div className="bonds-news-content-block-article">
             <img src={value.img} alt="" />
@@ -15,7 +20,10 @@ const Article = DATA_ARTICLES.map((value: { id: Key | null | undefined; img: str
 );
 
 const DataTab = BOND_DATA.map((value: {
-    number: ReactNode; id: Key | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; price: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; 
+    number: number;
+    id: Key;
+    category: string;
+    price: number; 
 }) => 
     <Fragment key={value.id}>
         <tr>

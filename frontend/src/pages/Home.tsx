@@ -6,7 +6,10 @@ import DATAPOSTS from '/src/alpha_test_data/home_data_posts.tsx';
 const centerContent = `flex justify-center`;
 
 
-const contentList = DATA.map((value: { id: Key | null | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) => 
+const contentList = DATA.map((value: {
+	id: Key;
+	title: string;
+}) => 
 	// return <div><ContentPost title={value.title} /></div>;
 	<Fragment key={value.id}>
 		<div className="ml-10"><p className="text-xl hover:text-slate-700">{value.title}</p></div>
@@ -14,7 +17,11 @@ const contentList = DATA.map((value: { id: Key | null | undefined; title: string
 );
 
 
-const ContentNews = DATANEWS.map((value: { id: Key | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) =>
+const ContentNews = DATANEWS.map((value: {
+	id: Key;
+	category: string;
+	title: string;
+}) =>
 	<Fragment key={value.id}>
 		<div className="border-t-2 w-full relative">
 			<div className="absolute left-0 top-0">
@@ -38,7 +45,12 @@ const ContentNews = DATANEWS.map((value: { id: Key | null | undefined; category:
 	</Fragment>
 );
 
-const ContentPost = DATAPOSTS.map((value: { id: Key | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; text: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; img: string | undefined; }) =>
+const ContentPost = DATAPOSTS.map((value: {
+	id: Key;
+	category: string;
+	title: string;
+	text: string;
+	img: string | undefined; }) =>
 	<Fragment key={value.id}>
 		<div className="w-full flex flex-col">
 			<p className="text-lg uppercase text-sky-500">{value.category}</p>

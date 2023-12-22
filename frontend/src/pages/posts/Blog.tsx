@@ -4,7 +4,12 @@ import DATA from '/src/alpha_test_data/blog_data_categories.tsx';
 import DATAPOSTS from '/src/alpha_test_data/blog_data_posts.tsx';
 
 // Блок статьи
-const postsList = DATAPOSTS.map((value: { id: Key | null | undefined; img: string | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) =>
+const postsList = DATAPOSTS.map((value: {
+	id: Key;
+	img: string | undefined;
+	title: string;
+	category: string;
+}) =>
 	<Fragment key={value.id}>
 		<div className="blog-content-post">
 			<img src={value.img} alt="" />
@@ -15,7 +20,11 @@ const postsList = DATAPOSTS.map((value: { id: Key | null | undefined; img: strin
 );
 
 // Блок категории
-const sidebar = DATA.map((value: { id: Key | null | undefined; img: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) =>
+const sidebar = DATA.map((value: {
+	id: Key;
+	img: string | undefined;
+	category: string;
+}) =>
 	<Fragment key={value.id}>
 		<li className="item" title="home">
 		<a href="#home" className="hyper-link">
