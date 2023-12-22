@@ -1,42 +1,11 @@
-import { Component, Fragment } from "react";
+import { Component, Fragment, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from "react";
 import '/src/styles/Bonds.css';
+import BOND_DATA from "/src/alpha_test_data/bond_data.tsx";
+import DATA_ARTICLES from "/src/alpha_test_data/bond_article_data.tsx";
 
 var months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
 
-const DATA = [
-    {
-        id: 1,
-        category: 'ОФЗ',
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, dolore.",
-        img: "http://dummyimage.com/32x32/4d494d/686a82.jpeg&text=placeholder+image"
-    },
-    {
-        id: 2,
-        category: 'Сбер',
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, dolore.",
-        img: "http://dummyimage.com/32x32/4d494d/686a82.jpeg&text=placeholder+image"
-    },
-    {
-        id: 3,
-        category: 'Лукойл',
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, dolore.",
-        img: "http://dummyimage.com/32x32/4d494d/686a82.jpeg&text=placeholder+image"
-    },
-    {
-        id: 4,
-        category: 'Газпром',
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, dolore.",
-        img: "http://dummyimage.com/32x32/4d494d/686a82.jpeg&text=placeholder+image"
-    },
-    {
-        id: 5,
-        category: 'Татнефть',
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, dolore.",
-        img: "http://dummyimage.com/32x32/4d494d/686a82.jpeg&text=placeholder+image"
-    },
-]
-
-const Article = DATA.map(value =>
+const Article = DATA_ARTICLES.map((value: { id: Key | null | undefined; img: string | undefined; text: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) =>
 	<Fragment key={value.id}>
 		<div className="bonds-news-content-block-article">
             <img src={value.img} alt="" />
@@ -44,72 +13,15 @@ const Article = DATA.map(value =>
         </div>
 	</Fragment>
 );
-const ARR = (
-    [
-        {
-            id: 0,
-            category: 'Сбер',
-            number: 26220
-        },
-        {
-            id: 1,
-            category: 'Сбер',
-            number: 26221
-        },
-        {
-            id: 2,
-            category: 'Сбер',
-            number: 26222
-        },
-        {
-            id: 3,
-            category: 'Сбер',
-            number: 26223
-        },
-        {
-            id: 4,
-            category: 'Сбер',
-            number: 26224
-        },
-        {
-            id: 5,
-            category: 'Сбер',
-            number: 26225
-        },
-        {
-            id: 6,
-            category: 'Сбер',
-            number: 26226
-        },
-        {
-            id: 7,
-            category: 'Сбер',
-            number: 26227
-        },
-        {
-            id: 8,
-            category: 'Сбер',
-            number: 26228
-        },
-        {
-            id: 9,
-            category: 'Сбер',
-            number: 26229
-        },
-        {
-            id: 10,
-            category: 'Сбер',
-            number: 26230
-        },
-    ]
-);
 
-const DataTab = ARR.map(value => 
+const DataTab = BOND_DATA.map((value: {
+    number: ReactNode; id: Key | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; price: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; 
+}) => 
     <Fragment key={value.id}>
         <tr>
-            <td>{value.category}</td>
+            <td>{value.category} {value.number}</td>
             <td>AUSTRALIAN COMPANY </td>
-            <td>{value.number}</td>
+            <td>{value.price}</td>
             <td>-0.36%</td>
         </tr>
     </Fragment>);
