@@ -1,84 +1,15 @@
-import { Component, Fragment } from 'react';
-
+import { Component, Fragment, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from 'react';
+import DATA from '/src/alpha_test_data/home_data.tsx';
+import DATANEWS from '/src/alpha_test_data/home_data_news.tsx';
+import DATAPOSTS from '/src/alpha_test_data/home_data_posts.tsx';
 
 const centerContent = `flex justify-center`;
 
 
-const DATA = [
-	{
-		id: 1,
-		title: "Philip Morris (PM): отчет за 2 кв. 2023 г. Лучший в своем роде"
-	},
-	{
-		id: 2,
-		title: "Ленэнерго: отчет за 2 кв. 2023 по РСБУ. Рекордные дивиденды зреют"
-	},
-	{
-		id: 3,
-		title: "РусАгро: отчет за 2 кв. 2023 по МСФО. Скоро укрупнение в показателях"
-	},
-	{
-		id: 4,
-		title: "Apple (AAPl): отчет за 3 кв. ф.г. Мечты яблочников об автомобиле"
-	},
-	{
-		id: 5,
-		title: "Newmont (NEM): отчет за 2 кв. 2023 г. Что не так с золотодобытчиками?"
-	},
-	{
-		id: 6,
-		title: "Ростелеком: отчет за 2 кв. 2023 по МСФО. Раскрытие вернулось!"
-	},
-	{
-		id: 7,
-		title: "Сбербанк: отчет за 2 кв. 2023 по МСФО. Лидер в форме!"
-	},
-	{
-		id: 8,
-		title: "Pfizer, Merck, Exxon Mobile, новый китайский портфель активов"
-	}
-];
-
-const DATANEWS = [
-	{
-		id: 1,
-		category: 'Markets',
-		title: 'Bearish investor Boaz Weinstein is feeling the pain from this year\'s unexpected stock rally'
-	},
-];
-
-const DATAPOSTS = [
-	{
-		id: 1,
-		category: 'Markets',
-		title: 'Bearish investor Boaz Weinstein is feeling the pain from this year\'s unexpected stock rally',
-		text: "The Enneagram is the latest personality typology to penetrate the zeitgeist. From Hogwarts houses to horoscopes, humans love to categorize ourselves.",
-		img: "http://dummyimage.com/300x200/4d494d/686a82.gif&text=placeholder+image",
-	},
-	{
-		id: 2,
-		category: 'NEWS',
-		title: 'Enneagrams are the new horoscopes',
-		text: "Tracy Anderson memberships are the ultimate Hamptons status symbol. But some devotees say the classes have turned into a chaotic, overpriced mess.",
-		img: "http://dummyimage.com/300x200/4d494d/686a82.gif&text=placeholder+image",
-	},
-	{
-		id: 3,
-		category: 'RETAIL',
-		title: 'Chaos in the Hamptons: Tracy Anderson devotees gripe about $5,500 mats, $90 classes, and power struggles among \'queen bees\'',
-		text: "PAK'nSAVE's money-saving bot used ChatGPT to recommend recipes based on leftover ingredients, but it offered up some potentially deadly combinations.",
-		img: "http://dummyimage.com/300x200/4d494d/686a82.gif&text=placeholder+image",
-	},
-	{
-		id: 4,
-		category: 'TECH',
-		title: 'Months after an AI deepfake of the pontiff in a puffy coat went viral, Pope Francis is warning about the dangers of AI',
-		text: "The Vatican released a statement where Pope Francis speaks on AI, its potential harm, and need for tech to service humanity.",
-		img: "http://dummyimage.com/300x200/4d494d/686a82.gif&text=placeholder+image",
-	},
-];
-
-const contentList = DATA.map(value => 
+const contentList = DATA.map((value: {
+	id: Key;
+	title: string;
+}) => 
 	// return <div><ContentPost title={value.title} /></div>;
 	<Fragment key={value.id}>
 		<div className="ml-10"><p className="text-xl hover:text-slate-700">{value.title}</p></div>
@@ -86,7 +17,11 @@ const contentList = DATA.map(value =>
 );
 
 
-const ContentNews = DATANEWS.map(value =>
+const ContentNews = DATANEWS.map((value: {
+	id: Key;
+	category: string;
+	title: string;
+}) =>
 	<Fragment key={value.id}>
 		<div className="border-t-2 w-full relative">
 			<div className="absolute left-0 top-0">
@@ -110,7 +45,12 @@ const ContentNews = DATANEWS.map(value =>
 	</Fragment>
 );
 
-const ContentPost = DATAPOSTS.map(value =>
+const ContentPost = DATAPOSTS.map((value: {
+	id: Key;
+	category: string;
+	title: string;
+	text: string;
+	img: string | undefined; }) =>
 	<Fragment key={value.id}>
 		<div className="w-full flex flex-col">
 			<p className="text-lg uppercase text-sky-500">{value.category}</p>
