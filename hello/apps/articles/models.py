@@ -120,19 +120,22 @@ class Bonds(BasePost):
 			auto_now=True,
 			verbose_name=_("Time of change"))
 	price = models.FloatField(
-			verbose_name=_"The price of the bond (1 lot)",
+			verbose_name=_("The price of the bond (1 lot)"),
 			null=False,
 			blank=False)
 	maturity = models.DateTimeField(
 			verbose_name=_("Maturity date of the bonds"),
 			null=False,
 			blank=False)
+	is_published = models.BooleanField(
+			default=True,
+			verbose_name=_("Publication"))
 	cupon = models.FloatField(
-			verbose_name=_"The cupon of the bond (1 lot)",
+			verbose_name=_("The cupon of the bond (1 lot)"),
 			null=False,
 			blank=False)
 	cupon_percent = models.FloatField(
-			verbose_name=_"The cupon of the bond (1 lot) with %",
+			verbose_name=_("The cupon of the bond (1 lot) with %"),
 			null=False,
 			blank=False)
 	

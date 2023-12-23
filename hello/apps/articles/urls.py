@@ -3,6 +3,8 @@ from django.urls import path
 from .views import (
 	ArticleDetail,
 	ArticlesList,
+	BondDetail,
+	BondsList,
 	CategoriesList,
 	IpList,
 	UserList,
@@ -24,6 +26,11 @@ urlpatterns = [
 			'category/<slug:cat_slug>/',
 			CategoryDetail.as_view(),
 			name='category-detail'),
+	path('bond/all/', BondsList.as_view(), name='bond-list'),
+    path(
+			'bond/<slug:bond_slug>/',
+			BondDetail.as_view(),
+			name='bond-detail'),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
 	path('generate/csv', generate_csv, name='db-list'),
