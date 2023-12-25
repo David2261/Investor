@@ -18,6 +18,8 @@ import Emailagreement from './pages/static/Emailagreement.tsx';
 //posts
 import Blog from './pages/posts/Blog.tsx';
 import Bonds from './pages/posts/Bond.tsx';
+// Admin
+import HomeAdmin from './pages/admin/HomeAdmin.tsx';
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
         <Route path="/agreement" element={ <Agreement /> } />
         <Route path="/emailagreement" element={ <Emailagreement /> } />
         <Route path="/blog" element={ <Blog /> } />
+        {/* Admin page */}
+        <Route path="/admin" element={ <HomeAdmin />}></Route>
         {/*<Route path="/sign-up" element={ <SignUp /> } />
         <Route path="/admin/login" element={ <LoginAdmin /> } />
         <Route path="/admin/register" element={ <RegisterAdmin /> } />

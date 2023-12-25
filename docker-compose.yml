@@ -1,7 +1,21 @@
 
 version: '2'
 
+volumes:
+  pg_project: 'Investor'
+
 services:
+  pg_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=Bulat31082003
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=InvestorHome
+    volumes:
+      - pg_project:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
   web:
     image: registry.github.com/David2261/Investor:${CI_BUILD_REF_NAME}
     build: ./web
