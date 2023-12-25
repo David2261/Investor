@@ -80,7 +80,7 @@ class Bonds extends Component {
                                     <th>Облигация</th>
                                     <th>Реестр</th>
                                     <th>Купон</th>
-                                    <th>Лет до погашения</th>
+                                    <th>Купон в %</th>
                                     </tr>
                                 </thead>
                             </table>

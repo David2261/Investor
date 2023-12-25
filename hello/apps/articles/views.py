@@ -15,8 +15,10 @@ from rest_framework import permissions
 
 # from .forms import RegisterForm
 from authentication.models import User
-from .models import Category, Articles, Ip
+from .models import Bonds, Category, Articles, Ip
 from .serializers import (
+	BondDetailSerializer,
+	BondsSerializer,
 	IpSerializer,
 	CategorySerializer,
 	ArticlesSerializer,
@@ -91,14 +93,26 @@ class CategoriesList(ListAPIView):
 class CategoryDetail(ListAPIView):
 	permissions_classes = permissions.AllowAny
 	serializer_class = ArticlesSerializer
-	lookup_field = 'slug'
-	lookup_url_kwarg = 'cat_slug'
 
 	def get_queryset(self):
 		posts = Articles.objects.filter(
 				category__slug=self.kwargs['cat_slug'],
 				is_published=True).select_related('category')
 		return posts
+
+
+class BondsList(ListAPIView):
+	queryset = Bonds.objects.filter(is_published=True)
+	serializer_class = BondsSerializer
+	permissions_classes = permissions.AllowAny
+
+
+class BondDetail(RetrieveAPIView):
+	permissions_classes = permissions.IsAuthenticated
+	queryset = Bonds.objects.filter(is_published=True)
+	serializer_class = BondDetailSerializer
+	lookup_field = 'slug'
+	lookup_url_kwarg = 'bond_slug'	
 
 
 class IpList(ListAPIView):
