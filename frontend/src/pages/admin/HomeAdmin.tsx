@@ -1,14 +1,7 @@
+import { Fragment } from 'react';
 import '/src/styles/AdminHome.css';
 import SideBarDATA from '/src/alpha_test_data/admin_data_groups.tsx';
-import { Fragment } from 'react';
-
-// function ContentBar (content: []) {
-//     const bar = content.map((value: any) => 
-//     <Fragment>
-//         <p>{content}</p>
-//     </Fragment>)
-//     return <Fragment></Fragment>
-// } 
+import AdminDATARecent from '/src/alpha_test_data/admin_data_recent.tsx';
 
 const SideBar = SideBarDATA.map((value: {
     id: number,
@@ -24,7 +17,16 @@ const SideBar = SideBarDATA.map((value: {
             {/* {value.content.length > 0 ? <p>{value.content[0]}</p> : null} */}
         </div>
     </Fragment>
-)
+);
+
+const ContentRecentChanges = AdminDATARecent.map((value: {
+    id: number,
+    title: string
+}) => 
+    <Fragment key={value.id}>
+        <p>{value.title}</p>
+    </Fragment>
+);
 
 const HomeAdmin = () => {
     return <>
@@ -33,7 +35,17 @@ const HomeAdmin = () => {
             <h1>Админ панель</h1>
             {SideBar}
         </div>
-        <div></div>
+        <div className='home-content'>
+            <div className='content-chart'>
+                <h1>BLOCK CHART</h1>
+            </div>
+            <div className='content-recent-changes'>
+                <h1>Последние действия</h1>
+                <div className='recent-changes-block'>
+                    {ContentRecentChanges}
+                </div>
+            </div>
+        </div>
     </div>
     </>
 };
