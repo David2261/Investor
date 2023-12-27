@@ -1,4 +1,9 @@
-const AdminDATARecent = [
+interface AdminDataRecentItem {
+    id: number;
+    title: string;
+}
+
+const AdminDATARecent: AdminDataRecentItem[] = [
     {
         id: 1,
         "title": "Stock Market",

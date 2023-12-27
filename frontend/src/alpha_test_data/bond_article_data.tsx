@@ -1,4 +1,11 @@
-const DATA_ARTICLES = [
+interface DATA_ARTICLESItem {
+    id: number,
+    category: string,
+    text: string,
+    img: string
+}
+
+const DATA_ARTICLES: DATA_ARTICLESItem[] = [
     {
         id: 1,
         category: 'ОФЗ',

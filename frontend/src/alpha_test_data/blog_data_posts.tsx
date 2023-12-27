@@ -1,5 +1,13 @@
+interface DATAPOSTSItem {
+	id: number,
+	category: string,
+	title: string,
+	text: string,
+	img: string
+}
+
 // Примерные данные статей
-const DATAPOSTS = [
+const DATAPOSTS: DATAPOSTSItem[] = [
 	{
 		id: 1,
 		category: 'Markets',

@@ -1,5 +1,10 @@
 
-const DATA = [
+interface DATAItem {
+	id: number,
+	title: string
+}
+
+const DATA: DATAItem[] = [
 	{
 		id: 1,
 		title: "Philip Morris (PM): отчет за 2 кв. 2023 г. Лучший в своем роде"

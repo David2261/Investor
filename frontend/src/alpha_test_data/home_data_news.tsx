@@ -1,5 +1,11 @@
 
-const DATANEWS = [
+interface DATANEWSItem {
+    id: number,
+	category: string,
+    title: string
+}
+
+const DATANEWS: DATANEWSItem[] = [
 	{
 		id: 1,
 		category: 'Markets',

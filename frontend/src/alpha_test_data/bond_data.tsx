@@ -1,6 +1,12 @@
 
+interface BOND_DATAItem {
+    id: number,
+    category: string,
+    number: number,
+    price: number
+}
 
-const BOND_DATA = [
+const BOND_DATA: BOND_DATAItem[] = [
     {
         id: 0,
         category: 'Сбер',
@@ -10,7 +16,8 @@ const BOND_DATA = [
     {
         id: 1,
         category: 'Сбер',
-        number: 26221
+        number: 26221,
+        price: 655
     },
     {
         id: 2,

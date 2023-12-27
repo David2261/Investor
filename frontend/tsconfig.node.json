@@ -6,7 +6,7 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "*": ["./*", "./src/alpha_test_data/*"]
+      "*": ["./*", "./src/*"]
     },
   },
   "include": ["vite.config.ts"]
