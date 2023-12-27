@@ -1,4 +1,12 @@
-const DATAPOSTS = [
+interface DATAPOSTSItem {
+    id: number,
+    category: string,
+	title: string,
+    text: string,
+    img: string
+}
+
+const DATAPOSTS: DATAPOSTSItem[] = [
 	{
 		id: 1,
 		category: 'Markets',

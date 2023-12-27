@@ -1,5 +1,13 @@
+import React from 'react';
+
 // Примерные категории
-const DATA = [
+interface DataItem {
+    id: number;
+    category: string;
+    img: React.ReactNode;
+}
+
+const DATA: DataItem[] = [
 	{
 		id: 1,
 		category: 'Markets',

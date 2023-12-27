@@ -9,20 +9,22 @@
 .home-sidebar {
     display: grid;
     color: #000;
-    font-size: 16px;
-    padding-left: 2.5%;
+    padding-left: 5%;
+    border-right: solid;
+    border-right-color: #32a1ce;
+    border-right-width: 1px;
 }
 
 .home-sidebar h1 {
     color: #000;
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 700;
     text-transform: uppercase;
     text-align: center;
 }
 
 .home-bar-content {
-    padding-top: 1.5%;
+    padding-top: 2%;
     padding-bottom: 0.5%;
     text-align: left;
 }
@@ -31,8 +33,46 @@
     font-size: 22px;
     font-weight: 700;
     text-align: center;
+    background: #6C4FF7;
+    color: #fff;
 }
 
 .home-bar-content p {
     font-weight: 300;
+    font-size: 18px;
+    color: #000;
+}
+
+/* Block content */
+.home-content {
+    display: grid;
+    padding-inline: 5%;
+}
+
+.content-chart {
+    padding-bottom: 5%;
+}
+
+.content-recent-changes {
+    display: grid;
+    background: #d9dae3;
+}
+
+.content-recent-changes h1 {
+    color: #000;
+    font-weight: 600;
+    font-size: 22px;
+    border-bottom: solid;
+    border-width: 1px;
+}
+
+.recent-changes-block {
+    margin: 20px;
+}
+
+.recent-changes-block p {
+    padding-top: 2%;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: capitalize;
 }

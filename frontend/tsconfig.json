@@ -32,6 +32,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": false
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }
