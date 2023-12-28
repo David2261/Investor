@@ -1,9 +1,11 @@
 import {expect, jest, test} from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import Article from '../../pages/posts/Article';
 import { unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
+// Work file
+import Article from '../../pages/posts/Article';
+
 
 
 describe('Article page', () => {

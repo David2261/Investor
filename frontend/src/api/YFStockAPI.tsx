@@ -12,7 +12,7 @@ const URL = axios.create({
 
 
 export default {
-	YFStockMarket: (ticker) =>
+	YFStockMarket: (ticker: string) =>
 	URL({
 		'method': 'GET',
 		'params': {

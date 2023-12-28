@@ -76,8 +76,8 @@ export default class Home extends Component {
 						<img src="http://dummyimage.com/800x600/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
 					</div>
 				</div>
-				<div className={`${centerContent} mx-6 mt-20 mb-10`}>
-					<h1 className="font-bold uppercase text-5xl">НАЧНИТЕ С ЭТОГО</h1>
+				<div className={`${centerContent} mx-6 mt-20 mb-10`} data-name="start-with">
+					<h1 className="font-bold uppercase text-5xl" >НАЧНИТЕ С ЭТОГО</h1>
 				</div>
 				<div className="columns-3 md:mx-6 mb-10">
 					<div className="ml-4 mr-2">
