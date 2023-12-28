@@ -1,7 +1,6 @@
 
-type Props = {};
 
-const Emailagreement = (props: Props) => {
+const Emailagreement = () => {
 	return <div className="w-full h-auto">
 		<div className="px-10 py-10 flex flex-col gap-6 text-lg text-slate-600">
 		<h1 className="text-5xl text-slate-900">Согласие с рассылкой</h1>

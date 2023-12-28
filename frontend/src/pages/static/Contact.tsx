@@ -1,7 +1,6 @@
 
-type Props = {};
 
-const Contact = (props: Props) => {
+const Contact = () => {
 	return <div className="w-full h-auto px-6 md:px-20 text-justify">
 		<div className="py-10">
 			<h1 className="text-5xl font-bold">Контакт</h1>

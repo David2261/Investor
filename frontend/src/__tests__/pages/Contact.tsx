@@ -1,10 +1,10 @@
-import {expect, jest, test} from '@jest/globals';
+import {expect, test} from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Contact from '../../pages/static/Contact';
 import { unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import userEvent from '@testing-library/user-event';
+// import userEvent from '@testing-library/user-event';
 
 
 describe('Contact page', () => {

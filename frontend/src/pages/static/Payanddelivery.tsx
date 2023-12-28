@@ -1,7 +1,6 @@
 
-type Props = {};
 
-const Payanddelivery = (props: Props) => {
+const Payanddelivery = () => {
 	return <div className="w-full h-auto py-10">
 		<div className="px-10 flex flex-col gap-5 text-xl text-slate-600 text-justify">
 			<h1 className="text-5xl pb-5 text-slate-900">Условия доставки и оплаты</h1>

@@ -1,9 +1,9 @@
-import { Component, Fragment, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from "react";
+import { Component, Fragment, Key } from "react";
 import '/src/styles/Bonds.css';
 import BOND_DATA from "/src/alpha_test_data/bond_data.tsx";
 import DATA_ARTICLES from "/src/alpha_test_data/bond_article_data.tsx";
 
-var months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
+const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
 
 const Article = DATA_ARTICLES.map((value: {
     id: Key;

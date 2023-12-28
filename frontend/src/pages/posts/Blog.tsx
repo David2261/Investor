@@ -1,4 +1,4 @@
-import { Fragment, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from 'react';
+import { Fragment, Key, useState } from 'react';
 import '/src/styles/Blog.css';
 import DATA from '/src/alpha_test_data/blog_data_categories.tsx';
 import DATAPOSTS from '/src/alpha_test_data/blog_data_posts.tsx';
