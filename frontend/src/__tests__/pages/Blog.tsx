@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils';
 import Blog from '../../pages/posts/Blog';
 
 
-describe('Article page', () => {
+describe('Blog page', () => {
     let container:any = null;
 
 	beforeEach(() => {
@@ -20,11 +20,25 @@ describe('Article page', () => {
         container = null;
     });
 
-	test('Found img in document Article', () => {
+	test('Found img in document Blog', () => {
         act(() => {
             render(<Blog />, container);
         });
 		expect(container.querySelector('h1'));
 	});
+
+    test('Found sidebar in Blog', () => {
+        act(() => {
+            render(<Blog />, container);
+        });
+        expect(container.getByRole('div', {name: 'sidebar'}));
+    });
+
+    test('Found posts list in Blog', () => {
+        act(() => {
+            render(<Blog />, container);
+        });
+        expect(container.getByRole('div', {name: 'posts-list'}));
+    });
 
 });

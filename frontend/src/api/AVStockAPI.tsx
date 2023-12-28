@@ -13,7 +13,7 @@ const URL = axios.create({
 
 
 export default {
-	stockMarket: (ticker) =>
+	stockMarket: (ticker: string) =>
 	URL({
 		'method': 'GET',
 		'url': '/query',

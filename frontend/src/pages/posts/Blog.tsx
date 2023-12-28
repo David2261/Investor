@@ -70,11 +70,11 @@ const Blog = () => {
 					</svg>
 				</span>}
 			</button>
-			<ul className="items-container">
+			<ul className="items-container" data-name="sidebar">
 			{sidebar}
 			</ul>
 		</nav>
-		<div className='blog-content'>
+		<div className='blog-content' data-name="posts-list">
 			{postsList}
 		</div>
 	</>
