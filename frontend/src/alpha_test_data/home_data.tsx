@@ -1,6 +1,7 @@
+import { Key } from "react";
 
 interface DATAItem {
-	id: number,
+	id: Key,
 	title: string
 }
 

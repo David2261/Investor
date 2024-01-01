@@ -1,8 +1,6 @@
 
 
-type Props = {};
-
-const Article = (props: Props) => {
+const Article = () => {
 	return <div className="w-full h-full font-mono">
 		<p className="flex flex-row justify-center uppercase text-green-500 text-lg pt-10">banks</p>
 		<h1 className="flex flex-row justify-center text-3xl uppercase">Every Next Level of Your Life Will Demand a Different You</h1>

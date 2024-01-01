@@ -1,45 +1,14 @@
-import { Fragment, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from 'react';
+import { useState } from 'react';
 import '/src/styles/Blog.css';
-import DATA from '/src/alpha_test_data/blog_data_categories.tsx';
-import DATAPOSTS from '/src/alpha_test_data/blog_data_posts.tsx';
-
-// Блок статьи
-const postsList = DATAPOSTS.map((value: {
-	id: Key;
-	img: string | undefined;
-	title: string;
-	category: string;
-}) =>
-	<Fragment key={value.id}>
-		<div className="blog-content-post">
-			<img src={value.img} alt="" />
-			<p>{value.title}</p>
-			<p className="uppercase">{value.category}</p>
-		</div>
-	</Fragment>
-);
-
-// Блок категории
-const sidebar = DATA.map((value: {
-	id: Key;
-	img: string | undefined;
-	category: string;
-}) =>
-	<Fragment key={value.id}>
-		<li className="item" title="home">
-		<a href="#home" className="hyper-link">
-			<div className="icon-wrapper">
-				<span className="material-symbols-outlined">{value.img}</span>
-			</div>
-			<span className="item-text">{value.category}</span>
-		</a>
-		</li>
-	</Fragment>
-);
+import PostsList from '../../components/Blog/PostsList';
+import Sidebar from '../../components/Blog/Sidebar';
+// Example data
+import DATAPOSTS from "../../alpha_test_data/blog_data_posts";
+import DATA from '../../alpha_test_data/blog_data_categories.tsx';
 
 
 const Blog = () => {
-    const [isNavOpen, setIsNavOpen] = useState(false);
+	const [isNavOpen, setIsNavOpen] = useState(false);
 	const changeControllerIconStyle = (isNavOpen: boolean): React.CSSProperties => {
 		return {
 			fontSize: '24px',
@@ -47,10 +16,9 @@ const Blog = () => {
 		};
 	};
 
-    function toggleNavigationBarState() {
-        setIsNavOpen(!isNavOpen);
-    }
-
+	function toggleNavigationBarState() {
+		setIsNavOpen(!isNavOpen);
+	}
 
 	return <>
 		<h1 className='blog-header'>NEWS</h1>
@@ -71,11 +39,11 @@ const Blog = () => {
 				</span>}
 			</button>
 			<ul className="items-container" data-name="sidebar">
-			{sidebar}
+				<Sidebar data={DATA} />
 			</ul>
 		</nav>
 		<div className='blog-content' data-name="posts-list">
-			{postsList}
+			<PostsList data={DATAPOSTS} />
 		</div>
 	</>
 };

@@ -1,10 +1,10 @@
-type Content = 'Группы' | 'Статьи' | 'Облигации' | 'Категории' | 'IPs' | 'Tokens';
+import { Key } from "react";
 
-interface SideBarDataItem {
-    id: number;
-    title: string;
-    content: Content[];
-}
+type SideBarDataItem = {
+    id: Key,
+    title: string,
+    content: string[],
+};
 
 const SideBarDATA: SideBarDataItem[] = [
     {

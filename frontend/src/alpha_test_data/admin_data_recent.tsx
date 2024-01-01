@@ -1,6 +1,8 @@
+import { Key } from "react";
+
 interface AdminDataRecentItem {
-    id: number;
-    title: string;
+    id: Key,
+    title: string,
 }
 
 const AdminDATARecent: AdminDataRecentItem[] = [

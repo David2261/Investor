@@ -1,8 +1,5 @@
-import { useState } from 'react';
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-
-type Props = {};
 
 const DOT = <div className="hidden md:flex rounded-full h-0.5 w-0.5 bg-slate-400"></div>;
 
@@ -97,7 +94,7 @@ const LocalLinks = (
 	</div>
 );
 
-const Footer = (props: Props) => {
+const Footer = () => {
 
 	return <>
 		<div className="w-full bg-blue-100 flex flex-col mt-4">

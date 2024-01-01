@@ -1,7 +1,6 @@
 
-type Props = {};
 
-const Confidentiality = (props: Props) => {
+const Confidentiality = () => {
 	return <div className="w-full h-auto">
 		<div className="px-10 py-10 flex flex-col text-slate-600 text-lg text-justify">
 			<h1 className="text-slate-900 text-5xl pb-5">Политика конфиденциальности</h1>

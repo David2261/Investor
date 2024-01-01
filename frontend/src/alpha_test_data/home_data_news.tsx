@@ -1,6 +1,7 @@
+import { Key } from "react";
 
 interface DATANEWSItem {
-    id: number,
+    id: Key,
 	category: string,
     title: string
 }

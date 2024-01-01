@@ -11,10 +11,7 @@ import '../styles/Navbar.css';
 import BGLogin from '../assets/login_bg.jpg';
 
 
-type Props = {};
-
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
 	const styleNav = "uppercase p-2 lg:px-4 md:mx-2 rounded transation-colors duration-300";
 	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
@@ -42,11 +39,11 @@ const Navbar = (props: Props) => {
 		{isOpen ?
 			<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 				<div className="grid items-center justify-center rounded-lg">
-				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
+					<div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
 						<div className="fixed top-32 login-form">
 							<button onClick={closeModal} className="fixed top-16 right-8" data-name="Navbar logo">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
-								  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+									<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
 							</button>
 							<div className='wrapper-login'>
@@ -64,11 +61,11 @@ const Navbar = (props: Props) => {
 								</p>
 								</form>
 							</div>
-					  </div>
-				  </div>
-				  <div className="h-12">
-					<img className="rounded-md" src={BGLogin} alt="" />
-				  </div>
+						</div>
+					</div>
+					<div className="h-12">
+						<img className="rounded-md" src={BGLogin} alt="" />
+					</div>
 				</div>
 			</div>
 			:
@@ -77,11 +74,11 @@ const Navbar = (props: Props) => {
 		{openSignUp ?
 			<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 				<div className="flex items-center justify-center rounded-lg">
-				  <div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
+					<div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
 						<div className="fixed top-32 sign-up-form">
 							<button onClick={closeSignUp} className="fixed top-16 right-8">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
-								  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+									<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
 							</button>
 
@@ -107,10 +104,10 @@ const Navbar = (props: Props) => {
 								</form>
 							</div>
 						</div>
-				  </div>
-				  <div className="h-12">
-					<img className="rounded-md" src={BGLogin} alt="" />
-				  </div>
+					</div>
+					<div className="h-12">
+						<img className="rounded-md" src={BGLogin} alt="" />
+					</div>
 				</div>
 			</div>
 			:
@@ -148,7 +145,7 @@ const Navbar = (props: Props) => {
 							id="navbar-toggle"
 							onClick={() => setIsMenuToggled(!isMenuToggled)}>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-							  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+								<path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
 							</svg>
 						</button>
 					</div>
@@ -161,7 +158,7 @@ const Navbar = (props: Props) => {
 					<div className="flex justify-end p-12">
 						<button onClick={() => setIsMenuToggled(!isMenuToggled)}>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-gray-400">
-							  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+								<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 							</svg>
 						</button>
 					</div>

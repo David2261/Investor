@@ -1,6 +1,6 @@
-import {expect, jest, test} from '@jest/globals';
+import {expect, test} from '@jest/globals';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import Blog from '../../pages/posts/Blog';
