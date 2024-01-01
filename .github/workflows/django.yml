@@ -3,9 +3,9 @@ run-name: ${{ github.actor }} is testing out Github CI/CD
 
 on:
   push:
-    branches: ["main", "backend"]
+    branches: ["backend"]
   pull_request:
-    branches: ["main", "backend"]
+    branches: ["backend"]
 
 jobs:
   flake8:
