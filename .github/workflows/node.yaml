@@ -1,5 +1,9 @@
 name: Node CI/CD
-on: workflow_dispatch
+on:
+  push:
+    branches: ["frontend"]
+  pull_request:
+    branches: ["frontend"]
 jobs:
   check_node:
     runs-on: ubuntu-latest
@@ -7,4 +11,4 @@ jobs:
       - uses: actions/checkout@v3
         name: Get the directory code
       - name: Run actions
-        run: frontend/.github/workflows/actions.yml
+        run: /frontend/.github/workflows/actions.yml
