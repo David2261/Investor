@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -10,13 +9,16 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+// Components
+import SideBar from '../../components/Admin/HomeAdmin/SideBar';
+import ContentRecentChanges from '../../components/Admin/HomeAdmin/ContentRecentChanges';
 
 // Style
 import '/src/styles/AdminHome.css';
 
 // Example Data
-import SideBarDATA from '/src/alpha_test_data/admin_data_groups.tsx';
-import AdminDATARecent from '/src/alpha_test_data/admin_data_recent.tsx';
+import SideBarDATA from '../../alpha_test_data/admin_data_groups';
+import AdminDATARecent from '../../alpha_test_data/admin_data_recent';
 
 ChartJS.register(
     CategoryScale,
@@ -26,30 +28,6 @@ ChartJS.register(
     Title,
     Tooltip,
     Legend
-);
-
-const SideBar = SideBarDATA.map((value: {
-    id: number,
-    title: string,
-    content: string[],
-}) => 
-    <Fragment key={value.id}>
-        <div className='home-bar-content'>
-            <h1>{value.title}</h1>
-            {value.content.map((item) => {
-                return <p>{item}</p>
-            })}
-        </div>
-    </Fragment>
-);
-
-const ContentRecentChanges = AdminDATARecent.map((value: {
-    id: number,
-    title: string
-}) => 
-    <Fragment key={value.id}>
-        <p>{value.title}</p>
-    </Fragment>
 );
 
 const lineOption = {
@@ -92,25 +70,25 @@ const lineData = {
 };
 
 const HomeAdmin = () => {
-    return <>
-    <div className='home-body'>
-        <div className='home-sidebar'>
-            <h1>Админ панель</h1>
-            {SideBar}
-        </div>
-        <div className='home-content'>
-            <div className='content-chart'>
-                <Line options={lineOption} data={lineData} />
+    return (
+        <div className='home-body'>
+            <div className='home-sidebar'>
+                <h1>Админ панель</h1>
+                <SideBar data={SideBarDATA} />
             </div>
-            <div className='content-recent-changes'>
-                <h1>Последние действия</h1>
-                <div className='recent-changes-block'>
-                    {ContentRecentChanges}
+            <div className='home-content'>
+                <div className='content-chart'>
+                    <Line options={lineOption} data={lineData} />
+                </div>
+                <div className='content-recent-changes'>
+                    <h1>Последние действия</h1>
+                    <div className='recent-changes-block'>
+                        <ContentRecentChanges data={AdminDATARecent} />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </>
+    );
 };
 
 export default HomeAdmin;
