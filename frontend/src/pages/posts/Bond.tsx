@@ -1,41 +1,15 @@
 import { Component, Fragment, Key } from "react";
 import '/src/styles/Bonds.css';
-import BOND_DATA from "/src/alpha_test_data/bond_data.tsx";
-import DATA_ARTICLES from "/src/alpha_test_data/bond_article_data.tsx";
+import DataTab from "../../components/Bond/DataTab";
+import Article from "../../components/Bond/Article";
+//Example data
+import DATA_ARTICLES from "../../alpha_test_data/bond_article_data";
+import BOND_DATA from "../../alpha_test_data/bond_data";
 
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
 
-const Article = DATA_ARTICLES.map((value: {
-    id: Key;
-    img: string | undefined;
-    text: string;
-    category: string;
-}) =>
-	<Fragment key={value.id}>
-		<div className="bonds-news-content-block-article">
-            <img src={value.img} alt="" />
-            <p>{value.text} | {value.category}</p>
-        </div>
-	</Fragment>
-);
-
-const DataTab = BOND_DATA.map((value: {
-    number: number;
-    id: Key;
-    category: string;
-    price: number; 
-}) => 
-    <Fragment key={value.id}>
-        <tr>
-            <td>{value.category} {value.number}</td>
-            <td>AUSTRALIAN COMPANY </td>
-            <td>{value.price}</td>
-            <td>-0.36%</td>
-        </tr>
-    </Fragment>);
 
 class Bonds extends Component {
-
     render() {
         return (
             <>
@@ -47,7 +21,7 @@ class Bonds extends Component {
                 <div className="bonds-news-body">
                     <div className="bonds-news-content-block">
                         <h1 className="bonds-news-content-block-header">Последние новости по облигациям</h1>
-                        { Article }
+                        <Article data={DATA_ARTICLES} />
                     </div>
                     <div className="bonds-news-add-block">
                         <div className="bonds-news-add-header">
@@ -89,7 +63,7 @@ class Bonds extends Component {
                     <div className="tbl-content">
                         <table cellPadding="0" cellSpacing="0" >
                             <tbody>
-                                {DataTab}
+                                <DataTab data={BOND_DATA} />
                             </tbody>
                         </table>
                     </div>

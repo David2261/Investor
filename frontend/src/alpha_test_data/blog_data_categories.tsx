@@ -1,10 +1,10 @@
-import React from 'react';
+import { Key, ReactNode } from 'react';
 
 // Примерные категории
 interface DataItem {
-    id: number;
-    category: string;
-    img: React.ReactNode;
+    id: Key,
+    category: string,
+    img: ReactNode,
 }
 
 const DATA: DataItem[] = [
