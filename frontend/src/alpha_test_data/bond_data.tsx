@@ -1,6 +1,7 @@
+import { Key } from "react";
 
 interface BOND_DATAItem {
-    id: number,
+    id: Key,
     category: string,
     number: number,
     price: number

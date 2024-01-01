@@ -8,7 +8,7 @@ import DATA from '../../alpha_test_data/blog_data_categories.tsx';
 
 
 const Blog = () => {
-    const [isNavOpen, setIsNavOpen] = useState(false);
+	const [isNavOpen, setIsNavOpen] = useState(false);
 	const changeControllerIconStyle = (isNavOpen: boolean): React.CSSProperties => {
 		return {
 			fontSize: '24px',
@@ -16,9 +16,9 @@ const Blog = () => {
 		};
 	};
 
-    function toggleNavigationBarState() {
-        setIsNavOpen(!isNavOpen);
-    }
+	function toggleNavigationBarState() {
+		setIsNavOpen(!isNavOpen);
+	}
 
 	return <>
 		<h1 className='blog-header'>NEWS</h1>

@@ -1,13 +1,22 @@
-import { Key, Fragment } from "react";
-import DATANEWS from "../../alpha_test_data/home_data_news";
+import { Key, Fragment, FunctionComponent } from "react";
 
 
+interface ContentNewsType {
+	data: {
+		id: Key,
+		category: string,
+		title: string,
+	}[],
+}
 
-const ContentNews = DATANEWS.map((value: {
-	id: Key;
-	category: string;
-	title: string;
-}) =>
+type PropsType = {
+	id: Key,
+	category: string,
+	title: string,
+}
+
+const ContentNews: FunctionComponent<ContentNewsType> = (props: ContentNewsType) => {
+	return (props.data.map((value: PropsType) =>
 	<Fragment key={value.id}>
 		<div className="border-t-2 w-full relative">
 			<div className="absolute left-0 top-0">
@@ -29,6 +38,7 @@ const ContentNews = DATANEWS.map((value: {
 			<img className="object-cover w-full h-auto" src="http://dummyimage.com/600x300/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
 		</div>
 	</Fragment>
-);
+	));
+};
 
 export default ContentNews;

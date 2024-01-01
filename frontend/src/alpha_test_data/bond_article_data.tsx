@@ -1,5 +1,7 @@
+import { Key } from "react";
+
 interface DATA_ARTICLESItem {
-    id: number,
+    id: Key,
     category: string,
     text: string,
     img: string

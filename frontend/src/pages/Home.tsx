@@ -1,7 +1,13 @@
 import { Component } from 'react';
-import contentList from '../components/Home/ContentList';
+// Components
 import ContentNews from '../components/Home/ContentNews';
 import ContentPost from '../components/Home/ContentPost';
+import ContentList from '../components/Home/ContentList';
+// Example Data
+import DATA from "../alpha_test_data/home_data";
+import DATANEWS from "../alpha_test_data/home_data_news";
+import DATAPOSTS from "../alpha_test_data/blog_data_posts";
+
 
 const centerContent = `flex justify-center`;
 
@@ -42,7 +48,7 @@ export default class Home extends Component {
 				<div className="bg-neutral-300 w-full mb-10">
 					<div className="w-full grid grid-cols-2 gap-4 mt-4 mb-4">
 						<div className={`col-span-2 ${centerContent} my-4`}><h1 className="uppercase font-bold text-2xl">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1></div>
-						{contentList}
+						<ContentList data={DATA} />
 						<div className={`col-span-2 ${centerContent} my-4`}>
 							<button className="bg-green-600 text-white p-3 rounded-md hover:bg-slate-500">ВСЕ ПОСЛЕДНИЕ МАТЕРИАЛЫ САЙТА</button>
 						</div>
@@ -51,9 +57,9 @@ export default class Home extends Component {
 				<div className="grid grid-cols-1 md:grid-cols-3 w-full px-2 gap-16 md:gap-20">
 					<div className="mt-10 col-span-1 md:col-span-2">
 						<div className="w-full flex flex-col md:ml-10">
-							{ContentNews}
+							<ContentNews data={DATANEWS} />
 							<div className="w-full grid grid-cols-2 gap-4">
-								{ ContentPost }
+								<ContentPost data={DATAPOSTS} />
 							</div>
 						</div>
 					</div>

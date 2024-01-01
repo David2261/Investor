@@ -1,5 +1,7 @@
+import { Key } from "react";
+
 interface DATAPOSTSItem {
-    id: number,
+    id: Key,
     category: string,
 	title: string,
     text: string,
