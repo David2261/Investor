@@ -1,7 +1,11 @@
 name: Django CI
 run-name: ${{ github.actor }} is testing out Github CI/CD
 
-on: [pull_request]
+on:
+  push:
+    branches: ["main", "backend"]
+  pull_request:
+    branches: ["main", "backend"]
 
 jobs:
   flake8:
