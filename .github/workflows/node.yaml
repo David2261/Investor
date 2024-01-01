@@ -1,9 +1,9 @@
 name: Node CI/CD
 on:
   push:
-    branches: ["main", "frontend"]
+    branches: ["frontend"]
   pull_request:
-    branches: ["main", "frontend"]
+    branches: ["frontend"]
 jobs:
   check_node:
     runs-on: ubuntu-latest
