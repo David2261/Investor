@@ -10,5 +10,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: Get the directory code
-      - name: Run actions
-        run: ./frontend/.github/workflows/frontend.yaml
+      - name: Setup Node
+        uses: actions/setup-node@v4.0.1
+        with:
+          node-version: 20.x
+      - name: Install dep
+        run: |
+          cd ./frontend
+          npm install --global yarn
+          yarn install
+      - name: test
+        run: yarn test
+        env:
+          CI: true
+      - name: Create Build
+        run: yarn run build
+      - name: Share artifact inside workflow
+        uses: actions/upload-artifact@v1
+        with:
+          name: react-github-actions-build
+          path: build
