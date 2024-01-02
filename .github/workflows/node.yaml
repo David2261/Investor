@@ -19,12 +19,22 @@ jobs:
           cd ./frontend
           npm install --global yarn
           yarn install
-      - name: test
-        run: yarn test
+      - name: Test
+        run: |
+          cd frontend
+          yarn test
+        env:
+          CI: true
+      - name: Lint
+        run: |
+          cd frontend
+          yarn lint
         env:
           CI: true
       - name: Create Build
-        run: yarn run build
+        run: |
+          cd frontend
+          yarn run build
       - name: Share artifact inside workflow
         uses: actions/upload-artifact@v1
         with:

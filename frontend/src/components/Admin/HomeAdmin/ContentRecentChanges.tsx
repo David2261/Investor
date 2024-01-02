@@ -6,7 +6,7 @@ interface ContentRecentChangesType {
 		id: Key,
 		title: string,
 	}[],
-};
+}
 
 type PropsType = {
 	args: {

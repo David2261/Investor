@@ -7,38 +7,38 @@ import Blog from '../../pages/posts/Blog';
 
 
 describe('Blog page', () => {
-    let container:any = null;
+	let container:any = null;
 
 	beforeEach(() => {
-        container = document.createElement("div");
-        document.body.appendChild(container);    
-    });
+		container = document.createElement("div");
+		document.body.appendChild(container);    
+	});
 
-    afterEach(() => {
-        unmountComponentAtNode(container);
-        container.remove();
-        container = null;
-    });
+	afterEach(() => {
+		unmountComponentAtNode(container);
+		container.remove();
+		container = null;
+	});
 
 	test('Found img in document Blog', () => {
-        act(() => {
-            render(<Blog />, container);
-        });
+		act(() => {
+			render(<Blog />, container);
+		});
 		expect(container.querySelector('h1'));
 	});
 
-    test('Found sidebar in Blog', () => {
-        act(() => {
-            render(<Blog />, container);
-        });
-        expect(container.getByRole('div', {name: 'sidebar'}));
-    });
+	test('Found sidebar in Blog', () => {
+		act(() => {
+			render(<Blog />, container);
+		});
+		expect(container.getByRole('div', {name: 'sidebar'}));
+	});
 
-    test('Found posts list in Blog', () => {
-        act(() => {
-            render(<Blog />, container);
-        });
-        expect(container.getByRole('div', {name: 'posts-list'}));
-    });
+	test('Found posts list in Blog', () => {
+		act(() => {
+			render(<Blog />, container);
+		});
+		expect(container.getByRole('div', {name: 'posts-list'}));
+	});
 
 });

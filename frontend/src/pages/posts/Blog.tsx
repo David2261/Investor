@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '/src/styles/Blog.css';
+import '../../styles/Blog.css';
 import PostsList from '../../components/Blog/PostsList';
 import Sidebar from '../../components/Blog/Sidebar';
 // Example data
