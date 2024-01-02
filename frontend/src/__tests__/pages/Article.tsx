@@ -7,7 +7,6 @@ import { act } from 'react-dom/test-utils';
 import Article from '../../pages/posts/Article';
 
 
-
 describe('Article page', () => {
     let container:any = null;
 
