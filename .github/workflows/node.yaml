@@ -31,12 +31,12 @@ jobs:
       #     yarn test
         # env:
         #   CI: true
-      - name: Create Build
-        run: |
-          cd frontend
-          yarn run build
-      - name: Share artifact inside workflow
-        uses: actions/upload-artifact@v1
-        with:
-          name: react-github-actions-build
-          path: build
+      # - name: Create Build
+      #   run: |
+      #     cd frontend
+      #     yarn run build
+      # - name: Share artifact inside workflow
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: react-github-actions-build
+      #     path: build

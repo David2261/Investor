@@ -1,5 +1,5 @@
 import { Key, Fragment, ReactNode, FunctionComponent } from "react";
-
+import "../../styles/components/Sidebar.css";
 
 interface SidebarPropsType {
 	data: {
@@ -19,7 +19,9 @@ type DataType = {
 
 // Блок категории
 const Sidebar: FunctionComponent<SidebarPropsType> = (props: SidebarPropsType) => {
-	return (props.data.map((value: DataType["args"]) =>
+	let content = null;
+	if (props != null) {
+		content = props.data.map((value: DataType["args"]) =>
 		<Fragment key={value.id}>
 			<li className="item" title="home">
 			<a href="#home" className="hyper-link">
@@ -30,7 +32,8 @@ const Sidebar: FunctionComponent<SidebarPropsType> = (props: SidebarPropsType) =
 			</a>
 			</li>
 		</Fragment>
-	));
+	)}
+	return content;
 }
 
 export default Sidebar;
