@@ -6,15 +6,15 @@ interface SidebarType {
 		id: Key,
 		title: string,
 		content: string[],
-	}[],
-};
+	}[]
+}
 
 type PropsType = {
 	args: {
 		id: Key,
 		title: string,
 		content: string[],
-	},
+	}
 }
 
 

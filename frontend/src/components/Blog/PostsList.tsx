@@ -7,7 +7,7 @@ interface PostsListType {
 		title: string,
 		img: string | undefined,
 	}[],
-};
+}
 
 type PropsType = {
 	args: {

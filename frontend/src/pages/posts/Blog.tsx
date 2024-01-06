@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '/src/styles/Blog.css';
+import '../../styles/Blog.css';
 import PostsList from '../../components/Blog/PostsList';
 import Sidebar from '../../components/Blog/Sidebar';
 // Example data
@@ -8,6 +8,9 @@ import DATA from '../../alpha_test_data/blog_data_categories.tsx';
 
 
 const Blog = () => {
+	// Для массива категорий
+	const content: any = DATA;
+	// Открытие закрытие sidebar
 	const [isNavOpen, setIsNavOpen] = useState(false);
 	const changeControllerIconStyle = (isNavOpen: boolean): React.CSSProperties => {
 		return {
@@ -20,8 +23,10 @@ const Blog = () => {
 		setIsNavOpen(!isNavOpen);
 	}
 
-	return <>
-		<h1 className='blog-header'>NEWS</h1>
+	let sidebar: any = null;
+	// Проверка массива нужен ли sidebar или нет
+	if (content != null) {
+		sidebar = (
 		<nav id="navigation-bar" className={`${isNavOpen ? 'open' : ''}`} style={changeControllerIconStyle(isNavOpen)}>
 			<button onClick={toggleNavigationBarState} className='controller' title="open navigation bar">
 				{isNavOpen ?
@@ -39,9 +44,14 @@ const Blog = () => {
 				</span>}
 			</button>
 			<ul className="items-container" data-name="sidebar">
-				<Sidebar data={DATA} />
+				<Sidebar data={content} />
 			</ul>
 		</nav>
+	)}
+
+	return <>
+		<h1 className='blog-header'>NEWS</h1>
+		{sidebar}
 		<div className='blog-content' data-name="posts-list">
 			<PostsList data={DATAPOSTS} />
 		</div>
