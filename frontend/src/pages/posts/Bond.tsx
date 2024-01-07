@@ -3,8 +3,8 @@ import '/src/styles/Bonds.css';
 import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
 //Example data
-import DATA_ARTICLES from "../../alpha_test_data/bond_article_data";
-import BOND_DATA from "../../alpha_test_data/bond_data";
+import DATA_ARTICLES from "../../alpha_test_data/bond_article_data.json";
+import BOND_DATA from "../../alpha_test_data/bond_data.json";
 
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
 

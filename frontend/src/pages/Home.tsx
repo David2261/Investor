@@ -4,9 +4,9 @@ import ContentNews from '../components/Home/ContentNews';
 import ContentPost from '../components/Home/ContentPost';
 import ContentList from '../components/Home/ContentList';
 // Example Data
-import DATA from "../alpha_test_data/home_data";
-import DATANEWS from "../alpha_test_data/home_data_news";
-import DATAPOSTS from "../alpha_test_data/blog_data_posts";
+import DATA from "../alpha_test_data/home_data.json";
+import DATANEWS from "../alpha_test_data/home_data_news.json";
+import DATAPOSTS from "../alpha_test_data/blog_data_posts.json";
 
 
 const centerContent = `flex justify-center`;

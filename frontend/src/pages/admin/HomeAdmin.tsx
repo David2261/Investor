@@ -17,8 +17,8 @@ import ContentRecentChanges from '../../components/Admin/HomeAdmin/ContentRecent
 import '/src/styles/AdminHome.css';
 
 // Example Data
-import SideBarDATA from '../../alpha_test_data/admin_data_groups';
-import AdminDATARecent from '../../alpha_test_data/admin_data_recent';
+import SideBarDATA from '../../alpha_test_data/admin_data_groups.json';
+import AdminDATARecent from '../../alpha_test_data/admin_data_recent.json';
 
 ChartJS.register(
 	CategoryScale,
