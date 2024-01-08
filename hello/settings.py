@@ -14,7 +14,7 @@ os.makedirs(os.path.dirname(filename), exist_ok=True)
 with open(filename, "w") as f:
     f.write("")
 
-# Логирование
+# Логгирование
 LOGGING = {
 	"version": 1,
 	"disable_existing_loggers": False,
@@ -83,6 +83,7 @@ INSTALLED_APPS = [
 	'leads.apps.LeadsConfig',
 	'articles.apps.ArticlesConfig',
 	'authentication.apps.AuthenticationConfig',
+    'bonds.apps.BondsConfig',
 	# admin
 	'grappelli.dashboard',
 	'grappelli',
@@ -153,11 +154,6 @@ CORS_ALLOWED_ORIGINS = [
 DATABASES = {
 	'default': {
 	'ENGINE': 'django.db.backends.postgresql_psycopg2',
-	'NAME': 'investor-blog',
-	'USER': 'sbpdhrdxrqbnyk',
-	'PASSWORD': '53b512fddee9e7715b5c3b75292f480\
-		69123f81a859c90d5ca3e435200a1e628',
-	'HOST': 'ec2-34-254-120-2.eu-west-1.compute.amazonaws.com',
 	'PORT': '5432'
 	}
 }
