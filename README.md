@@ -46,4 +46,4 @@ npm run dev
 
 ## Example DB
 
-![ExampleDB]("./.idea/examples/Diagram InvestorHome.png"
+![ExampleDB]("./.idea/examples/Diagram InvestorHome.png")
