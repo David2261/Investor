@@ -46,4 +46,4 @@ npm run dev
 
 ## Example DB
 
-![ExampleDB]("./.idea/examples/Diagram InvestorHome.png"
+![ExampleDB]("https://github.com/David2261/Investor/blob/main/.idea/examples/Diagram_InvestorHome.png?raw=tru")
