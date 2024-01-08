@@ -1,22 +1,38 @@
-from rest_framework import routers
-from .api import IpViewSet, CategoryViewSet, ArticlesViewSet
 from django.urls import path
-from .views import HomePage, BlogPage, AboutPage, ProfilePage, RegisterPage
 
+from .views import (
+	ArticleDetail,
+	ArticlesList,
+	BondDetail,
+	BondsList,
+	CategoriesList,
+	IpList,
+	UserList,
+	CategoryDetail,
+	generate_csv,
+	upload_csv)
 
-# Api
-router = routers.DefaultRouter()
-router.register('api/ip', IpViewSet, 'ip')
-router.register('api/category', CategoryViewSet, 'category')
-router.register('api/articles', ArticlesViewSet, 'articles')
 
 app_name = 'articles'
 urlpatterns = [
-    # path('', views.index, name="main-view" ),
-    path('', HomePage.as_view(), name="home_page"),
-    path('articles/', BlogPage.as_view(), name='articles'),
-    path('about/', AboutPage.as_view(), name="about_page"),
-    path('profile/', ProfilePage.as_view(), name="profile"),
-    path('register/', RegisterPage.as_view(), name="register"),
+	path('ip/list/', IpList.as_view(), name='ip-list'),
+	path('posts/all/', ArticlesList.as_view(), name='articles-list'),
+	path(
+			'article/<slug:post_slug>/',
+			ArticleDetail.as_view(),
+			name='article-detail'),
+	path('category/all/', CategoriesList.as_view(), name='category-list'),
+	path(
+			'category/<slug:cat_slug>/',
+			CategoryDetail.as_view(),
+			name='category-detail'),
+	path('bond/all/', BondsList.as_view(), name='bond-list'),
+    path(
+			'bond/<slug:bond_slug>/',
+			BondDetail.as_view(),
+			name='bond-detail'),
+	# utill paths
+	path('user/list/', UserList.as_view(), name='user-list'),
+	path('generate/csv', generate_csv, name='db-list'),
+	path('upload_csv/', upload_csv, name='upload_csv'),
 ]
-# urlpatterns = router.urls

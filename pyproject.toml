@@ -17,9 +17,18 @@ django-tinymce = "^3.5.0"
 whitenoise = "^6.2.0"
 Pillow = "^9.2.0"
 pytest-django = "^4.5.2"
-psycopg2 = "^2.9.3"
+pyjwt = "^2.6.0"
+django-environ = "^0.10.0"
+gunicorn = "^20.1.0"
+flake8-django = "^1.2"
+coverage = "^7.2.7"
+django-cors-headers = "^4.1.0"
+transliterate = "^1.10.2"
+langid = "^1.1.6"
+psycopg2-binary = "^2.9.9"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+

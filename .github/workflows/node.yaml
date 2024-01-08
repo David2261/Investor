@@ -1,0 +1,42 @@
+name: Node CI/CD
+on:
+  push:
+    branches: ["frontend"]
+  pull_request:
+    branches: ["frontend"]
+jobs:
+  check_node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Get the directory code
+      - name: Setup Node
+        uses: actions/setup-node@v4.0.1
+        with:
+          node-version: 20.x
+      - name: Install dep
+        run: |
+          cd ./frontend
+          npm install --global yarn
+          yarn install
+      - name: Lint
+        run: |
+          cd frontend
+          yarn lint
+        env:
+          CI: true
+      # - name: Test
+      #   run: |
+      #     cd frontend
+      #     yarn test
+        # env:
+        #   CI: true
+      # - name: Create Build
+      #   run: |
+      #     cd frontend
+      #     yarn run build
+      # - name: Share artifact inside workflow
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: react-github-actions-build
+      #     path: build

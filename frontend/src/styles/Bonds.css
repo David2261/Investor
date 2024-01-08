@@ -1,0 +1,210 @@
+
+.bonds-body {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.bonds-title {
+    display: flex;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 700;
+    padding-top: 20px;
+}
+
+.bonds-under-title {
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 200;
+    color: darkgray;
+    padding-bottom: 20px;
+}
+
+/* Block News */
+.bonds-news-body {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    place-items: center;
+    padding-inline: 10%;
+    padding-bottom: 2.5%;
+}
+
+/* Block Ad in News */
+.bonds-news-add-block {
+    display: grid;
+    padding-left: 20px;
+}
+
+.bonds-news-add-header {
+    padding-left: 15%;
+    display: flex;
+    justify-content: center;
+}
+
+.bonds-news-add-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.bonds-news-add-header img {
+    width: 64px;
+    height: 64px;
+    margin-left: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.bonds-news-add-under-text {
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 200;
+    color: darkgray;
+    text-align: right;
+}
+
+/* Block Articles in News */
+.bonds-news-content-block {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+}
+
+.bonds-news-content-block-header {
+    font-size: 36px;
+    font-weight: 700;
+    transition: 0.5s;
+    padding-bottom: 10px;
+}
+
+.bonds-news-content-block-header:hover {
+    color: firebrick;
+}
+
+.bonds-news-content-block-article {
+    display: flex;
+    color: dimgray;
+    font-size: 18px;
+    font-weight: 300;
+    transition: 0.5s;
+    padding-bottom: 10px;
+}
+
+.bonds-news-content-block-article:hover{
+    color: firebrick;
+}
+
+.bonds-news-content-block-article img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* Block Bonds */
+.bonds-content-body {
+    display: grid;
+    padding-inline: 10%;
+    padding-bottom: 2.5%;
+    text-align: left;
+}
+
+.bonds-content-title {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.bonds-content-under-title {
+    font-size: 16px;
+    font-weight: 200;
+    color: darkgray;
+}
+
+.bonds-content-categories-block {
+    padding-top: 20px;
+    display: flex;
+    text-align: left;
+}
+
+.bonds-content-categories-old-btn {
+    border: none;
+    padding-left: 25px;
+    color: darkgray;
+    font-weight: 200;
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: 0.5s;
+}
+
+.bonds-content-categories-old-btn:hover {
+    color: black;
+}
+
+.bcc-category {
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-bottom: 14px;
+    background: #9da6f15d;
+}
+
+.bcc-category-btn-active {
+    background: #fff;
+    color: #000;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.bcc-category-btn {
+    color: darkgray;
+    text-transform: uppercase;
+    font-weight: 200;
+    padding-inline: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Table */
+.bonds-content-table {
+    width: 100%;
+    display: grid;
+    padding-top: 20px;
+}
+
+table{
+    width:100%;
+    table-layout: fixed;
+}
+
+.tbl-header{
+    background-color: rgba(255,255,255,0.3);
+}
+
+.tbl-content{
+    height:300px;
+    overflow-x:auto;
+    margin-top: 0px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+th{
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 18px;
+    color: #000;
+    text-transform: uppercase;
+}
+
+td{
+    padding: 15px;
+    text-align: left;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 18px;
+    color: #000;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}

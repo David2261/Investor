@@ -1,0 +1,182 @@
+import { useState } from 'react';
+import { NavLink, Link } from "react-router-dom";
+// Components
+import HeadLink from './Link.tsx';
+import MenuLink from './MenuLink.tsx';
+// Hooks
+import useMediaQuery from "../hooks/useMediaQuery.ts";
+// Assets
+import IH from '../assets/logo/IH.webp';
+import '../styles/Navbar.css';
+import BGLogin from '../assets/login_bg.jpg';
+
+
+const Navbar = () => {
+	const styleNav = "uppercase p-2 lg:px-4 md:mx-2 rounded transation-colors duration-300";
+	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
+	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [openSignUp, setOpenSignUp] = useState<boolean>(false);
+
+	function closeModal() {
+		setIsOpen(false);
+	}
+
+	function openModal() {
+		setIsOpen(true);
+	}
+
+	function closeSignUp() {
+		setOpenSignUp(false);
+	}
+
+	function upSignUp() {
+		setOpenSignUp(true);
+	}
+
+
+	return <>
+		{isOpen ?
+			<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
+				<div className="grid items-center justify-center rounded-lg">
+					<div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
+						<div className="fixed top-32 login-form">
+							<button onClick={closeModal} className="fixed top-16 right-8" data-name="Navbar logo">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
+									<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							</button>
+							<div className='wrapper-login'>
+								<form action="">
+									<h1 className="navbar-title-login">Login</h1>
+									<div className="input-sign-up">
+										<input type="text" className='table-login' placeholder="Username" required />
+									</div>
+									<div className="input-sign-up">
+										<input type="password" className='table-login' placeholder="Password" required />
+									</div>
+								<button type="submit" className="btn-login">Sign up</button>
+								<p className='text-login'>Forgot your password?<br />
+								<a href="#">Reset</a>
+								</p>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div className="h-12">
+						<img className="rounded-md" src={BGLogin} alt="" />
+					</div>
+				</div>
+			</div>
+			:
+			""
+		}
+		{openSignUp ?
+			<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
+				<div className="flex items-center justify-center rounded-lg">
+					<div className="fixed px-4 md:px-0 md:inset-x-1/3 backdrop-blur-sm bg-white/30 rounded-md">
+						<div className="fixed top-32 sign-up-form">
+							<button onClick={closeSignUp} className="fixed top-16 right-8">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
+									<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							</button>
+
+							<div className='wrapper-sign-up'>
+								<form action="">
+									<h1 className="navbar-title-sign-up">Sign-Up</h1>
+									<div className="input-sign-up">
+										<input type="text" className='table-sign-up' placeholder="Full Name" required />
+									</div>
+									<div className="input-sign-up">
+										<input type="text" className='table-sign-up' placeholder="Username" required />
+									</div>
+									<div className="input-sign-up">
+										<input type="text" className='table-sign-up' placeholder="Email" required />
+									</div>
+									<div className="input-sign-up">
+										<input type="password" className='table-sign-up' placeholder="Password" required />
+									</div>
+								<button type="submit" className="btn-sign-up">Sign up</button>
+								<p className='text-sign-up'> Already have an account?<br />
+								<a href="#">Login</a>
+								</p>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div className="h-12">
+						<img className="rounded-md" src={BGLogin} alt="" />
+					</div>
+				</div>
+			</div>
+			:
+		""}
+		<nav className="bg-white py-2 md:py-4 w-full border-b-2 border-stone-200">
+			<div className="ml-4 flex flex-row justify-between md:px-4 mx-auto md:flex md:items-center">
+				<div className="justify-between items-center w-32 md:w-44">
+					{/* LEFT SIDE */}
+					<Link to="/"><img alt="logo" src={IH} /></Link>
+				</div>
+				{/* RIGHT SIDE */}
+				{isAboveMediumScreens ? (
+					<div className="relative flex flex-row ml-auto mt-0" id="navbar-collapse">
+						<HeadLink page="blog" />
+						<HeadLink page="bonds" />
+						<HeadLink page="contact" />
+						<button onClick={openModal} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
+						<button onClick={upSignUp} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
+						{/*<NavLink to="sign-up/" className={`${styleNav} text-indigo-600 text-center border border-solid hover:bg-indigo-600 solid hover:text-white mt-1 md:mt-0 md:ml-1`}>Sign In</NavLink>*/}
+					</div>
+				) : (
+					<div className="mx-4">
+						<button
+							className={`${isMenuToggled ? 'hidden': ''}
+								border
+								border-solid
+								border-gray-600
+								px-3
+								py-1
+								rounded
+								text-gray-600
+								opacity-50
+								hover:opacity-75
+								md:hidden`}
+							id="navbar-toggle"
+							onClick={() => setIsMenuToggled(!isMenuToggled)}>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+								<path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+							</svg>
+						</button>
+					</div>
+				)}
+			</div>
+			{/* MOBILE MENU MODAL */}
+			{!isAboveMediumScreens && isMenuToggled && (
+				<div className="fixed z-10 right-0 bottom-0 h-full w-[300px] bg-primary-100 drop-shadow-xl">
+					{/* CLOSE ICON */}
+					<div className="flex justify-end p-12">
+						<button onClick={() => setIsMenuToggled(!isMenuToggled)}>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-gray-400">
+								<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						</button>
+					</div>
+					{/* MENU ITEMS */}
+					<div className="flex text-2xl justify-center">
+						<div className="flex gap-8 flex-col items-center" id="navbar-collapse">
+							<MenuLink page="blog" />
+							<MenuLink page="bonds" />
+							<MenuLink page="contact" />
+							<button onClick={openModal} className={`uppercase text-zinc-600`}>Login</button>
+							<NavLink to="sign-up/" className={`uppercase text-zinc-600`}>Sign In</NavLink>
+						</div>
+					</div>
+				</div>
+			)}
+		</nav>
+		
+		</>
+};
+
+export default Navbar;
