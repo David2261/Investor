@@ -5,7 +5,7 @@ interface SidebarPropsType {
 	data: {
 		id: Key,
 		category: string,
-		img: ReactNode,
+		img: string,
 	}[],
 }
 
@@ -13,7 +13,7 @@ type DataType = {
 	args: {
 		id: Key,
 		category: string,
-		img: ReactNode,
+		img: string,
 	}
 }
 
@@ -26,7 +26,11 @@ const SidebarItem: FunctionComponent<SidebarPropsType> = (props: SidebarPropsTyp
 			<li className="item" title="home">
 			<a href="#home" className="hyper-link">
 				<div className="icon-wrapper">
-					<span className="material-symbols-outlined">{value.img}</span>
+					<span className="material-symbols-outlined">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-shop" viewBox="0 0 16 16">
+							<path d={value.img} />
+						</svg>
+					</span>
 				</div>
 				<span className="item-text">{value.category}</span>
 			</a>
