@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 # from django.contrib.auth.admin import UserAdmin
-from .models import Category, Articles, Ip, Bonds
+from .models import Category, Articles
 
 
 admin.site.site_title = "Investor Site Admin"
@@ -13,7 +13,6 @@ admin.site.site_header = "Investor Site Admin"
 # 	exclude = ('password',)
 # 	prepopulated_fields = {"slug": ("name", )}
 
-admin.site.register(Ip)
 admin.site.register(Category)
 
 
@@ -27,17 +26,6 @@ admin.site.register(Articles)
 
 
 class ArticlesAdmin(admin.ModelAdmin):
-	list_display = ("title", "category", "time_create", "is_published")
-	ordering = ("title", "time_create", "category", "is_published")
-	list_filter = ("title", "time_create", "category", "is_published")
-	exclude = ("description", "slug")
-	prepopulated_fields = {"slug": ("name", )}
-
-
-admin.site.register(Bonds)
-
-
-class BondsAdmin(admin.ModelAdmin):
 	list_display = ("title", "category", "time_create", "is_published")
 	ordering = ("title", "time_create", "category", "is_published")
 	list_filter = ("title", "time_create", "category", "is_published")

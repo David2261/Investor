@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 filename = f"{BASE_DIR}/__logs__/error.log"
 os.makedirs(os.path.dirname(filename), exist_ok=True)
 with open(filename, "w") as f:
-    f.write("")
+	f.write("")
 
 # Логгирование
 LOGGING = {
@@ -76,6 +76,7 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'django.contrib.sites',
 	# Authentication and API
 	'rest_framework',
 	'rest_framework.authtoken',
@@ -83,7 +84,7 @@ INSTALLED_APPS = [
 	'leads.apps.LeadsConfig',
 	'articles.apps.ArticlesConfig',
 	'authentication.apps.AuthenticationConfig',
-    'bonds.apps.BondsConfig',
+	'bonds.apps.BondsConfig',
 	# admin
 	'grappelli.dashboard',
 	'grappelli',
@@ -91,6 +92,9 @@ INSTALLED_APPS = [
 	'ckeditor_uploader',
 	'tinymce',
 ]
+
+SITE_ID = 1
+
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
@@ -135,13 +139,13 @@ DATABASES = {
 		'ENGINE': 'django.db.backends.sqlite3',
 		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 	}
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'postgres',
-    #     'USER': env('USER'),
-    #     'PASSWORD': env('PASSWORD_SQL'),
-    #     'HOST': '127.0.0.1',
-    #     'PORT': 5432
+	# 'default': {
+	#     'ENGINE': 'django.db.backends.postgresql',
+	#     'NAME': 'postgres',
+	#     'USER': env('USER'),
+	#     'PASSWORD': env('PASSWORD_SQL'),
+	#     'HOST': '127.0.0.1',
+	#     'PORT': 5432
 	# }
 }
 
@@ -189,7 +193,8 @@ REST_FRAMEWORK = {
 	),
 	'DEFAULT_RENDERER_CLASSES': (
 		'rest_framework.renderers.JSONRenderer',
-	)
+	),
+	'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
 
 # myaccount.google.com/lesssecureapps

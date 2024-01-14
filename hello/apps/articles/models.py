@@ -25,12 +25,15 @@ STATUS_CHOICES = (
 	)
 
 
-class Ip(models.Model):
-	logger.info("Включен 'Ip models'")
-	ip = models.CharField(editable=False, max_length=100)
+class PageHit(models.Model):
+	url = models.CharField(unique=True, max_length=255)
+	count = models.PositiveIntegerField(default=0)
 
 	def __str__(self):
-		return self.ip
+		return self.count
+
+	class Meta:
+		app_label = "articles"
 
 
 class Category(models.Model):
@@ -59,6 +62,7 @@ class Category(models.Model):
 		verbose_name = _('Category')
 		verbose_name_plural = _('Categories')
 		ordering = ('id', 'name')
+		app_label = "articles"
 
 
 def image_folder(instance, filename):
@@ -85,16 +89,9 @@ class Articles(BasePost):
 	is_published = models.BooleanField(
 			default=True,
 			verbose_name=_("Publication"))
-	views = models.ManyToManyField(
-			Ip, related_name="post_views",
-			editable=False,
-			blank=True)
 
 	def get_absolute_url(self):
 		return reverse("post", kwargs={'post_slug': self.slug})
-
-	def total_views(self):
-		return self.views.count()
 
 	@property
 	def comments(self):
@@ -108,48 +105,7 @@ class Articles(BasePost):
 		verbose_name = _("Article")
 		verbose_name_plural = _("Articles")
 		ordering = ('-time_update', '-time_create')
-
-
-class Bonds(BasePost):
-	description = models.TextField(
-			verbose_name=_("The text of the bond"),
-			null=False,
-			blank=False)
-	category = models.ForeignKey(Category, on_delete=models.CASCADE)
-	time_update = models.DateTimeField(
-			auto_now=True,
-			verbose_name=_("Time of change"))
-	price = models.FloatField(
-			verbose_name=_("The price of the bond (1 lot)"),
-			null=False,
-			blank=False)
-	maturity = models.DateTimeField(
-			verbose_name=_("Maturity date of the bonds"),
-			null=False,
-			blank=False)
-	is_published = models.BooleanField(
-			default=True,
-			verbose_name=_("Publication"))
-	cupon = models.FloatField(
-			verbose_name=_("The cupon of the bond (1 lot)"),
-			null=False,
-			blank=False)
-	cupon_percent = models.FloatField(
-			verbose_name=_("The cupon of the bond (1 lot) with %"),
-			null=False,
-			blank=False)
-	
-	def get_absolute_url(self):
-		return reverse("bond", kwargs={'bond_slug': self.slug})
-	
-	def save(self, *args, **kwargs):
-		self.slug = slugify(check_lang(self.title))
-		super(Bonds, self).save(*args, **kwargs)
-
-	class Meta:
-		verbose_name = _("Bond")
-		verbose_name_plural = _("Bonds")
-		ordering = ('-time_update', '-time_create')
+		app_label = "articles"
 
 
 class Comment(BasePost):
