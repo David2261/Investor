@@ -2,13 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import Group
 
 from authentication.models import User
-from .models import Ip, Category, Articles, Bonds
-
-
-class IpSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Ip
-		fields = '__all__'
+from .models import Category, Articles
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -31,27 +25,6 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 			"description",
 			"category",
 			"img",
-			"time_create",
-			"slug")
-
-
-class BondsSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Bonds
-		fields = '__all__'
-
-
-class BondDetailSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Bonds
-		fields = (
-			"title",
-			"description",
-			"category",
-			"price",
-			"maturity",
-			"cupon",
-			"cupon_percent",
 			"time_create",
 			"slug")
 
