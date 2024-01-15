@@ -1,4 +1,5 @@
-import { Component } from "react";
+import { useEffect, useState, Component } from "react";
+import axios from 'axios';
 import '/src/styles/Bonds.css';
 import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
@@ -8,8 +9,44 @@ import BOND_DATA from "../../alpha_test_data/bond_data.json";
 
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
 
-
 class Bonds extends Component {
+
+	constructor(props: {} | Readonly<{}>) {
+		super(props);
+		this.state = {
+			title: '',
+			time_create: '',
+			slug: '',
+			description: '',
+			price: '',
+			maturity: '',
+			cupon: '',
+			cupon_percent: '',
+			category: '',
+		}
+	  }
+	
+	  componentDidMount() {
+		axios.get('http://127.0.0.1:8000/api/bonds/bond/all/')
+		.then(response => {
+		  console.log(response.data);
+		  this.setState({
+			title: response.data.title,
+			time_create: response.data.time_create,
+			slug: response.data.slug,
+			description: response.data.description,
+			price: response.data.price,
+			maturity: response.data.maturity,
+			cupon: response.data.cupon,
+			cupon_percent: response.data.cupon_percent,
+			category: response.data.category,
+		});
+		})
+		.catch(error => {
+		  console.log(error);
+		});
+	  }
+
 	render() {
 		return (
 			<>
@@ -63,7 +100,7 @@ class Bonds extends Component {
 					<div className="tbl-content">
 						<table cellPadding="0" cellSpacing="0" >
 							<tbody>
-								<DataTab data={BOND_DATA} />
+								<DataTab data={this.state} />
 							</tbody>
 						</table>
 					</div>
@@ -76,3 +113,5 @@ class Bonds extends Component {
 
 
 export default Bonds;
+
+
