@@ -24,6 +24,6 @@ urlpatterns = [
 			name='category-detail'),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
-	path('generate/csv', generate_csv, name='db-list'),
+	path('generate/csv/', generate_csv, name='db-list'),
 	path('upload_csv/', upload_csv, name='upload_csv'),
 ]

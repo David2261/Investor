@@ -1,4 +1,4 @@
-import { Key, Fragment, ReactNode, FunctionComponent, useState } from "react";
+import { Key, Fragment, FunctionComponent, useState } from "react";
 import "../../styles/components/Sidebar.css";
 
 interface SidebarPropsType {
