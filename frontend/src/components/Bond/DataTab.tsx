@@ -4,27 +4,32 @@ import { Key, Fragment, FunctionComponent } from "react";
 interface DataTabType {
 	data: {
 		id: Key,
-		number: number,
+		title: number,
 		category: string,
 		price: number,
+		cupon: number,
+		cupon_percent: number
 	}[],
 }
 
 type PropsType = {
 	id: Key,
-	number: number,
+	title: number,
 	category: string,
 	price: number,
+	cupon: number,
+	cupon_percent: number
 }
 
 const DataTab: FunctionComponent<DataTabType> = (props: DataTabType) => {
-	return (props.data.map((value: PropsType) => 
-	<Fragment key={value.id}>
+	return (props.data.map((value: PropsType, index) => 
+	<Fragment key={index}>
 		<tr>
-			<td>{value.category} {value.number}</td>
-			<td>AUSTRALIAN COMPANY </td>
+			<td>{value.category} {value.title}</td>
+			<td>{value.category}</td>
 			<td>{value.price}</td>
-			<td>-0.36%</td>
+			<td>{value.cupon}</td>
+			<td>{value.cupon_percent}</td>
 		</tr>
 	</Fragment>
 	))

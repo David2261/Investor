@@ -11,7 +11,7 @@ const URL = axios.create({
 });
 
 
-export default {
+const Some = {
 	YFStockMarket: (ticker: string) =>
 	URL({
 		'method': 'GET',
@@ -46,3 +46,5 @@ export default {
 		}],
 	}),
 }
+
+export default Some;

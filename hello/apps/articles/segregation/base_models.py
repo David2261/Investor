@@ -13,13 +13,17 @@ log_info = logging.getLogger("root")
 
 
 class BasePost(models.Model):
+	id = models.PositiveIntegerField(
+			primary_key=True,
+			blank=True,
+			default=None,
+			editable=False)
 	title = models.CharField(
 			verbose_name="Заголовок статьи",
 			help_text="Название статьи",
 			max_length=255,
 			null=False,
-			blank=False,
-			primary_key=True)
+			blank=False)
 	time_create = models.DateTimeField(
 			auto_now_add=True,
 			verbose_name="Время создания")

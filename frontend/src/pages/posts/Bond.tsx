@@ -1,53 +1,58 @@
-import { useEffect, useState, Component } from "react";
+import { Component, Key } from "react";
 import axios from 'axios';
 import '/src/styles/Bonds.css';
-import DataTab from "../../components/Bond/DataTab";
+// import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
 //Example data
 import DATA_ARTICLES from "../../alpha_test_data/bond_article_data.json";
-import BOND_DATA from "../../alpha_test_data/bond_data.json";
+// import BOND_DATA from "../../alpha_test_data/bond_data.json";
 
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
 
+interface BondsAPIType {
+	data: {
+		id: Key,
+		title: number,
+		category: string,
+		price: number,
+		cupon: number,
+		cupon_percent: number
+	}[],
+}
+
 class Bonds extends Component {
 
-	constructor(props: {} | Readonly<{}>) {
+	constructor(props: BondsAPIType) {
 		super(props);
 		this.state = {
-			title: '',
-			time_create: '',
-			slug: '',
-			description: '',
-			price: '',
-			maturity: '',
-			cupon: '',
-			cupon_percent: '',
-			category: '',
+			data: [],
+			loaded: false,
+			placeholder: "Loading"
 		}
-	  }
+	}
 	
-	  componentDidMount() {
-		axios.get('http://127.0.0.1:8000/api/bonds/bond/all/')
+	async componentDidMount() {
+		await axios.get('http://127.0.0.1:8000/api/bonds/bond/all/')
 		.then(response => {
-		  console.log(response.data);
-		  this.setState({
-			title: response.data.title,
-			time_create: response.data.time_create,
-			slug: response.data.slug,
-			description: response.data.description,
-			price: response.data.price,
-			maturity: response.data.maturity,
-			cupon: response.data.cupon,
-			cupon_percent: response.data.cupon_percent,
-			category: response.data.category,
-		});
+			if (response.status > 400) {
+				return this.setState(() => {
+					return { placeholder: "Something went wrong!" };
+				});
+			}
+			return (response.data as any).json();
 		})
-		.catch(error => {
-		  console.log(error);
+		.then(data => {
+			this.setState(() => {
+				return {
+					data,
+					loaded: true
+				};
+			});
 		});
-	  }
+	}
 
 	render() {
+		console.log(this.state);
 		return (
 			<>
 			<div className="bonds-body">
@@ -90,6 +95,7 @@ class Bonds extends Component {
 									<tr>
 									<th>Облигация</th>
 									<th>Реестр</th>
+									<th>Лот</th>
 									<th>Купон</th>
 									<th>Купон в %</th>
 									</tr>
@@ -100,7 +106,7 @@ class Bonds extends Component {
 					<div className="tbl-content">
 						<table cellPadding="0" cellSpacing="0" >
 							<tbody>
-								<DataTab data={this.state} />
+								{/* <DataTab data={this.state} /> */}
 							</tbody>
 						</table>
 					</div>
