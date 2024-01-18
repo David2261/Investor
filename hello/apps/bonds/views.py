@@ -1,3 +1,5 @@
+import csv
+from django.http import HttpResponse
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework import permissions
@@ -25,3 +27,25 @@ class BondDetail(RetrieveAPIView):
 	serializer_class = BondDetailSerializer
 	lookup_field = 'slug'
 	lookup_url_kwarg = 'bond_slug'
+
+
+def generate_csv(request):
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename="bonds.csv"'
+	bonds = Bonds.objects.all()
+	writer = csv.writer(response)
+	for bond in bonds:
+		writer.writerow([
+			bond.id,
+			bond.title,
+			bond.category,
+			bond.description,
+			bond.time_create,
+			bond.slug,
+			bond.time_update,
+			bond.price,
+			bond.maturity,
+			bond.cupon,
+			bond.cupon_percent,
+			bond.is_published])
+	return response
