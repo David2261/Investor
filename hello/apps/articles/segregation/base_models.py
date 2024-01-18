@@ -13,10 +13,8 @@ log_info = logging.getLogger("root")
 
 
 class BasePost(models.Model):
-	id = models.PositiveIntegerField(
+	id = models.AutoField(
 			primary_key=True,
-			blank=True,
-			default=None,
 			editable=False)
 	title = models.CharField(
 			verbose_name="Заголовок статьи",

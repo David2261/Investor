@@ -1,7 +1,7 @@
 import { Component, Key } from "react";
 import axios from 'axios';
 import '/src/styles/Bonds.css';
-// import DataTab from "../../components/Bond/DataTab";
+import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
 //Example data
 import DATA_ARTICLES from "../../alpha_test_data/bond_article_data.json";
@@ -52,7 +52,6 @@ class Bonds extends Component {
 	}
 
 	render() {
-		console.log(this.state);
 		return (
 			<>
 			<div className="bonds-body">
@@ -106,7 +105,7 @@ class Bonds extends Component {
 					<div className="tbl-content">
 						<table cellPadding="0" cellSpacing="0" >
 							<tbody>
-								{/* <DataTab data={this.state} /> */}
+								<DataTab data={this.state} />
 							</tbody>
 						</table>
 					</div>
