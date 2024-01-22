@@ -1,5 +1,6 @@
 import { Component, Key } from "react";
 import axios from 'axios';
+import { useFetch } from '../../hooks/useFetch.ts';
 import '/src/styles/Bonds.css';
 import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
@@ -52,6 +53,7 @@ class Bonds extends Component {
 	}
 
 	render() {
+		console.log(data);
 		return (
 			<>
 			<div className="bonds-body">
@@ -105,7 +107,7 @@ class Bonds extends Component {
 					<div className="tbl-content">
 						<table cellPadding="0" cellSpacing="0" >
 							<tbody>
-								<DataTab data={this.state} />
+								<DataTab data={data} />
 							</tbody>
 						</table>
 					</div>
