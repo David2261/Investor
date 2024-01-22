@@ -1,6 +1,5 @@
 import { Component, Key } from "react";
 import axios from 'axios';
-import { useFetch } from '../../hooks/useFetch.ts';
 import '/src/styles/Bonds.css';
 import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
@@ -21,8 +20,12 @@ interface BondsAPIType {
 	}[],
 }
 
-class Bonds extends Component {
+const Options = {
+	url: 'http://127.0.0.1:8000/api/bonds/bond/all/',
+	method: "GET"
+}
 
+class Bonds extends Component {
 	constructor(props: BondsAPIType) {
 		super(props);
 		this.state = {
@@ -33,7 +36,7 @@ class Bonds extends Component {
 	}
 	
 	async componentDidMount() {
-		await axios.get('http://127.0.0.1:8000/api/bonds/bond/all/')
+		await axios(Options)
 		.then(response => {
 			if (response.status > 400) {
 				return this.setState(() => {
@@ -53,7 +56,6 @@ class Bonds extends Component {
 	}
 
 	render() {
-		console.log(data);
 		return (
 			<>
 			<div className="bonds-body">
@@ -107,7 +109,7 @@ class Bonds extends Component {
 					<div className="tbl-content">
 						<table cellPadding="0" cellSpacing="0" >
 							<tbody>
-								<DataTab data={data} />
+								<DataTab data={this.state.data} />
 							</tbody>
 						</table>
 					</div>
