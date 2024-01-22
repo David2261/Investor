@@ -20,8 +20,12 @@ interface BondsAPIType {
 	}[],
 }
 
-class Bonds extends Component {
+const Options = {
+	url: 'http://127.0.0.1:8000/api/bonds/bond/all/',
+	method: "GET"
+}
 
+class Bonds extends Component {
 	constructor(props: BondsAPIType) {
 		super(props);
 		this.state = {
@@ -32,7 +36,7 @@ class Bonds extends Component {
 	}
 	
 	async componentDidMount() {
-		await axios.get('http://127.0.0.1:8000/api/bonds/bond/all/')
+		await axios(Options)
 		.then(response => {
 			if (response.status > 400) {
 				return this.setState(() => {
@@ -105,7 +109,7 @@ class Bonds extends Component {
 					<div className="tbl-content">
 						<table cellPadding="0" cellSpacing="0" >
 							<tbody>
-								<DataTab data={this.state} />
+								<DataTab data={this.state.data} />
 							</tbody>
 						</table>
 					</div>
