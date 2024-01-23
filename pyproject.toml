@@ -26,6 +26,7 @@ django-cors-headers = "^4.1.0"
 transliterate = "^1.10.2"
 langid = "^1.1.6"
 psycopg2-binary = "^2.9.9"
+djoser = "^2.2.2"
 
 
 [build-system]

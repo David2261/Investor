@@ -25,7 +25,7 @@ const Options = {
 	method: "GET"
 }
 
-class Bonds extends Component {
+class Bonds extends Component<{}, {}> {
 	constructor(props: BondsAPIType) {
 		super(props);
 		this.state = {

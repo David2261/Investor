@@ -81,6 +81,7 @@ INSTALLED_APPS = [
 	'corsheaders',
 	'rest_framework',
 	'rest_framework.authtoken',
+	'djoser',
 	# apps
 	'leads.apps.LeadsConfig',
 	'articles.apps.ArticlesConfig',
@@ -191,13 +192,23 @@ AUTH_USER_MODEL = 'authentication.User'
 
 # DRF
 REST_FRAMEWORK = {
+	'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
 	'DEFAULT_PERMISSION_CLASSES': (
 		'rest_framework.permissions.IsAuthenticated',
 	),
 	'DEFAULT_RENDERER_CLASSES': (
 		'rest_framework.renderers.JSONRenderer',
 	),
-	'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+	'EXCEPTION_HANDLER': (
+		'rest_framework.views.exception_handler',
+	),
+	'DEFAULT_PARSER_CLASSES': (
+		'rest_framework.parsers.JSONParser',
+	),
 }
 
 # myaccount.google.com/lesssecureapps
