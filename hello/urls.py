@@ -10,7 +10,6 @@ urlpatterns = [
 	path('api/auth/', include('authentication.urls')),
 	path('api/bonds/', include('bonds.urls')),
 	path('grappelli/', include('grappelli.urls')),
-	path('ckeditor/', include('ckeditor_uploader.urls')),
 	path('admin/', admin.site.urls),
 	path('accounts/', include('django.contrib.auth.urls')),
 	path(
