@@ -81,11 +81,11 @@ class CategoryDetail(ListAPIView):
 	permissions_classes = permissions.AllowAny
 	serializer_class = ArticlesSerializer
 
-	def get_queryset(self):
+	def get(self, request, *args, **kwargs):
 		posts = Articles.objects.filter(
 				category__slug=self.kwargs['cat_slug'],
 				is_published=True).select_related('category')
-		return posts
+		return self.list(posts, status=status.HTTP_200_OK)
 
 
 class UserList(ListAPIView):
