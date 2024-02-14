@@ -19,7 +19,6 @@ djoser==2.2.2
 flake8==6.1.0
 flake8-django==1.4
 gunicorn==20.1.0
--e git+https://github.com/David2261/Investor.git@a7136a8df79ecdf9a0fe91fbfbbf8923819334e8#egg=hello
 idna==3.6
 iniconfig==2.0.0
 langid==1.1.6

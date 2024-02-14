@@ -1,26 +1,24 @@
 
 FROM python:3.13.0a2-slim
 
-RUN mkdir code
+WORKDIR /usr/src/app
 
-WORKDIR /code
+RUN mkdir -p $WORKDIR/static
+RUN mkdir -p $WORKDIR/media
 
-ADD requirements.txt /code/
+# переменные окружения для python
+# не создавать файлы кэша .pyc
+ENV PYTHONDONTWRITEBYTECODE 1
+# не помещать в буфер потоки stdout и stderr
+ENV PYTHONUNBUFFERED 1
 
 
 RUN pip install --upgrade pip
 
+COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
+COPY . .
 
-ADD . /code/
 
-ADD .env.docker /code/.env
-
-ENV APP_NAME=Investor
-
-RUN python3.11 manage.py makemigrations
-RUN python3.11 manage.py migrate
-
-CMD gunicorn hello.wsgi:application -b 127.0.0.1:8000
 
