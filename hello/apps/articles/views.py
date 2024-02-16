@@ -77,18 +77,6 @@ class CategoriesList(ListAPIView):
 	serializer_class = CategorySerializer
 
 
-class CategoryDetail(RetrieveAPIView):
-	permissions_classes = permissions.AllowAny
-	serializer_class = CategorySerializer
-	lookup_field = 'slug'
-	lookup_url_kwarg = 'cat_slug'
-
-	def get_queryset(self):
-		return Articles.objects.filter(
-				category__slug=self.kwargs['cat_slug'],
-				is_published=True).select_related('category')
-
-
 class UserList(ListAPIView):
 	queryset = User.objects.all()
 	permissions_classes = [

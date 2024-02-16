@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Key, Fragment, FunctionComponent } from "react";
+import { Key, Fragment, FunctionComponent, useState } from "react";
 
 
 interface DataTabType {
@@ -23,16 +23,17 @@ type PropsType = {
 	cupon_percent: number
 }
 
-function Category(id: { category: string; }) {
-	return axios.get('http://127.0.0.1:8000/api/articles/category/' + id.category)
+function CategoryName(category: string) {
+
 }
 
 const DataTab: FunctionComponent<DataTabType> = (props: DataTabType) => {
-	category_name = Category(props.data.id);
+	let category_list = axios.get('http://127.0.0.1:8000/api/articles/category/all/');
+
 	return (props.data.map((value: PropsType, index) => 
 	<Fragment key={index}>
 		<tr>
-			<td>{category_name} {value.title}</td>
+			<td>{} {value.title}</td>
 			<td>{value.category}</td>
 			<td>{value.price}</td>
 			<td>{value.cupon}</td>
