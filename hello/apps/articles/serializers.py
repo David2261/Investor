@@ -5,12 +5,6 @@ from authentication.models import User
 from .models import Category, Articles
 
 
-class CategorySerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Category
-		fields = '__all__'
-
-
 class ArticlesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Articles
@@ -32,4 +26,12 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
+		fields = '__all__'
+
+
+
+class CategorySerializer(serializers.ModelSerializer):
+	articles = ArticlesSerializer(many=True, required=False)
+	class Meta:
+		model = Category
 		fields = '__all__'
