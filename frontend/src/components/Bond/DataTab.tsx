@@ -3,7 +3,6 @@ import { Key, Fragment, FunctionComponent, useState, useEffect } from "react";
 
 
 interface DataTabType {
-	category: any;
 	data: {
 		id: Key,
 		title: number,
