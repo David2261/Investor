@@ -9,6 +9,15 @@ interface SidebarPropsType {
 	}[],
 }
 
+interface SidebarItemPropsType {
+	data: {
+		id: Key,
+		category: string,
+		img: string,
+	}[],
+	currentState: boolean,
+}
+
 type DataType = {
 	args: {
 		id: Key,
@@ -18,22 +27,22 @@ type DataType = {
 }
 
 // Блок категории
-const SidebarItem: FunctionComponent<SidebarPropsType> = (props: SidebarPropsType) => {
+const SidebarItem: FunctionComponent<SidebarItemPropsType> = (props: SidebarItemPropsType) => {
 	let content = null;
 	if (props != null) {
 		content = props.data.map((value: DataType["args"]) =>
 		<Fragment key={value.id}>
-			<li className="item" title="home">
-			<a href="#home" className="hyper-link">
-				<div className="icon-wrapper">
-					<span className="material-symbols-outlined">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-shop" viewBox="0 0 16 16">
-							<path d={value.img} />
-						</svg>
-					</span>
-				</div>
-				<span className="item-text">{value.category}</span>
-			</a>
+			<li className="px-4 py-4 flex" title="home">
+				<a href={`#{value.category}`} className="flex flex-row">
+					<div className="icon-wrapper px-2">
+						<span className="material-symbols-outlined">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-shop" viewBox="0 0 16 16">
+								<path d={value.img} />
+							</svg>
+						</span>
+					</div>
+					{props.currentState ? <span className="item-text">{value.category}</span> : false}
+				</a>
 			</li>
 		</Fragment>
 	)}
@@ -53,7 +62,7 @@ const Sidebar: FunctionComponent<SidebarPropsType> = (props: SidebarPropsType) =
 		setIsNavOpen(!isNavOpen);
 	}
 	return (
-	<nav id="navigation-bar" className={`${isNavOpen ? 'open' : ''}`} style={changeControllerIconStyle(isNavOpen)}>
+	<nav className={`fixed flex-col pt-4 pl-4 z-20 justify-center ${isNavOpen ? 'open' : ''}`} style={changeControllerIconStyle(isNavOpen)}>
 		<button onClick={toggleNavigationBarState} className='controller' title="open navigation bar">
 			{isNavOpen ?
 			<span className="material-symbols-outlined" style={changeControllerIconStyle(isNavOpen)}>
@@ -69,8 +78,8 @@ const Sidebar: FunctionComponent<SidebarPropsType> = (props: SidebarPropsType) =
 				</svg>
 			</span>}
 		</button>
-		<ul className="items-container" data-name="sidebar">
-			<SidebarItem data={props.data} />
+		<ul className="items-container">
+			<SidebarItem data={props.data} currentState={isNavOpen} />
 		</ul>
 	</nav>
 	);
