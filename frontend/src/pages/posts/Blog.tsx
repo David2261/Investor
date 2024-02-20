@@ -1,26 +1,68 @@
+import { Component, Key } from 'react';
+import axios from 'axios';
 import '../../styles/Blog.css';
 import PostsList from '../../components/Blog/PostsList';
 import Sidebar from '../../components/Blog/Sidebar';
 // Example data
 import DATAPOSTS from "../../alpha_test_data/blog_data_posts.json";
-import DATA from '../../alpha_test_data/blog_data_categories.json';
-import { Key } from 'react';
+// import DATA from '../../alpha_test_data/blog_data_categories.json';
 
 
-const Blog = () => {
-	const Content: {
+
+interface BlogAPIType {
+	data: {
 		id: Key,
 		category: string,
 		img: string,
-	}[] | null = DATA;
+	}[],
+}
+
+interface State {
+	data: [];
+	loaded: boolean;
+	placeholder: string;
+}
+
+class Blog extends Component<{}, State> {
+	constructor(props: BlogAPIType) {
+		super(props);
+		this.state = {
+			data: [],
+			loaded: false,
+			placeholder: "Loading"
+		}
+	}
+	
+	async componentDidMount() {
+		await axios.get("http://127.0.0.1:8000/api/articles/posts/all/")
+		.then(response => {
+			if (response.status > 400) {
+				return this.setState(() => {
+					return { placeholder: "Something went wrong!" };
+				});
+			}
+			return (response.data as any);
+		})
+		.then(data => {
+			this.setState(() => {
+				return {
+					data,
+					loaded: true
+				};
+			});
+		});
+	}
+
+	render() {
 
 	return <>
 		<h1 className='blog-header'>NEWS</h1>
-		{ Content.length != 0 ? <Sidebar data={Content} /> : false }
+		{ this.state.data.length != 0 ? <Sidebar data={this.state.data} /> : false }
 		<div className='blog-content' data-name="posts-list">
-			<PostsList data={DATAPOSTS} />
+			<PostsList data={this.state.data} />
 		</div>
 	</>
+	}
 };
 
 

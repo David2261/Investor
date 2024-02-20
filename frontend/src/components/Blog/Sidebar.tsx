@@ -36,9 +36,12 @@ const SidebarItem: FunctionComponent<SidebarItemPropsType> = (props: SidebarItem
 				<a href={`#${value.category}`} className="flex flex-row">
 					<div className="icon-wrapper px-2">
 						<span className="material-symbols-outlined">
+							{value.img ?
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-shop" viewBox="0 0 16 16">
 								<path d={value.img} />
 							</svg>
+							: value.category
+							}
 						</span>
 					</div>
 					{props.currentState ? <span className="item-text">{value.category}</span> : false}
