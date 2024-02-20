@@ -5,7 +5,7 @@ from .views import (
 	ArticlesList,
 	CategoriesList,
 	UserList,
-	CategoryDetail,
+	# CategoryDetail,
 	generate_csv,
 	upload_csv)
 
@@ -18,10 +18,10 @@ urlpatterns = [
 			ArticleDetail,
 			name='article-detail'),
 	path('category/all/', CategoriesList.as_view(), name='category-list'),
-	path(
-			'category/<slug:cat_slug>/',
-			CategoryDetail.as_view(),
-			name='category-detail'),
+	# path(
+	# 		'category/<slug:cat_slug>/',
+	# 		CategoryDetail.as_view(),
+	# 		name='category-detail'),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
 	path('generate/csv/', generate_csv, name='db-list'),

@@ -20,7 +20,13 @@ interface BondsAPIType {
 	}[],
 }
 
-class Bonds extends Component<{}, {}> {
+interface State {
+	data: [];
+	loaded: boolean;
+	placeholder: string;
+}
+
+class Bonds extends Component<{}, State> {
 	constructor(props: BondsAPIType) {
 		super(props);
 		this.state = {
