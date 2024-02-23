@@ -27,7 +27,7 @@ interface Category {
 	name: string;
 }
 
-const CategoryName: React.FC<{ id: number }> = ({ id }) => {
+const CategoryName: FunctionComponent<{ id: number }> = ({ id }) => {
 	const [category, setCategory] = useState<Category | null>(null);
 
 	useEffect(() => {
