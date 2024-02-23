@@ -1,9 +1,10 @@
 import { Key, Fragment, FunctionComponent } from "react";
+import CategoryName from "./CategoryName";
 
 interface PostsListType {
 	data: {
 		id: Key,
-		category: string,
+		category: number,
 		title: string,
 		img: string | undefined,
 	}[],
@@ -12,7 +13,7 @@ interface PostsListType {
 type PropsType = {
 	args: {
 		id: Key,
-		category: string,
+		category: number,
 		title: string,
 		img: string | undefined,
 	},
@@ -25,7 +26,7 @@ const PostsList: FunctionComponent<PostsListType> = (props: PostsListType) => {
 			<div className="blog-content-post">
 				<img src={value.img} alt="" />
 				<p>{value.title}</p>
-				<p className="uppercase">{value.category}</p>
+				<p className="uppercase"><CategoryName id={value.category} /></p>
 			</div>
 		</Fragment>
 	));
