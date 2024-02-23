@@ -4,7 +4,7 @@ import '../../styles/Blog.css';
 import PostsList from '../../components/Blog/PostsList';
 import Sidebar from '../../components/Blog/Sidebar';
 // Example data
-import DATAPOSTS from "../../alpha_test_data/blog_data_posts.json";
+// import DATAPOSTS from "../../alpha_test_data/blog_data_posts.json";
 // import DATA from '../../alpha_test_data/blog_data_categories.json';
 
 
@@ -100,7 +100,7 @@ class Blog extends Component<{}, State> {
 		</div>
 	</>
 	}
-};
+}
 
 
 export default Blog;
