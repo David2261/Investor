@@ -196,19 +196,16 @@ REST_FRAMEWORK = {
 		'rest_framework.authentication.SessionAuthentication',
 	],
 	'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-	'DEFAULT_PERMISSION_CLASSES': (
+	'DEFAULT_PERMISSION_CLASSES': [
 		'rest_framework.permissions.AllowAny',
 		# 'rest_framework.permissions.IsAuthenticated',
-	),
-	'DEFAULT_RENDERER_CLASSES': (
+	],
+	'DEFAULT_RENDERER_CLASSES': [
 		'rest_framework.renderers.JSONRenderer',
-	),
-	'EXCEPTION_HANDLER': (
-		'rest_framework.views.exception_handler',
-	),
-	'DEFAULT_PARSER_CLASSES': (
-		'rest_framework.parsers.JSONParser',
-	),
+	],
+	'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+	'DEFAULT_PARSER_CLASSES': 'rest_framework.parsers.JSONParser',
+	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 }
 
 # myaccount.google.com/lesssecureapps

@@ -1,15 +1,15 @@
 import csv
 import logging
-# from django.db.models import Q
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
 from django.shortcuts import render
 from django.contrib import messages
+from requests import Response
 # DRF - API
 from rest_framework import status
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework import permissions
 from django.contrib.auth.decorators import login_required
@@ -63,18 +63,38 @@ class ArticlesList(ListAPIView):
 
 @counted
 @method_decorator(login_required, name="dispatch")
-class ArticleDetail(RetrieveAPIView):
+class ArticleDetail(APIView):
 	permissions_classes = permissions.AllowAny
-	queryset = Articles.objects.filter(is_published=True)
-	serializer_class = ArticleDetailSerializer
-	lookup_field = 'slug'
-	lookup_url_kwarg = 'post_slug'
+	def get_object(self, cat_slug, post_slug):
+		try:
+			return Articles.objects.filter(category__slug=cat_slug).get(slug=post_slug)
+		except Articles.DoesNotExist:
+			raise Http404
+	
+	def get(self, request, cat_slug, product_slug, format=None):
+		product = self.get_object(cat_slug, product_slug)
+		serializer = ArticleDetailSerializer(product)
+		return Response(serializer.data)
 
 
 class CategoriesList(ListAPIView):
 	queryset = Category.objects.all()
 	permissions_classes = permissions.AllowAny
 	serializer_class = CategorySerializer
+
+
+class CategoryDetail(APIView):
+	permissions_classes = permissions.AllowAny
+	def get_object(self, cat_slug):
+		try:
+			return Category.objects.get(slug=cat_slug)
+		except Category.DoesNotExist:
+			raise Http404
+	
+	def get(self, request, cat_slug, format=None):
+		category = self.get_object(cat_slug)
+		serializer = CategorySerializer(category)
+		return Response(serializer.data)
 
 
 class UserList(ListAPIView):
