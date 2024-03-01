@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Key, Component } from "react";
+import { Key, PureComponent } from "react";
 import Sidebar from "./Sidebar";
 
 interface State {
@@ -17,7 +17,7 @@ interface CategoryAPIType {
 }
 
 // Боковая панель навигации по категориям
-class DataTab extends Component<{}, State> {
+class DataTab extends PureComponent<{}, State> {
 	constructor(props: CategoryAPIType) {
 		super(props);
 		this.state = {
