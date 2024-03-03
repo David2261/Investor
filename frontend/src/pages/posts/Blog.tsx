@@ -34,7 +34,7 @@ class Blog extends Component<{}, State> {
 	}
 	
 	async componentDidMount() {
-		await axios.get("http://127.0.0.1:8000/api/articles/posts/all/")
+		await axios.get("http://127.0.0.1:8000/api/articles/articles/all/")
 		.then(response => {
 			if (response.status > 400) {
 				return this.setState(() => {
