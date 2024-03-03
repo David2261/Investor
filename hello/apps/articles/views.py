@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.conf import settings
 from django.shortcuts import render
 from django.contrib import messages
-from requests import Response
 # DRF - API
 from rest_framework import status
 from rest_framework.views import APIView
@@ -14,6 +13,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework import permissions
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from rest_framework.response import Response
 
 # from .forms import RegisterForm
 from authentication.models import User
@@ -32,7 +32,7 @@ log_info = logging.getLogger("root")
 
 
 class ArticlesList(ListAPIView):
-	permissions_classes = permissions.AllowAny
+	permissions_classes = [permissions.AllowAny]
 	queryset = Articles.objects.filter(is_published=True)
 	serializer_class = ArticlesSerializer
 
@@ -64,13 +64,14 @@ class ArticlesList(ListAPIView):
 @counted
 @method_decorator(login_required, name="dispatch")
 class ArticleDetail(APIView):
-	permissions_classes = permissions.AllowAny
+	permissions_classes = [permissions.AllowAny]
+
 	def get_object(self, cat_slug, post_slug):
 		try:
 			return Articles.objects.filter(category__slug=cat_slug).get(slug=post_slug)
 		except Articles.DoesNotExist:
 			raise Http404
-	
+
 	def get(self, request, cat_slug, product_slug, format=None):
 		product = self.get_object(cat_slug, product_slug)
 		serializer = ArticleDetailSerializer(product)
@@ -78,30 +79,35 @@ class ArticleDetail(APIView):
 
 
 class CategoriesList(ListAPIView):
-	queryset = Category.objects.all()
-	permissions_classes = permissions.AllowAny
 	serializer_class = CategorySerializer
+	queryset = Category.objects.all()
+	permission_classes = [permissions.AllowAny]
+
+	def get(self, request, *args, **kwargs):
+		""" List with all categories """
+		return self.list(
+				self.serializer_class.data,
+				status=status.HTTP_200_OK)
 
 
 class CategoryDetail(APIView):
-	permissions_classes = permissions.AllowAny
+	permissions_classes = [permissions.AllowAny]
+
 	def get_object(self, cat_slug):
 		try:
 			return Category.objects.get(slug=cat_slug)
 		except Category.DoesNotExist:
 			raise Http404
-	
-	def get(self, request, cat_slug, format=None):
-		category = self.get_object(cat_slug)
-		serializer = CategorySerializer(category)
-		return Response(serializer.data)
+
+	def get(self, request, cat_slug: str, format=None):
+		categories = self.get_object(cat_slug)
+		serializer = CategorySerializer(categories)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserList(ListAPIView):
 	queryset = User.objects.all()
-	permissions_classes = [
-		permissions.AllowAny
-	]
+	permissions_classes = [permissions.AllowAny]
 	serializer_class = UserSerializer
 
 

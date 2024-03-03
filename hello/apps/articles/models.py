@@ -51,7 +51,7 @@ class Category(models.Model):
 		return self.name
 
 	def get_absolute_url(self):
-		return reverse("category", kwargs={'cat_slug': self.slug})
+		return reverse("posts:category-detail", kwargs={'cat_slug': self.slug})
 
 	def save(self, *args, **kwargs):
 		value = self.name
@@ -76,7 +76,10 @@ class Articles(BasePost):
 			verbose_name=_("The text of the article"),
 			null=False,
 			blank=False)
-	category = models.ForeignKey(Category, on_delete=models.CASCADE)
+	category = models.ForeignKey(
+			Category,
+			related_name='posts',
+			on_delete=models.CASCADE)
 	img = WEBPField(
 			upload_to=image_folder,
 			verbose_name=_("Image"),
