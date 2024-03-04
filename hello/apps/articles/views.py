@@ -71,6 +71,7 @@ class ArticleDetail(APIView):
 		except Articles.DoesNotExist:
 			raise Http404
 
+	@counted
 	def get(self, request, cat_slug, post_slug, format=None):
 		article = self.get_object(cat_slug, post_slug)
 		serializer = ArticleDetailSerializer(article)
