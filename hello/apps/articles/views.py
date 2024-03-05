@@ -10,6 +10,7 @@ from django.contrib import messages
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
+from rest_framework.authentication import TokenAuthentication
 from rest_framework import permissions
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -108,6 +109,7 @@ class CategoryDetail(APIView):
 class UserList(ListAPIView):
 	queryset = User.objects.all()
 	permissions_classes = [permissions.AllowAny]
+	authentication_classes = [TokenAuthentication]
 	serializer_class = UserSerializer
 
 
