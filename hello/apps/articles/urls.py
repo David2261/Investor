@@ -12,10 +12,10 @@ from .views import (
 
 app_name = 'articles'
 urlpatterns = [
-	path('posts/all/', ArticlesList.as_view(), name='articles-list'),
+	path('articles/all/', ArticlesList.as_view(), name='articles-list'),
 	path(
-			'article/<slug:post_slug>/',
-			ArticleDetail,
+			'articles/<slug:cat_slug>/<slug:post_slug>/',
+			ArticleDetail.as_view(),
 			name='article-detail'),
 	path('category/all/', CategoriesList.as_view(), name='category-list'),
 	path(

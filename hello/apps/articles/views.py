@@ -61,7 +61,6 @@ class ArticlesList(ListAPIView):
 				status=status.HTTP_400_BAD_REQUEST)
 
 
-@counted
 @method_decorator(login_required, name="dispatch")
 class ArticleDetail(APIView):
 	permissions_classes = [permissions.AllowAny]
@@ -72,9 +71,10 @@ class ArticleDetail(APIView):
 		except Articles.DoesNotExist:
 			raise Http404
 
-	def get(self, request, cat_slug, product_slug, format=None):
-		product = self.get_object(cat_slug, product_slug)
-		serializer = ArticleDetailSerializer(product)
+	@counted
+	def get(self, request, cat_slug, post_slug, format=None):
+		article = self.get_object(cat_slug, post_slug)
+		serializer = ArticleDetailSerializer(article)
 		return Response(serializer.data)
 
 
@@ -108,6 +108,7 @@ class CategoryDetail(APIView):
 class UserList(ListAPIView):
 	queryset = User.objects.all()
 	permissions_classes = [permissions.AllowAny]
+	# authentication_classes = [TokenAuthentication]
 	serializer_class = UserSerializer
 
 
