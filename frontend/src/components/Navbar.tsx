@@ -10,7 +10,6 @@ import useMediaQuery from "../hooks/useMediaQuery.ts";
 // Assets
 import IH from '../assets/logo/IH.webp';
 import '../styles/Navbar.css';
-import BGLogin from '../assets/login_bg.jpg';
 
 
 const Navbar = () => {
