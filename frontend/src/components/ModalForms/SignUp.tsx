@@ -2,8 +2,11 @@ import React from 'react';
 import IH from '../../assets/logo/IH.webp';
 import '../../styles/components/ModalForms/SignUp.css';
 
+type SignUpProps = {
+	setIsOpen: () => void;
+};
 
-const SignUp = (props) => {
+const SignUp: React.FC<SignUpProps> = (props) => {
 
     return <>
 		<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">

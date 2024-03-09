@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // Components
 import HeadLink from './Link.tsx';
 import MenuLink from './MenuLink.tsx';
@@ -102,8 +102,8 @@ const Navbar = () => {
 							<MenuLink page="blog" />
 							<MenuLink page="bonds" />
 							<MenuLink page="contact" />
-							<button onClick={openModal} className={`uppercase text-zinc-600`}>Login</button>
-							<NavLink to="sign-up/" className={`uppercase text-zinc-600`}>Sign In</NavLink>
+							<button onClick={() => {openModal(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Login</button>
+							<button onClick={() => {upSignUp(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Sign In</button>
 						</div>
 					</div>
 				</div>

@@ -2,7 +2,11 @@ import React from 'react';
 import IH from '../../assets/logo/IH.webp';
 import '../../styles/components/ModalForms/Login.css';
 
-const Login = (props) => {
+type LoginProps = {
+	setIsOpen: () => void;
+};
+
+const Login: React.FC<LoginProps> = (props) => {
     return <>
     <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 			<div className='screen'>
@@ -26,7 +30,7 @@ const Login = (props) => {
 						</div>
 					</div>
 					<button className="signup">Login</button>
-					<div className="footer"><span>Sign-up</span><span>Forgot Password?</span></div>
+					<div className="footer"><span onClick={props.setIsOpen}>Sign-up</span><span>Forgot Password?</span></div>
 				</div>
 			</div>
 		</div>
