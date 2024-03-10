@@ -11,6 +11,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
     return <>
 		<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 			<div className='screen'>
+				<form action="">
 				<div className="screen-1">
 					<img className='logo' alt="logo" src={IH} />
 					<button onClick={props.setIsOpen} className="fixed top-16 right-8">
@@ -41,6 +42,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 					<button className="signup">SignUp </button>
 					<div className="footer"><span>Login</span></div>
 				</div>
+				</form>
 			</div>
 		</div>
 		</>;

@@ -37,15 +37,10 @@ const Navbar = () => {
 
 
 	return <>
-		{isOpen ?
-			<Login setIsOpen={closeModal} />
-			:
-			""
-		}
-		{openSignUp ?
-			<SignUp setIsOpen={closeSignUp} />
-			:
-		""}
+		{/* SIGN-UP and LOGIN */}
+		{isOpen ? <Login setIsOpen={closeModal} /> : false}
+		{openSignUp ? <SignUp setIsOpen={closeSignUp} /> : false}
+		{/* NAVBAR */}
 		<nav className="bg-white py-2 md:py-4 w-full border-b-2 border-stone-200">
 			<div className="ml-4 flex flex-row justify-between md:px-4 mx-auto md:flex md:items-center">
 				<div className="justify-between items-center w-32 md:w-44">
@@ -60,7 +55,6 @@ const Navbar = () => {
 						<HeadLink page="contact" />
 						<button onClick={openModal} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
 						<button onClick={upSignUp} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
-						{/*<NavLink to="sign-up/" className={`${styleNav} text-indigo-600 text-center border border-solid hover:bg-indigo-600 solid hover:text-white mt-1 md:mt-0 md:ml-1`}>Sign In</NavLink>*/}
 					</div>
 				) : (
 					<div className="mx-4">

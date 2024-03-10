@@ -3,7 +3,8 @@ import './App.css';
 // Components
 import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
-
+// Entities
+import PrivateRoute from "./entities/PrivateRoute.tsx";
 // pages
 import Home from './pages/Home.tsx';
 // static pages
@@ -39,10 +40,6 @@ function App() {
         <Route path="/blog" element={ <Blog /> } />
         {/* Admin page */}
         <Route path="/admin" element={ <HomeAdmin />}></Route>
-        {/*<Route path="/sign-up" element={ <SignUp /> } />
-        <Route path="/admin/login" element={ <LoginAdmin /> } />
-        <Route path="/admin/register" element={ <RegisterAdmin /> } />
-        */}
       </Routes>
       <Footer />
     </div>
