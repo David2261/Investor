@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '../../hooks/useAuth';
 import IH from '../../assets/logo/IH.webp';
 import '../../styles/components/ModalForms/Login.css';
 
@@ -7,6 +8,15 @@ type LoginProps = {
 };
 
 const Login: React.FC<LoginProps> = (props) => {
+	const { login } = useAuth();
+
+	const handleLogin = () => {
+		login({
+			id: '1',
+			name: 'John Doe',
+			email: 'john.doe@email.com',
+		});
+	};
     return <>
     <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 			<div className='screen'>
@@ -30,7 +40,7 @@ const Login: React.FC<LoginProps> = (props) => {
 							<input className="pas" type="password" name="password" placeholder="············"/>
 						</div>
 					</div>
-					<button className="signup">Login</button>
+					<button className="signup" onClick={handleLogin}>Login</button>
 					<div className="footer"><span onClick={props.setIsOpen}>Sign-up</span><span>Forgot Password?</span></div>
 				</div>
 				</form>

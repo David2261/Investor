@@ -12,7 +12,6 @@ import DATAPOSTS from "../alpha_test_data/blog_data_posts.json";
 const centerContent = `flex justify-center`;
 
 export default class Home extends Component {
-
 	render() {
 		return (
 			<div className="bg-white flex flex-col pb-4 py-2 md:py-4 w-full">
