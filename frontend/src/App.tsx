@@ -4,7 +4,7 @@ import './App.css';
 import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
 // Entities
-import PrivateRoute from "./entities/PrivateRoute.tsx";
+import PrivateRoute from "./entities/routers/PrivateRoute.tsx";
 // pages
 import Home from './pages/Home.tsx';
 // static pages
@@ -28,7 +28,9 @@ function App() {
       <Navbar />
       <Routes > 
         <Route path="/" element={ <Home /> } />
-        <Route path="/bonds" element={ <Bonds /> } />
+        <Route element={<PrivateRoute />} >
+          <Route path="/bonds" element={ <Bonds /> } />
+        </Route>
         {/* Static pages */}
         <Route path="/about" element={ <About /> } />
         <Route path="/contact" element={ <Contact /> } />
