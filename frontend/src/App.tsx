@@ -7,7 +7,7 @@ import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
 // Entities
 import PrivateRoute from "./entities/routers/PrivateRoute.tsx";
-import AuthContext from "./entities/context/AuthContext.tsx";
+import { AuthProvider } from "./entities/context/AuthContext.tsx";
 // pages
 import Home from './pages/Home.tsx';
 // static pages
@@ -30,8 +30,8 @@ function App() {
   return (
     <div className="w-full h-full relative">
       <Navbar />
+      <AuthProvider>
       <Routes >
-        <AuthContext.Provider value={{ user, setUser }}>
           <Route path="/" element={ <Home /> } />
           <Route element={<PrivateRoute />} >
             <Route path="/bonds" element={ <Bonds /> } />
@@ -47,8 +47,8 @@ function App() {
           <Route path="/blog" element={ <Blog /> } />
           {/* Admin page */}
           <Route path="/admin" element={ <HomeAdmin />}></Route>
-        </AuthContext.Provider>
       </Routes>
+      </AuthProvider>
       <Footer />
     </div>
   )

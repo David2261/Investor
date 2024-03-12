@@ -13,3 +13,11 @@ const AuthContext = createContext<AuthContext>({
 });
 
 export default AuthContext;
+
+export const AuthProvider = ({children}) => {
+	return (
+		<AuthContext.Provider value={{'name':'Bulat'}}>
+			{children}
+		</AuthContext.Provider>
+	)
+}
