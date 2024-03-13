@@ -1,10 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
+// Hooks
+import { useAuth } from "./hooks/useAuth";
 // Components
 import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
 // Entities
-import PrivateRoute from "./entities/PrivateRoute.tsx";
+import PrivateRoute from "./entities/routers/PrivateRoute.tsx";
+import { AuthProvider } from "./entities/context/AuthContext.tsx";
 // pages
 import Home from './pages/Home.tsx';
 // static pages
@@ -23,24 +26,29 @@ import HomeAdmin from './pages/admin/HomeAdmin.tsx';
 
 
 function App() {
+  const { user, login, logout, setUser } = useAuth();
   return (
     <div className="w-full h-full relative">
       <Navbar />
-      <Routes > 
-        <Route path="/" element={ <Home /> } />
-        <Route path="/bonds" element={ <Bonds /> } />
-        {/* Static pages */}
-        <Route path="/about" element={ <About /> } />
-        <Route path="/contact" element={ <Contact /> } />
-        <Route path="/responsibility" element={ <Responsibility /> } />
-        <Route path="/payanddelivery" element={ <Payanddelivery /> } />
-        <Route path="/confidentiality" element={ <Confidentiality /> } />
-        <Route path="/agreement" element={ <Agreement /> } />
-        <Route path="/emailagreement" element={ <Emailagreement /> } />
-        <Route path="/blog" element={ <Blog /> } />
-        {/* Admin page */}
-        <Route path="/admin" element={ <HomeAdmin />}></Route>
+      <AuthProvider>
+      <Routes >
+          <Route path="/" element={ <Home /> } />
+          <Route element={<PrivateRoute />} >
+            <Route path="/bonds" element={ <Bonds /> } />
+          </Route>
+          {/* Static pages */}
+          <Route path="/about" element={ <About /> } />
+          <Route path="/contact" element={ <Contact /> } />
+          <Route path="/responsibility" element={ <Responsibility /> } />
+          <Route path="/payanddelivery" element={ <Payanddelivery /> } />
+          <Route path="/confidentiality" element={ <Confidentiality /> } />
+          <Route path="/agreement" element={ <Agreement /> } />
+          <Route path="/emailagreement" element={ <Emailagreement /> } />
+          <Route path="/blog" element={ <Blog /> } />
+          {/* Admin page */}
+          <Route path="/admin" element={ <HomeAdmin />}></Route>
       </Routes>
+      </AuthProvider>
       <Footer />
     </div>
   )
