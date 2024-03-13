@@ -1,7 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-// Hooks
-import { useAuth } from "./hooks/useAuth";
 // Components
 import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
@@ -26,7 +24,6 @@ import HomeAdmin from './pages/admin/HomeAdmin.tsx';
 
 
 function App() {
-  const { user, login, logout, setUser } = useAuth();
   return (
     <div className="w-full h-full relative">
       <Navbar />

@@ -1,10 +1,10 @@
-import { useContext } from 'react';
+// import { useContext } from 'react';
 // Components
 import ContentNews from '../components/Home/ContentNews';
 import ContentPost from '../components/Home/ContentPost';
 import ContentList from '../components/Home/ContentList';
 // Entities
-import AuthContext from '../entities/context/AuthContext';
+// import AuthContext from '../entities/context/AuthContext';
 // Example Data
 import DATA from "../alpha_test_data/home_data.json";
 import DATANEWS from "../alpha_test_data/home_data_news.json";
@@ -14,6 +14,7 @@ import DATAPOSTS from "../alpha_test_data/blog_data_posts.json";
 const centerContent = `flex justify-center`;
 
 const Home = () => {
+	// let {user} = useContext(AuthContext);
 	return (
 		<div className="bg-white flex flex-col pb-4 py-2 md:py-4 w-full">
 			<div className="flex flex-wrap md:flex-nowrap md:flex-row mx-6">
