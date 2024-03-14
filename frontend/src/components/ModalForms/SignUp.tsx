@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import IH from '../../assets/logo/IH.webp';
 import '../../styles/components/ModalForms/SignUp.css';
 
@@ -21,25 +22,25 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 					</button>
 
 					<div className="username">
-						<label htmlFor="username">Username</label>
+						<label htmlFor="username-input">Username</label>
 						<div className="sec-2">
-							<input type="text" name="username" placeholder="Mark"/>
+							<input id="username-input" type="text" name="username" placeholder="Mark" autoComplete='username'/>
 						</div>
 					</div>
 
 					<div className="email">
-						<label htmlFor="email">Email Address</label>
+						<label htmlFor="email-input">Email Address</label>
 						<div className="sec-2">
-							<input type="email" name="email" placeholder="Username@gmail.com"/>
+							<input id="email-input" type="email" name="email" placeholder="Username@gmail.com" autoComplete='email'/>
 						</div>
 					</div>
 					<div className="password">
-						<label htmlFor="password">Password</label>
+						<label htmlFor="password-input">Password</label>
 						<div className="sec-2">
-							<input className="pas" type="password" name="password" placeholder="············"/>
+							<input id="password-input" className="pas" type="password" name="password" placeholder="············" autoComplete='current-password' />
 						</div>
 					</div>
-					<button className="signup">SignUp </button>
+					<button className="signup">SignUp</button>
 					<div className="footer"><span>Login</span></div>
 				</div>
 				</form>

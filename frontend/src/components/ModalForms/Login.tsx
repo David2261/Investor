@@ -21,15 +21,15 @@ const Login: React.FC<LoginProps> = (props) => {
 						</svg>
 					</button>
 					<div className="email">
-						<label htmlFor="email">Email Address</label>
+						<label htmlFor="email-input">Email Address</label>
 						<div className="sec-2">
-							<input type="email" name="email" placeholder="Example@gmail.com"/>
+							<input id='email-input' type="email" name="email" placeholder="Example@gmail.com" autoComplete="email"/>
 						</div>
 					</div>
 					<div className="password">
-						<label htmlFor="password">Password</label>
+						<label htmlFor="password-input">Password</label>
 						<div className="sec-2">
-							<input className="pas" type="password" name="password" placeholder="············"/>
+							<input id="password-input" className="pas" type="password" name="password" placeholder="············" autoComplete="current-password"/>
 						</div>
 					</div>
 					<button className="signup" type='submit'>Login</button>
