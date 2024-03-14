@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import IH from '../../assets/logo/IH.webp';
 import '../../styles/components/ModalForms/SignUp.css';
 
 type SignUpProps = {
 	setIsOpen: () => void;
+	setIsLogin: () => void;
 };
 
 const SignUp: React.FC<SignUpProps> = (props) => {
@@ -41,7 +41,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 						</div>
 					</div>
 					<button className="signup">SignUp</button>
-					<div className="footer"><span>Login</span></div>
+					<div className="footer" onClick={() => {props.setIsOpen(); props.setIsLogin()}}><span>Login</span></div>
 				</div>
 				</form>
 			</div>

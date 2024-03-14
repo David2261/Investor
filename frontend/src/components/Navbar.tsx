@@ -38,8 +38,8 @@ const Navbar = () => {
 
 	return <>
 		{/* SIGN-UP and LOGIN */}
-		{isOpen ? <Login setIsOpen={closeModal} /> : false}
-		{openSignUp ? <SignUp setIsOpen={closeSignUp} /> : false}
+		{isOpen ? <Login setIsOpen={closeModal} setIsSignUp={upSignUp} /> : false}
+		{openSignUp ? <SignUp setIsOpen={closeSignUp} setIsLogin={openModal} /> : false}
 		{/* NAVBAR */}
 		<nav className="bg-white py-2 md:py-4 w-full border-b-2 border-stone-200">
 			<div className="ml-4 flex flex-row justify-between md:px-4 mx-auto md:flex md:items-center">
