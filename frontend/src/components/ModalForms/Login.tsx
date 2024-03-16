@@ -33,7 +33,7 @@ const Login: React.FC<LoginProps> = (props) => {
 							<input id="password-input" className="pas" type="password" name="password" placeholder="············" autoComplete="current-password"/>
 						</div>
 					</div>
-					<button className="signup" type='submit' onClick={props.setIsOpen}>Login</button>
+					<button className="signup" type='submit'>Login</button>
 					<div className="footer"><span onClick={() => {props.setIsOpen(); props.setIsSignUp()}}>Sign-up</span><span>Forgot Password?</span></div>
 				</div>
 				</form>

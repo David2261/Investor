@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from "react-router-dom";
 // Components
 import HeadLink from './Link.tsx';
@@ -7,6 +7,8 @@ import SignUp from './ModalForms/SignUp.tsx';
 import Login from './ModalForms/Login.tsx';
 // Hooks
 import useMediaQuery from "../hooks/useMediaQuery.ts";
+// Entities
+import AuthContext from '../entities/context/AuthContext.tsx';
 // Assets
 import IH from '../assets/logo/IH.webp';
 import '../styles/Navbar.css';
@@ -18,6 +20,7 @@ const Navbar = () => {
 	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [openSignUp, setOpenSignUp] = useState<boolean>(false);
+	let {user, logoutUser} = useContext(AuthContext);
 
 	function closeModal() {
 		setIsOpen(false);
@@ -53,8 +56,13 @@ const Navbar = () => {
 						<HeadLink page="blog" />
 						<HeadLink page="bonds" />
 						<HeadLink page="contact" />
-						<button onClick={openModal} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
-						<button onClick={upSignUp} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
+						{!user ? (<>
+							<button onClick={openModal} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
+							<button onClick={upSignUp} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
+							</>
+						) : (
+							<button onClick={logoutUser} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Logout</button>
+						)}
 					</div>
 				) : (
 					<div className="mx-4">
