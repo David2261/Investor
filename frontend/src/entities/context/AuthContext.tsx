@@ -10,7 +10,23 @@ interface AuthTokens {
 	refresh: string;
 }
 
-const AuthContext = createContext();
+interface AuthContextValue {
+	user: User | null;
+	authTokens: AuthTokens | null;
+	loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+	logoutUser: () => void;
+	login: (user: User) => void;
+	logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextValue>({
+	user: null,
+	authTokens: null,
+	loginUser: () => Promise.resolve(),
+	logoutUser: () => {},
+	login: () => {},
+	logout: () => {},
+});
 
 export default AuthContext;
 
@@ -82,11 +98,19 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     }
 	
 	let contextData = {
-        user:user,
-        authTokens:authTokens,
-        loginUser:loginUser,
-        logoutUser:logoutUser,
-    }
+		user: user,
+		authTokens: authTokens,
+		loginUser: loginUser,
+		logoutUser: logoutUser,
+		login: (user: User) => {
+			setUser(user);
+			setAuthTokens({ access: 'access_token', refresh: 'refresh_token' });
+		},
+		logout: () => {
+			setUser(null);
+			setAuthTokens(null);
+		},
+	};
 
 	useEffect(() => {
 		loading ? updateToken() : false;

@@ -6,9 +6,9 @@ type PrivateRouteProps = {
     children: ReactNode;
 };
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, ...rest}) => {
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children}) => {
     const { user } = useContext(AuthContext);
-    return <Route {...rest}>{user ? children : <Navigate to="/" />}</Route>
+    return user ? children : <Navigate to="/" />
 };
 
 export default PrivateRoute;
