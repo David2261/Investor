@@ -31,7 +31,7 @@ function App() {
       <AuthProvider>
       <Routes >
           <Route path="/" element={ <Home /> } />
-          <Route element={<PrivateRoute />} >
+          <Route element={<PrivateRoute children={undefined} />} >
             <Route path="/bonds" element={ <Bonds /> } />
             <Route path="/portfolio" element={ <Portfolio /> } />
           </Route>

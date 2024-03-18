@@ -20,7 +20,7 @@ const Navbar = () => {
 	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [openSignUp, setOpenSignUp] = useState<boolean>(false);
-	let {user, logoutUser} = useContext(AuthContext);
+	const {user, logoutUser} = useContext(AuthContext);
 
 	function closeModal() {
 		setIsOpen(false);

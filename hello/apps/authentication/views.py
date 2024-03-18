@@ -50,11 +50,14 @@ class CustomTokenRefreshView(TokenRefreshView):
 		try:
 			serializer.is_valid(raise_exception=True)
 		except TokenError as e:
-			raise InvalidTokenError('Invalid token')
+			raise InvalidTokenError(f'Invalid token {e}')
 
 		tokens = serializer.validated_data
 		response = Response(tokens, status=status.HTTP_200_OK)
-		response.set_cookie(key='refresh_token', value=tokens['refresh'], httponly=True)
+		response.set_cookie(
+				key='refresh_token',
+				value=tokens['refresh'],
+				httponly=True)
 		return response
 
 
