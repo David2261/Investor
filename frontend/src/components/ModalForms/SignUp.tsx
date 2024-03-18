@@ -4,6 +4,7 @@ import '../../styles/components/ModalForms/SignUp.css';
 
 type SignUpProps = {
 	setIsOpen: () => void;
+	setIsLogin: () => void;
 };
 
 const SignUp: React.FC<SignUpProps> = (props) => {
@@ -21,26 +22,26 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 					</button>
 
 					<div className="username">
-						<label htmlFor="username">Username</label>
+						<label htmlFor="username-input">Username</label>
 						<div className="sec-2">
-							<input type="text" name="username" placeholder="Mark"/>
+							<input id="username-input" type="text" name="username" placeholder="Mark" autoComplete='username'/>
 						</div>
 					</div>
 
 					<div className="email">
-						<label htmlFor="email">Email Address</label>
+						<label htmlFor="email-input">Email Address</label>
 						<div className="sec-2">
-							<input type="email" name="email" placeholder="Username@gmail.com"/>
+							<input id="email-input" type="email" name="email" placeholder="Username@gmail.com" autoComplete='email'/>
 						</div>
 					</div>
 					<div className="password">
-						<label htmlFor="password">Password</label>
+						<label htmlFor="password-input">Password</label>
 						<div className="sec-2">
-							<input className="pas" type="password" name="password" placeholder="············"/>
+							<input id="password-input" className="pas" type="password" name="password" placeholder="············" autoComplete='current-password' />
 						</div>
 					</div>
-					<button className="signup">SignUp </button>
-					<div className="footer"><span>Login</span></div>
+					<button className="signup">SignUp</button>
+					<div className="footer" onClick={() => {props.setIsOpen(); props.setIsLogin()}}><span>Login</span></div>
 				</div>
 				</form>
 			</div>

@@ -8,6 +8,7 @@
     "paths": {
       "*": ["./*", "./src/*", "./src/alpha_test_data/*.tsx"]
     },
+    "types": ["@testing-library/jest-dom"]
   },
   "include": ["vite.config.ts"]
 }
