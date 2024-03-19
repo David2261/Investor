@@ -1,7 +1,6 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { User } from "../../hooks/useUser";
-import { useFetch } from "../../hooks/useFetch";
 import { jwtDecode } from 'jwt-decode';
 
 
@@ -10,19 +9,19 @@ interface AuthTokens {
 	refresh: string;
 }
 
-interface AuthContextValue {
+type AuthContextType = {
 	user: User | null;
 	authTokens: AuthTokens | null;
 	loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 	logoutUser: () => void;
 	login: (user: User) => void;
 	logout: () => void;
-}
+};
 
-const AuthContext = createContext<AuthContextValue>({
+const AuthContext = createContext<AuthContextType>({
 	user: null,
 	authTokens: null,
-	loginUser: () => Promise.resolve(),
+	loginUser: async () => {},
 	logoutUser: () => {},
 	login: () => {},
 	logout: () => {},
@@ -44,7 +43,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	
 	const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const response = useFetch("http://127.0.0.1:8000/api/v1/token/", {
+		const response = await fetch("http://127.0.0.1:8000/api/v1/token/", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json'
@@ -59,50 +58,40 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setAuthTokens(data)
 			setUser(jwtDecode(data.access))
 			localStorage.setItem('authTokens', JSON.stringify(data))
-			navigate('/');
+			navigate(-1);
 		} else {
 			alert("Something went wrong!");
 		}
 	}
 
-	const logoutUser = () => {
+	const logoutUser = useCallback(() => {
 		setAuthTokens(null)
 		setUser(null)
 		localStorage.removeItem('authTokens')
 		navigate('/')
-	}
+	}, [navigate]);
 
-	const updateToken = () => {
-		const [authTokens, setAuthTokens] = useState(null);
-		const [loading, setLoading] = useState(true);
-		const [user, setUser] = useState(null);
+	const updateToken = useCallback(async () => {
 
-		const fetchData = async () => {
-			const response = useFetch('http://127.0.0.1:8000/api/v1/token/refresh/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ 'refresh': authTokens?.refresh })
-			});
+		const response = await fetch('http://127.0.0.1:8000/api/v1/token/refresh/', {
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json'
+			},
+			body:JSON.stringify({'refresh':authTokens?.refresh})
+		})
 
-			const data = await response.json();
-			if (response.status === 200) {
-				setAuthTokens(data);
-				setUser(jwtDecode(data.access));
-				localStorage.setItem('authTokens', JSON.stringify(data));
-			} else {
-				logoutUser();
-			}
-			setLoading(false);
-		};
-		useEffect(() => {
-			if (authTokens) {
-				fetchData();
-			}
-		}, [authTokens]);
-		return { authTokens, user, loading };
-	};
+		const data = await response.json()
+
+		if (response.status === 200){
+			setAuthTokens(data)
+			setUser(jwtDecode(data.access))
+			localStorage.setItem('authTokens', JSON.stringify(data))
+		}else{
+			logoutUser()
+		}
+		loading ? setLoading(false) : false;
+	}, [authTokens?.refresh, loading, logoutUser]);
 
 	const contextData = {
 		user: user,
@@ -125,10 +114,10 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		const fourMinutes = 1000 * 60 * 4;
 
 		const interval = setInterval(() => {
-		authTokens ? updateToken() : false;
+			authTokens ? updateToken() : false;
 		}, fourMinutes);
 		return () => clearInterval(interval);
-  }, [authTokens, loading]);
+	}, [authTokens, loading, updateToken]);
 
 	return (
 		<AuthContext.Provider value={contextData}>
