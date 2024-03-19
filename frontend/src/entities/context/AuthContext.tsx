@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { User } from "../../hooks/useUser";
 import { jwtDecode } from 'jwt-decode';
@@ -58,22 +58,22 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setAuthTokens(data)
 			setUser(jwtDecode(data.access))
 			localStorage.setItem('authTokens', JSON.stringify(data))
-			navigate('/');
+			navigate(-1);
 		} else {
 			alert("Something went wrong!");
 		}
 	}
 
-	const logoutUser = () => {
+	const logoutUser = useCallback(() => {
 		setAuthTokens(null)
 		setUser(null)
 		localStorage.removeItem('authTokens')
 		navigate('/')
-	}
+	}, [navigate]);
 
-	let updateToken = async ()=> {
+	const updateToken = useCallback(async () => {
 
-		let response = await fetch('http://127.0.0.1:8000/api/v1/token/refresh/', {
+		const response = await fetch('http://127.0.0.1:8000/api/v1/token/refresh/', {
 			method:'POST',
 			headers:{
 				'Content-Type':'application/json'
@@ -81,7 +81,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			body:JSON.stringify({'refresh':authTokens?.refresh})
 		})
 
-		let data = await response.json()
+		const data = await response.json()
 
 		if (response.status === 200){
 			setAuthTokens(data)
@@ -91,7 +91,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			logoutUser()
 		}
 		loading ? setLoading(false) : false;
-	}
+	}, [authTokens?.refresh, loading, logoutUser]);
 
 	const contextData = {
 		user: user,
@@ -114,10 +114,10 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		const fourMinutes = 1000 * 60 * 4;
 
 		const interval = setInterval(() => {
-		authTokens ? updateToken() : false;
+			authTokens ? updateToken() : false;
 		}, fourMinutes);
 		return () => clearInterval(interval);
-  	}, [authTokens, loading]);
+	}, [authTokens, loading, updateToken]);
 
 	return (
 		<AuthContext.Provider value={contextData}>
