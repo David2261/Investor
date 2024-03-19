@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { User } from "../../hooks/useUser";
-import { useFetch } from "../../hooks/useFetch";
 import { jwtDecode } from 'jwt-decode';
 
 
@@ -10,19 +9,19 @@ interface AuthTokens {
 	refresh: string;
 }
 
-interface AuthContextValue {
+type AuthContextType = {
 	user: User | null;
 	authTokens: AuthTokens | null;
 	loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 	logoutUser: () => void;
 	login: (user: User) => void;
 	logout: () => void;
-}
+};
 
-const AuthContext = createContext<AuthContextValue>({
+const AuthContext = createContext<AuthContextType>({
 	user: null,
 	authTokens: null,
-	loginUser: () => Promise.resolve(),
+	loginUser: async () => {},
 	logoutUser: () => {},
 	login: () => {},
 	logout: () => {},
@@ -44,7 +43,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	
 	const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const response = useFetch("http://127.0.0.1:8000/api/v1/token/", {
+		const response = await fetch("http://127.0.0.1:8000/api/v1/token/", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json'
@@ -72,37 +71,27 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		navigate('/')
 	}
 
-	const updateToken = () => {
-		const [authTokens, setAuthTokens] = useState(null);
-		const [loading, setLoading] = useState(true);
-		const [user, setUser] = useState(null);
+	let updateToken = async ()=> {
 
-		const fetchData = async () => {
-			const response = useFetch('http://127.0.0.1:8000/api/v1/token/refresh/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ 'refresh': authTokens?.refresh })
-			});
+		let response = await fetch('http://127.0.0.1:8000/api/v1/token/refresh/', {
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json'
+			},
+			body:JSON.stringify({'refresh':authTokens?.refresh})
+		})
 
-			const data = await response.json();
-			if (response.status === 200) {
-				setAuthTokens(data);
-				setUser(jwtDecode(data.access));
-				localStorage.setItem('authTokens', JSON.stringify(data));
-			} else {
-				logoutUser();
-			}
-			setLoading(false);
-		};
-		useEffect(() => {
-			if (authTokens) {
-				fetchData();
-			}
-		}, [authTokens]);
-		return { authTokens, user, loading };
-	};
+		let data = await response.json()
+
+		if (response.status === 200){
+			setAuthTokens(data)
+			setUser(jwtDecode(data.access))
+			localStorage.setItem('authTokens', JSON.stringify(data))
+		}else{
+			logoutUser()
+		}
+		loading ? setLoading(false) : false;
+	}
 
 	const contextData = {
 		user: user,
@@ -128,7 +117,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		authTokens ? updateToken() : false;
 		}, fourMinutes);
 		return () => clearInterval(interval);
-  }, [authTokens, loading]);
+  	}, [authTokens, loading]);
 
 	return (
 		<AuthContext.Provider value={contextData}>
