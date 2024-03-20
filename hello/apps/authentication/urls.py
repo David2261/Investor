@@ -21,7 +21,7 @@ app_name = 'authentication'
 urlpatterns = [
 	re_path('', include(router.urls)),
 	re_path(
-		r'^registration/?$',
+		r'v1/^registration/?$',
 		RegistrationAPIView.as_view(),
 		name='user_registration'),
 	re_path(r'^login/?$', LoginAPIView.as_view(), name='user_login'),

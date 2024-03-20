@@ -37,7 +37,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
 		fields = ('email', 'username', 'password', 'token',)
 
 	def create(self, validated_data):
-		return User.objects.create_user(**validated_data)
+		user =  User.objects.create_user(**validated_data)
+		user.save()
+		return user
 
 
 class LoginSerializer(serializers.Serializer):

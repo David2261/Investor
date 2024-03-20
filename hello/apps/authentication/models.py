@@ -6,6 +6,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.db import models
 from django.core import validators
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
@@ -122,3 +123,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 		}, settings.SECRET_KEY, algorithm='HS256')
 
 		return token
+
+
+class Member(models.Model):
+	is_admin = models.BooleanField(default=False, verbose_name=_("admin"))
+	is_creator = models.BooleanField(default=False, verbose_name=_("creator"))
+	is_active = models.BooleanField(default=True)
+	user = models.OneToOneField(
+		User,
+		on_delete=models.CASCADE,
+		related_name="member",
+		verbose_name=_("user"),
+	)
+
+	def __str__(self):
+		return self.user

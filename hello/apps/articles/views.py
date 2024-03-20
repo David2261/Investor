@@ -15,8 +15,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from rest_framework.response import Response
 
-# from .forms import RegisterForm
 from authentication.models import User
+from authentication.permissions import AdminCreatorOnly
 from .segregation.decorators import counted
 from .models import Category, Articles
 from .serializers import (
@@ -76,6 +76,60 @@ class ArticleDetail(APIView):
 		article = self.get_object(cat_slug, post_slug)
 		serializer = ArticleDetailSerializer(article)
 		return Response(serializer.data)
+
+
+class ArticleAPICreator(APIView):
+	permission_classes = [AdminCreatorOnly]
+	queryset = Articles.objects.filter(is_published=True)
+	serializer_class = ArticlesSerializer
+
+	def get(self, request, *args, **kwargs):
+		""" List with all articles """
+		return self.list(
+				self.serializer_class.data,
+				status=status.HTTP_200_OK)
+
+
+	def post(self, request, *args, **kwargs):
+		data = {
+			"title": request.data.get('title'),
+			"description": request.data.get('description'),
+			"category": request.data.get('category'),
+			"img": request.data.get('img'),
+			"user": request.user.id
+		}
+		serializer = ArticlesSerializer(data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return self.create(
+					serializer.data,
+					status=status.HTTP_201_CREATED)
+		return self.create(
+				serializer.errors,
+				status=status.HTTP_400_BAD_REQUEST)
+
+
+	def put(self, request, post_slug):
+		saved_post = Articles.objects.filter(is_published=True, post_slug=post_slug)
+		data = {
+			"title": request.data.get('title'),
+			"description": request.data.get('description'),
+			"category": request.data.get('category'),
+			"img": request.data.get('img'),
+			"user": request.user.id
+		}
+		serializer = ArticlesSerializer(
+				instance=saved_post,
+				data=data,
+				partial=True)
+		if serializer.is_valid(raise_exception=True):
+			post_saved = serializer.save()
+		return Response(post_saved, status=status.HTTP_200_OK)
+
+	def delete(self, request, post_slug):
+		post = Articles.objects.filter(is_published=True, post_slug=post_slug)
+		post.delete()
+		return Response(status=status.HTTP_202_ACCEPTED)
 
 
 class CategoriesList(ListAPIView):
