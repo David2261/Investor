@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
 	ArticleDetail,
 	ArticlesList,
+	ArticleAPICreator,
 	CategoriesList,
 	UserList,
 	CategoryDetail,
@@ -17,6 +18,10 @@ urlpatterns = [
 			'articles/<slug:cat_slug>/<slug:post_slug>/',
 			ArticleDetail.as_view(),
 			name='article-detail'),
+	path(
+			'articles/creator/<slug:cat_slug>/<slug:post_slug>/',
+			ArticleAPICreator.as_view(),
+			name='article-creator'),
 	path('category/all/', CategoriesList.as_view(), name='category-list'),
 	path(
 			'category/<slug:cat_slug>/',

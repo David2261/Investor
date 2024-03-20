@@ -9,7 +9,18 @@ class ArticlesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Articles
 		fields = '__all__'
+	
+	def create(self, validated_data):
+		return Articles.objects.create(**validated_data)
+	
+	def update(self, instance, validated_data):
+		instance.title = validated_data.get("title", instance.title)
+		instance.description = validated_data.get("description", instance.description)
+		instance.category = validated_data.get("category", instance.category)
+		instance.img = validated_data.get("img", instance.img)
 
+		instance.save()
+		return instance
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
 	class Meta:
