@@ -89,7 +89,6 @@ class ArticleAPICreator(APIView):
 				self.serializer_class.data,
 				status=status.HTTP_200_OK)
 
-
 	def post(self, request, *args, **kwargs):
 		data = {
 			"title": request.data.get('title'),
@@ -107,7 +106,6 @@ class ArticleAPICreator(APIView):
 		return self.create(
 				serializer.errors,
 				status=status.HTTP_400_BAD_REQUEST)
-
 
 	def put(self, request, post_slug):
 		saved_post = Articles.objects.filter(is_published=True, post_slug=post_slug)
