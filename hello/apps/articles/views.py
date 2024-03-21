@@ -82,6 +82,7 @@ class ArticleAPICreatorMake(APIView):
 	permission_classes = [AdminCreatorOnly]
 	queryset = Articles.objects.filter(is_published=True)
 
+
 class ArticleAPICreator(APIView):
 	permission_classes = [AdminCreatorOnly]
 	queryset = Articles.objects.filter(is_published=True)

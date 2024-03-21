@@ -81,13 +81,15 @@ def upload_csv(request):
 
 			try:
 				bond = Bonds(
-					title=fields[0],
-					description=fields[1],
-					price=fields[3],
-					maturity=fields[4],
-					is_published=fields[5],
+					id=fields[0],
+					title=fields[1],
+					category=fields[2],
+					description=fields[3],
+					price=fields[5],
+					maturity=fields[6],
+					is_published=fields[7],
 					cupon=fields[6],
-					cupon_percent=fields[7])
+					cupon_percent=fields[7],)
 				bond.save()
 
 			except Exception as e:
@@ -97,4 +99,3 @@ def upload_csv(request):
 		messages.error(request, "Unable to upload file. " + repr(e))
 
 	return HttpResponseRedirect(reverse("bonds:upload_csv"))
-
