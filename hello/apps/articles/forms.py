@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
-# from django import forms
-# from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from .models import Articles
 
-# class RegisterForm(UserCreationForm):
-# 	class Meta(UserCreationForm.Meta):
-# 		model = User
-# 		fields = UserCreationForm.Meta.fields + ("email", )
+
+class ArticlesCSVForm(forms.ModelForm):
+	class Meta:
+		model = Articles
+		fields = [
+				'title',
+				'category',
+				'description',
+				'img',
+				'is_published']

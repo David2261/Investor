@@ -8,7 +8,6 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
-from authentication.models import User
 from .segregation.base_models import BasePost
 from .segregation.fields import WEBPField
 from .segregation.options import check_lang
@@ -115,7 +114,6 @@ class Comment(BasePost):
 	logger.info("Включен 'Comment models'")
 	post = models.ForeignKey(Articles, on_delete=models.CASCADE)
 	text = models.CharField(max_length=280, blank=False)
-	author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(check_lang(self.title))

@@ -1,5 +1,8 @@
 import csv
+from django.contrib import messages
 from django.http import HttpResponse
+from django.views import View
+from django.views.generic.edit import CreateView
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework import permissions
@@ -12,6 +15,7 @@ from .models import Bonds
 from .serializers import (
 	BondDetailSerializer,
 	BondsSerializer)
+from .forms import BondsForm
 
 
 class BondsList(ListAPIView):
@@ -30,23 +34,68 @@ class BondDetail(RetrieveAPIView):
 	lookup_url_kwarg = 'bond_slug'
 
 
-def generate_csv(request):
-	response = HttpResponse(content_type='text/csv')
-	response['Content-Disposition'] = 'attachment; filename="bonds.csv"'
-	bonds = Bonds.objects.all()
-	writer = csv.writer(response)
-	for bond in bonds:
+class GenerateCSV(View):
+	def get(self, request, *args, **kwargs):
+		response = HttpResponse(content_type='text/csv')
+		response['Content-Disposition'] = 'attachment; filename="bonds.csv"'
+
+		bonds = Bonds.objects.all()
+		writer = csv.writer(response, delimiter=';')
 		writer.writerow([
-			bond.id,
-			bond.title,
-			bond.category,
-			bond.description,
-			bond.time_create,
-			bond.slug,
-			bond.time_update,
-			bond.price,
-			bond.maturity,
-			bond.cupon,
-			bond.cupon_percent,
-			bond.is_published])
-	return response
+				"id",
+				"title",
+				"category",
+				"description",
+				"price",
+				"maturity",
+				"is_published",
+				"cupon",
+				"cupon_percent"])
+		for bond in bonds:
+			writer.writerow([
+					bond.id,
+					bond.title,
+					bond.category,
+					bond.description,
+					bond.price,
+					bond.maturity,
+					bond.is_published,
+					bond.cupon,
+					bond.cupon_percent])
+
+		return response
+
+
+class UploadCSV(CreateView):
+	model = Bonds
+	form_class = BondsForm
+	template_name = "options/upload.html"
+
+	def post(self, request, *args, **kwargs):
+		if "csv_file" not in request.FILES:
+			messages.error(request, "No file was uploaded")
+			return super().post(request, *args, **kwargs)
+
+		csv_file = request.FILES["csv_file"]
+		if not csv_file.name.endswith('.csv'):
+			messages.error(request, "File isn't a CSV")
+			return super().post(request, *args, **kwargs)
+
+		if csv_file.multiple_chunks():
+			messages.error(
+				request,
+				"Uploaded file is too big (%.2f MB). " % (csv_file.size / (1000 * 1000),))
+			return super().post(request, *args, **kwargs)
+
+		file_data = csv_file.read().decode("utf-8")
+		lines = file_data.split("\n")
+
+		for line in lines:
+			fields = line.split(";")
+			try:
+				bond = self.form_class(fields)
+				bond.save()
+			except Exception as e:
+				messages.error(request, "Unable to upload file. " + repr(e))
+				pass
+		return super().post(request, *args, **kwargs)

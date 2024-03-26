@@ -7,8 +7,8 @@ from .views import (
 	CategoriesList,
 	UserList,
 	CategoryDetail,
-	generate_csv,
-	upload_csv)
+	GenerateCSV,
+	UploadCSV)
 
 
 app_name = 'articles'
@@ -29,6 +29,6 @@ urlpatterns = [
 			name='category-detail'),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
-	path('generate/csv/', generate_csv, name='db-list'),
-	path('upload_csv/', upload_csv, name='upload_csv'),
+	path('generate/csv/', GenerateCSV.as_view(), name='db-list'),
+	path('upload_csv/', UploadCSV.as_view(), name='upload_csv'),
 ]

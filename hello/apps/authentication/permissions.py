@@ -6,6 +6,8 @@ class AdminCreatorOnly(BasePermission):
 		return (
 			request.user.is_authenticated
 			and hasattr(request.user, "member")
-			and request.user.member.is_active
-			and request.user.member.is_creator
+			and (
+				request.user.member.is_admin
+				or request.user.member.is_creator
+			)
 		)
