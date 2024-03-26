@@ -1,12 +1,11 @@
 import csv
 import logging
 from django.http import Http404, HttpResponse
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.conf import settings
-from django.shortcuts import render
 from django.contrib import messages
+from django.views.generic.edit import CreateView
 # DRF - API
+from django.views import View
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
@@ -23,8 +22,8 @@ from .serializers import (
 	CategorySerializer,
 	ArticlesSerializer,
 	UserSerializer,
-	ArticleDetailSerializer
-)
+	ArticleDetailSerializer)
+from .forms import ArticlesCSVForm
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
@@ -169,56 +168,62 @@ class UserList(ListAPIView):
 	serializer_class = UserSerializer
 
 
-def generate_csv(request):
-	response = HttpResponse(content_type='text/csv')
-	response['Content-Disposition'] = 'attachment; filename="file.csv"'
-	articles = Articles.objects.all()
-	writer = csv.writer(response)
-	for article in articles:
+class GenerateCSV(View):
+	def get(self, request, *args, **kwargs):
+		response = HttpResponse(content_type='text/csv')
+		response['Content-Disposition'] = 'attachment; filename="articles.csv"'
+
+		articles = Articles.objects.all()
+		writer = csv.writer(response, delimiter=';')
 		writer.writerow([
-			article.title,
-			article.category,
-			article.description,
-			article.img,
-			article.is_published])
-	return response
+				"id",
+				"title",
+				"category",
+				"description",
+				"img",
+				"is_published"])
+		for article in articles:
+			writer.writerow([
+					article.id,
+					article.title,
+					article.category,
+					article.description,
+					article.img,
+					article.is_published])
+
+		return response
 
 
-def upload_csv(request):
-	data = {}
-	if "GET" == request.method:
-		return render(request, "options/upload.html", data)
+class UploadCSV(CreateView):
+	model = Articles
+	form_class = ArticlesCSVForm
+	template_name = "options/upload.html"
 
-	try:
+	def post(self, request, *args, **kwargs):
+		if "csv_file" not in request.FILES:
+			messages.error(request, "No file was uploaded")
+			return super().post(request, *args, **kwargs)
+
 		csv_file = request.FILES["csv_file"]
 		if not csv_file.name.endswith('.csv'):
 			messages.error(request, "File isn't a CSV")
-			return HttpResponseRedirect(reverse("articles:upload_csv"))
+			return super().post(request, *args, **kwargs)
+
 		if csv_file.multiple_chunks():
 			messages.error(
 				request,
 				"Uploaded file is too big (%.2f MB). " % (csv_file.size / (1000 * 1000),))
-			return HttpResponseRedirect(reverse("articles:upload_csv"))
+			return super().post(request, *args, **kwargs)
 
 		file_data = csv_file.read().decode("utf-8")
-
 		lines = file_data.split("\n")
 
 		for line in lines:
-			fields = line.split(",")
-
+			fields = line.split(";")
 			try:
-				article = Articles(
-					title=fields[0],
-					description=fields[1],
-					img=fields[3],
-					is_published=fields[4])
+				article = self.form_class(fields)
 				article.save()
-
 			except Exception as e:
 				messages.error(request, "Unable to upload file. " + repr(e))
 				pass
-	except Exception as e:
-		messages.error(request, "Unable to upload file. " + repr(e))
-
-	return HttpResponseRedirect(reverse("articles:upload_csv"))
+		return super().post(request, *args, **kwargs)

@@ -15,6 +15,7 @@ from .models import Bonds
 from .serializers import (
 	BondDetailSerializer,
 	BondsSerializer)
+from .forms import BondsForm
 
 
 class BondsList(ListAPIView):
@@ -67,6 +68,7 @@ class GenerateCSV(View):
 
 class UploadCSV(CreateView):
 	model = Bonds
+	form_class = BondsForm
 	template_name = "options/upload.html"
 
 	def post(self, request, *args, **kwargs):
@@ -91,16 +93,7 @@ class UploadCSV(CreateView):
 		for line in lines:
 			fields = line.split(";")
 			try:
-				bond = Bonds(
-					id=fields[0],
-					title=fields[1],
-					category=fields[2],
-					description=fields[3],
-					price=fields[5],
-					maturity=fields[6],
-					is_published=fields[7],
-					cupon=fields[6],
-					cupon_percent=fields[7],)
+				bond = self.form_class(fields)
 				bond.save()
 			except Exception as e:
 				messages.error(request, "Unable to upload file. " + repr(e))
