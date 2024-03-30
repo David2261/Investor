@@ -69,7 +69,7 @@ class GenerateCSV(View):
 class UploadCSV(CreateView):
 	model = Bonds
 	form_class = BondsForm
-	template_name = "options/upload.html"
+	template_name = "options/upload_bond.html"
 
 	def post(self, request, *args, **kwargs):
 		if "csv_file" not in request.FILES:
@@ -92,8 +92,12 @@ class UploadCSV(CreateView):
 
 		for line in lines:
 			fields = line.split(";")
+			# if len(fields) != 13:
+			# 	messages.error(request, "Unable to upload file. Invalid number of fields.")
+			# 	continue
 			try:
-				bond = self.form_class(fields)
+				bond_data = dict(zip(Bonds._meta.fields_map.keys(), fields))
+				bond = self.form_class(bond_data)
 				bond.save()
 			except Exception as e:
 				messages.error(request, "Unable to upload file. " + repr(e))
