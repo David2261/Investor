@@ -3,7 +3,7 @@ import "../styles/widgets/Preloader.css";
 
 
 const Preloader = () => {
-	function domReady(callback) {
+	function domReady(callback: any) {
 		if (document.readyState === 'interactive' || document.readyState === 'complete') {
 			callback();
 		} else {
@@ -17,12 +17,13 @@ const Preloader = () => {
 	domReadyPromise.then(() => {
 		setTimeout(function() {
 			document.querySelectorAll("#ctn-preloader").forEach((e) => {e.classList.add('loaded')});
-			document.getElementsByTagName('body').removeClass('no-scroll-y');
+			Array.from(document.getElementsByTagName('body')).forEach(e => e.classList.remove('no-scroll-y'));
 		
-			if (document.querySelectorAll('#ctn-preloader').hasClass('loaded')) {
-				document.querySelectorAll('#preloader').delay(1000).queue(function() {
-					(this).remove();
-				});
+			const preloader = document.querySelector('#preloader');
+			if (preloader) {
+				setTimeout(() => {
+				preloader.remove();
+				}, 1000);
 			}
 		}, 3000);
 	});
