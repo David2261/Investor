@@ -92,9 +92,11 @@ class UploadCSV(CreateView):
 
 		for line in lines:
 			fields = line.split(";")
-			# if len(fields) != 13:
-			# 	messages.error(request, "Unable to upload file. Invalid number of fields.")
-			# 	continue
+			if len(fields) != 13:
+				messages.error(
+						request,
+						"Unable to upload file. Invalid number of fields.")
+				continue
 			try:
 				bond_data = dict(zip(Bonds._meta.fields_map.keys(), fields))
 				bond = self.form_class(bond_data)

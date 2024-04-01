@@ -1,10 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 // Components
-import Navbar from './components/Navbar.tsx';
-import Footer from './components/Footer.tsx';
+import Navbar from './widgets/Navbar.tsx';
+import Footer from './widgets/Footer.tsx';
 // Entities
 import PrivateRoute from "./entities/routers/PrivateRoute.tsx";
+// Widgets
+import Preloader from './widgets/Preloader.tsx';
 // Pages
 import Home from './pages/Home.tsx';
 // Static pages
@@ -25,11 +27,12 @@ import Portfolio from './pages/personal/Portfolio.tsx';
 
 function App() {
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative no-scroll-y">
+      <Preloader />
       <Navbar />
       <Routes >
           <Route path="/" element={ <Home /> } />
-          <Route element={<PrivateRoute />} >
+          <Route element={<PrivateRoute children={undefined} />} >
             <Route path="/bonds" element={ <Bonds /> } />
             <Route path="/portfolio" element={ <Portfolio /> } />
           </Route>
