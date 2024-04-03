@@ -60,8 +60,10 @@ const Navbar = () => {
 							<button onClick={openModal} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
 							<button onClick={upSignUp} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
 							</>
-						) : (
+						) : (<>
+							<HeadLink page="portfolio" />
 							<button onClick={logoutUser} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Logout</button>
+							</>
 						)}
 					</div>
 				) : (
