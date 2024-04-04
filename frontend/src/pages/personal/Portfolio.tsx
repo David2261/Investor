@@ -16,6 +16,15 @@ const Portfolio = () => {
                             <button className='py-2 px-3 uppercase font-light text-lg'>данные для входа</button>
                         </div>
                     </div>
+                    <div className="flex justify-center">
+                        <div className='flex flex-col'>
+                            <h1 className='text-3xl font-bold py-4'>Данные подписки</h1>
+                            <p className='text-xl font-bold pb-4'>У вас нет активной платной подписки</p>
+                            <div>
+                                <button className='py-2 px-3 uppercase font-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300'>оформить подписки</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
