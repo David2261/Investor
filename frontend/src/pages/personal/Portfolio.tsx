@@ -13,7 +13,11 @@ const SubrcibeContent = () => {
 
 const SettingsContent = () => {
 	return <>
-	<h1>Hi BRO!!!</h1>
+	<h1 className='text-3xl font-bold py-4'>Данные для входа</h1>
+	<p className='text-xl font-light pb-4'>Email: example@gmail.com</p>
+	<div>
+		<button className='py-2 px-3 uppercase font-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300'>Поменять пароль</button>
+	</div>
 	</>
 }
 
