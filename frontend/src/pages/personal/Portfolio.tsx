@@ -1,6 +1,21 @@
 import React, {useState} from 'react';
 import { useTransition, animated } from '@react-spring/web';
 
+const SubrcibeContent = () => {
+	return <>
+	<h1 className='text-3xl font-bold py-4'>Данные подписки</h1>
+	<p className='text-xl font-bold pb-4'>У вас нет активной платной подписки</p>
+	<div>
+		<button className='py-2 px-3 uppercase font-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300'>оформить подписки</button>
+	</div>
+	</>
+}
+const SettingsContent = () => {
+	return <>
+	<h1>Hi BRO!!!</h1>
+	</>
+}
+
 const Portfolio = () => {
 	let [btnOption, setBtnOption] = useState(true);
 	const changeBtnOn = () => setBtnOption(btnOption = false);
@@ -46,11 +61,7 @@ const Portfolio = () => {
 					</div>
 					<div className="flex justify-center">
 						<div className='flex flex-col'>
-							<h1 className='text-3xl font-bold py-4'>Данные подписки</h1>
-							<p className='text-xl font-bold pb-4'>У вас нет активной платной подписки</p>
-							<div>
-								<button className='py-2 px-3 uppercase font-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300'>оформить подписки</button>
-							</div>
+							{btnOption ? <SubrcibeContent /> : <SettingsContent />}
 						</div>
 					</div>
 				</div>
