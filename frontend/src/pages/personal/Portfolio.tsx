@@ -26,9 +26,8 @@ interface PortfolioState {
 }
 
 const Portfolio = () => {
-	let [btnOption, setBtnOption] = useState<PortfolioState['btnOption']>(true);
-	const changeBtnOn = () => setBtnOption(btnOption = false);
-	const changeBtnOff = () => setBtnOption(btnOption = true);
+	const [btnOption, setBtnOption] = useState<PortfolioState['btnOption']>(true);
+	const changeBtn = (prevOption: boolean) => !prevOption;
 	const stylesBtnOn = 'py-2 px-3 uppercase my-1 ml-1 font-bold text-lg bg-white rounded-lg';
 	const stylesBtnOff = 'py-2 px-3 uppercase font-light text-lg';
 	const transition = useTransition(btnOption, {
@@ -49,16 +48,16 @@ const Portfolio = () => {
 						<div className='flex flex-row bg-slate-300 rounded-lg'>
 							{transition((style) => (
 								<animated.button
-								onClick={changeBtnOff}
+								onClick={() => setBtnOption(changeBtn)}
 								className={btnOption? stylesBtnOn : stylesBtnOff}
 								style={style}
 								>
 								{'подписка'}
 								</animated.button>
 							))}
-							{transition((style, item) => (
+							{transition((style) => (
 								<animated.button
-								onClick={changeBtnOn}
+								onClick={() => setBtnOption(changeBtn)}
 								className={!btnOption? stylesBtnOn : stylesBtnOff}
 								style={style}
 								>
