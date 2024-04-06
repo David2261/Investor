@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { useState } from 'react';
 import { useTransition, animated } from '@react-spring/web';
 
 const SubrcibeContent = () => {
@@ -10,14 +10,19 @@ const SubrcibeContent = () => {
 	</div>
 	</>
 }
+
 const SettingsContent = () => {
 	return <>
 	<h1>Hi BRO!!!</h1>
 	</>
 }
 
+interface PortfolioState {
+	btnOption: boolean;
+}
+
 const Portfolio = () => {
-	let [btnOption, setBtnOption] = useState(true);
+	let [btnOption, setBtnOption] = useState<PortfolioState['btnOption']>(true);
 	const changeBtnOn = () => setBtnOption(btnOption = false);
 	const changeBtnOff = () => setBtnOption(btnOption = true);
 	const stylesBtnOn = 'py-2 px-3 uppercase my-1 ml-1 font-bold text-lg bg-white rounded-lg';
@@ -26,6 +31,7 @@ const Portfolio = () => {
 		from: {opacity: 0},
 		enter: {opacity: 1},
 	});
+
 	return <>
 		<div className="w-full h-full">
 			<div className="flex w-full px-24 mt-10 mb-10">
@@ -37,11 +43,9 @@ const Portfolio = () => {
 					{/* Options subscribe and settings for login */}
 					<div className='flex justify-center'>
 						<div className='flex flex-row bg-slate-300 rounded-lg'>
-							{/* <button onClick={() => changeBtnOff()} className={btnOption ? stylesBtnOn : stylesBtnOff}>подписка</button>
-							<button onClick={() => changeBtnOn()} className={!btnOption ? stylesBtnOn : stylesBtnOff}>данные для входа</button> */}
-							{transition((style, item) => (
+							{transition((style) => (
 								<animated.button
-								onClick={() => changeBtnOff()}
+								onClick={changeBtnOff}
 								className={btnOption? stylesBtnOn : stylesBtnOff}
 								style={style}
 								>
@@ -50,7 +54,7 @@ const Portfolio = () => {
 							))}
 							{transition((style, item) => (
 								<animated.button
-								onClick={() => changeBtnOn()}
+								onClick={changeBtnOn}
 								className={!btnOption? stylesBtnOn : stylesBtnOff}
 								style={style}
 								>
@@ -61,7 +65,7 @@ const Portfolio = () => {
 					</div>
 					<div className="flex justify-center">
 						<div className='flex flex-col'>
-							{btnOption ? <SubrcibeContent /> : <SettingsContent />}
+							{btnOption? <SubrcibeContent /> : <SettingsContent />}
 						</div>
 					</div>
 				</div>
