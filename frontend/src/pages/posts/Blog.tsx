@@ -11,9 +11,12 @@ import DataTab from '../../components/Blog/DataTab';
 interface BlogAPIType {
 	data: {
 		id: Key,
-		category: number,
 		title: string,
+		time_create: string,
+		slug: string,
+		description: string,
 		img: string | undefined,
+		category: number,
 	}[]
 }
 
