@@ -34,7 +34,7 @@ const Login: React.FC<LoginProps> = (props) => {
 						</div>
 					</div>
 					<button className="signup" type='submit'>Login</button>
-					<div className="footer"><span onClick={() => {props.setIsOpen(); props.setIsSignUp()}}>Sign-up</span><span>Forgot Password?</span></div>
+					<div className="footer"><span onClick={() => {props.setIsSignUp(); props.setIsOpen();}}>Sign-up</span><span>Forgot Password?</span></div>
 				</div>
 				</form>
 			</div>
