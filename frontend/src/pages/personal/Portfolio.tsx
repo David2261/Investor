@@ -1,12 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTransition, animated } from '@react-spring/web';
+import '../../styles/pages/personal/Portfolio.css';
+
+const AlertSubscribe = () => {
+	const toast = useRef(null);
+	const closeIcon = useRef(null);
+	const progress = useRef(null);
+	const timer1, timer2;
+	toast.classList.add("active");
+	progress.classList.add("active");
+
+	timer1 = setTimeout(() => {
+		toast.classList.remove("active");
+		}, 5000);
+	timer2 = setTimeout(() => {
+		progress.classList.remove("active");
+		}, 5300);
+	
+	useEffect(() => {
+		closeIcon.addEventListener("click", () => {
+			toast.classList.remove("active");
+		
+			setTimeout(() => {
+				progress.classList.remove("active");
+			}, 300);
+		
+			clearTimeout(timer1);
+			clearTimeout(timer2);
+		});
+	})
+	return <>
+	<div ref={toast} className="toast active">
+		<div className="toast-content">
+			<i className="fas fa-solid fa-check check"></i>
+
+			<div className="message">
+			<span className="text text-1">Success</span>
+			<span className="text text-2">Your changes has been saved</span>
+			</div>
+		</div>
+		<i ref={closeIcon} className="fa-solid fa-xmark close"></i>
+
+		<div ref={progress} className="progress active"></div>
+	</div>
+	</>
+}
 
 const SubrcibeContent = () => {
 	return <>
 	<h1 className='text-3xl font-bold py-4'>Данные подписки</h1>
 	<p className='text-xl font-bold pb-4'>У вас нет активной платной подписки</p>
 	<div>
-		<button className='py-2 px-3 uppercase font-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300'>оформить подписки</button>
+		<button className='py-2 px-3 uppercase font-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300' onClick={()=>AlertSubscribe()}>оформить подписки</button>
 	</div>
 	</>
 }
@@ -24,6 +69,7 @@ const SettingsContent = () => {
 interface PortfolioState {
 	btnOption: boolean;
 }
+
 
 const Portfolio = () => {
 	const [btnOption, setBtnOption] = useState<PortfolioState['btnOption']>(true);
