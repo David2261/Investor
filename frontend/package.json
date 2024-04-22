@@ -27,7 +27,8 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.14.2"
+    "react-router-dom": "^6.14.2",
+    "sweetalert2": "^11.10.8"
   },
   "devDependencies": {
     "@testing-library/dom": "^9.3.3",
