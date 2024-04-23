@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { Component, useState } from 'react';
 import { useTransition, animated } from '@react-spring/web';
 import Swal from 'sweetalert2'
-import '../../styles/pages/personal/Portfolio.css';
+import axios from 'axios';
 
 
 const SubrcibeContent = () => {
@@ -10,7 +10,7 @@ const SubrcibeContent = () => {
 		<h1 className='text-3xl font-bold py-4'>Данные подписки</h1>
 		<p className='text-xl font-bold pb-4'>У вас нет активной платной подписки</p>
 		<div>
-			<button className='py-2 px-3 uppercasefont-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300' onClick={() => Swal.fire({
+			<button className='py-2 px-3 uppercase font-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300' onClick={() => Swal.fire({
 					title: "Функция оформления подписки на данный момент не доступна, появиться в скором времени...",
 					showClass: {
 						popup: `
@@ -37,7 +37,7 @@ const SettingsContent = () => {
 	return (
 		<>
 		<h1 className='text-3xl font-bold py-4'>Данные для входа</h1>
-		<p className='text-xl font-light pb-4'>Email: example@gmail.com</p>
+		<p className='text-xl font-light pb-4'>Email: <UserAPI /></p>
 		<div>
 			<button className='py-2 px-3 uppercase font-bold text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300' onClick={() => Swal.fire({
 					title: "Функция изменения пароля на данный момент не доступна, появиться в скором времени...",
@@ -61,6 +61,54 @@ const SettingsContent = () => {
 		</>
 	);
 };
+
+interface UserAPIType {
+	data: {
+		user: string,
+		email: string
+	}[]
+}
+
+interface State {
+	data: [];
+	loaded: boolean;
+	placeholder: string;
+}
+
+class UserAPI extends Component<{}, State> {
+	constructor(props: UserAPIType) {
+		super(props);
+		this.state = {
+			data: [],
+			loaded: false,
+			placeholder: "Loading"
+		}
+	}
+	
+	async componentDidMount() {
+		await axios.get("http://127.0.0.1:8000/api/v1/user/data/")
+		.then(response => {
+			if (response.status > 400) {
+				return this.setState(() => {
+					return { placeholder: "Something went wrong!" };
+				});
+			}
+			return (response.data as any);
+		})
+		.then(data => {
+			this.setState(() => {
+				return {
+					data,
+					loaded: true
+				};
+			});
+		});
+	}
+
+	render() {
+		return <>{this.state.data}</>
+	}
+}
 
 interface PortfolioState {
 	btnOption: boolean;

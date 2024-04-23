@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import (
 	TokenVerifyView,
 )
 
+from .views import CurrentUserView
 from .views import RegistrationAPIView
 from .views import LoginAPIView
 from .views import UserViewSet
@@ -34,4 +35,5 @@ urlpatterns = [
 			TokenRefreshView.as_view(),
 			name='token_refresh'),
 	path('v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+	path('v1/user/data/', CurrentUserView.as_view(), name="current-user"),
 ]

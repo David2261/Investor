@@ -3,6 +3,7 @@ from jwt import InvalidTokenError
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework import viewsets
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import Group
@@ -59,6 +60,15 @@ class CustomTokenRefreshView(TokenRefreshView):
 				value=tokens['refresh'],
 				httponly=True)
 		return response
+
+
+class CurrentUserView(generics.RetrieveAPIView):
+	permission_classes = [permissions.IsAuthenticated]
+	serializer_class = UserSerializer
+
+	def get_object(self):
+		user = self.request.user
+		return user
 
 
 class UserViewSet(viewsets.ModelViewSet):
