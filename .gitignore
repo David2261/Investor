@@ -27,6 +27,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 *.lock
+hello/static/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -51,6 +52,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+
 
 # Translations
 *.mo
@@ -84,6 +86,9 @@ ipython_config.py
 
 # pyenv
 .python-version
+
+# vscode
+.vscode/
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
