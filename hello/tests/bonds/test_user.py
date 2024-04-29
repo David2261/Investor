@@ -7,18 +7,9 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 client = APIClient()
-
+User = get_user_model()
 @pytest.mark.django_db
 def test_registration():
-	# Create a new user
-	User = get_user_model()
-	user = User.objects.create_user(
-		username='testuser',
-		email='testuser@example.com',
-		password='testpassword',
-	)
-
-	# Send an HTTP POST request to the registration endpoint
 	data = {
 		'username': 'newuser',
 		'email': 'newuser@example.com',
@@ -34,7 +25,6 @@ def test_registration():
 
 
 def test_login_user():
-	User = get_user_model()
 	f_user = dict(
 				username="Michael",
 				email="michael@gmail.com",

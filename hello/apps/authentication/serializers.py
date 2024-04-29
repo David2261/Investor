@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
 
 from .models import User
 
@@ -22,11 +23,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class RegistrationSerializer(serializers.ModelSerializer):
 	password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
-	token = serializers.CharField(max_length=255, read_only=True)
 
 	class Meta:
-		model = User
-		fields = ('username', 'email', 'password', 'password2', 'token')
+		model = get_user_model()
+		fields = ('username', 'email', 'password', 'password2')
 		extra_kwargs = {
 			'password': {'write_only': True},
 		}
@@ -37,7 +37,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 		return attrs
 
 	def create(self, validated_data):
-		user = User.objects.create_user(
+		user = get_user_model().objects.create_user(
 			username=validated_data['username'],
 			email=validated_data['email'],
 			password=validated_data['password'],
