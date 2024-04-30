@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import (
 	TokenVerifyView,
 )
 
+from .views import CurrentUserView
 from .views import RegistrationAPIView
 from .views import LoginAPIView
 from .views import UserViewSet
@@ -20,10 +21,7 @@ router.register(r'groups', GroupViewSet, 'groups')
 app_name = 'authentication'
 urlpatterns = [
 	re_path('', include(router.urls)),
-	re_path(
-		r'v1/^registration/?$',
-		RegistrationAPIView.as_view(),
-		name='user_registration'),
+	path('v1/registration/', RegistrationAPIView.as_view(), name='user_registration'),
 	re_path(r'^login/?$', LoginAPIView.as_view(), name='user_login'),
 	path(
 			'v1/token/',
@@ -34,4 +32,5 @@ urlpatterns = [
 			TokenRefreshView.as_view(),
 			name='token_refresh'),
 	path('v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+	path('v1/user/data/', CurrentUserView.as_view(), name="current-user"),
 ]

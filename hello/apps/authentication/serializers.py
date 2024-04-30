@@ -4,41 +4,44 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
 
 from .models import User
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
+	@classmethod
+	def get_token(cls, user):
+		token = super().get_token(user)
 
-        # Add custom claims
-        token['username'] = user.username
-        # ...
+		# Add custom claims
+		token['username'] = user.username
+		# ...
 
-        return token
+		return token
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-	# Пароль должен быть подтвержден и не должен быть прочитан клиентом
-	password = serializers.CharField(
-		max_length=128,
-		min_length=8,
-		write_only=True,
-	)
-
-	# Клиент не должен иметь возможности отправлять токен вместе с регистрацией
-	# запрос. Создание `токена`, доступного только для чтения, решает это за нас.
-	token = serializers.CharField(max_length=255, read_only=True)
+	password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
 	class Meta:
-		model = User
-		fields = ('email', 'username', 'password', 'token',)
+		model = get_user_model()
+		fields = ('username', 'email', 'password', 'password2')
+		extra_kwargs = {
+			'password': {'write_only': True},
+		}
+
+	def validate(self, attrs):
+		if attrs['password'] != attrs['password2']:
+			raise serializers.ValidationError({'password': 'Passwords must match.'})
+		return attrs
 
 	def create(self, validated_data):
-		user =  User.objects.create_user(**validated_data)
-		user.save()
+		user = get_user_model().objects.create_user(
+			username=validated_data['username'],
+			email=validated_data['email'],
+			password=validated_data['password'],
+		)
 		return user
 
 
