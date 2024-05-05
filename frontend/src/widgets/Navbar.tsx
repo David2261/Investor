@@ -57,8 +57,8 @@ const Navbar = () => {
 						<HeadLink page="bonds" />
 						<HeadLink page="contact" />
 						{!user ? (<>
-							<button onClick={openModal} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
-							<button onClick={upSignUp} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
+							<button onClick={openModal} id="login" className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
+							<button onClick={upSignUp} id="signup" className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
 							</>
 						) : (<>
 							<HeadLink page="portfolio" />

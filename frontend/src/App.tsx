@@ -6,7 +6,7 @@ import Footer from './widgets/Footer.tsx';
 // Entities
 import PrivateRoute from "./entities/routers/PrivateRoute.tsx";
 // Widgets
-import Preloader from './widgets/Preloader.tsx';
+import Preloader from './widgets/preloader.tsx';
 // Pages
 import Home from './pages/Home.tsx';
 // Static pages

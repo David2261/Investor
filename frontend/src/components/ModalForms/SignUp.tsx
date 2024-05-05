@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import AuthContext from '../../entities/context/AuthContext';
 import IH from '../../assets/logo/IH.webp';
 import '../../styles/components/ModalForms/SignUp.css';
 
@@ -8,11 +9,12 @@ type SignUpProps = {
 };
 
 const SignUp: React.FC<SignUpProps> = (props) => {
+	const { registrationUser } = useContext(AuthContext);
 
     return <>
 		<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 			<div className='screen'>
-				<form action="">
+				<form onSubmit={registrationUser}>
 				<div className="screen-1">
 					<img className='logo' alt="logo" src={IH} />
 					<button onClick={props.setIsOpen} className="fixed top-16 right-8">
@@ -40,7 +42,13 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 							<input id="password-input" className="pas" type="password" name="password" placeholder="············" autoComplete='current-password' />
 						</div>
 					</div>
-					<button className="signup">SignUp</button>
+					<div className="password">
+						<label htmlFor="password2-input">Password</label>
+						<div className="sec-2">
+							<input id="password2-input" className="pas" type="password" name="password2" placeholder="············" autoComplete='current-password2' />
+						</div>
+					</div>
+					<button className="signup" type='submit'>SignUp</button>
 					<div className="footer" onClick={() => {props.setIsOpen(); props.setIsLogin()}}><span>Login</span></div>
 				</div>
 				</form>

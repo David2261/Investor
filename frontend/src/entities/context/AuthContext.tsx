@@ -13,6 +13,7 @@ type AuthContextType = {
 	user: User | null;
 	authTokens: AuthTokens | null;
 	loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+	registrationUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 	logoutUser: () => void;
 	login: (user: User) => void;
 	logout: () => void;
@@ -23,6 +24,7 @@ const AuthContext = createContext<AuthContextType>({
 	authTokens: null,
 	loginUser: async () => {},
 	logoutUser: () => {},
+	registrationUser: async () => {},
 	login: () => {},
 	logout: () => {},
 });
@@ -64,6 +66,32 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		}
 	}
 
+	const registrationUser = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const response = await fetch("http://127.0.0.1:8000/api/v1/registration/", {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				'username': (e.target as HTMLFormElement).username.value,
+				'email': (e.target as HTMLFormElement).email.value,
+				'password': (e.target as HTMLFormElement).password.value,
+				'password2': (e.target as HTMLFormElement).password2.value
+			})
+		}) as Response;
+		const data = await response.json()
+		if (response.status === 201) {
+			setAuthTokens(data)
+			setUser(jwtDecode(data.access))
+			localStorage.setItem('authTokens', JSON.stringify(data))
+			loginUser(e);
+			navigate(-1);
+		} else {
+			alert("Something went wrong!");
+		}
+	}
+
 	const logoutUser = useCallback(() => {
 		setAuthTokens(null)
 		setUser(null)
@@ -97,6 +125,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		user: user,
 		authTokens: authTokens,
 		loginUser: loginUser,
+		registrationUser: registrationUser,
 		logoutUser: logoutUser,
 		login: (user: User) => {
 			setUser(user);
