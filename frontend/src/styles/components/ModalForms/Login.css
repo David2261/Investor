@@ -98,6 +98,10 @@
     cursor: pointer;
 }
 
+.sec-2 input {
+    width: 100%;
+}
+
 button {
     cursor: pointer;
 }

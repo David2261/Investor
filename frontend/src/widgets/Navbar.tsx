@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { Link } from "react-router-dom";
+import { animated, useSpring } from '@react-spring/web';
 // Components
 import HeadLink from './Link.tsx';
 import MenuLink from './MenuLink.tsx';
@@ -21,6 +22,11 @@ const Navbar = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [openSignUp, setOpenSignUp] = useState<boolean>(false);
 	const {user, logoutUser} = useContext(AuthContext);
+	const styles = useSpring({
+		from: { opacity: 0 },
+		to: { opacity: 1 },
+		config: { duration: 50, },
+	});
 
 	function closeModal() {
 		setIsOpen(false);
@@ -89,31 +95,30 @@ const Navbar = () => {
 					</div>
 				)}
 			</div>
-			{/* MOBILE MENU MODAL */}
-			{!isAboveMediumScreens && isMenuToggled && (
-				<div className="fixed z-10 right-0 bottom-0 h-full w-[300px] bg-primary-100 drop-shadow-xl">
-					{/* CLOSE ICON */}
-					<div className="flex justify-end p-12">
-						<button onClick={() => setIsMenuToggled(!isMenuToggled)}>
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-gray-400">
-								<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-							</svg>
-						</button>
-					</div>
-					{/* MENU ITEMS */}
-					<div className="flex text-2xl justify-center">
-						<div className="flex gap-8 flex-col items-center" id="navbar-collapse">
-							<MenuLink page="blog" />
-							<MenuLink page="bonds" />
-							<MenuLink page="contact" />
-							<button onClick={() => {openModal(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Login</button>
-							<button onClick={() => {upSignUp(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Sign In</button>
-						</div>
+		</nav>
+		{/* MOBILE MENU MODAL */}
+		{!isAboveMediumScreens && isMenuToggled && (
+			<animated.div style={styles} className="fixed z-10 right-0 bottom-0 h-full w-[300px] bg-primary-100 drop-shadow-xl" >
+				{/* CLOSE ICON */}
+				<div className="flex justify-end p-12">
+					<button onClick={() => setIsMenuToggled(!isMenuToggled)}>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-gray-400">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
+				{/* MENU ITEMS */}
+				<div className="flex text-2xl justify-center">
+					<div className="flex gap-8 flex-col items-center" id="navbar-collapse">
+						<MenuLink page="blog" />
+						<MenuLink page="bonds" />
+						<MenuLink page="contact" />
+						<button onClick={() => {openModal(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Login</button>
+						<button onClick={() => {upSignUp(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Sign In</button>
 					</div>
 				</div>
-			)}
-		</nav>
-		
+			</animated.div>
+		)}
 		</>
 };
 

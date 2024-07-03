@@ -1,6 +1,10 @@
 import React, { useContext } from 'react';
+import { animated, useSpring } from '@react-spring/web';
+// Entities
 import AuthContext from '../../entities/context/AuthContext';
+// Assets
 import IH from '../../assets/logo/IH.webp';
+// Styles
 import '../../styles/components/ModalForms/SignUp.css';
 
 type SignUpProps = {
@@ -10,10 +14,20 @@ type SignUpProps = {
 
 const SignUp: React.FC<SignUpProps> = (props) => {
 	const { registrationUser } = useContext(AuthContext);
+	const styles = useSpring({
+		from: {
+			opacity: 0,
+			delay: 50,
+		},
+		to: {
+			opacity: 1,
+			delay: 50,
+		},
+	});
 
     return <>
 		<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
-			<div className='screen'>
+			<animated.div className='screen' style={styles}>
 				<form onSubmit={registrationUser}>
 				<div className="screen-1">
 					<img className='logo' alt="logo" src={IH} />
@@ -52,7 +66,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 					<div className="footer" onClick={() => {props.setIsOpen(); props.setIsLogin()}}><span>Login</span></div>
 				</div>
 				</form>
-			</div>
+			</animated.div>
 		</div>
 		</>;
 }
