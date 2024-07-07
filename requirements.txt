@@ -1,6 +1,6 @@
 asgiref==3.7.2
 astroid==2.15.8
-certifi==2023.7.22
+certifi==2024.7.4
 cffi==1.16.0
 charset-normalizer==3.3.2
 coverage==7.3.4
