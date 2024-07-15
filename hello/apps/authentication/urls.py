@@ -7,6 +7,9 @@ from rest_framework_simplejwt.views import (
 
 from .views import CurrentUserView
 from .views import RegistrationAPIView
+from .views import GoogleLoginView
+from .views import YandexLoginView
+from .views import MicrosoftLoginView
 
 
 app_name = 'authentication'
@@ -26,4 +29,10 @@ urlpatterns = [
 			name='token_refresh'),
 	path('v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 	path('v1/user/data/', CurrentUserView.as_view(), name="current-user"),
+	path('google/login/', GoogleLoginView.as_view(), name='google_login'),
+	path('yandex/login/', YandexLoginView.as_view(), name='yandex_login'),
+	path(
+			'microsoft/login/',
+			MicrosoftLoginView.as_view(),
+			name='microsoft_login'),
 ]

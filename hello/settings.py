@@ -83,6 +83,13 @@ INSTALLED_APPS = [
 	'rest_framework',
 	'rest_framework_simplejwt.token_blacklist',
 	'djoser',
+	'allauth',
+	'allauth.account',
+	'allauth.socialaccount',
+	'allauth.socialaccount.providers.google',
+	'allauth.socialaccount.providers.microsoft',
+	'allauth.socialaccount.providers.yandex',
+	'rest_auth',
 	# apps
 	'leads.apps.LeadsConfig',
 	'articles.apps.ArticlesConfig',
@@ -106,10 +113,44 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	"allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'hello.urls'
 
+AUTHENTICATION_BACKENDS = [
+	'django.contrib.auth.backends.ModelBackend',
+	'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+	'google': {
+		'APP': {
+			'client_id': env('OAUTH_GOOGLE_CLIENTID'),
+			'secret': env('OAUTH_GOOGLE_SECRET'),
+			'key': ''
+		}
+	},
+	'microsoft': {
+		'APP': {
+			'client_id': env('OAUTH_MICROSOFT_CLIENTID'),
+			'secret': env('OAUTH_MICROSOFT_SECRET'),
+			'key': '',
+			'AUTH_PARAMS': {'access_type': 'offline'}
+		}
+	},
+	'yandex': {
+		'APP': {
+			'client_id': env('OAUTH_YANDEX_CLIENTID'),
+			'secret': env('OAUTH_YANDEX_SECRET'),
+			'key': '',
+			'AUTH_PARAMS': {'access_type': 'offline'}
+		}
+	}
+}
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
 
 TEMPLATES = [
 	{
@@ -141,12 +182,12 @@ DATABASES = {
 	# 	'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 	# }
 	'default': {
-	    'ENGINE': 'django.db.backends.postgresql',
-	    'NAME': env('PGDB'),
-	    'USER': env('PGUSER'),
-	    'PASSWORD': env('PGPASSWORD'),
-	    'HOST': env('PGHOST'),
-	    'PORT': env('PGPORT'),
+		'ENGINE': 'django.db.backends.postgresql',
+		'NAME': env('PGDB'),
+		'USER': env('PGUSER'),
+		'PASSWORD': env('PGPASSWORD'),
+		'HOST': env('PGHOST'),
+		'PORT': env('PGPORT'),
 	}
 }
 
@@ -213,43 +254,43 @@ REST_FRAMEWORK = {
 
 # Authentification JWT
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": False,
+	"ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+	"REFRESH_TOKEN_LIFETIME": timedelta(days=90),
+	"ROTATE_REFRESH_TOKENS": True,
+	"BLACKLIST_AFTER_ROTATION": True,
+	"UPDATE_LAST_LOGIN": False,
 
-    "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": "",
-    "AUDIENCE": None,
-    "ISSUER": None,
-    "JSON_ENCODER": None,
-    "JWK_URL": None,
-    "LEEWAY": 0,
+	"ALGORITHM": "HS256",
+	"SIGNING_KEY": SECRET_KEY,
+	"VERIFYING_KEY": "",
+	"AUDIENCE": None,
+	"ISSUER": None,
+	"JSON_ENCODER": None,
+	"JWK_URL": None,
+	"LEEWAY": 0,
 
-    "AUTH_HEADER_TYPES": ("Bearer",),
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-    "USER_ID_FIELD": "id",
-    "USER_ID_CLAIM": "user_id",
-    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+	"AUTH_HEADER_TYPES": ("Bearer",),
+	"AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+	"USER_ID_FIELD": "id",
+	"USER_ID_CLAIM": "user_id",
+	"USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
 
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    "TOKEN_TYPE_CLAIM": "token_type",
-    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+	"AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+	"TOKEN_TYPE_CLAIM": "token_type",
+	"TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
 
-    "JTI_CLAIM": "jti",
+	"JTI_CLAIM": "jti",
 
-    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
-    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=90),
+	"SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+	"SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+	"SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=90),
 
-    "TOKEN_OBTAIN_SERIALIZER": "authentication.serializers.TokenObtainPairSerializer",
-    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
-    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
-    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
-    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
-    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+	"TOKEN_OBTAIN_SERIALIZER": "authentication.serializers.TokenObtainPairSerializer",
+	"TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+	"TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+	"TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+	"SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+	"SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
 # myaccount.google.com/lesssecureapps
