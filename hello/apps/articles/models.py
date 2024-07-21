@@ -8,9 +8,9 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
-from .segregation.base_models import BasePost
-from .segregation.fields import WEBPField
-from .segregation.options import check_lang
+from segregation.base_models import BasePost
+from segregation.fields import WEBPField
+from segregation.options import check_lang
 
 
 logging.config.dictConfig(settings.LOGGING)
@@ -30,9 +30,6 @@ class PageHit(models.Model):
 
 	def __str__(self):
 		return self.count
-
-	class Meta:
-		app_label = "articles"
 
 
 class Category(models.Model):

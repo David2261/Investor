@@ -1,20 +1,23 @@
 import csv
+from django.http import Http404
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic.edit import CreateView
+from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework import permissions
 
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-
-from articles.segregation.decorators import counted
+from segregation.decorators import counted # type: ignore
 from .models import Bonds
+from .models import Category
 from .serializers import (
 	BondDetailSerializer,
-	BondsSerializer)
+	BondsSerializer,
+	CategoryBondsSerializer)
 from .forms import BondsForm
 
 
@@ -24,10 +27,54 @@ class BondsList(ListAPIView):
 	permissions_classes = permissions.AllowAny
 
 
+class CategoryBondList(ListAPIView):
+	serializer_class = CategoryBondsSerializer
+
+	def get_queryset(self):
+		queryset = Category.objects.all()
+		name = self.request.query_params.get('name')
+		if name is not None:
+			queryset = queryset.filter(name=name)
+		return queryset
+
+
+class CategoryBondDetail(ListAPIView):
+	queryset = Category.objects.all()
+	serializer_class = CategoryBondsSerializer
+	lookup_field = 'slug'
+	lookup_url_kwarg = 'category_slug'
+
+
+class CategoriesList(ListAPIView):
+	serializer_class = CategoryBondsSerializer
+	queryset = Category.objects.all()
+	permission_classes = [permissions.AllowAny]
+
+	def get(self, request, *args, **kwargs):
+		""" List with all categories """
+		return self.list(
+				self.serializer_class.data,
+				status=status.HTTP_200_OK)
+
+
+class CategoryDetail(APIView):
+	permissions_classes = [permissions.AllowAny]
+
+	def get_object(self, category_slug):
+		try:
+			return Category.objects.get(slug=category_slug)
+		except Category.DoesNotExist:
+			raise Http404
+
+	def get(self, request, category_slug: str, format=None):
+		categories = self.get_object(category_slug)
+		serializer = Category(categories)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 @counted
-@method_decorator(login_required, name="dispatch")
 class BondDetail(RetrieveAPIView):
-	permissions_classes = permissions.IsAuthenticated
+	permission_classes = [permissions.IsAuthenticated]
 	queryset = Bonds.objects.filter(is_published=True)
 	serializer_class = BondDetailSerializer
 	lookup_field = 'slug'
@@ -42,26 +89,26 @@ class GenerateCSV(View):
 		bonds = Bonds.objects.all()
 		writer = csv.writer(response, delimiter=';')
 		writer.writerow([
-				"id",
-				"title",
-				"category",
-				"description",
-				"price",
-				"maturity",
-				"is_published",
-				"cupon",
-				"cupon_percent"])
+			"id",
+			"title",
+			"category",
+			"description",
+			"price",
+			"maturity",
+			"is_published",
+			"cupon",
+			"cupon_percent"])
 		for bond in bonds:
 			writer.writerow([
-					bond.id,
-					bond.title,
-					bond.category,
-					bond.description,
-					bond.price,
-					bond.maturity,
-					bond.is_published,
-					bond.cupon,
-					bond.cupon_percent])
+				bond.id,
+				bond.title,
+				bond.category,
+				bond.description,
+				bond.price,
+				bond.maturity,
+				bond.is_published,
+				bond.cupon,
+				bond.cupon_percent])
 
 		return response
 
@@ -84,7 +131,7 @@ class UploadCSV(CreateView):
 		if csv_file.multiple_chunks():
 			messages.error(
 				request,
-				"Uploaded file is too big (%.2f MB). " % (csv_file.size / (1000 * 1000),))
+				"Uploaded file is too big (%.2f MB)." % (csv_file.size / (1000 * 1000),))
 			return super().post(request, *args, **kwargs)
 
 		file_data = csv_file.read().decode("utf-8")
@@ -92,13 +139,22 @@ class UploadCSV(CreateView):
 
 		for line in lines:
 			fields = line.split(";")
-			if len(fields) != 13:
+			if len(fields) != 9:  # Assuming 9 fields in the CSV file
 				messages.error(
-						request,
-						"Unable to upload file. Invalid number of fields.")
+					request,
+					"Unable to upload file. Invalid number of fields.")
 				continue
 			try:
-				bond_data = dict(zip(Bonds._meta.fields_map.keys(), fields))
+				bond_data = {
+					'title': fields[1],
+					'category': fields[2],
+					'description': fields[3],
+					'price': fields[4],
+					'maturity': fields[5],
+					'is_published': fields[6],
+					'cupon': fields[7],
+					'cupon_percent': fields[8]
+				}
 				bond = self.form_class(bond_data)
 				bond.save()
 			except Exception as e:

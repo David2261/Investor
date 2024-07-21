@@ -1,10 +1,15 @@
 from django.contrib import admin
 
-from .models import Bonds
+from .models import Bonds, Category
 
-# Register your models here.
+
+admin.site.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+	list_display = ("name", "time_create")
+	exclude = ("slug")
+
+
 admin.site.register(Bonds)
-
 
 class BondsAdmin(admin.ModelAdmin):
 	list_display = ("title", "category", "time_create", "is_published")

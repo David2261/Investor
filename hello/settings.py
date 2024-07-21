@@ -79,19 +79,15 @@ INSTALLED_APPS = [
 	'django.contrib.staticfiles',
 	'django.contrib.sites',
 	# Authentication and API
+	'allauth',
+	'allauth.account',
+	'allauth.socialaccount',
 	'corsheaders',
 	'rest_framework',
 	'rest_framework_simplejwt.token_blacklist',
 	'djoser',
-	'allauth',
-	'allauth.account',
-	'allauth.socialaccount',
-	'allauth.socialaccount.providers.google',
-	'allauth.socialaccount.providers.microsoft',
-	'allauth.socialaccount.providers.yandex',
 	'rest_auth',
 	# apps
-	'leads.apps.LeadsConfig',
 	'articles.apps.ArticlesConfig',
 	'authentication.apps.AuthenticationConfig',
 	'bonds.apps.BondsConfig',
@@ -123,29 +119,41 @@ AUTHENTICATION_BACKENDS = [
 	'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('OAUTH_GOOGLE_CLIENTID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('OAUTH_GOOGLE_SECRET')
+
+SOCIAL_AUTH_YANDEX_OAUTH2_KEY = env('OAUTH_YANDEX_CLIENTID')
+SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = env('OAUTH_YANDEX_SECRET')
+
+SOCIAL_AUTH_MICROSOFT_OAUTH2_KEY = env('OAUTH_MICROSOFT_CLIENTID')
+SOCIAL_AUTH_MICROSOFT_OAUTH2_SECRET = env('OAUTH_MICROSOFT_SECRET')
+
+
 SOCIALACCOUNT_PROVIDERS = {
 	'google': {
-		'APP': {
-			'client_id': env('OAUTH_GOOGLE_CLIENTID'),
-			'secret': env('OAUTH_GOOGLE_SECRET'),
-			'key': ''
+		'APP': 'google',
+		'SCOPE': [
+			'profile',
+			'email',
+		],
+		'AUTH_PARAMS': {
+			'access_type': 'online',
 		}
 	},
 	'microsoft': {
-		'APP': {
-			'client_id': env('OAUTH_MICROSOFT_CLIENTID'),
-			'secret': env('OAUTH_MICROSOFT_SECRET'),
-			'key': '',
-			'AUTH_PARAMS': {'access_type': 'offline'}
-		}
+		'APP': 'microsoft',
+		'SCOPE': [
+			'profile',
+			'email',
+		],
 	},
 	'yandex': {
-		'APP': {
-			'client_id': env('OAUTH_YANDEX_CLIENTID'),
-			'secret': env('OAUTH_YANDEX_SECRET'),
-			'key': '',
-			'AUTH_PARAMS': {'access_type': 'offline'}
-		}
+		'APP': 'yandex',
+		'SCOPE': [
+			'profile',
+			'email',
+		],
 	}
 }
 
