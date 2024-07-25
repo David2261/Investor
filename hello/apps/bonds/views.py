@@ -13,11 +13,9 @@ from rest_framework import permissions
 
 from segregation.decorators import counted # type: ignore
 from .models import Bonds
-from .models import Category
 from .serializers import (
 	BondDetailSerializer,
-	BondsSerializer,
-	CategoryBondsSerializer)
+	BondsSerializer)
 from .forms import BondsForm
 
 
@@ -25,51 +23,6 @@ class BondsList(ListAPIView):
 	queryset = Bonds.objects.filter(is_published=True)
 	serializer_class = BondsSerializer
 	permissions_classes = permissions.AllowAny
-
-
-class CategoryBondList(ListAPIView):
-	serializer_class = CategoryBondsSerializer
-
-	def get_queryset(self):
-		queryset = Category.objects.all()
-		name = self.request.query_params.get('name')
-		if name is not None:
-			queryset = queryset.filter(name=name)
-		return queryset
-
-
-class CategoryBondDetail(ListAPIView):
-	queryset = Category.objects.all()
-	serializer_class = CategoryBondsSerializer
-	lookup_field = 'slug'
-	lookup_url_kwarg = 'category_slug'
-
-
-class CategoriesList(ListAPIView):
-	serializer_class = CategoryBondsSerializer
-	queryset = Category.objects.all()
-	permission_classes = [permissions.AllowAny]
-
-	def get(self, request, *args, **kwargs):
-		""" List with all categories """
-		return self.list(
-				self.serializer_class.data,
-				status=status.HTTP_200_OK)
-
-
-class CategoryDetail(APIView):
-	permissions_classes = [permissions.AllowAny]
-
-	def get_object(self, category_slug):
-		try:
-			return Category.objects.get(slug=category_slug)
-		except Category.DoesNotExist:
-			raise Http404
-
-	def get(self, request, category_slug: str, format=None):
-		categories = self.get_object(category_slug)
-		serializer = Category(categories)
-		return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @counted

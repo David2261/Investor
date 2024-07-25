@@ -1,12 +1,6 @@
 from django.contrib import admin
 
-from .models import Bonds, Category
-
-
-admin.site.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-	list_display = ("name", "time_create")
-	exclude = ("slug")
+from .models import Bonds
 
 
 admin.site.register(Bonds)
