@@ -54,3 +54,4 @@ setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerabil
 # For connect to test DB: PGPASSWORD=XbvTPQCsSCxaIJcSjoCchkJGXlMoYlDb psql -h roundhouse.proxy.rlwy.net -U postgres -p 51432 -d railway
 # Connecting url: PGPASSWORD=XbvTPQCsSCxaIJcSjoCchkJGXlMoYlDb psql -h roundhouse.proxy.rlwy.net -U postgres -p 51432 -d railway
 # Railway CLI: railway connect Postgres
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
