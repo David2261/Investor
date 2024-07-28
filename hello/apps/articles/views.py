@@ -16,8 +16,9 @@ from rest_framework.response import Response
 
 from authentication.models import User
 from authentication.permissions import AdminCreatorOnly
-from .segregation.decorators import counted
-from .models import Category, Articles
+from segregation.decorators import counted
+from .models import Articles
+from .models import Category
 from .serializers import (
 	CategorySerializer,
 	ArticlesSerializer,

@@ -7,14 +7,12 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework import permissions
 
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-
-from articles.segregation.decorators import counted
+from segregation.decorators import counted  # type: ignore
 from .models import Bonds
 from .serializers import (
 	BondDetailSerializer,
-	BondsSerializer)
+	BondsSerializer
+)
 from .forms import BondsForm
 
 
@@ -25,9 +23,8 @@ class BondsList(ListAPIView):
 
 
 @counted
-@method_decorator(login_required, name="dispatch")
 class BondDetail(RetrieveAPIView):
-	permissions_classes = permissions.IsAuthenticated
+	permission_classes = [permissions.IsAuthenticated]
 	queryset = Bonds.objects.filter(is_published=True)
 	serializer_class = BondDetailSerializer
 	lookup_field = 'slug'
@@ -42,26 +39,26 @@ class GenerateCSV(View):
 		bonds = Bonds.objects.all()
 		writer = csv.writer(response, delimiter=';')
 		writer.writerow([
-				"id",
-				"title",
-				"category",
-				"description",
-				"price",
-				"maturity",
-				"is_published",
-				"cupon",
-				"cupon_percent"])
+			"id",
+			"title",
+			"category",
+			"description",
+			"price",
+			"maturity",
+			"is_published",
+			"cupon",
+			"cupon_percent"])
 		for bond in bonds:
 			writer.writerow([
-					bond.id,
-					bond.title,
-					bond.category,
-					bond.description,
-					bond.price,
-					bond.maturity,
-					bond.is_published,
-					bond.cupon,
-					bond.cupon_percent])
+				bond.id,
+				bond.title,
+				bond.category,
+				bond.description,
+				bond.price,
+				bond.maturity,
+				bond.is_published,
+				bond.cupon,
+				bond.cupon_percent])
 
 		return response
 
@@ -84,7 +81,7 @@ class UploadCSV(CreateView):
 		if csv_file.multiple_chunks():
 			messages.error(
 				request,
-				"Uploaded file is too big (%.2f MB). " % (csv_file.size / (1000 * 1000),))
+				"Uploaded file is too big (%.2f MB)." % (csv_file.size / (1000 * 1000),))
 			return super().post(request, *args, **kwargs)
 
 		file_data = csv_file.read().decode("utf-8")
@@ -92,13 +89,22 @@ class UploadCSV(CreateView):
 
 		for line in lines:
 			fields = line.split(";")
-			if len(fields) != 13:
+			if len(fields) != 9:  # Assuming 9 fields in the CSV file
 				messages.error(
-						request,
-						"Unable to upload file. Invalid number of fields.")
+					request,
+					"Unable to upload file. Invalid number of fields.")
 				continue
 			try:
-				bond_data = dict(zip(Bonds._meta.fields_map.keys(), fields))
+				bond_data = {
+					'title': fields[1],
+					'category': fields[2],
+					'description': fields[3],
+					'price': fields[4],
+					'maturity': fields[5],
+					'is_published': fields[6],
+					'cupon': fields[7],
+					'cupon_percent': fields[8]
+				}
 				bond = self.form_class(bond_data)
 				bond.save()
 			except Exception as e:

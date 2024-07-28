@@ -1,91 +1,84 @@
-import json
 import pytest
-
 from django.urls import reverse
+from django.contrib.auth import get_user_model
+from rest_framework import status
+from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from rest_framework.test import APITestCase
-# from rest_framework.authtoken.models import Token
-
-from authentication.models import User
-
-
-@pytest.mark.auth
-class UserRegistrationAPIViewTestCase(APITestCase):
-	url = reverse("authentication:user_registration")
-
-	def test_invalid_password(self):
-		"""
-		Test to verify that a post call with invalid passwords
-		"""
-		user_data = {
-			"username": "testuser",
-			"email": "testemail1111@gmail.com",
-			"password": "password"
-		}
-		response = self.client.post(self.url, user_data, format="json")
-		assert 201 == response.status_code
-
-	def test_registration_user(self):
-		"""
-		Test to verify that a post call with valid passwords
-		"""
-		user_data = {
-			"username": "testuser",
-			"email": "testemail1111@gmail.com",
-			"password": "password"
-		}
-		response = self.client.post(self.url, user_data)
-		assert 201 == response.status_code
-		assert "token" in json.loads(response.content)
-
-	def test_unique_user_validation(self):
-		"""
-		Test to verify that a post call with already exists username
-		"""
-		user_data_1 = {
-			"username": "testuser",
-			"email": "test@testuser.com",
-			"password": "password"
-		}
-		response = self.client.post(self.url, user_data_1)
-		assert 201 == response.status_code
-
-		user_data_2 = {
-			"username": "testuser",
-			"email": "test2@testuser.com",
-			"password": "password"
-		}
-		response = self.client.post(self.url, user_data_2)
-		assert 400 == response.status_code
+from authentication.views import CurrentUserView
 
 
-@pytest.mark.auth
-class UserLoginAPIViewTestCase(APITestCase):
-	url = reverse("authentication:user_login")
+User = get_user_model()
 
-	def setUp(self):
-		self.username = "john"
-		self.email = "john@gmail.com"
-		self.password = "john12345"
-		self.user = User.objects.create_user(
-			self.username,
-			self.email,
-			self.password)
 
-	def test_authentication_without_password(self):
-		response = self.client.post(self.url, {"username": "john"})
-		assert 400 == response.status_code
+@pytest.mark.django_db
+class TestRegistrationAPIView:
+	def test_post(self):
+		client = APIClient()
+		data = {'email': 'test@example.com', 'username': 'testuser', 'password': 'password123'}
+		response = client.post(reverse('authentication:user_registration'), data, format='json')
+		assert response.status_code == status.HTTP_201_CREATED
+		assert response.data['email'] == 'test@example.com'
+		assert User.objects.filter(email='test@example.com').exists()
 
-	def test_authentication_with_wrong_password(self):
-		response = self.client.post(self.url, {
-			"username": self.username,
-			"password": "Aloha"})
-		assert 400 == response.status_code
+	def test_post_invalid_data(self):
+		client = APIClient()
+		data = {'email': 'invalid_email', 'username': 'testuser', 'password': 'password123'}
+		response = client.post(reverse('authentication:user_registration'), data, format='json')
+		assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-	def test_authentication_with_valid_data(self):
-		response = self.client.post(self.url, {
-			"username": self.username,
-			"email": self.email,
-			"password": self.password})
-		assert 200 == response.status_code
-		assert "token" in json.loads(response.content)
+
+@pytest.mark.django_db
+class TestCustomTokenRefreshView:
+	def test_post(self):
+		client = APIClient()
+		user = User.objects.create_user(email='test@example.com', username='testuser', password='password123')
+		refresh_token = RefreshToken.for_user(user)
+		data = {'refresh': str(refresh_token)}
+		response = client.post(reverse('authentication:token_refresh'), data, format='json')
+		assert response.status_code == status.HTTP_200_OK
+		assert 'access' in response.data
+
+	def test_post_invalid_token(self):
+		client = APIClient()
+		data = {'refresh': 'invalid_token'}
+		response = client.post(reverse('authentication:token_refresh'), data, format='json')
+		assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+class CurrentUserViewTestCase:
+	@pytest.fixture
+	def user(self):
+		return {'email': 'test@example.com', 'username': 'testuser', 'password': 'password123'}
+
+	@pytest.fixture
+	def view(self):
+		return CurrentUserView()
+
+	def test_get(self, view, user, rf):
+		request = rf.get(reverse('current-user'))
+		request.user = user
+		response = view(request)
+		assert response.status_code == 200
+		assert response.data['email'] == user['email']
+
+	def test_get_unauthenticated(self, view, rf):
+		request = rf.get(reverse('current-user'))
+		request.user = None
+		response = view(request)
+		assert response.status_code == 401
+
+# @pytest.mark.django_db
+# class TestGoogleLoginView:
+# 	def test_post(self):
+# 		client = APIClient()
+# 		data = {'access_token': 'valid_access_token'}
+# 		response = client.post(reverse('google_login'), data)
+# 		assert response.status_code == status.HTTP_200_OK
+# 		assert SocialAccount.objects.filter(provider='google').exists()
+
+# 	def test_post_invalid_token(self):
+# 		client = APIClient()
+# 		data = {'access_token': 'invalid_access_token'}
+# 		response = client.post(reverse('google_login'), data)
+# 		assert response.status_code == status.HTTP_401_UNAUTHORIZED

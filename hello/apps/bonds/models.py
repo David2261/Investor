@@ -1,19 +1,33 @@
+import logging
+
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from transliterate import slugify
+from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 
-from articles.models import Category
-from articles.segregation.base_models import BasePost
-from articles.segregation.options import check_lang
+from segregation.base_models import BasePost
+from segregation.options import check_lang
+
+
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("dev")
+log_info = logging.getLogger("root")
 
 
 class Bonds(BasePost):
+	CATEGORY_CHOICES = [
+		('municipal bonds', 'Municipal bonds'),
+		('Corporate bonds', 'Corporate bonds'),
+		('federal loan bonds', 'Federal loan bonds'),
+	]
 	description = models.TextField(
 			verbose_name=_("The text of the bond"),
 			null=False,
 			blank=False)
-	category = models.ForeignKey(Category, on_delete=models.CASCADE)
+	category = models.CharField(
+			max_length=255,
+			choices=CATEGORY_CHOICES)
 	time_update = models.DateTimeField(
 			auto_now=True,
 			verbose_name=_("Time of change"))
