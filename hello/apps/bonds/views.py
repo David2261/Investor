@@ -1,21 +1,18 @@
 import csv
-from django.http import Http404
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic.edit import CreateView
-from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import permissions
 
-from segregation.decorators import counted # type: ignore
+from segregation.decorators import counted  # type: ignore
 from .models import Bonds
 from .serializers import (
 	BondDetailSerializer,
-	BondsSerializer)
+	BondsSerializer
+)
 from .forms import BondsForm
 
 

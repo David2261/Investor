@@ -12,7 +12,6 @@ from .views import YandexLoginView
 from .views import MicrosoftLoginView
 
 
-
 app_name = 'authentication'
 urlpatterns = [
 	path(

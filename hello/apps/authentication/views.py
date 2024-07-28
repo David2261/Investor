@@ -10,7 +10,9 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.yandex.views import YandexOAuth2Adapter
-from allauth.socialaccount.providers.microsoft.views import MicrosoftGraphOAuth2Adapter
+from allauth.socialaccount.providers.microsoft.views import (
+	MicrosoftGraphOAuth2Adapter
+)
 from allauth.socialaccount.helpers import complete_social_login
 
 from .models import User
@@ -62,8 +64,11 @@ class GoogleLoginView(APIView):
 		token = adapter.get_access_token(request)
 		token.app = app
 		token.save()
-		login = self.get_social_login(adapter, app, token,
-										response=Response)
+		login = self.get_social_login(
+			adapter,
+			app,
+			token,
+			response=Response)
 		complete_social_login(request, login)
 		return Response({'token': token.token})
 
@@ -71,7 +76,9 @@ class GoogleLoginView(APIView):
 class YandexLoginView(APIView):
 	adapter_class = YandexOAuth2Adapter
 	client_class = OAuth2Client
-	callback_url = 'http://localhost:8000/api/v1/allauth/accounts/yandex/login/callback'
+	callback_url = (
+		'http://localhost:8000/api/v1/allauth/accounts/yandex/login/callback'
+	)
 
 	def post(self, request):
 		adapter = self.adapter_class(request)
@@ -79,8 +86,11 @@ class YandexLoginView(APIView):
 		token = adapter.get_access_token(request)
 		token.app = app
 		token.save()
-		login = self.get_social_login(adapter, app, token,
-										response=Response)
+		login = self.get_social_login(
+			adapter,
+			app,
+			token,
+			response=Response)
 		complete_social_login(request, login)
 		return Response({'token': token.token})
 
@@ -88,7 +98,9 @@ class YandexLoginView(APIView):
 class MicrosoftLoginView(APIView):
 	adapter_class = MicrosoftGraphOAuth2Adapter
 	client_class = OAuth2Client
-	callback_url = 'http://localhost:8000/api/v1/allauth/accounts/microsoft/login/callback'
+	callback_url = (
+		'http://localhost:8000/api/v1/allauth/accounts/microsoft/login/callback'
+	)
 
 	def post(self, request):
 		adapter = self.adapter_class(request)
@@ -96,7 +108,10 @@ class MicrosoftLoginView(APIView):
 		token = adapter.get_access_token(request)
 		token.app = app
 		token.save()
-		login = self.get_social_login(adapter, app, token,
-										response=Response)
+		login = self.get_social_login(
+			adapter,
+			app,
+			token,
+			response=Response)
 		complete_social_login(request, login)
 		return Response({'token': token.token})
