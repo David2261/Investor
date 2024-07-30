@@ -1,8 +1,10 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
 from functools import wraps
 from django.db.models import F
 from django.db import transaction
 
-from articles.models import PageHit
+from articles.models import PageHit  # type: ignore
 
 
 def counted(f):

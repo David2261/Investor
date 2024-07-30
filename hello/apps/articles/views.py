@@ -1,17 +1,20 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
 import csv
 import logging
-from django.http import Http404, HttpResponse
+from django.http import Http404
+from django.http import HttpResponse
 from django.conf import settings
 from django.contrib import messages
-from django.views.generic.edit import CreateView
-# DRF - API
 from django.views import View
+from django.views.generic.edit import CreateView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+# DRF - API
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework import permissions
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from rest_framework.response import Response
 
 from authentication.models import User
