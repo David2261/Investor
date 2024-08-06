@@ -64,7 +64,6 @@ class ArticlesList(ListAPIView):
 				status=status.HTTP_400_BAD_REQUEST)
 
 
-@method_decorator(login_required, name="dispatch")
 class ArticleDetail(APIView):
 	permissions_classes = [permissions.AllowAny]
 

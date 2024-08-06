@@ -4,10 +4,17 @@ from authentication.models import User
 from .models import Category, Articles
 
 
+class CategorySerializerNS(serializers.ModelSerializer):
+	class Meta:
+		model = Category
+		fields = ['name', 'slug']
+
+
 class ArticlesSerializer(serializers.ModelSerializer):
+	category = CategorySerializerNS(read_only=True)
 	class Meta:
 		model = Articles
-		fields = '__all__'
+		fields = ['title', 'description', 'category', 'img', 'time_create', 'slug']
 	
 	def create(self, validated_data):
 		return Articles.objects.create(**validated_data)
@@ -22,6 +29,7 @@ class ArticlesSerializer(serializers.ModelSerializer):
 		return instance
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
+	category = CategorySerializerNS(read_only=True)
 	class Meta:
 		model = Articles
 		fields = (
@@ -37,7 +45,6 @@ class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
 		fields = '__all__'
-
 
 
 class CategorySerializer(serializers.ModelSerializer):

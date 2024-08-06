@@ -16,7 +16,10 @@ interface BlogAPIType {
 		slug: string,
 		description: string,
 		img: string | undefined,
-		category: number,
+		category: {
+			name: string,
+			slug: string
+		},
 	}[]
 }
 
