@@ -1,12 +1,13 @@
+#!/usr/local/bin/python
 # -*- coding: utf-8 -*-
+import logging
+
 from django.db import models
+from django.conf import settings
 from django.utils.text import slugify
 
-from authentication.models import User
-
+from authentication.models import User  # type: ignore
 from .options import check_lang
-from django.conf import settings
-import logging
 
 
 logging.config.dictConfig(settings.LOGGING)

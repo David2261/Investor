@@ -59,7 +59,7 @@ const Navbar = () => {
 				{/* RIGHT SIDE */}
 				{isAboveMediumScreens ? (
 					<div className="relative flex flex-row ml-auto mt-0" id="navbar-collapse">
-						<HeadLink page="blog" />
+						<HeadLink page="news" />
 						<HeadLink page="bonds" />
 						<HeadLink page="contact" />
 						{!user ? (<>
@@ -110,7 +110,7 @@ const Navbar = () => {
 				{/* MENU ITEMS */}
 				<div className="flex text-2xl justify-center">
 					<div className="flex gap-8 flex-col items-center" id="navbar-collapse">
-						<MenuLink page="blog" />
+						<MenuLink page="news" />
 						<MenuLink page="bonds" />
 						<MenuLink page="contact" />
 						<button onClick={() => {openModal(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Login</button>

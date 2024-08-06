@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 // Work file
-import Article from '../../pages/posts/Article';
+import ArticleNews from '../../pages/posts/ArticleNews';
 
 
 describe('Article page', () => {
@@ -25,15 +25,15 @@ describe('Article page', () => {
 		const container = document.createElement('div');
 	
 	await act(async () => {
-		render(<Article />, { container });
+		render(<ArticleNews />, { container });
 		});
 	
 		expect(container.querySelector('img')).not.toBeNull();
 	});
 
-	test('Found logo img in document Article', () => {
+	test('Found logo img in document ArticleNews', () => {
 		act(() => {
-			render(<Article />);
+			render(<ArticleNews />);
 		});
 		expect(screen.getByRole('img', {name: 'logo'}));
 	});
