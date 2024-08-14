@@ -12,7 +12,8 @@ interface PostsListType {
 		img: string | undefined,
 		slug: string,
 		time_create: string,
-		description: string
+		summary: string,
+		reading_time_minutes: number
 	}[],
 }
 
@@ -27,7 +28,8 @@ type PropsType = {
 		img: string | undefined,
 		slug: string,
 		time_create: string,
-		description: string
+		summary: string,
+		reading_time_minutes: number
 	},
 }
 
@@ -39,7 +41,10 @@ const PostsList: FunctionComponent<PostsListType> = (props: PostsListType) => {
 				<div className="grid grid-cols-3 gap-8">
 					<div className="col-span-2">
 						<p className="uppercase font-bold pb-2">{value.title}</p>
-						<p className="text-base">{value.description.slice(0, 100)}...</p>
+						<p className="italic text-slate-300 font-light">{value.time_create}</p>
+						<p className="italic text-slate-300 font-light pb-4">
+							Статью можно прочитать за {value.reading_time_minutes} минуты!</p>
+						<p className="text-base">{value.summary}...</p>
 					</div>
 					<div>
 						<img src={value.img} className="rounded-lg" alt="" />

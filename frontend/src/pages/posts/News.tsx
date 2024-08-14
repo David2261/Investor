@@ -21,8 +21,11 @@ interface BlogAPIType {
 	img: string | undefined,
 	slug: string,
 	time_create: string,
-	description: string
+	reading_time_minutes: number,
+	summary: string
 }
+
+
 
 const News = () => {
 	const { data, error } : {
@@ -43,7 +46,7 @@ const News = () => {
 		<h1 className='blog-header'>Новости</h1>
 		<div className='flex flex-col px-24'>
 			<DataTab />
-			<div className='grid grid-cols-3 gap-4'>
+			<div className='grid grid-cols-3 gap-4 pt-4'>
 				<div className='col-span-2'>
 					<PostsList data={data} />
 				</div>

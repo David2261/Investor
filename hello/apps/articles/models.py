@@ -96,6 +96,10 @@ class Articles(BasePost):
 	def comments(self):
 		return self.comment_set.all()
 
+	@property
+	def summary(self):
+		return self.description[:150]
+
 	def save(self, *args, **kwargs):
 		self.slug = slugify(check_lang(self.title))
 		super(Articles, self).save(*args, **kwargs)
