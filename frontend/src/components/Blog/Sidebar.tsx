@@ -13,13 +13,9 @@ type PropsType = {
 
 const Sidebar: FunctionComponent<SidebarPropsType> = (props: SidebarPropsType) => {
 	return (props.data.map((value: PropsType) =>
-	<Fragment key={value.id}>
-		<li className="px-4 py-4 flex" title="home">
-			<a href={`#${value.slug}`} className="flex flex-row">
-			{value.name}
-			</a>
-		</li>
-	</Fragment>
+		<div key={value.id} className="bg-white rounded-md shadow-md p-4">
+			<h2 className="text-xl font-bold mb-2"><a href={`#${value.slug}`}>{value.name}</a></h2>
+		</div>
 	));
 }
 

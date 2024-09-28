@@ -1,9 +1,10 @@
 import { Key, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
+import DonateVerticalBlock from '../../widgets/DonationBlocks.tsx';
 
 interface PostsListType {
 	data: {
-		id: Key,
+		id: Key | number,
 		category: {
 			name: string,
 			slug: string
@@ -35,15 +36,22 @@ type PropsType = {
 
 // Блок статьи
 const PostsList: FunctionComponent<PostsListType> = (props: PostsListType) => {
-	return (props.data.map((value: PropsType["args"]) =>
-		<div className="border-b-2 py-4 border-slate-200 mb-4">
-			<Link key={value.id} to={`/news/${value.category.slug}/${value.slug}`}>
+	const n = 4;
+	return (props.data.map((value: PropsType["args"], index) =>
+		<div key={value.id} className="border-b-2 py-4 border-slate-200 mb-4">
+			{(index + 1) % n == 0 ? <DonateVerticalBlock /> : false }
+			<Link to={`/news/${value.category.slug}/${value.slug}`}>
 				<div className="grid grid-cols-3 gap-8">
 					<div className="col-span-2">
 						<p className="uppercase font-bold pb-2">{value.title}</p>
 						<p className="italic text-slate-300 font-light">{value.time_create}</p>
 						<p className="italic text-slate-300 font-light pb-4">
-							Статью можно прочитать за {value.reading_time_minutes} минуты!</p>
+							{value.reading_time_minutes < 6 ? (
+								<>Статью можно прочитать быстро!</>
+							) : (
+								<>Статью можно прочитать за {value.reading_time_minutes} минуты!</>
+							)}
+						</p>
 						<p className="text-base">{value.summary}...</p>
 					</div>
 					<div>

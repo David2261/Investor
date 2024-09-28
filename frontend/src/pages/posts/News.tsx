@@ -1,4 +1,4 @@
-import { Key } from 'react';
+import { Key, useState } from 'react';
 // Hooks
 import { useFetch } from '../../hooks/useFetch.ts';
 // Styles
@@ -35,6 +35,17 @@ const News = () => {
 		}
 	} = useFetch("http://127.0.0.1:8000/api/articles/articles/all/");
 
+	const [isOpenSidebar, setIsOpenSidebar] = useState(false);
+	const [isOpenFilter, setIsOpenFilter] = useState(false);
+
+	function positionSidebar(props: boolean) {
+		setIsOpenSidebar(props);
+	}
+
+	function positionFilter(props: boolean) {
+		setIsOpenFilter(props);
+	}
+
 	if (error) {
 		return <div>Error: {error.message}</div>;
 	}
@@ -44,8 +55,10 @@ const News = () => {
 	}
 	return <>
 		<h1 className='blog-header'>Новости</h1>
-		<div className='flex flex-col px-24'>
-			<DataTab />
+		<div className='relative flex flex-col px-24'>
+			<DataTab
+				onSidebarChange={(isOpen) => setIsOpenSidebar(isOpen)}
+				onFilterChange={(isOpen) => setIsOpenFilter(isOpen)} />
 			<div className='grid grid-cols-3 gap-4 pt-4'>
 				<div className='col-span-2'>
 					<PostsList data={data} />

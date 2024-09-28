@@ -27,3 +27,7 @@
 ::selection{
   background-color: #85BB65;
 }
+
+input::placeholder {
+  color: #666;
+}

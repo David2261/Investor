@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { animated, useSpring } from '@react-spring/web';
 // Entities
 import AuthContext from '../../entities/context/AuthContext';
@@ -14,6 +14,21 @@ type LoginProps = {
 
 const Login: React.FC<LoginProps> = (props) => {
 	const { loginUser } = useContext(AuthContext);
+	const [form, setForm] = useState({ email: "", password: "" });
+	
+	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const {
+			target: { value, name },
+		} = event;
+		setForm(prevForm => ({ ...prevForm, [name]: value }));
+	};
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		loginUser(e)
+		props.setIsOpen()
+	};
+
 	const styles = useSpring({
 		from: {
 			opacity: 0,
@@ -27,7 +42,7 @@ const Login: React.FC<LoginProps> = (props) => {
     return <>
     <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 		<animated.div className='screen' style={styles}>
-			<form onSubmit={loginUser}>
+			<form onSubmit={handleSubmit}>
 			<div className="screen-1">
 			<img className='logo' alt="logo" src={IH} />
 				<button onClick={props.setIsOpen} className="fixed top-16 right-8">
@@ -38,17 +53,32 @@ const Login: React.FC<LoginProps> = (props) => {
 				<div className="email">
 					<label htmlFor="email-input">Email Address</label>
 					<div className="sec-2">
-						<input id='email-input' type="email" name="email" placeholder="Example@gmail.com" autoComplete="email"/>
+						<input
+							id='email-input'
+							type="email"
+							name="email"
+							placeholder="Example@gmail.com"
+							autoComplete="email"
+							value={form.email}
+							onChange={onInputChange} />
 					</div>
 				</div>
 				<div className="password">
 					<label htmlFor="password-input">Password</label>
 					<div className="sec-2">
-						<input id="password-input" className="pas" type="password" name="password" placeholder="············" autoComplete="current-password"/>
+						<input
+							id="password-input"
+							className="pas"
+							type="password"
+							name="password"
+							placeholder="············"
+							autoComplete="current-password"
+							value={form.password}
+							onChange={onInputChange} />
 					</div>
 				</div>
 				<button className="signup" type='submit'>Login</button>
-				<div className="footer"><span onClick={() => {props.setIsSignUp(); props.setIsOpen();}}>Sign-up</span><span>Forgot Password?</span></div>
+				<div className="footer"><span onClick={() => props.setIsSignUp()}>Sign-up</span><span>Forgot Password?</span></div>
 			</div>
 			</form>
 		</animated.div>

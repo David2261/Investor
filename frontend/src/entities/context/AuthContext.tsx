@@ -2,7 +2,8 @@ import { createContext, ReactNode, useCallback, useEffect, useState } from "reac
 import { useNavigate } from 'react-router-dom';
 import { User } from "../../hooks/useUser";
 import { jwtDecode } from 'jwt-decode';
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 interface AuthTokens {
 	access: string;
@@ -30,6 +31,8 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export default AuthContext;
+
+const AuthSwal = withReactContent(Swal)
 
 export const AuthProvider = ({children}: {children: ReactNode}) => {
 	const [authTokens, setAuthTokens] = useState<AuthTokens | null>(() => {
@@ -61,8 +64,25 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setUser(jwtDecode(data.access))
 			localStorage.setItem('authTokens', JSON.stringify(data))
 			navigate(-1);
+			AuthSwal.fire({
+				title: "Login Successful",
+				icon: "success",
+				toast: true,
+				timer: 6000,
+				position: 'top-right',
+				timerProgressBar: true,
+				showConfirmButton: false,
+			})
 		} else {
-			alert("Something went wrong!");
+			AuthSwal.fire({
+				title: "Username or password does not exists",
+				icon: "error",
+				toast: true,
+				timer: 6000,
+				position: 'top-right',
+				timerProgressBar: true,
+				showConfirmButton: false,
+			})
 		}
 	}
 
@@ -82,13 +102,33 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		}) as Response;
 		const data = await response.json()
 		if (response.status === 201) {
-			setAuthTokens(data)
-			setUser(jwtDecode(data.access))
-			localStorage.setItem('authTokens', JSON.stringify(data))
-			loginUser(e);
-			navigate(-1);
+			const token = data.access;
+			if (token && typeof token === 'string') {
+				const decodedToken = jwtDecode(token);
+				setAuthTokens(data)
+				setUser(decodedToken as User | null)
+				localStorage.setItem('authTokens', JSON.stringify(data))
+				AuthSwal.fire({
+					title: "Registration Successful, Login Now",
+					icon: "success",
+					toast: true,
+					timer: 6000,
+					position: 'top-right',
+					timerProgressBar: true,
+					showConfirmButton: false,
+				})
+				navigate(-1);
+			}
 		} else {
-			alert("Something went wrong!");
+			AuthSwal.fire({
+				title: "An Error Occured " + response.status,
+				icon: "error",
+				toast: true,
+				timer: 6000,
+				position: 'top-right',
+				timerProgressBar: true,
+				showConfirmButton: false,
+			})
 		}
 	}
 
