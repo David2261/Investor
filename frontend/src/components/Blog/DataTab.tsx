@@ -1,71 +1,77 @@
-import axios from "axios";
-import { Key, PureComponent } from "react";
+import { useState, FunctionComponent } from "react";
+// Components
 import Sidebar from "./Sidebar";
+// Styles
+import '../../styles/components/Blog/DataTabStyles.css';
+// Assets
+import homeBlack from '../../assets/icons/menu_black.svg';
+import sortBlack from '../../assets/icons/sort_black.svg';
+import data from '../../alpha_test_data/blog_data_categories.json';
 
-interface State {
-	data: [];
-	loaded: boolean;
-	placeholder: string;
-}
-
-interface CategoryAPIType {
-	data: {
-		id: Key,
-		name: string,
-		slug: string
-	}[]
+interface DataTabType {
+	onSidebarChange: (isOpen: boolean) => void;
+	onFilterChange: (isOpen: boolean) => void;
 }
 
 // Боковая панель навигации по категориям
-class DataTab extends PureComponent<{}, State> {
-	constructor(props: CategoryAPIType) {
-		super(props);
-		this.state = {
-			data: [],
-			loaded: false,
-			placeholder: "Loading",
-		};
-	}
+const DataTab: FunctionComponent<DataTabType> = ({ onSidebarChange, onFilterChange }) => {
+	const [isOpen, setIsOpen] = useState(false);
+	const [isFilter, setIsFilter] = useState(false);
 
-	async componentDidMount() {
-		await axios.get('http://127.0.0.1:8000/api/articles/category/all/')
-		.then(response => {
-			if (response.status > 400) {
-				return this.setState(() => {
-					return { placeholder: "Something went wrong!" };
-				});
+	function openModal() {
+		setIsOpen(true);
+		onSidebarChange(true);
+	}
+	function closeModal() {
+		setIsOpen(false);
+		onSidebarChange(false);
+	}
+	function openFilter() {
+		setIsFilter(true);
+		onFilterChange(true);
+	}
+	function closeFilter() {
+		setIsFilter(false);
+		onFilterChange(false);
+	}
+	return <>
+		<div className="flex justify-between">
+			{!isOpen ?
+				<button className="data-tab-sidebar-close-btn" onClick={openModal}>
+					<img src={homeBlack} />
+					Категории
+				</button>
+				:
+				<div className="fixed left-1">
+					<div className="bg-[#009DFF] bg-opacity-10 backdrop-blur-sm rounded-md grid p-4">
+						<div className="relative items-center mb-4">
+							<div className="flex justify-end mb-4">
+								<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">
+									<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+										<path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd" />
+									</svg>
+								</button>
+							</div>
+							<div>
+								<input type="text" placeholder="Поиск..." className="bg-white border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" />
+							</div>
+						</div>
+						<div className="grid gap-4 sticky">
+							<Sidebar data={data} />
+						</div>
+					</div>
+				</div>
 			}
-			return (response.data);
-		})
-		.then(data => {
-			this.setState(() => {
-				return {
-					data,
-					loaded: true
-				};
-			});
-		});
-	}
-
-
-	render() {
-		return (
-		<nav className="fixed pt-4 pl-4 z-20">
-			{
-				this.state.data.length != 0 ? (
-					<span className="text-sm">
-						<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 24 24">
-							<path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 11 21 L 11 15 L 13 15 L 13 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z M 12 4.7910156 L 18 10.191406 L 18 11 L 18 19 L 15 19 L 15 13 L 9 13 L 9 19 L 6 19 L 6 10.191406 L 12 4.7910156 z"></path>
-						</svg>
-					</span>)
-					: false
+			{!isFilter ?
+			<button className="data-tab-sidebar-right-btn" onClick={openFilter}>
+				<img src={sortBlack} />
+				Сортировка
+			</button>
+			:
+			false
 			}
-			<ul className="transition transform duration-500 text-xl">
-				{ this.state.data ? <Sidebar data={this.state.data} /> : false }
-			</ul>
-		</nav>
-		);
-	}
+		</div>
+	</>
 }
 
 export default DataTab;

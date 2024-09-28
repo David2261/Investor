@@ -1,6 +1,9 @@
-import { Component, Key } from 'react';
-import axios from 'axios';
+import { Key, useState } from 'react';
+// Hooks
+import { useFetch } from '../../hooks/useFetch.ts';
+// Styles
 import '../../styles/Blog.css';
+// Components
 import PostsList from '../../components/Blog/PostsList';
 import DataTab from '../../components/Blog/DataTab';
 // Example data
@@ -9,65 +12,61 @@ import DataTab from '../../components/Blog/DataTab';
 
 
 interface BlogAPIType {
-	data: {
-		id: Key,
-		title: string,
-		time_create: string,
-		slug: string,
-		description: string,
-		img: string | undefined,
-		category: {
-			name: string,
-			slug: string
-		},
-	}[]
+	id: Key,
+	category: {
+		name: string,
+		slug: string
+	},
+	title: string,
+	img: string | undefined,
+	slug: string,
+	time_create: string,
+	reading_time_minutes: number,
+	summary: string
 }
 
-interface State {
-	data: [];
-	loaded: boolean;
-	placeholder: string;
-}
 
-class News extends Component<{}, State> {
-	constructor(props: BlogAPIType) {
-		super(props);
-		this.state = {
-			data: [],
-			loaded: false,
-			placeholder: "Loading"
+
+const News = () => {
+	const { data, error } : {
+		data: BlogAPIType | null,
+		error: {
+			message: string
 		}
-	}
-	
-	async componentDidMount() {
-		await axios.get("http://127.0.0.1:8000/api/articles/articles/all/")
-		.then(response => {
-			if (response.status > 400) {
-				return this.setState(() => {
-					return { placeholder: "Something went wrong!" };
-				});
-			}
-			return (response.data as any);
-		})
-		.then(data => {
-			this.setState(() => {
-				return {
-					data,
-					loaded: true
-				};
-			});
-		});
+	} = useFetch("http://127.0.0.1:8000/api/articles/articles/all/");
+
+	const [isOpenSidebar, setIsOpenSidebar] = useState(false);
+	const [isOpenFilter, setIsOpenFilter] = useState(false);
+
+	function positionSidebar(props: boolean) {
+		setIsOpenSidebar(props);
 	}
 
-	render() {
+	function positionFilter(props: boolean) {
+		setIsOpenFilter(props);
+	}
+
+	if (error) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	if (!data) {
+		return <div>Loading...</div>;
+	}
 	return <>
-		<h1 className='blog-header'>NEWS</h1>
-		<DataTab />
-		<div className='blog-content'>
-			<PostsList data={this.state.data} />
+		<h1 className='blog-header'>Новости</h1>
+		<div className='relative flex flex-col px-24'>
+			<DataTab
+				onSidebarChange={(isOpen) => setIsOpenSidebar(isOpen)}
+				onFilterChange={(isOpen) => setIsOpenFilter(isOpen)} />
+			<div className='grid grid-cols-3 gap-4 pt-4'>
+				<div className='col-span-2'>
+					<PostsList data={data} />
+				</div>
+				<div className='col-span-1'></div>
+			</div>
 		</div>
 	</>
-	}
 }
 
 export default News;
