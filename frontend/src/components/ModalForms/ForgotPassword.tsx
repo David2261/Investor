@@ -1,24 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { animated, useSpring } from '@react-spring/web';
-// Components
-import ForgotPassword from './ForgotPassword';
 // Entities
 import AuthContext from '../../entities/context/AuthContext';
 // Assets
 import IH from '../../assets/logo/IH.webp';
 // Styles
-import '../../styles/components/ModalForms/Login.css';
+import '../../styles/components/ModalForms/ForgotPassword.css';
 
-type LoginProps = {
+type ForgotPasswordProps = {
 	setIsOpen: () => void;
-	setIsSignUp: () => void;
+	setIsForgotPassword: () => void;
 };
 
-const Login: React.FC<LoginProps> = (props) => {
-	const { loginUser } = useContext(AuthContext);
-	const [form, setForm] = useState({ email: "", password: "" });
-	const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
-
+const ForgotPassword: React.FC<ForgotPasswordProps> = (props) => {
+	// const { forgot } = useContext(AuthContext);
+	const [form, setForm] = useState({ email: "" });
+	
 	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const {
 			target: { value, name },
@@ -28,17 +25,10 @@ const Login: React.FC<LoginProps> = (props) => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		loginUser(e)
+		// loginUser(e)
 		props.setIsOpen()
 	};
 
-	function closeForgotPassword() {
-		setIsForgotPassword(false);
-	}
-
-	function openForgotPassword() {
-		setIsForgotPassword(true);
-	}
 	const styles = useSpring({
 		from: {
 			opacity: 0,
@@ -50,7 +40,6 @@ const Login: React.FC<LoginProps> = (props) => {
 		},
 	});
     return <>
-	{isForgotPassword ? <ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} /> : 
     <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 		<animated.div className='screen' style={styles}>
 			<form onSubmit={handleSubmit}>
@@ -62,7 +51,7 @@ const Login: React.FC<LoginProps> = (props) => {
 					</svg>
 				</button>
 				<div className="email">
-					<label htmlFor="email-input">Email Address</label>
+					<label htmlFor="email-input">Email адрес</label>
 					<div className="sec-2">
 						<input
 							id='email-input'
@@ -74,31 +63,16 @@ const Login: React.FC<LoginProps> = (props) => {
 							onChange={onInputChange} />
 					</div>
 				</div>
-				<div className="password">
-					<label htmlFor="password-input">Password</label>
-					<div className="sec-2">
-						<input
-							id="password-input"
-							className="pas"
-							type="password"
-							name="password"
-							placeholder="············"
-							autoComplete="current-password"
-							value={form.password}
-							onChange={onInputChange} />
-					</div>
-				</div>
-				<button className="signup" type='submit'>Login</button>
+				<button className="forgot-password" type='submit'>Сбросить пароль</button>
 				<div className="footer">
-					<span onClick={() => {props.setIsOpen(); props.setIsSignUp()}}>Sign-up</span>
-					<span onClick={() => {openForgotPassword()}}>Forgot Password?</span>
+                    У вас уже есть аккаунт? 
+					<span onClick={() => {props.setIsForgotPassword(); props.setIsOpen()}}>Вход</span>
 				</div>
 			</div>
 			</form>
 		</animated.div>
 	</div>
-	}
     </>
 }
 
-export default Login;
+export default ForgotPassword;
