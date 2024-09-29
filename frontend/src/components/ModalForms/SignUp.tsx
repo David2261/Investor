@@ -108,7 +108,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 						</div>
 					</div>
 					<button className="signup" type='submit'>SignUp</button>
-					<div className="footer" onClick={() => props.setIsLogin()}><span>Login</span></div>
+					<div className="footer" onClick={() => {props.setIsOpen(); props.setIsLogin()}}><span>Login</span></div>
 				</div>
 				</form>
 			</animated.div>
