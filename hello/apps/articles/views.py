@@ -43,9 +43,7 @@ class ArticlesList(ListAPIView):
 
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
-		return self.list(
-				self.serializer_class.data,
-				status=status.HTTP_200_OK)
+		return super().list(request, *args, **kwargs)
 
 	def post(self, request, *args, **kwargs):
 		data = {
