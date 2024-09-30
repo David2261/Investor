@@ -32,6 +32,12 @@ const Login: React.FC<LoginProps> = (props) => {
 		props.setIsOpen()
 	};
 
+	const handleKeyPress = (e) => {
+		if(e.key === 'Enter'){
+			handleSubmit
+		}
+	};
+
 	function closeForgotPassword() {
 		setIsForgotPassword(false);
 	}
@@ -53,7 +59,7 @@ const Login: React.FC<LoginProps> = (props) => {
 	{isForgotPassword ? <ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} /> : 
     <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 		<animated.div className='screen' style={styles}>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} onKeyDown={handleKeyPress}>
 			<div className="screen-1">
 			<img className='logo' alt="logo" src={IH} />
 				<button onClick={props.setIsOpen} className="fixed top-16 right-8">

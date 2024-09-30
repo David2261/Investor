@@ -43,7 +43,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
     return <>
 		<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 			<animated.div className='screen' style={styles}>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} onKeyDown={handleSubmit}>
 				<div className="screen-1">
 					<img className='logo' alt="logo" src={IH} />
 					<button onClick={props.setIsOpen} className="fixed top-16 right-8">
