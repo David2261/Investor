@@ -88,10 +88,10 @@ const Login: React.FC<LoginProps> = (props) => {
 							onChange={onInputChange} />
 					</div>
 				</div>
-				<button className="signup" type='submit'>Login</button>
+				<button className="signup" type='submit'>Вход</button>
 				<div className="footer">
-					<span onClick={() => {props.setIsOpen(); props.setIsSignUp()}}>Sign-up</span>
-					<span onClick={() => {openForgotPassword()}}>Forgot Password?</span>
+					<span onClick={() => {props.setIsOpen(); props.setIsSignUp()}}>Регистрация</span>
+					<span onClick={() => {openForgotPassword()}}>Забыли пароль?</span>
 				</div>
 			</div>
 			</form>

@@ -1,0 +1,31 @@
+.loader-main {
+	width: 100vw;
+	overflow-x: hidden;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.circle {
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	margin: 0 20px;
+}
+
+.blue {
+	background-color: #4285F5;
+}
+
+.red {
+	background-color: #EA4436;
+}
+
+.green {
+	background-color: #34A952;
+}
+
+.yellow {
+	background-color: #FBBD06;
+}

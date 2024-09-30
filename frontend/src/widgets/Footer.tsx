@@ -63,23 +63,23 @@ const GlobalLinks = (
 	<div className="md:mx-4 flex flex-col">
 		<div className="flex flex-wrap justify-center md:flex-row py-2 md:py-10 gap-4 border-b-2">
 			<div className="px-2 md:px-4 hover:text-red-600">
-				<NavLink to="agreement/">Agreement</NavLink>
+				<NavLink to="agreement/">Соглашение</NavLink>
 			</div>
 			{ DOT }
 			<div className="px-2 md:px-4 hover:text-red-600">
-				<NavLink to="emailagreement/">Email Agreement</NavLink>
+				<NavLink to="emailagreement/">Соглашение по Email</NavLink>
 			</div>
 			{ DOT }
 			<div className="px-2 md:px-4 hover:text-red-600">
-				<NavLink to="payanddelivery/">Pay & Delivery</NavLink>
+				<NavLink to="payanddelivery/">Оплата и доставка</NavLink>
 			</div>
 			{ DOT }
 			<div className="px-2 md:px-4 hover:text-red-600">
-				<NavLink to="confidentiality/">Confidentiality</NavLink>
+				<NavLink to="confidentiality/">Конфиденциальность</NavLink>
 			</div>
 			{ DOT }
 			<div className="px-2 md:px-4 hover:text-red-600">
-				<NavLink to="responsibility/">Responsibility</NavLink>
+				<NavLink to="responsibility/">Ответственность</NavLink>
 			</div>
 		</div>
 	</div>
@@ -89,14 +89,14 @@ const LocalLinks = (
 	<div className="md:mx-4 flex flex-col">
 		<div className="flex flex-wrap md:flex-nowrap md:flex-row py-10 gap-2 md:gap-4 border-b-2 justify-center">
 			<div className="px-2 md:px-4 hover:text-slate-900">
-				<NavLink to="contact/">Contact Us</NavLink>
+				<NavLink to="contact/">Связаться с нами</NavLink>
 			</div>
 			{ DOT }
-			<div className="px-2 md:px-4 hover:text-slate-900">Cybersecurity</div>
+			<div className="px-2 md:px-4 hover:text-slate-900">Кибербезопасность</div>
 			{ DOT }
-			<div className="px-2 md:px-4 hover:text-slate-900">Terms of Use</div>
+			<div className="px-2 md:px-4 hover:text-slate-900">Условия использования</div>
 			{ DOT }
-			<div className="px-2 md:px-4 hover:text-slate-900">Privacy & Cookies</div>
+			<div className="px-2 md:px-4 hover:text-slate-900">Конфиденциальность и файлы cookie</div>
 			{ DOT }
 			<div className="md:px-4 hover:text-slate-900">Your Privacy Choices</div>
 		</div>

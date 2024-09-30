@@ -65,8 +65,9 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = (props) => {
 				</div>
 				<button className="forgot-password" type='submit'>Сбросить пароль</button>
 				<div className="footer">
-                    У вас уже есть аккаунт? 
+                    <span className='pr-2'>У вас уже есть аккаунт? 
 					<span onClick={() => {props.setIsForgotPassword(); props.setIsOpen()}}>Вход</span>
+					</span>
 				</div>
 			</div>
 			</form>

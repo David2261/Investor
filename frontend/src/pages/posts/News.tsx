@@ -6,6 +6,8 @@ import '../../styles/Blog.css';
 // Components
 import PostsList from '../../components/Blog/PostsList';
 import DataTab from '../../components/Blog/DataTab';
+// Widgets
+import Loader from '../../widgets/Loader';
 // Example data
 // import DATAPOSTS from "../../alpha_test_data/blog_data_posts.json";
 // import DATA from '../../alpha_test_data/blog_data_categories.json';
@@ -51,7 +53,7 @@ const News = () => {
 	}
 
 	if (!data) {
-		return <div>Loading...</div>;
+		return <Loader />;
 	}
 	return <>
 		<h1 className='blog-header'>Новости</h1>
