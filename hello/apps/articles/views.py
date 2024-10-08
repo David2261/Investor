@@ -28,6 +28,7 @@ from .serializers import (
 	UserSerializer,
 	ArticleDetailSerializer)
 from .forms import ArticlesCSVForm
+from .pagination import ArticlesPagination
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
@@ -38,12 +39,11 @@ class ArticlesList(ListAPIView):
 	permissions_classes = [permissions.AllowAny]
 	queryset = Articles.objects.filter(is_published=True)
 	serializer_class = ArticlesSerializer
+	pagination_class = ArticlesPagination
 
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
-		return self.list(
-				self.serializer_class.data,
-				status=status.HTTP_200_OK)
+		return super().list(request, *args, **kwargs)
 
 	def post(self, request, *args, **kwargs):
 		data = {
