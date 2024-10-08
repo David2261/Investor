@@ -1,16 +1,17 @@
-import axios from "axios";
-import { Key, Fragment, FunctionComponent, useState, useEffect } from "react";
-
+import { Key, Fragment, FunctionComponent, useEffect, useState } from "react";
+import axios from 'axios';
 
 interface DataTabType {
 	data: {
-		id: Key,
-		title: number,
-		category: number,
-		price: number,
-		cupon: number,
-		cupon_percent: number
-	}[],
+		results: {
+			id: Key,
+			title: number,
+			category: number,
+			price: number,
+			cupon: number,
+			cupon_percent: number
+		}[],
+	},
 }
 
 type PropsType = {
@@ -43,19 +44,20 @@ const CategoryName: FunctionComponent<{ id: number }> = ({ id }) => {
 	return category ? <div>{category.name}</div> : <div>Loading...</div>;
 };
 
-const DataTab: FunctionComponent<DataTabType> = (props: DataTabType) => {	
-
-	return (props.data.map((value: PropsType, index) => 
-	<Fragment key={index}>
-		<tr>
-			<td>{value.title}</td>
-			<td><CategoryName id={value.category} /></td>
-			<td>{value.price}</td>
-			<td>{value.cupon}</td>
-			<td>{value.cupon_percent}</td>
-		</tr>
-	</Fragment>
-	))
+const DataTab: FunctionComponent<DataTabType> = ({ data }) => {  
+	return (
+		data.results.map((value, index) => (
+			<Fragment key={index}>
+			<tr>
+				<td>{value.title}</td>
+				<td><CategoryName id={value.category} /></td>
+				<td>{value.price}</td>
+				<td>{value.cupon}</td>
+				<td>{value.cupon_percent}</td>
+			</tr>
+			</Fragment>
+		))
+	);
 };
 
 export default DataTab;

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { animated, useSpring } from '@react-spring/web';
 // Components
 import ForgotPassword from './ForgotPassword';
@@ -32,19 +32,14 @@ const Login: React.FC<LoginProps> = (props) => {
 		props.setIsOpen()
 	};
 
-	const handleKeyPress = (e) => {
-		if(e.key === 'Enter'){
-			handleSubmit
-		}
-	};
-
 	function closeForgotPassword() {
 		setIsForgotPassword(false);
-	}
+	};
 
 	function openForgotPassword() {
 		setIsForgotPassword(true);
-	}
+	};
+
 	const styles = useSpring({
 		from: {
 			opacity: 0,
@@ -55,11 +50,24 @@ const Login: React.FC<LoginProps> = (props) => {
 			delay: 50,
 		},
 	});
+
+	useEffect(() => {
+        const onKeyDown = e => {
+            if(e.keyCode === 13) {
+                handleSubmit;
+            }
+        };
+        document.addEventListener('keydown', onKeyDown);
+        return () => {
+            document.removeEventListener('keydown', onKeyDown);
+        };
+    }, []);
+
     return <>
 	{isForgotPassword ? <ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} /> : 
     <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 		<animated.div className='screen' style={styles}>
-			<form onSubmit={handleSubmit} onKeyDown={handleKeyPress}>
+			<form onSubmit={handleSubmit}>
 			<div className="screen-1">
 			<img className='logo' alt="logo" src={IH} />
 				<button onClick={props.setIsOpen} className="fixed top-16 right-8">

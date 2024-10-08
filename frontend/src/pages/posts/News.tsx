@@ -7,22 +7,19 @@ import PostsList from '../../components/Blog/PostsList';
 import DataTab from '../../components/Blog/DataTab';
 // Widgets
 import Loader from '../../widgets/Loader';
-// Example data
-// import DATAPOSTS from "../../alpha_test_data/blog_data_posts.json";
-// import DATA from '../../alpha_test_data/blog_data_categories.json';
 
 interface BlogAPIType {
-  id: Key;
-  category: {
-	name: string;
+	id: Key;
+	category: {
+		name: string;
+		slug: string;
+	};
+	title: string;
+	img: string | undefined;
 	slug: string;
-  };
-  title: string;
-  img: string | undefined;
-  slug: string;
-  time_create: string;
-  reading_time_minutes: number;
-  summary: string;
+	time_create: string;
+	reading_time_minutes: number;
+	summary: string;
 }
 
 const News = () => {
