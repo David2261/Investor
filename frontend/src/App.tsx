@@ -1,4 +1,4 @@
-import { Route, Routes, redirect } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 // Entities
 import PrivateRoute from "./entities/routers/PrivateRoute.tsx";

@@ -89,8 +89,8 @@ const News = () => {
 	  <h1 className="blog-header">Новости</h1>
 		<div className="relative flex flex-col px-24">
 		  <DataTab
-			onSidebarChange={(isOpen) => setIsOpenSidebar(isOpen)}
-			onFilterChange={(isOpen) => setIsOpenFilter(isOpen)}
+			onSidebarChange={(isOpen) => positionSidebar(isOpen)}
+			onFilterChange={(isOpen) => positionFilter(isOpen)}
 		  />
 		  <div className="grid grid-cols-3 gap-4 pt-4">
 			<div className="col-span-2">

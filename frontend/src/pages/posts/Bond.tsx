@@ -24,15 +24,7 @@ interface BondsAPIType {
 	}[],
 }
 
-interface State {
-	data: [];
-	loaded: boolean;
-	placeholder: string;
-}
-
 const Bonds = () => {
-	const address = useRef();
-	address.current = props.state.address;
 	const {data, error} : {
 		data: {
 			results: BondsAPIType[];
