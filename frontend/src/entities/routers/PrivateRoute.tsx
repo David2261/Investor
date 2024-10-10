@@ -8,7 +8,6 @@ type PrivateRouteProps = {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = () => {
     const {user} = useContext(AuthContext)
-    !user ? <Navigate to='/' replace /> : false;
     return user ? <Outlet /> : <Navigate to="/" />
 };
 
