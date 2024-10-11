@@ -34,11 +34,11 @@ const Login: React.FC<LoginProps> = (props) => {
 
 	function closeForgotPassword() {
 		setIsForgotPassword(false);
-	};
+	}
 
 	function openForgotPassword() {
 		setIsForgotPassword(true);
-	};
+	}
 
 	const styles = useSpring({
 		from: {
@@ -52,7 +52,7 @@ const Login: React.FC<LoginProps> = (props) => {
 	});
 
 	useEffect(() => {
-        const onKeyDown = e => {
+        const onKeyDown = (e: { keyCode: number; }) => {
             if(e.keyCode === 13) {
                 handleSubmit;
             }

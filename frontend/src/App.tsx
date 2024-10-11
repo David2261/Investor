@@ -14,6 +14,7 @@ import Payanddelivery from './pages/static/Payanddelivery.tsx';
 import Confidentiality from './pages/static/Confidentiality.tsx';
 import Agreement from './pages/static/Agreement.tsx';
 import Emailagreement from './pages/static/Emailagreement.tsx';
+import NotFound from './pages/static/NotFound.tsx';
 // Posts
 import News from './pages/posts/News.tsx';
 import Bonds from './pages/posts/Bond.tsx';
@@ -25,14 +26,9 @@ import Portfolio from './pages/personal/Portfolio.tsx';
 function App() {
   return (
     <div className="w-full h-full relative no-scroll-y">
-      <Routes >
+      <Routes>
           <Route path="/" element= { <LayoutRoute /> }>
             <Route index element={ <Home /> } />
-            <Route element={<PrivateRoute children={undefined} />} >
-              <Route path="bonds" element={ <Bonds /> } />
-              <Route path="portfolio" element={ <Portfolio /> } />
-              <Route path="news/:category/:slug" element={ <ArticleNews />} />
-            </Route>
             {/* Static pages */}
             <Route path="about" element={ <About /> } />
             <Route path="contact" element={ <Contact /> } />
@@ -42,10 +38,16 @@ function App() {
             <Route path="agreement" element={ <Agreement /> } />
             <Route path="emailagreement" element={ <Emailagreement /> } />
             <Route path="news" element={ <News /> } />
-            {/* <Route path="news/:category" element={} />*/}
+            {/* Private pages */}
+            <Route element={<PrivateRoute children={undefined} />} >
+              <Route path="bonds" element={ <Bonds /> } />
+              <Route path="portfolio" element={ <Portfolio /> } />
+              <Route path="news/:category/:slug" element={ <ArticleNews />} />
+            </Route>
           </Route>
           {/* Admin page */}
           <Route path="/admin" element={ <HomeAdmin />}></Route>
+          <Route path='*' element={ <NotFound />} />
       </Routes>
     </div>
   )

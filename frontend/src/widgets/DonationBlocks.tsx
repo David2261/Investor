@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-let imageNames: { [key: number]: string } = {};
+const imageNames: { [key: number]: string } = {};
 
 for (let i = 1; i <= 9; i++) {
     imageNames[i] = `${i}.webp`;
