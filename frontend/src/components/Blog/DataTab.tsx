@@ -6,6 +6,7 @@ import '../../styles/components/Blog/DataTabStyles.css';
 // Assets
 import homeBlack from '../../assets/icons/menu_black.svg';
 import downBlack from '../../assets/icons/down_black.svg';
+import popularBlack from '../../assets/icons/popular_black.svg';
 import upBlack from '../../assets/icons/up_black.svg';
 import data from '../../alpha_test_data/blog_data_categories.json';
 
@@ -78,14 +79,17 @@ const DataTab: FunctionComponent<DataTabType> = ({ onSidebarChange, onFilterChan
 					<div className="fixed inline-block text-gray-700">
 					<div className="origin-top-right absolute mt-2 w-56 rounded-md shadow-lg">
 							<div className="rounded-md bg-white shadow-xs">
-								<a href="#" className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+								<a href="#" className="flex justify-between px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
 									Популярные
+									<img src={popularBlack} className="rounded-lg" alt="" />
 								</a>
-								<a href="#" className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
-								По возрастанию
+								<a href="#" className="flex justify-between px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+									По возрастанию
+									<img src={upBlack} className="rounded-lg" alt="" />
 								</a>
-								<a href="#" className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
-								По убыванию
+								<a href="#" className="flex justify-between px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+									По убыванию
+									<img src={downBlack} className="rounded-lg" alt="" />
 								</a>
 							</div>
 						</div>
