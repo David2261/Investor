@@ -7,10 +7,10 @@ import IH from '../../assets/logo/IH.webp';
 // Styles
 import '../../styles/components/ModalForms/ForgotPassword.css';
 
-type ForgotPasswordProps = {
-	setIsOpen: () => void;
-	setIsForgotPassword: () => void;
-};
+interface ForgotPasswordProps {
+	setIsOpen: () => void,
+	setIsForgotPassword: () => void
+}
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = (props) => {
 	// const { forgot } = useContext(AuthContext);

@@ -7,6 +7,7 @@ import PostsList from '../../components/Blog/PostsList';
 import DataTab from '../../components/Blog/DataTab';
 // Widgets
 import Loader from '../../widgets/Loader';
+import { getRandomImage } from '../../widgets/DonationBlocks';
 
 interface BlogAPIType {
 	id: Key;
@@ -96,7 +97,16 @@ const News = () => {
 			<div className="col-span-2">
 			  <PostsList data={data} />
 			</div>
-			<div className="col-span-1"></div>
+			<div className="col-span-1">
+				<div className='text-center px-16 text-4xl'>
+					<h1 className='pb-4'>Реклама</h1>
+					<img className='px-4' src={getRandomImage()} alt="" />
+					<p className="text-xl">
+						Ваша поддержка значит для меня очень много!<br />
+						<a href="https://new.donatepay.ru/@1097922">Пожертвование</a>
+					</p>
+				</div>
+			</div>
 		  </div>
 		  <nav aria-label="Page navigation">
 			<ul className="list-style-none flex">

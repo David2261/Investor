@@ -1,14 +1,14 @@
 import { Key, FunctionComponent } from "react";
 import "../../styles/components/Sidebar.css";
 
-interface SidebarPropsType {
-	data: PropsType[],
-}
-
-type PropsType = {
+interface PropsType {
 	id: Key,
 	name: string,
 	slug: string
+}
+
+interface SidebarPropsType {
+	data: PropsType[]
 }
 
 const Sidebar: FunctionComponent<SidebarPropsType> = (props: SidebarPropsType) => {
