@@ -19,10 +19,10 @@
                  <button class="btn btn-primary"> <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload </button>
             </div>
         </div>
-        {% if bonds %}
+        {% if messages %}
         <ul class="messages">
-            {% for message in bonds %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
         </ul>
         {% endif %}

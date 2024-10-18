@@ -1,4 +1,5 @@
 import csv
+import io
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views import View
@@ -68,46 +69,10 @@ class UploadCSV(CreateView):
 	form_class = BondsForm
 	template_name = "options/upload_bond.html"
 
-	def post(self, request, *args, **kwargs):
-		if "csv_file" not in request.FILES:
-			messages.error(request, "No file was uploaded")
-			return super().post(request, *args, **kwargs)
-
-		csv_file = request.FILES["csv_file"]
-		if not csv_file.name.endswith('.csv'):
-			messages.error(request, "File isn't a CSV")
-			return super().post(request, *args, **kwargs)
-
-		if csv_file.multiple_chunks():
-			messages.error(
-				request,
-				"Uploaded file is too big (%.2f MB)." % (csv_file.size / (1000 * 1000),))
-			return super().post(request, *args, **kwargs)
-
-		file_data = csv_file.read().decode("utf-8")
-		lines = file_data.split("\n")
-
-		for line in lines:
-			fields = line.split(";")
-			if len(fields) != 9:  # Assuming 9 fields in the CSV file
-				messages.error(
-					request,
-					"Unable to upload file. Invalid number of fields.")
-				continue
-			try:
-				bond_data = {
-					'title': fields[1],
-					'category': fields[2],
-					'description': fields[3],
-					'price': fields[4],
-					'maturity': fields[5],
-					'is_published': fields[6],
-					'cupon': fields[7],
-					'cupon_percent': fields[8]
-				}
-				bond = self.form_class(bond_data)
-				bond.save()
-			except Exception as e:
-				messages.error(request, "Unable to upload file. " + repr(e))
-				pass
-		return super().post(request, *args, **kwargs)
+	def form_valid(self, form):
+		try:
+			csv_file = form.cleaned_data['csv_file']
+			# Логика обработки CSV
+			return super().form_valid(form)
+		except Exception as e:
+			messages.error(self.request, f"Error uploading file: {str(e)}")

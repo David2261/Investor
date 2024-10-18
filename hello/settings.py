@@ -191,11 +191,11 @@ DATABASES = {
 	# }
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': env('PGDB'),
-		'USER': env('PGUSER'),
-		'PASSWORD': env('PGPASSWORD'),
-		'HOST': env('PGHOST'),
-		'PORT': env('PGPORT'),
+		'NAME': env('POSTGRES_DB'),
+		'USER': env('POSTGRES_USER'),
+		'PASSWORD': env('POSTGRES_PASSWORD'),
+		'HOST': 'localhost',
+		'PORT': '5432',
 	}
 }
 

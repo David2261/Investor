@@ -18,6 +18,7 @@
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/user-event": "^14.5.1",
     "axios": "^1.6.5",
+    "caniuse-lite": "^1.0.30001669",
     "chart.js": "^4.4.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
