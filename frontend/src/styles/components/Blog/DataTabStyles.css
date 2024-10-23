@@ -43,3 +43,20 @@
 	border: solid;
 	border-width: 1px;
 }
+
+.scrollbar-thin::-webkit-scrollbar {
+	width: 2px; /* Ширина скроллбара */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+	background-color: #ccc; /* Цвет скроллбара */
+	border-radius: 10px; /* Радиус скругления */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+	background-color: #aaa; /* Цвет скроллбара при наведении */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+	background-color: #f0f0f0; /* Цвет фона скроллбара */
+}

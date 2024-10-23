@@ -13,8 +13,8 @@ interface SidebarPropsType {
 
 const Sidebar: FunctionComponent<SidebarPropsType> = (props: SidebarPropsType) => {
 	return (props.data.map((value: PropsType) =>
-		<div key={value.id} className="bg-white rounded-md shadow-md p-4">
-			<h2 className="text-xl font-bold mb-2"><a href={`#${value.slug}`}>{value.name}</a></h2>
+		<div key={value.id} className="p-2 border-b">
+			<h2 className="text-3xl uppercase mb-2"><a href={`#${value.slug}`}>{value.name}</a></h2>
 		</div>
 	));
 }
