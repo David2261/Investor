@@ -10,7 +10,7 @@ interface AuthTokens {
 	refresh: string;
 }
 
-type AuthContextType = {
+interface AuthContextType {
 	user: User | null;
 	authTokens: AuthTokens | null;
 	loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -18,7 +18,7 @@ type AuthContextType = {
 	logoutUser: () => void;
 	login: (user: User) => void;
 	logout: () => void;
-};
+}
 
 const AuthContext = createContext<AuthContextType>({
 	user: null,

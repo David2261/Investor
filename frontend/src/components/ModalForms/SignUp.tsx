@@ -7,10 +7,10 @@ import IH from '../../assets/logo/IH.webp';
 // Styles
 import '../../styles/components/ModalForms/SignUp.css';
 
-type SignUpProps = {
-	setIsOpen: () => void;
-	setIsLogin: () => void;
-};
+interface SignUpProps {
+	setIsOpen: () => void,
+	setIsLogin: () => void
+}
 
 const SignUp: React.FC<SignUpProps> = (props) => {
 	const { registrationUser } = useContext(AuthContext);

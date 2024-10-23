@@ -1,0 +1,1 @@
+psql -U postgres -d ih_data -h localhost -p 5432

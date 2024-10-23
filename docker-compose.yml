@@ -1,31 +1,48 @@
 
 version: '2'
 
-
 services:
-  django:
-    build: .
-    container_name: django
-    restart: always
-    ports: 
-      - 8000:8000
+  # django:
+  #   build: .
+  #   container_name: django
+  #   restart: always
+  #   ports: 
+  #     - 8000:8000
     
-    command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
-    volumes:
-      - django_static_volume:/usr/src/app/static
-      - django_media_volume:/usr/src/app/media
-  node:
-    build: ./frontend
-    container_name: node
-    restart: always
-    # порты
-    ports:
-      - 3000:3000
-    command: yarn run dev
-    depends_on:
-      - django
+  #   command: >
+  #     sh -c "python manage.py runserver 0.0.0.0:8000"
+  #   volumes:
+  #     - django_static_volume:/usr/src/app/static
+  #     - django_media_volume:/usr/src/app/media
+  # node:
+  #   build: ./frontend
+  #   container_name: node
+  #   restart: always
+  #   # порты
+  #   ports:
+  #     - 3000:3000
+  #   command: yarn run dev
+  #   depends_on:
+  #     - django
     # Сеть та же, все контейнеры должны крутиться в однйо сети чтобы видеть друг друга.
+  db:
+    image: postgres:16
+    container_name: postgres_container
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGDATA=${PGDATA}
+    volumes:
+      - ./db:/var/lib/postgresql/data/pgdata
+    networks:
+      - postgres_network
+
+networks:
+  postgres_network:  # Объявление сети
+    driver: bridge
 
 # создаём два volume для статики
 volumes:

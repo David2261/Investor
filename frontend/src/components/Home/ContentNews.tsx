@@ -2,21 +2,17 @@ import { Key, Fragment, FunctionComponent } from "react";
 
 
 interface ContentNewsType {
-	data: {
-		id: Key,
-		category: string,
-		title: string,
-	}[],
-}
-
-type PropsType = {
 	id: Key,
 	category: string,
-	title: string,
+	title: string
 }
 
-const ContentNews: FunctionComponent<ContentNewsType> = (props: ContentNewsType) => {
-	return (props.data.map((value: PropsType) =>
+interface ContentNewsDataType {
+	data: ContentNewsType[],
+}
+
+const ContentNews: FunctionComponent<ContentNewsDataType> = (props: ContentNewsDataType) => {
+	return (props.data.map((value: ContentNewsType) =>
 	<Fragment key={value.id}>
 		<div className="border-t-2 w-full relative">
 			<div className="absolute left-0 top-0">

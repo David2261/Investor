@@ -6,7 +6,7 @@ for (let i = 1; i <= 9; i++) {
     imageNames[i] = `${i}.webp`;
 }
 
-const getRandomImage = () => {
+export const getRandomImage = () => {
     const imageKeys = Object.keys(imageNames);
     const randomIndex = Math.floor(Math.random() * imageKeys.length);
     const randomKey = parseInt(imageKeys[randomIndex], 9);

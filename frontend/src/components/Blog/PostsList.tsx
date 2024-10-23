@@ -2,42 +2,28 @@ import { Key, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import DonateVerticalBlock from '../../widgets/DonationBlocks.tsx';
 
-interface PostsListType {
-	data: {
-		id: Key | number,
-		category: {
-			name: string,
-			slug: string
-		},
-		title: string,
-		img: string | undefined,
-		slug: string,
-		time_create: string,
-		summary: string,
-		reading_time_minutes: number
-	}[],
+interface PropsType {
+	id: Key,
+	category: {
+		name: string,
+		slug: string
+	},
+	title: string,
+	img: string | undefined,
+	slug: string,
+	time_create: string,
+	summary: string,
+	reading_time_minutes: number
 }
 
-type PropsType = {
-	args: {
-		id: Key,
-		category: {
-			name: string,
-			slug: string
-		},
-		title: string,
-		img: string | undefined,
-		slug: string,
-		time_create: string,
-		summary: string,
-		reading_time_minutes: number
-	},
+interface PostsListType {
+	data: PropsType[],
 }
 
 // Блок статьи
 const PostsList: FunctionComponent<PostsListType> = (props: PostsListType) => {
 	const n = 4;
-	return (props.data.map((value: PropsType["args"], index) =>
+	return (props.data.map((value: PropsType, index) =>
 		<div key={value.id} className="border-b-2 py-4 border-slate-200 mb-4">
 			{(index + 1) % n == 0 ? <DonateVerticalBlock /> : false }
 			<Link to={`/news/${value.category.slug}/${value.slug}`}>
