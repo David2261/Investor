@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
 	ArticleDetail,
+	ArticlesListHome,
 	ArticlesList,
 	ArticleAPICreator,
 	CategoriesList,
@@ -27,6 +28,10 @@ urlpatterns = [
 			'category/<slug:cat_slug>/',
 			CategoryDetail.as_view(),
 			name='category-detail'),
+	path(
+			'articles/home/all',
+			ArticlesListHome.as_view(),
+			name='articles-home-list'),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
 	path('generate/csv/', GenerateCSV.as_view(), name='db-list'),

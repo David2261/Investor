@@ -1,17 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const imageNames: { [key: number]: string } = {};
-
-for (let i = 1; i <= 9; i++) {
-    imageNames[i] = `${i}.webp`;
-}
-
-export const getRandomImage = () => {
-    const imageKeys = Object.keys(imageNames);
-    const randomIndex = Math.floor(Math.random() * imageKeys.length);
-    const randomKey = parseInt(imageKeys[randomIndex], 9);
-    return `/src/assets/donate/${imageNames[randomKey]}`;
-};
+import { getRandomImage } from './getRandomImage';
   
 const DonateVerticalBlock = () => {
     const [randomImage, setRandomImage] = useState('');

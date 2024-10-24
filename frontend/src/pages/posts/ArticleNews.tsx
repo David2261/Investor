@@ -20,11 +20,12 @@ interface ArticleNewsAPI {
 
 const ArticleNews = () => {
 	const {category, slug} = useParams();
+	const apiURL = import.meta.env.VITE_API_URL;
 	const {article, error} : {
 		article: ArticleNewsAPI | null,
 		error: {
 			message: string
-		}} = useFetch(`http://127.0.0.1:8000/api/articles/articles/${category}/${slug}`);
+		}} = useFetch(`${apiURL}/api/articles/articles/${category}/${slug}`);
 
 	if (error) {
 		return <div>Error: {error.message}</div>;

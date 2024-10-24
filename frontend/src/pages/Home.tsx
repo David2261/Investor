@@ -1,17 +1,46 @@
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 // Components
 import ContentNews from '../components/Home/ContentNews';
 import ContentPost from '../components/Home/ContentPost';
 import ContentList from '../components/Home/ContentList';
-// Entities
-// Example Data
-import DATA from "../alpha_test_data/home_data.json";
-import DATANEWS from "../alpha_test_data/home_data_news.json";
-import DATAPOSTS from "../alpha_test_data/blog_data_posts.json";
+// Widgets
+import { getRandomImage } from '../widgets/getRandomImage';
+// Assets
+import investmentGlobal from '../assets/pages/invest_global.webp';
+import realModel from '../assets/pages/real_and_model.webp';
+import liveSituation from '../assets/pages/live_situation.webp';
+import eduYourself from '../assets/pages/edu_yourself.webp';
 
 
 const centerContent = `flex justify-center`;
 
 const Home = () => {
+	const apiURL = import.meta.env.VITE_API_URL;
+	const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
+                setData(response.data.results);
+            } catch (err) {
+                setError(err);
+            }
+        };
+        fetchData();
+    }, [apiURL]);
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
 	return (
 		<div className="bg-white flex flex-col pb-4 py-2 md:py-4 w-full">
 			<div className="flex flex-wrap md:flex-nowrap md:flex-row mx-6">
@@ -20,7 +49,7 @@ const Home = () => {
 					<p>У меня более чем <b>4-летний опыт работы на финансовых рынках</b> по всему миру. Мы инвестируем в акции, облигации, драгоценные металлы и крипто-активы. Основная цель — прирост капитала и <b>стабильный пассивный денежный поток.</b> Присоединяйтесь к нам, чтобы лучше понимать в какие активы сейчас наиболее выгодно вкладывать капитал!</p>
 				</div>
 				<div className="flex flex-col h-full w-full md:w-2/5 md:h-2/5">
-					<img src="http://dummyimage.com/800x600/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
+					<img src={investmentGlobal} alt="investment_global" />
 				</div>
 			</div>
 			<div className={`${centerContent} mx-6 mt-20 mb-10`} data-name="start-with">
@@ -28,17 +57,17 @@ const Home = () => {
 			</div>
 			<div className="columns-3 md:mx-6 mb-10">
 				<div className="ml-4 mr-2">
-					<div className={`${centerContent} w-full`}><img src="http://dummyimage.com/256x256/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
+					<div className={`${centerContent} w-full`}><img src={realModel} alt="real_model" /></div>
 					<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Реальные и модельные портфели</p></div>
 					<div><p className="font-sans text-lg md:text-xl">Не знаете что покупать в свой портфель? Посмотрите на наши инвестиции</p></div>
 				</div>
 				<div className="mx-2">
-					<div className={`${centerContent}`}><img src="http://dummyimage.com/256x256/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
+					<div className={`${centerContent}`}><img src={liveSituation} alt="live_situation" /></div>
 					<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Текущая ситуация</p></div>
 					<div><p className="font-sans text-lg md:text-xl">Еженедельные обзоры главных тенденций на российских и глобальных финансовых площадках</p></div>
 				</div>
 				<div className="mr-4 ml-2">
-					<div className={`${centerContent}`}><img src="http://dummyimage.com/256x256/4d494d/686a82.jepg&text=placeholder+image" alt="placeholder+image" /></div>
+					<div className={`${centerContent}`}><img src={eduYourself} alt="edu_yourself" /></div>
 					<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Прокачайте себя</p></div>
 					<div><p className="font-sans text-lg md:text-xl">Инвестируйте сначала в себя, а потом уже в другие активы. Сделайте Upgrade своих навыков</p></div>
 				</div>
@@ -46,26 +75,38 @@ const Home = () => {
 			<div className="bg-neutral-300 w-full mb-10">
 				<div className="w-full grid grid-cols-2 gap-4 mt-4 mb-4">
 					<div className={`col-span-2 ${centerContent} my-4`}><h1 className="uppercase font-bold text-2xl">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1></div>
-					<ContentList data={DATA} />
+					<ContentList data={data} />
 					<div className={`col-span-2 ${centerContent} my-4`}>
-						<button className="bg-green-600 text-white p-3 rounded-md hover:bg-slate-500">ВСЕ ПОСЛЕДНИЕ МАТЕРИАЛЫ САЙТА</button>
+						<NavLink to="news/">
+							<button className="bg-green-600 text-white p-3 rounded-md hover:bg-slate-500">ВСЕ ПОСЛЕДНИЕ МАТЕРИАЛЫ САЙТА</button>
+						</NavLink>
 					</div>
 				</div>
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-3 w-full px-2 gap-16 md:gap-20">
 				<div className="mt-10 col-span-1 md:col-span-2">
 					<div className="w-full flex flex-col md:ml-10">
-						<ContentNews data={DATANEWS} />
+						<ContentNews data={data} />
 						<div className="w-full grid grid-cols-2 gap-4">
-							<ContentPost data={DATAPOSTS} />
+							<ContentPost data={data} />
 						</div>
 					</div>
 				</div>
 				<div className="flex flex-col mx-4">
 					<div className="w-full sm:justify-center">
-						<p className="uppercase font-bold text-lg mb-4 border-b-2">POPULAR WITH SUBSCRIBERS</p>
+						{/* Favorite post */}
+						{/* <p className="uppercase font-bold text-lg mb-4 border-b-2">POPULAR WITH SUBSCRIBERS</p>
 						<img className="h-48 w-auto mb-4" src="http://dummyimage.com/400x300/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
-						<p className="uppercase font-bold text-xl hover:underline">Mark Zuckerberg's 'Year of Efficiency' spreads from Meta to Priscilla Chan's charitable organization, which just laid off dozens of people</p>
+						<p className="uppercase font-bold text-xl hover:underline">Mark Zuckerberg's 'Year of Efficiency' spreads from Meta to Priscilla Chan's charitable organization, which just laid off dozens of people</p> */}
+						{/* Adverts */}
+						<h1 className='uppercase font-bold text-lg mb-4 border-b-2'>Реклама</h1>
+						<img className='h-48 w-auto mb-4' src={getRandomImage()} alt="" />
+						<a href="https://new.donatepay.ru/@1097922" target='_blank' rel="noopener noreferrer">
+							<p className="uppercase font-bold text-xl hover:underline">
+								Ваша поддержка значит для меня очень много!<br />
+								Пожертвование
+							</p>
+						</a>
 					</div>
 				</div>
 			</div>

@@ -1,5 +1,4 @@
 import csv
-import io
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views import View
@@ -71,7 +70,7 @@ class UploadCSV(CreateView):
 
 	def form_valid(self, form):
 		try:
-			csv_file = form.cleaned_data['csv_file']
+			form.cleaned_data['csv_file']
 			# Логика обработки CSV
 			return super().form_valid(form)
 		except Exception as e:

@@ -8,7 +8,7 @@ import DataTab from '../../components/Blog/DataTab';
 import Filter from '../../components/Blog/Filter';
 // Widgets
 import Loader from '../../widgets/Loader';
-import { getRandomImage } from '../../widgets/DonationBlocks';
+import { getRandomImage } from '../../widgets/getRandomImage';
 
 interface BlogAPIType {
 	id: Key;
@@ -29,17 +29,18 @@ const News = () => {
 	const [data, setData] = useState<BlogAPIType[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [totalItems, setTotalItems] = useState(0);
+	const [, setTotalItems] = useState(0);
 	const [nextPage, setNextPage] = useState(null);
 	const [previousPage, setPreviousPage] = useState(null);
 	const [isOpenSidebar, setIsOpenSidebar] = useState(false);
-	const [isOpenFilter, setIsOpenFilter] = useState(false);
+	const [, setIsOpenFilter] = useState(false);
+	const apiUrl = import.meta.env.VITE_API_URL;
 
 	useEffect(() => {
 		const fetchNewsArticles = async () => {
 			setLoading(true);
 			try {
-				let url = `http://127.0.0.1:8000/api/articles/articles/all/`;
+				let url = `${apiUrl}/api/articles/articles/all/`;
 				if (page > 1) {
 					url += `?page=${page}`;
 				}
@@ -55,7 +56,7 @@ const News = () => {
 			}
 		};
 		fetchNewsArticles();
-	}, [page]);
+	}, [apiUrl, page]);
 	
 	const handleNextPage = () => {
 	if (nextPage != null) {
@@ -79,7 +80,7 @@ const News = () => {
 
   return (
 	<>
-	  <h1 className="blog-header">Новости</h1>
+	<h1 className="blog-header">Новости</h1>
 		{!isOpenSidebar ?
 		<div className="relative flex flex-col px-24">
 			<div className="flex justify-between">
@@ -97,10 +98,12 @@ const News = () => {
 					<div className='text-center px-16 text-4xl'>
 						<h1 className='pb-4'>Реклама</h1>
 						<img className='px-4' src={getRandomImage()} alt="" />
-						<p className="text-xl">
-							Ваша поддержка значит для меня очень много!<br />
-							<a href="https://new.donatepay.ru/@1097922">Пожертвование</a>
-						</p>
+						<a href="https://new.donatepay.ru/@1097922" target='_blank' rel="noopener noreferrer">
+							<p className="text-xl">
+								Ваша поддержка значит для меня очень много!<br />
+								Пожертвование
+							</p>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -118,7 +121,7 @@ const News = () => {
 			</div>
 		</div>
 		}
-		  <nav aria-label="Page navigation">
+		<nav aria-label="Page navigation">
 			<ul className="list-style-none flex justify-center">
 				<li>
 					<button
