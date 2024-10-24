@@ -20,10 +20,10 @@ class ArticlesPagination(PageNumberPagination):
 		if not self.page.has_previous():
 			return None
 		return self.get_link(self.page.previous_page_number())
-	
+
 	def get_total_pages(self):
 		return self.page.paginator.num_pages
-	
+
 	def get_paginated_response(self, data):
 		return Response({
 			'results': data,

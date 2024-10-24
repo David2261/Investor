@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { animated, useSpring } from '@react-spring/web';
 // Components
 import ForgotPassword from './ForgotPassword';
@@ -20,51 +20,50 @@ const Login: React.FC<LoginProps> = (props) => {
 	const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
 
 	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const {
-			target: { value, name },
-		} = event;
+		const { target: { value, name } } = event;
 		setForm(prevForm => ({ ...prevForm, [name]: value }));
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		loginUser(e)
-		props.setIsOpen()
+	const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		loginUser(form);
+		props.setIsOpen();
+	}, [form, loginUser, props]);
+
+	const closeForgotPassword = () => setIsForgotPassword(false);
+	const openForgotPassword = () => setIsForgotPassword(true);
+
+	const handleSignUpClick = () => {
+		props.setIsOpen();
+		props.setIsSignUp();
+	};
+	const handleForgotPasswordClick = () => {
+		openForgotPassword();
 	};
 
-	function closeForgotPassword() {
-		setIsForgotPassword(false);
-	}
-
-	function openForgotPassword() {
-		setIsForgotPassword(true);
-	}
-
 	const styles = useSpring({
-		from: {
-			opacity: 0,
-			delay: 50,
-		},
-		to: {
-			opacity: 1,
-			delay: 50,
-		},
+		from: { opacity: 0, delay: 50 },
+		to: { opacity: 1, delay: 50 },
 	});
 
 	useEffect(() => {
-        const onKeyDown = (e: { keyCode: number; }) => {
-            if(e.keyCode === 13) {
-                handleSubmit;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if(e.key === 'Enter') {
+				e.preventDefault();
+                handleSubmit(e as any);
             }
         };
+
         document.addEventListener('keydown', onKeyDown);
         return () => {
             document.removeEventListener('keydown', onKeyDown);
         };
-    }, []);
+    }, [handleSubmit]);
 
     return <>
-	{isForgotPassword ? <ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} /> : 
+	{isForgotPassword ? (
+		<ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} />
+	) : (
     <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 		<animated.div className='screen' style={styles}>
 			<form onSubmit={handleSubmit}>
@@ -104,14 +103,14 @@ const Login: React.FC<LoginProps> = (props) => {
 				</div>
 				<button className="signup" type='submit'>Вход</button>
 				<div className="footer">
-					<span onClick={() => {props.setIsOpen(); props.setIsSignUp()}}>Регистрация</span>
-					<span onClick={() => {openForgotPassword()}}>Забыли пароль?</span>
+					<span onClick={handleSignUpClick}>Регистрация</span>
+					<span onClick={handleForgotPasswordClick}>Забыли пароль?</span>
 				</div>
 			</div>
 			</form>
 		</animated.div>
 	</div>
-	}
+	)}
     </>
 }
 

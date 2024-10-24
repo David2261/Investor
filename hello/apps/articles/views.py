@@ -8,8 +8,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.views import View
 from django.views.generic.edit import CreateView
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 # DRF - API
 from rest_framework import status
 from rest_framework.views import APIView
@@ -26,13 +24,20 @@ from .serializers import (
 	CategorySerializer,
 	ArticlesSerializer,
 	UserSerializer,
-	ArticleDetailSerializer)
+	ArticleDetailSerializer,
+	ArticlesSerializerHome)
 from .forms import ArticlesCSVForm
 from .pagination import ArticlesPagination
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
 log_info = logging.getLogger("root")
+
+
+class ArticlesListHome(ListAPIView):
+	permission_classes = [permissions.AllowAny]
+	queryset = Articles.objects.filter(is_published=True)
+	serializer_class = ArticlesSerializerHome
 
 
 class ArticlesList(ListAPIView):
@@ -167,7 +172,6 @@ class CategoryDetail(APIView):
 class UserList(ListAPIView):
 	queryset = User.objects.all()
 	permissions_classes = [permissions.AllowAny]
-	# authentication_classes = [TokenAuthentication]
 	serializer_class = UserSerializer
 
 

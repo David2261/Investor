@@ -1,14 +1,22 @@
-import renderer from 'react-test-renderer';
+import { render, screen } from '@testing-library/react';
 import Navbar from '../../widgets/Navbar';
 
+it("Changes the Modal Window when clicked", () => {
+	render(<Navbar />);
 
-it("Changes the Modal Window when click", () => {
-	const {component} = render.(<Navbar />);
-	const signup = screen.getByTestId('signup');
-	const login = screen.getByTestId('login');
-	let tree = component.toJSON();
+	const signupButton = screen.getByTestId('signup');
+	const loginButton = screen.getByTestId('login');
+
+	let tree = screen.container;
 	expect(tree).toMatchSnapshot();
-	renderer.act(() => {
-		tree.props.
-	})
-})
+
+	signupButton.click();
+	
+	tree = screen.container;
+	expect(tree).toMatchSnapshot();
+
+	loginButton.click();
+	
+	tree = screen.container;
+	expect(tree).toMatchSnapshot();
+});

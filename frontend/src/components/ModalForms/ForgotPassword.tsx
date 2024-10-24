@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { animated, useSpring } from '@react-spring/web';
 // Entities
-import AuthContext from '../../entities/context/AuthContext';
+// import AuthContext from '../../entities/context/AuthContext';
 // Assets
 import IH from '../../assets/logo/IH.webp';
 // Styles

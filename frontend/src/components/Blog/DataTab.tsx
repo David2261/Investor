@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from "react";
+import { useState, useEffect, FunctionComponent } from "react";
 // Components
 import Sidebar from "./Sidebar";
 // Styles
@@ -16,11 +16,27 @@ interface DataTabType {
 
 // Боковая панель навигации по категориям
 const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarChange }) => {
+	const [dataCount, setDataCount] = useState<number>(0);
+	const [isOpen, setIsOpen] = useState(false);
+
+	useEffect(() => {
+		if (data && Array.isArray(data)) {
+			setDataCount(data.length);
+		}
+	}, []);
+	const categories = (!isOpen && dataCount > 5) ? data.slice(0, 5) : data;
 	function openModal() {
 		onSidebarChange(true);
 	}
 	function closeModal() {
+		closeAllCategories();
 		onSidebarChange(false);
+	}
+	function openAllCategories() {
+		setIsOpen(true);
+	}
+	function closeAllCategories() {
+		setIsOpen(false);
 	}
 	return !isSidebarChange ?
 		<button className="data-tab-sidebar-close-btn" onClick={openModal}>
@@ -47,7 +63,12 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
 				<div className="pr-4">
 					<div className="grid gap-4 sticky">
 						<div className="overflow-y-auto max-h-96 scrollbar-thin">
-							<Sidebar data={data} />
+							<Sidebar data={categories} />
+							{(dataCount > 6 && !isOpen) ?
+								<button onClick={openAllCategories} className="bg-[#F1F1F1] hover:bg-white py-2 px-4">
+									Показать ещё
+								</button>
+							: false}
 						</div>
 					</div>
 				</div>

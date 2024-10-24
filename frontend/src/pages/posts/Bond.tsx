@@ -25,12 +25,13 @@ interface BondsAPIType {
 }
 
 const Bonds = () => {
+	const apiURL = import.meta.env.VITE_API_URL;
 	const {data, error} : {
 		data: {
 			results: BondsAPIType[];
 		} | null | undefined;
 		error: { message: string };
-	} = useFetch<BondsAPIType[]>('http://127.0.0.1:8000/api/bonds/bond/all/', {method: 'GET'});
+	} = useFetch<BondsAPIType[]>(`${apiURL}/api/bonds/bond/all/`, {method: 'GET'});
 
 	if (error) {
 		return <div>Error: {error.message}</div>;

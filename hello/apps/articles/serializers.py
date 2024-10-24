@@ -11,6 +11,14 @@ class CategorySerializerNS(serializers.ModelSerializer):
 		fields = ['name', 'slug']
 
 
+class ArticlesSerializerHome(serializers.ModelSerializer):
+	category = CategorySerializerNS(read_only=True)
+
+	class Meta:
+		model = Articles
+		fields = ['title', 'category', 'img', 'slug']
+
+
 class ArticlesSerializer(serializers.ModelSerializer):
 	category = CategorySerializerNS(read_only=True)
 	time_create = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
