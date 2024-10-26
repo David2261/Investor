@@ -26,7 +26,10 @@ const Login: React.FC<LoginProps> = (props) => {
 
 	const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		loginUser(form);
+		loginUser({ 
+			email: form.email,
+			password: form.password 
+		});
 		props.setIsOpen();
 	}, [form, loginUser, props]);
 
@@ -47,24 +50,24 @@ const Login: React.FC<LoginProps> = (props) => {
 	});
 
 	useEffect(() => {
-        const onKeyDown = (e: KeyboardEvent) => {
-            if(e.key === 'Enter') {
+		const onKeyDown = (e: KeyboardEvent) => {
+			if(e.key === 'Enter') {
 				e.preventDefault();
-                handleSubmit(e as any);
-            }
-        };
+				handleSubmit(e as any);
+			}
+		};
 
-        document.addEventListener('keydown', onKeyDown);
-        return () => {
-            document.removeEventListener('keydown', onKeyDown);
-        };
-    }, [handleSubmit]);
+		document.addEventListener('keydown', onKeyDown);
+		return () => {
+			document.removeEventListener('keydown', onKeyDown);
+		};
+	}, [handleSubmit]);
 
-    return <>
+	return <>
 	{isForgotPassword ? (
 		<ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} />
 	) : (
-    <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
+	<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
 		<animated.div className='screen' style={styles}>
 			<form onSubmit={handleSubmit}>
 			<div className="screen-1">
@@ -111,7 +114,7 @@ const Login: React.FC<LoginProps> = (props) => {
 		</animated.div>
 	</div>
 	)}
-    </>
+	</>
 }
 
 export default Login;

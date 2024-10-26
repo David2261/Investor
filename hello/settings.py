@@ -87,6 +87,7 @@ INSTALLED_APPS = [
 	'rest_framework_simplejwt.token_blacklist',
 	'djoser',
 	'rest_auth',
+	'django_filters',
 	# apps
 	'articles.apps.ArticlesConfig',
 	'authentication.apps.AuthenticationConfig',

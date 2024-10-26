@@ -14,6 +14,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework import permissions
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 from authentication.models import User
 from authentication.permissions import AdminCreatorOnly
@@ -28,6 +30,7 @@ from .serializers import (
 	ArticlesSerializerHome)
 from .forms import ArticlesCSVForm
 from .pagination import ArticlesPagination
+from .filters import ArticleFilter
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
@@ -45,6 +48,10 @@ class ArticlesList(ListAPIView):
 	queryset = Articles.objects.filter(is_published=True)
 	serializer_class = ArticlesSerializer
 	pagination_class = ArticlesPagination
+	filter_backends = [DjangoFilterBackend, OrderingFilter]
+	filterset_class = ArticleFilter
+	ordering_fields = ['popularity', 'time_create']
+	ordering = ['-time_create']
 
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """

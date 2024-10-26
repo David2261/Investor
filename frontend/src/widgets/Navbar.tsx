@@ -19,36 +19,23 @@ const Navbar = () => {
 	const styleNav = "uppercase p-2 lg:px-4 md:mx-2 rounded transation-colors duration-300";
 	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [openSignUp, setOpenSignUp] = useState<boolean>(false);
-	const {user, logoutUser} = useContext(AuthContext);
+	const [modalType, setModalType] = useState<"login" | "signup" | null>(null);
+	const { user, logoutUser } = useContext(AuthContext);
+
 	const styles = useSpring({
 		from: { opacity: 0 },
 		to: { opacity: 1 },
 		config: { duration: 50, },
 	});
 
-	function closeModal() {
-		setIsOpen(false);
-	}
-
-	function openModal() {
-		setIsOpen(true);
-	}
-	
-    function closeSignUp() {
-		setOpenSignUp(false);
-	}
-
-	function upSignUp() {
-		setOpenSignUp(true);
-	}
-
+	const closeModal = () => setModalType(null);
+	const openLogin = () => setModalType("login");
+	const openSignUp = () => setModalType("signup");
 
 	return <>
 		{/* SIGN-UP and LOGIN */}
-		{isOpen && !openSignUp ? <Login setIsOpen={closeModal} setIsSignUp={upSignUp} /> : false}
-		{openSignUp && !isOpen ? <SignUp setIsOpen={closeSignUp} setIsLogin={openModal} /> : false}
+		{modalType === "login" && <Login setIsOpen={closeModal} setIsSignUp={openSignUp} />}
+		{modalType === "signup" && <SignUp setIsOpen={closeModal} setIsLogin={openLogin} />}
 		{/* NAVBAR */}
 		<nav className="bg-white py-2 md:py-4 w-full border-b-2 border-stone-200">
 			<div className="ml-4 flex flex-row justify-between md:px-4 mx-auto md:flex md:items-center">
@@ -63,12 +50,18 @@ const Navbar = () => {
 						<HeadLink page="bonds" />
 						<HeadLink page="contact" />
 						{!user ? (<>
-							<button onClick={openModal} id="login" className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Login</button>
-							<button onClick={upSignUp} id="signup" className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Sign-Up</button>
-							</>
+							<button onClick={openLogin} id="login" className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>
+								Login
+							</button>
+							<button onClick={openSignUp} id="signup" className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>
+								Sign-Up
+							</button>
+						</>
 						) : (<>
 							<HeadLink page="portfolio" />
-							<button onClick={logoutUser} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>Logout</button>
+							<button onClick={logoutUser} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>
+								Logout
+							</button>
 							</>
 						)}
 					</div>
@@ -113,8 +106,12 @@ const Navbar = () => {
 						<MenuLink page="news" />
 						<MenuLink page="bonds" />
 						<MenuLink page="contact" />
-						<button onClick={() => {openModal(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Login</button>
-						<button onClick={() => {upSignUp(); setIsMenuToggled(!isMenuToggled)}} className={`uppercase text-zinc-600`}>Sign In</button>
+						<button onClick={() => { openLogin(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
+							Login
+						</button>
+						<button onClick={() => { openSignUp(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
+							Sign-Up
+						</button>
 					</div>
 				</div>
 			</animated.div>
