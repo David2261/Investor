@@ -10,6 +10,7 @@ from .views import RegistrationAPIView
 from .views import GoogleLoginView
 from .views import YandexLoginView
 from .views import MicrosoftLoginView
+from .views import PasswordResetAPIView
 
 
 app_name = 'authentication'
@@ -27,6 +28,10 @@ urlpatterns = [
 			'v1/token/refresh/',
 			TokenRefreshView.as_view(),
 			name='token_refresh'),
+	path(
+			'v1/password-reset/',
+			PasswordResetAPIView.as_view(),
+			name='password_reset'),
 	path('v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 	path('v1/user/data/', CurrentUserView.as_view(), name="current-user"),
 	path('google/login/', GoogleLoginView.as_view(), name='google_login'),

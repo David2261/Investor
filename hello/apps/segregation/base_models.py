@@ -25,6 +25,7 @@ class BasePost(models.Model):
 			max_length=255,
 			null=False,
 			blank=False)
+	popularity = models.IntegerField(default=0, editable=False)
 	time_create = models.DateTimeField(
 			auto_now_add=True,
 			verbose_name="Время создания")

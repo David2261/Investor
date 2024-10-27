@@ -10,15 +10,25 @@ interface AuthTokens {
 	refresh: string;
 }
 
+interface RegistrationForm {
+	username: string;
+	email: string;
+	password: string;
+	password2: string;
+}
+
 interface AuthContextType {
 	user: User | null;
 	authTokens: AuthTokens | null;
-	loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
-	registrationUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+	loginUser: ({ email, password }: { email: string; password: string }) => Promise<void>;
+	registrationUser: (formData: RegistrationForm) => Promise<void>;
 	logoutUser: () => void;
 	login: (user: User) => void;
 	logout: () => void;
+	resetPassword: (email: string) => Promise<void>;
 }
+
+const apiURL = import.meta.env.VITE_API_URL;
 
 const AuthContext = createContext<AuthContextType>({
 	user: null,
@@ -28,6 +38,7 @@ const AuthContext = createContext<AuthContextType>({
 	registrationUser: async () => {},
 	login: () => {},
 	logout: () => {},
+	resetPassword: async () => {},
 });
 
 export default AuthContext;
@@ -45,24 +56,20 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	});
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
-	
-	const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const response = await fetch("http://127.0.0.1:8000/api/v1/token/", {
+
+	const loginUser = async ({ email, password }: { email: string; password: string; }) => {
+		const response = await fetch(`${apiURL}/api/v1/token/`, {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({
-				'email': (e.target as HTMLFormElement).email.value,
-				'password': (e.target as HTMLFormElement).password.value
-			})
-		}) as Response;
-		const data = await response.json()
+			body: JSON.stringify({ email, password })
+		});
+		const data = await response.json();
 		if (response.status === 200) {
-			setAuthTokens(data)
-			setUser(jwtDecode(data.access))
-			localStorage.setItem('authTokens', JSON.stringify(data))
+			setAuthTokens(data);
+			setUser(jwtDecode(data.access));
+			localStorage.setItem('authTokens', JSON.stringify(data));
 			navigate(-1);
 			AuthSwal.fire({
 				title: "Login Successful",
@@ -72,65 +79,100 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 				position: 'top-right',
 				timerProgressBar: true,
 				showConfirmButton: false,
-			})
+			});
 		} else {
 			AuthSwal.fire({
-				title: "Username or password does not exists",
+				title: "Username or password does not exist",
 				icon: "error",
 				toast: true,
 				timer: 6000,
 				position: 'top-right',
 				timerProgressBar: true,
 				showConfirmButton: false,
-			})
+			});
 		}
-	}
+	};
 
-	const registrationUser = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const response = await fetch("http://127.0.0.1:8000/api/v1/registration/", {
+	const registrationUser = async (formData: RegistrationForm) => {
+		const response = await fetch(`${apiURL}/api/v1/registration/`, {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({
-				'username': (e.target as HTMLFormElement).username.value,
-				'email': (e.target as HTMLFormElement).email.value,
-				'password': (e.target as HTMLFormElement).password.value,
-				'password2': (e.target as HTMLFormElement).password2.value
-			})
-		}) as Response;
-		const data = await response.json()
+			body: JSON.stringify(formData)
+		});
+
+		const data = await response.json();
+
 		if (response.status === 201) {
 			const token = data.access;
 			if (token && typeof token === 'string') {
 				const decodedToken = jwtDecode(token);
-				setAuthTokens(data)
-				setUser(decodedToken as User | null)
-				localStorage.setItem('authTokens', JSON.stringify(data))
+				setAuthTokens(data);
+				setUser(decodedToken as User | null);
+				localStorage.setItem('authTokens', JSON.stringify(data));
+				loginUser({
+					email: formData.email,
+					password: formData.password
+				});
+				navigate("/");
 				AuthSwal.fire({
-					title: "Registration Successful, Login Now",
+					title: "Registration Successful, Logging you in now...",
 					icon: "success",
 					toast: true,
 					timer: 6000,
 					position: 'top-right',
 					timerProgressBar: true,
 					showConfirmButton: false,
-				})
-				navigate(-1);
+				});
 			}
 		} else {
+			console.error("Ошибка при регистрации:", data);
 			AuthSwal.fire({
-				title: "An Error Occured " + response.status,
+				title: "An Error Occurred " + response.status,
 				icon: "error",
 				toast: true,
 				timer: 6000,
 				position: 'top-right',
 				timerProgressBar: true,
 				showConfirmButton: false,
-			})
+			});
 		}
-	}
+	};
+
+	const resetPassword = async (email: string) => {
+		const response = await fetch(`${apiURL}/api/v1/password-reset/`, {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ email })
+		});
+
+		if (response.status === 200) {
+			AuthSwal.fire({
+				title: "Password reset link sent to your email.",
+				icon: "success",
+				toast: true,
+				timer: 6000,
+				position: 'top-right',
+				timerProgressBar: true,
+				showConfirmButton: false,
+			});
+		} else {
+			const data = await response.json();
+			AuthSwal.fire({
+				title: "Error sending password reset link.",
+				icon: "error",
+				toast: true,
+				timer: 6000,
+				position: 'top-right',
+				timerProgressBar: true,
+				showConfirmButton: false,
+			});
+			console.error("Ошибка при сбросе пароля:", data);
+		}
+	};
 
 	const logoutUser = useCallback(() => {
 		setAuthTokens(null)
@@ -141,7 +183,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 
 	const updateToken = useCallback(async () => {
 
-		const response = await fetch('http://127.0.0.1:8000/api/v1/token/refresh/', {
+		const response = await fetch(`${apiURL}/api/v1/token/refresh/`, {
 			method:'POST',
 			headers:{
 				'Content-Type':'application/json'
@@ -155,7 +197,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setAuthTokens(data)
 			setUser(jwtDecode(data.access))
 			localStorage.setItem('authTokens', JSON.stringify(data))
-		}else{
+		} else {
 			logoutUser()
 		}
 		loading ? setLoading(false) : false;
@@ -175,6 +217,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setUser(null);
 			setAuthTokens(null);
 		},
+		resetPassword: resetPassword,
 	};
 
 	useEffect(() => {

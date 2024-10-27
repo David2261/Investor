@@ -1,4 +1,5 @@
 import { Key, Fragment, FunctionComponent } from "react";
+import { Link } from "react-router-dom";
 
 
 interface ArticlePropsType {
@@ -20,13 +21,15 @@ type DataType = {
 }
 
 
-const Article: FunctionComponent<ArticlePropsType> = (props: ArticlePropsType) => {
-	return (props.data.map((value: DataType["args"]) =>
+const Article: FunctionComponent<ArticlePropsType> = ({ data }) => {
+	return (data.map((value: DataType["args"]) =>
 	<Fragment key={value.id}>
-		<div className="bonds-news-content-block-article">
-			<img src={value.img} alt="" />
-			<p>{value.text} | {value.category}</p>
-		</div>
+		<Link to={`/news/${value.category.slug}/${value.slug}`}>
+			<div className="bonds-news-content-block-article">
+				{/* <img src={value.img} alt="" /> */}
+				<p>{value.title.slice(0, 80)}... | {value.category.name}</p>
+			</div>
+		</Link>
 	</Fragment>)
 )};
 

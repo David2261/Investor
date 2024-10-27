@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { animated, useSpring } from '@react-spring/web';
 // Entities
-// import AuthContext from '../../entities/context/AuthContext';
+import AuthContext from '../../entities/context/AuthContext';
 // Assets
 import IH from '../../assets/logo/IH.webp';
 // Styles
@@ -12,21 +12,18 @@ interface ForgotPasswordProps {
 	setIsForgotPassword: () => void
 }
 
-const ForgotPassword: React.FC<ForgotPasswordProps> = (props) => {
-	// const { forgot } = useContext(AuthContext);
-	const [form, setForm] = useState({ email: "" });
+const ForgotPassword: React.FC<ForgotPasswordProps> = ({ setIsOpen, setIsForgotPassword }) => {
+	const { resetPassword } = useContext(AuthContext);
+	const [email, setEmail] = useState("");
 	
 	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const {
-			target: { value, name },
-		} = event;
-		setForm(prevForm => ({ ...prevForm, [name]: value }));
+		setEmail(event.target.value);
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		// loginUser(e)
-		props.setIsOpen()
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		await resetPassword(email);
+		setIsOpen();
 	};
 
 	const styles = useSpring({
@@ -45,7 +42,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = (props) => {
 			<form onSubmit={handleSubmit}>
 			<div className="screen-1">
 			<img className='logo' alt="logo" src={IH} />
-				<button onClick={props.setIsOpen} className="fixed top-16 right-8">
+				<button onClick={setIsOpen} className="fixed top-16 right-8">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-32 h-32">
 						<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -59,14 +56,14 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = (props) => {
 							name="email"
 							placeholder="Example@gmail.com"
 							autoComplete="email"
-							value={form.email}
+							value={email}
 							onChange={onInputChange} />
 					</div>
 				</div>
 				<button className="forgot-password" type='submit'>Сбросить пароль</button>
 				<div className="footer">
                     <span className='pr-2'>У вас уже есть аккаунт? 
-					<span onClick={() => {props.setIsForgotPassword(); props.setIsOpen()}}>Вход</span>
+					<span onClick={() => { setIsForgotPassword(); setIsOpen(); }}>Вход</span>
 					</span>
 				</div>
 			</div>

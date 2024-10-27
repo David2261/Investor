@@ -1,5 +1,4 @@
-import { Key, FunctionComponent, useEffect, useState } from "react";
-import axios from 'axios';
+import { Key, FunctionComponent } from "react";
 
 interface DataTabType {
 	data: {
@@ -14,33 +13,21 @@ interface DataTabType {
 	},
 }
 
-interface Category {
-	id: number;
-	name: string;
-}
-
-const CategoryName: FunctionComponent<{ id: number }> = ({ id }) => {
-	const [category, setCategory] = useState<Category | null>(null);
-
-	useEffect(() => {
-		const fetchCategory = async () => {
-			const response = await axios.get('http://127.0.0.1:8000/api/articles/category/all/');
-			const category = response.data.find((object: Category) => object.id === id);
-			setCategory(category || null);
+const DataTab: FunctionComponent<DataTabType> = ({ data }) => {
+	const translateBondType = (bondType) => {
+		const translations = {
+			'municipal bonds': 'Муниципальные облигации',
+			'corporate bonds': 'Корпоративные облигации',
+			'federal loan bonds': 'Облигации федерального займа',
 		};
+		return translations[bondType.toLowerCase()] || bondType;
+	};
 
-		fetchCategory();
-	}, [id]);
-
-	return category ? <div>{category.name}</div> : <div>Loading...</div>;
-};
-
-const DataTab: FunctionComponent<DataTabType> = ({ data }) => {  
 	return (
 		data.results.map((value, index) => (
 			<tr key={index}>
 				<td>{value.title}</td>
-				<td><CategoryName id={value.category} /></td>
+				<td>{translateBondType(value.category)}</td>
 				<td>{value.price}</td>
 				<td>{value.cupon}</td>
 				<td>{value.cupon_percent}</td>

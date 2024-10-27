@@ -1,15 +1,12 @@
-import { Key } from "react";
+import { Key, useState, useEffect } from "react";
+import axios from 'axios';
 import '/src/styles/Bonds.css';
 // Hooks
 import { useFetch } from '../../hooks/useFetch.ts';
-// Widgets
-import Loader from '../../widgets/Loader';
 // Components
 import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
-// Example data
-import DATA_ARTICLES from "../../alpha_test_data/bond_article_data.json";
-// import BOND_DATA from "../../alpha_test_data/bond_data.json";
+import tgSuccess from "../../assets/pages/success.webp";
 
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
 
@@ -26,6 +23,9 @@ interface BondsAPIType {
 
 const Bonds = () => {
 	const apiURL = import.meta.env.VITE_API_URL;
+	const [dataPosts, setData] = useState<any[]>([]);
+	const [errorPosts, setError] = useState(null);
+
 	const {data, error} : {
 		data: {
 			results: BondsAPIType[];
@@ -33,13 +33,30 @@ const Bonds = () => {
 		error: { message: string };
 	} = useFetch<BondsAPIType[]>(`${apiURL}/api/bonds/bond/all/`, {method: 'GET'});
 
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
+				setData(response.data.results);
+			} catch (err) {
+				setError(err as any);
+			}
+		};
+		fetchData();
+	}, [apiURL]);
+
+	const data_posts = dataPosts.length > 0 ? dataPosts.slice(0, 5) : [];
+
 	if (error) {
 		return <div>Error: {error.message}</div>;
 	}
 
 	if (!data) {
-		console.log('Loader вызван');
-		return <Loader />;
+		return <div>Loading...</div>;
+	}
+
+	if (errorPosts) {
+		return <div>Error: {errorPosts.message}</div>;
 	}
 
 	return <>
@@ -51,12 +68,12 @@ const Bonds = () => {
 			<div className="bonds-news-body">
 				<div className="bonds-news-content-block">
 					<h1 className="bonds-news-content-block-header">Последние новости по облигациям</h1>
-					<Article data={DATA_ARTICLES} />
+					<Article data={data_posts} />
 				</div>
 				<div className="bonds-news-add-block">
 					<div className="bonds-news-add-header">
 						<h1>Телеграм по новостям</h1>
-						<img src="http://dummyimage.com/50x50/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
+						<img src={tgSuccess} alt="placeholder+image" />
 					</div>
 					<p className="bonds-news-add-under-text">@investorhome - официальный канал по облигациям.</p>
 				</div>
