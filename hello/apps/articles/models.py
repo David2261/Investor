@@ -29,7 +29,7 @@ class PageHit(models.Model):
 	count = models.PositiveIntegerField(default=0)
 
 	def __str__(self):
-		return self.count
+		return str(self.count)
 
 
 class Category(models.Model):
@@ -47,7 +47,7 @@ class Category(models.Model):
 		return self.name
 
 	def get_absolute_url(self):
-		return reverse("posts:category-detail", kwargs={'cat_slug': self.slug})
+		return reverse("articles:category-detail", kwargs={'cat_slug': self.slug})
 
 	def save(self, *args, **kwargs):
 		value = self.name
@@ -90,7 +90,11 @@ class Articles(BasePost):
 			verbose_name=_("Publication"))
 
 	def get_absolute_url(self):
-		return reverse("post", kwargs={'post_slug': self.slug})
+		return reverse(
+				"articles:article-detail",
+				kwargs={
+						'cat_slug': self.category.slug,
+						'post_slug': self.slug})
 
 	@property
 	def comments(self):
@@ -118,4 +122,4 @@ class Comment(BasePost):
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(check_lang(self.title))
-		super(Articles, self).save(*args, **kwargs)
+		super().save(*args, **kwargs)
