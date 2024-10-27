@@ -53,6 +53,13 @@ class ArticlesList(ListAPIView):
 	ordering_fields = ['popularity', 'time_create']
 	ordering = ['-time_create']
 
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		category_slug = self.request.query_params.get('category', None)
+		if category_slug:
+			queryset = queryset.filter(category__slug=category_slug)
+		return queryset
+
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
 		return super().list(request, *args, **kwargs)

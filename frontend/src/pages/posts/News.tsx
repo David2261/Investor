@@ -33,6 +33,7 @@ const News = () => {
 	const [nextPage, setNextPage] = useState(null);
 	const [previousPage, setPreviousPage] = useState(null);
 	const [isOpenSidebar, setIsOpenSidebar] = useState(false);
+	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 	const [filter, setFilter] = useState({ sortBy: 'popularity', order: 'desc' });
 	const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -40,10 +41,15 @@ const News = () => {
 		const fetchNewsArticles = async () => {
 			setLoading(true);
 			try {
+				const params = new URLSearchParams();
 				let url = `${apiUrl}/api/articles/articles/all/`;
 				if (page > 1) {
-					url += `?page=${page}`;
-				}
+                    params.append('page', page.toString());
+                }
+                if (selectedCategory) {
+                    params.append("category", selectedCategory);
+                }
+				url += `?${params.toString()}`;
 				const response = await axios.get(url);
 				setData(response.data.results);
 				setTotalItems(response.data.count);
@@ -56,18 +62,23 @@ const News = () => {
 			}
 		};
         fetchNewsArticles();
-    }, [apiUrl, page]);
+    }, [apiUrl, page, selectedCategory]);
 
     useEffect(() => {
 		const applyFilters = async () => {
 			setLoading(true);
 			try {
+				const params = new URLSearchParams();
 				let url = `${apiUrl}/api/articles/articles/all/`;
-				if (page > 1) {
-					url += `?page=${page}&ordering=${filter.sortBy}&order=${filter.order}`;
-				} else {
-					url += `?ordering=${filter.sortBy}&order=${filter.order}`
-				}
+				params.append("ordering", filter.sortBy);
+                params.append("order", filter.order);
+                if (page > 1) {
+                    params.append('page', page.toString());
+                }
+                if (selectedCategory) {
+                    params.append("category", selectedCategory);
+                }
+				url += `?${params.toString()}`;
 				const response = await axios.get(url);
 				setData(response.data.results);
 				setTotalItems(response.data.count);
@@ -80,7 +91,7 @@ const News = () => {
 			}
 		};
         applyFilters();
-    }, [apiUrl, filter, page]);
+    }, [apiUrl, filter, page, selectedCategory]);
 
 	const handleFilterChange = (filter: { sortBy: string; order: string }) => {
 		setFilter(filter);
@@ -115,6 +126,7 @@ const News = () => {
 					<DataTab
 						isSidebarChange={isOpenSidebar}
 						onSidebarChange={setIsOpenSidebar}
+						onSelectCategory={setSelectedCategory}
 					/>
 					<Filter onFilterChange={handleFilterChange} />
 				</div>
@@ -140,7 +152,8 @@ const News = () => {
 			<div className='flex flex-row gap-4 pl-6 pr-24'>
 				<DataTab
 					isSidebarChange={isOpenSidebar}
-					onSidebarChange={setIsOpenSidebar} />
+					onSidebarChange={setIsOpenSidebar}
+					onSelectCategory={setSelectedCategory} />
 				<div className="flex flex-col">
 					<div className='ml-auto'>
 						<Filter onFilterChange={handleFilterChange} />

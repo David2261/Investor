@@ -1,3 +1,4 @@
+import axios  from 'axios';
 import { useState, useEffect, FunctionComponent } from "react";
 // Components
 import Sidebar from "./Sidebar";
@@ -7,37 +8,49 @@ import '../../styles/components/Blog/DataTabStyles.css';
 import homeBlack from '../../assets/icons/menu_black.svg';
 import closeBlack from '../../assets/icons/close_black.svg';
 import searchBlack from '../../assets/icons/search_black.svg';
-import data from '../../alpha_test_data/blog_data_categories.json';
+// import data from '../../alpha_test_data/blog_data_categories.json';
 
 interface DataTabType {
-	isSidebarChange: boolean,	
-	onSidebarChange: (isOpen: boolean) => void,
+	isSidebarChange: boolean;
+	onSidebarChange: (isOpen: boolean) => void;
+	onSelectCategory: (category: string) => void;
 }
 
 // Боковая панель навигации по категориям
-const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarChange }) => {
+const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarChange, onSelectCategory }) => {
+	const apiURL = import.meta.env.VITE_API_URL;
+	const [data, setData] = useState<any[]>([]);
+	const [error, setError] = useState(null);
 	const [dataCount, setDataCount] = useState<number>(0);
 	const [isOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
-		if (data && Array.isArray(data)) {
-			setDataCount(data.length);
-		}
-	}, []);
+		const fetchData = async () => {
+			try {
+				const response = await axios.get(`${apiURL}/api/articles/category/all/`);
+				setData(response.data.results);
+				setDataCount(response.data.count);
+			} catch (err) {
+				setError(err as any);
+			}
+		};
+		fetchData();
+	}, [apiURL]);
+
 	const categories = (!isOpen && dataCount > 5) ? data.slice(0, 5) : data;
-	function openModal() {
-		onSidebarChange(true);
+
+	const openModal = () => onSidebarChange(true);
+    const closeModal = () => {
+        closeAllCategories();
+        onSidebarChange(false);
+    };
+    const openAllCategories = () => setIsOpen(true);
+    const closeAllCategories = () => setIsOpen(false);
+
+	if (error) {
+		return <p>Error: {error.message}</p>
 	}
-	function closeModal() {
-		closeAllCategories();
-		onSidebarChange(false);
-	}
-	function openAllCategories() {
-		setIsOpen(true);
-	}
-	function closeAllCategories() {
-		setIsOpen(false);
-	}
+
 	return !isSidebarChange ?
 		<button className="data-tab-sidebar-close-btn" onClick={openModal}>
 			<img src={homeBlack} />
@@ -63,7 +76,7 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
 				<div className="pr-4">
 					<div className="grid gap-4 sticky">
 						<div className="overflow-y-auto max-h-96 scrollbar-thin">
-							<Sidebar data={categories} />
+							<Sidebar data={categories} onSelectCategory={onSelectCategory} />
 							{(dataCount > 6 && !isOpen) ?
 								<button onClick={openAllCategories} className="bg-[#F1F1F1] hover:bg-white py-2 px-4">
 									Показать ещё
