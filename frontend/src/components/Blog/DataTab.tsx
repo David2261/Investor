@@ -23,6 +23,7 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
 	const [error, setError] = useState(null);
 	const [dataCount, setDataCount] = useState<number>(0);
 	const [isOpen, setIsOpen] = useState(false);
+	const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -36,8 +37,11 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
 		};
 		fetchData();
 	}, [apiURL]);
-
 	const categories = (!isOpen && dataCount > 5) ? data.slice(0, 5) : data;
+
+	const filteredCategories = categories.filter(category =>
+        category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
 	const openModal = () => onSidebarChange(true);
     const closeModal = () => {
@@ -70,13 +74,15 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
 						<input
 							type="text"
 							placeholder="Поиск..."
-							className="w-full bg-white border-b py-2 px-12 focus:outline-none focus:ring-2 focus:ring-opacity-50" />
+							className="w-full bg-white border-b py-2 px-12 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)} />
 					</div>
 				</div>
 				<div className="pr-4">
 					<div className="grid gap-4 sticky">
 						<div className="overflow-y-auto max-h-96 scrollbar-thin">
-							<Sidebar data={categories} onSelectCategory={onSelectCategory} />
+							<Sidebar data={filteredCategories} onSelectCategory={onSelectCategory} />
 							{(dataCount > 6 && !isOpen) ?
 								<button onClick={openAllCategories} className="bg-[#F1F1F1] hover:bg-white py-2 px-4">
 									Показать ещё
