@@ -63,6 +63,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
 		return user
 
 
+class PasswordResetRequestSerializer(serializers.Serializer):
+	email = serializers.EmailField(required=True)
+
+	def validate_email(self, value):
+		if not User.objects.filter(email=value).exists():
+			raise serializers.ValidationError("User with this email does not exist.")
+		return value
+
+
 class PasswordResetSerializer(serializers.Serializer):
 	new_password = serializers.CharField(write_only=True)
 	confirm_password = serializers.CharField(write_only=True)
@@ -87,6 +96,8 @@ class PasswordResetSerializer(serializers.Serializer):
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+	url = serializers.HyperlinkedIdentityField(view_name='authentication:user-detail', lookup_field='pk')
+
 	class Meta:
 		model = User
 		fields = ['url', 'username', 'email', 'groups']

@@ -19,10 +19,6 @@ urlpatterns = [
 			'articles/<slug:cat_slug>/<slug:post_slug>/',
 			ArticleDetail.as_view(),
 			name='article-detail'),
-	path(
-			'articles/creator/<slug:cat_slug>/<slug:post_slug>/',
-			ArticleAPICreator.as_view(),
-			name='article-creator'),
 	path('category/all/', CategoriesList.as_view(), name='category-list'),
 	path(
 			'category/<slug:cat_slug>/',
@@ -32,6 +28,10 @@ urlpatterns = [
 			'articles/home/all',
 			ArticlesListHome.as_view(),
 			name='articles-home-list'),
+	path(
+			'articles/creator/<slug:cat_slug>/<slug:post_slug>/',
+			ArticleAPICreator.as_view(),
+			name='article-creator'),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
 	path('generate/csv/', GenerateCSV.as_view(), name='db-list'),

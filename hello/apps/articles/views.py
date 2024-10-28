@@ -99,11 +99,6 @@ class ArticleDetail(APIView):
 		return Response(serializer.data)
 
 
-class ArticleAPICreatorMake(APIView):
-	permission_classes = [AdminCreatorOnly]
-	queryset = Articles.objects.filter(is_published=True)
-
-
 class ArticleAPICreator(APIView):
 	permission_classes = [AdminCreatorOnly]
 	queryset = Articles.objects.filter(is_published=True)
@@ -111,9 +106,9 @@ class ArticleAPICreator(APIView):
 
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
-		return self.list(
-				self.serializer_class.data,
-				status=status.HTTP_200_OK)
+		articles = self.queryset.all()
+		serializer = self.serializer_class(articles, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 	def post(self, request, *args, **kwargs):
 		data = {
@@ -126,29 +121,25 @@ class ArticleAPICreator(APIView):
 		serializer = ArticlesSerializer(data=data)
 		if serializer.is_valid():
 			serializer.save()
-			return self.create(
-					serializer.data,
-					status=status.HTTP_201_CREATED)
-		return self.create(
-				serializer.errors,
-				status=status.HTTP_400_BAD_REQUEST)
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-	def put(self, request, post_slug):
-		saved_post = Articles.objects.filter(is_published=True, post_slug=post_slug)
-		data = {
-			"title": request.data.get('title'),
-			"description": request.data.get('description'),
-			"category": request.data.get('category'),
-			"img": request.data.get('img'),
-			"user": request.user.id
-		}
+	def put(self, request, cat_slug, post_slug):
+		article = Articles.objects.filter(
+				is_published=True,
+				post_slug=post_slug).first()
+		if not article:
+			return Response(
+					{"error": "Article not found."},
+					status=status.HTTP_404_NOT_FOUND)
 		serializer = ArticlesSerializer(
-				instance=saved_post,
-				data=data,
+				instance=article,
+				data=request.data,
 				partial=True)
 		if serializer.is_valid(raise_exception=True):
-			post_saved = serializer.save()
-		return Response(post_saved, status=status.HTTP_200_OK)
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_200_OK)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def delete(self, request, post_slug):
 		post = Articles.objects.filter(is_published=True, post_slug=post_slug)
