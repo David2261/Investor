@@ -1,5 +1,6 @@
 import logging
 
+from django.utils import timezone
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -53,6 +54,12 @@ class Bonds(BasePost):
 
 	def get_absolute_url(self):
 		return reverse("bond", kwargs={'bond_slug': self.slug})
+
+	@classmethod
+	def update_expired_bonds(cls):
+		now = timezone.now()
+		expired_bonds = cls.objects.filter(maturity__lt=now)
+		_ = expired_bonds.update(is_published=False)
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(check_lang(self.title))
