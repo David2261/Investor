@@ -8,7 +8,6 @@ import '../../styles/components/Blog/DataTabStyles.css';
 import homeBlack from '../../assets/icons/menu_black.svg';
 import closeBlack from '../../assets/icons/close_black.svg';
 import searchBlack from '../../assets/icons/search_black.svg';
-// import data from '../../alpha_test_data/blog_data_categories.json';
 
 interface DataTabType {
 	isSidebarChange: boolean;
@@ -61,8 +60,8 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
 			Категории
 		</button>
 		:
-		<div className="flex ml-auto pl-4 w-full">
-			<div className="flex flex-col">
+		<div className="absolute bg-white md:flex ml-auto pl-4 sm:w-auto xl:w-full">
+			<div className="flex flex-col w-full">
 				<div className="mb-4">
 					<div className="flex justify-end mb-4">
 						<button onClick={closeModal} className="py-2 px-4 rounded-md">
@@ -87,7 +86,7 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
 								<button onClick={openAllCategories} className="bg-[#F1F1F1] hover:bg-white py-2 px-4">
 									Показать ещё
 								</button>
-							: false}
+							: null}
 						</div>
 					</div>
 				</div>

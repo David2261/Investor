@@ -86,21 +86,21 @@ const GlobalLinks = (
 );
 
 const LocalLinks = (
-	<div className="md:mx-4 flex flex-col">
-		<div className="flex flex-wrap md:flex-nowrap md:flex-row py-10 gap-2 md:gap-4 border-b-2 justify-center">
-			<div className="px-2 md:px-4 hover:text-slate-900">
-				<NavLink to="contact/">Связаться с нами</NavLink>
-			</div>
-			{ DOT }
-			<div className="px-2 md:px-4 hover:text-slate-900">Кибербезопасность</div>
-			{ DOT }
-			<div className="px-2 md:px-4 hover:text-slate-900">Условия использования</div>
-			{ DOT }
-			<div className="px-2 md:px-4 hover:text-slate-900">Конфиденциальность и файлы cookie</div>
-			{ DOT }
-			<div className="md:px-4 hover:text-slate-900">Your Privacy Choices</div>
+	<div className="md:mx-4 flex flex-col sm:h-full">
+		<div className="flex flex-wrap items-center justify-center py-10 gap-2 md:gap-4 border-b-2">
+		<div className="px-2 md:px-4 hover:text-slate-900">
+			<NavLink to="contact/">Связаться с нами</NavLink>
 		</div>
-	</div>
+		{ DOT }
+		<div className="px-2 md:px-4 hover:text-slate-900">Кибербезопасность</div>
+		{ DOT }
+		<div className="px-2 md:px-4 hover:text-slate-900">Условия использования</div>
+		{ DOT }
+		<div className="px-2 md:px-4 hover:text-slate-900">Конфиденциальность и файлы cookie</div>
+		{ DOT }
+		<div className="md:px-4 hover:text-slate-900">Your Privacy Choices</div>
+		</div>
+  </div>
 );
 
 const Footer = () => {
@@ -110,10 +110,10 @@ const Footer = () => {
 			<div className="text-slate-800 flex flex-row md:mx-32 justify-center">
 				{Messangers}
 			</div>
-			<div className="text-slate-800 flex flex-row md:mx-32 justify-center">
+			<div className="text-slate-500 flex flex-wrap gap-2 md:flex-row md:mx-32 justify-center">
 				{GlobalLinks}
 			</div>
-			<div className="text-slate-500 flex flex-row md:mx-32 justify-center">
+			<div className="text-slate-500 flex flex-wrap gap-2 md:flex-row md:mx-32 justify-center">
 				{LocalLinks}
 			</div>
 			<div className="flex flex-row py-10 justify-center">&copy; 2023 Investor Home. All rights reserved.</div>

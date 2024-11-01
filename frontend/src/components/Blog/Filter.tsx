@@ -23,7 +23,7 @@ const Filter: FunctionComponent<FilterType> = ({ onFilterChange }) => {
 				<img src={isFilterOpen ? upBlack : downBlack} />
 			</button>
 			{isFilterOpen && (
-				<div className="absolute mt-2 w-56 rounded-md shadow-lg">
+				<div className="absolute mt-2 w-auto md:w-56 rounded-md shadow-lg">
 					<div className="rounded-md bg-white shadow-xs">
 						<div
 							onClick={() => handleFilterChange('popularity', 'desc')}
