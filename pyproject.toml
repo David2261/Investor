@@ -30,6 +30,8 @@ djangorestframework-simplejwt = "^5.3.1"
 django-allauth = {extras = ["socialaccount"], version = "^0.63.6"}
 django-rest-auth = "^0.9.5"
 django-filter = "^24.3"
+celery = "^5.4.0"
+redis = "^5.2.0"
 
 
 [build-system]

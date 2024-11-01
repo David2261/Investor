@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 // Components
 import ContentNews from '../components/Home/ContentNews';
 import ContentPost from '../components/Home/ContentPost';
@@ -18,28 +18,21 @@ const centerContent = `flex justify-center`;
 
 const Home = () => {
 	const apiURL = import.meta.env.VITE_API_URL;
-	const [data, setData] = useState(null);
-    const [error, setError] = useState(null);
+	const { data, error, isLoading } = useQuery({
+		queryKey: ['articles'],
+		queryFn: async () => {
+			const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
+			return response.data.results;
+		},
+	});
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
-                setData(response.data.results);
-            } catch (err) {
-                setError(err);
-            }
-        };
-        fetchData();
-    }, [apiURL]);
+	if (error) {
+		return <div>Error: {error.message}</div>;
+	}
 
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
-
-    if (!data) {
-        return <div>Loading...</div>;
-    }
+	if (!data || isLoading) {
+		return <div>Loading...</div>;
+	}
 
 	return (
 		<div className="bg-white flex flex-col pb-4 py-2 md:py-4 w-full">

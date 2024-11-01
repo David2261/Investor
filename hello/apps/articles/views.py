@@ -2,12 +2,16 @@
 # -*- coding: utf-8 -*-
 import csv
 import logging
+from django.db import transaction
+from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.http import HttpResponse
 from django.conf import settings
 from django.contrib import messages
 from django.views import View
 from django.views.generic.edit import CreateView
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 # DRF - API
 from rest_framework import status
 from rest_framework.views import APIView
@@ -20,6 +24,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from authentication.models import User
 from authentication.permissions import AdminCreatorOnly
 from segregation.decorators import counted
+from segregation.views import BaseArticleList
 from .models import Articles
 from .models import Category
 from .serializers import (
@@ -37,15 +42,11 @@ logger = logging.getLogger("dev")
 log_info = logging.getLogger("root")
 
 
-class ArticlesListHome(ListAPIView):
-	permission_classes = [permissions.AllowAny]
-	queryset = Articles.objects.filter(is_published=True)
+class ArticlesListHome(BaseArticleList):
 	serializer_class = ArticlesSerializerHome
 
 
-class ArticlesList(ListAPIView):
-	permissions_classes = [permissions.AllowAny]
-	queryset = Articles.objects.filter(is_published=True)
+class ArticlesList(BaseArticleList):
 	serializer_class = ArticlesSerializer
 	pagination_class = ArticlesPagination
 	filter_backends = [DjangoFilterBackend, OrderingFilter]
@@ -60,6 +61,7 @@ class ArticlesList(ListAPIView):
 			queryset = queryset.filter(category__slug=category_slug)
 		return queryset
 
+	@method_decorator(cache_page(60 * 15))
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
 		return super().list(request, *args, **kwargs)
@@ -88,10 +90,12 @@ class ArticleDetail(APIView):
 
 	def get_object(self, cat_slug, post_slug):
 		try:
-			return Articles.objects.filter(category__slug=cat_slug).get(slug=post_slug)
+			return Articles.objects.select_related(
+				'category').get(category__slug=cat_slug, slug=post_slug)
 		except Articles.DoesNotExist:
 			raise Http404
 
+	@method_decorator(cache_page(60 * 15))
 	@counted
 	def get(self, request, cat_slug, post_slug, format=None):
 		article = self.get_object(cat_slug, post_slug)
@@ -101,41 +105,24 @@ class ArticleDetail(APIView):
 
 class ArticleAPICreator(APIView):
 	permission_classes = [AdminCreatorOnly]
-	queryset = Articles.objects.filter(is_published=True)
-	serializer_class = ArticlesSerializer
+	queryset = Articles.objects.filter(
+		is_published=True).select_related('category')
 
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
-		articles = self.queryset.all()
-		serializer = self.serializer_class(articles, many=True)
+		serializer = ArticlesSerializer(self.queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
 	def post(self, request, *args, **kwargs):
-		data = {
-			"title": request.data.get('title'),
-			"description": request.data.get('description'),
-			"category": request.data.get('category'),
-			"img": request.data.get('img'),
-			"user": request.user.id
-		}
-		serializer = ArticlesSerializer(data=data)
+		serializer = ArticlesSerializer(data=request.data)
 		if serializer.is_valid():
-			serializer.save()
+			serializer.save(user=request.user)
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-	def put(self, request, cat_slug, post_slug):
-		article = Articles.objects.filter(
-				is_published=True,
-				post_slug=post_slug).first()
-		if not article:
-			return Response(
-					{"error": "Article not found."},
-					status=status.HTTP_404_NOT_FOUND)
-		serializer = ArticlesSerializer(
-				instance=article,
-				data=request.data,
-				partial=True)
+	def put(self, request, post_slug):
+		article = get_object_or_404(Articles, is_published=True, slug=post_slug)
+		serializer = ArticlesSerializer(article, data=request.data, partial=True)
 		if serializer.is_valid(raise_exception=True):
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_200_OK)
@@ -152,6 +139,7 @@ class CategoriesList(ListAPIView):
 	queryset = Category.objects.all()
 	permission_classes = [permissions.AllowAny]
 
+	@method_decorator(cache_page(60 * 15))
 	def get(self, request, *args, **kwargs):
 		""" List with all categories """
 		return self.list(
@@ -176,16 +164,24 @@ class CategoryDetail(APIView):
 
 class UserList(ListAPIView):
 	queryset = User.objects.all()
-	permissions_classes = [permissions.AllowAny]
+	permission_classes = [AdminCreatorOnly]
 	serializer_class = UserSerializer
 
 
 class GenerateCSV(View):
+	permission_classes = [AdminCreatorOnly]
+
 	def get(self, request, *args, **kwargs):
 		response = HttpResponse(content_type='text/csv')
 		response['Content-Disposition'] = 'attachment; filename="articles.csv"'
 
-		articles = Articles.objects.all()
+		articles = Articles.objects.values_list(
+				'id',
+				'title',
+				'category__name',
+				'description',
+				'img',
+				'is_published')
 		writer = csv.writer(response, delimiter=';')
 		writer.writerow([
 				"id",
@@ -194,19 +190,13 @@ class GenerateCSV(View):
 				"description",
 				"img",
 				"is_published"])
-		for article in articles:
-			writer.writerow([
-					article.id,
-					article.title,
-					article.category,
-					article.description,
-					article.img,
-					article.is_published])
+		writer.writerows(articles)
 
 		return response
 
 
 class UploadCSV(CreateView):
+	permission_classes = [AdminCreatorOnly]
 	model = Articles
 	form_class = ArticlesCSVForm
 	template_name = "options/upload.html"
@@ -221,21 +211,19 @@ class UploadCSV(CreateView):
 			messages.error(request, "File isn't a CSV")
 			return super().post(request, *args, **kwargs)
 
-		if csv_file.multiple_chunks():
-			messages.error(
-				request,
-				"Uploaded file is too big (%.2f MB). " % (csv_file.size / (1000 * 1000),))
-			return super().post(request, *args, **kwargs)
-
-		file_data = csv_file.read().decode("utf-8")
-		lines = file_data.split("\n")
-
-		for line in lines:
-			fields = line.split(";")
-			try:
-				article = self.form_class(fields)
-				article.save()
-			except Exception as e:
-				messages.error(request, "Unable to upload file. " + repr(e))
-				pass
+		try:
+			file_data = csv_file.read().decode("utf-8").splitlines()
+			with transaction.atomic():
+				for line in csv.reader(file_data, delimiter=';'):
+					article_data = {
+						'title': line[1],
+						'category': Category.objects.get(name=line[2]),
+						'description': line[3],
+						'img': line[4],
+						'is_published': line[5]
+					}
+					Articles.objects.create(**article_data)
+		except Exception as e:
+			messages.error(request, f"Unable to upload file. {repr(e)}")
+			transaction.rollback()
 		return super().post(request, *args, **kwargs)

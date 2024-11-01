@@ -1,60 +1,67 @@
+import axios from 'axios';
 import { useParams } from "react-router-dom";
-import { useFetch } from "../../hooks/useFetch.ts";
-// Widgets
-import Loader from '../../widgets/Loader';
-
+import { useQuery } from '@tanstack/react-query';
 
 interface ArticleNewsAPI {
-	author: string | null,
-	readTime: string | null,
-	title: string,
-	description: string,
+	author: string | null;
+	readTime: string | null;
+	title: string;
+	description: string;
 	category: {
-		name: string,
-		slug: string
-	},
-	img: string,
-	time_create: string,
-	slug: string,
+		name: string;
+		slug: string;
+	};
+	img: string;
+	time_create: string;
+	slug: string;
 }
 
 const ArticleNews = () => {
-	const {category, slug} = useParams();
+	const { category, slug } = useParams();
 	const apiURL = import.meta.env.VITE_API_URL;
-	const {article, error} : {
-		article: ArticleNewsAPI | null,
-		error: {
-			message: string
-		}} = useFetch(`${apiURL}/api/articles/articles/${category}/${slug}`);
+	const { data, error, isLoading } = useQuery<ArticleNewsAPI, Error>(
+		['article', category, slug],
+		async () => {
+			const response = await axios.get(`${apiURL}/api/articles/articles/${category}/${slug}`);
+			return response.data;
+		},
+		{
+			enabled: !!category && !!slug,
+		}
+	);
+
+	if (isLoading) {
+		return <div>Загрузка...</div>;
+	}
 
 	if (error) {
-		return <div>Error: {error.message}</div>;
+		return <div>Error: {error}</div>;
 	}
 
-	if (!article) {
-		console.log('Loader вызван');
-		return <Loader />;
+	if (!data) {
+		return <div>Статья не найдена</div>;
 	}
 
-	return <>
-	<div className="w-full h-full font-mono">
-			<p className="flex flex-row justify-center uppercase text-green-500 text-lg pt-10">{article.category.name}</p>
-			<h1 className="flex flex-row justify-center text-3xl uppercase">{article.title}</h1>
+	return (
+		<div className="max-w-screen-md mx-auto font-mono p-4">
+			<p className="text-center uppercase text-green-500 text-lg pt-10">{data.category.name}</p>
+			<h1 className="text-center text-2xl font-bold uppercase mb-4 text-gray-800">{data.title}</h1>
 			<div className="flex flex-row justify-center">
-				{/* <img className="rounded-full" aria-label="logo" src={article.image} alt={article.image} /> */}
 				<div className="flex-col px-4">
-					<p className="text-lg">{article.author ? article.author : "Булат Насыров"}</p>
-					<p className="text-lg text-slate-500">{article.time_create} · {article.readTime} min read</p>
+					{/* <p className="text-lg text-slate-500">Дата создания: </p> */}
+					{/* Uncomment if you want to show author and read time */}
+					{/* <p className="text-lg">{data.author ? data.author : "Булат Насыров"}</p> */}
+					<p className="text-center text-lg text-slate-500">{new Date(data.time_create).toLocaleDateString()} · {data.reading_time_minutes} min read</p>
 				</div>
 			</div>
-			<div className="py-4 flex flex-col px-4">
-				<img src={`http://127.0.0.1:8000${article.img}`} alt={article.title} />
-				<div className="pt-4 px-16 gap-4">
-					<p className="text-xl text-slate-500">{article.description}</p>
-				</div>
+			<div className='flex justify-center mb-4 relative'>
+				<img className='object-cover w-auto h-1/3 rounded-md' src={`${apiURL}/${data.img}`} alt={data.title} />
+			</div>
+			<div className="flex px-8 text-gray-700 leading-relaxed">
+				<p className="px-[11rem] text-justify mb-4">{data.description}</p>
 			</div>
 		</div>
-	</>
+	);
 };
 
 export default ArticleNews;

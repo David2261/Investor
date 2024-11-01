@@ -51,6 +51,7 @@ class ArticlesSerializer(serializers.ModelSerializer):
 class ArticleDetailSerializer(serializers.ModelSerializer):
 	category = CategorySerializerNS(read_only=True)
 	time_create = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+	reading_time_minutes = serializers.SerializerMethodField()
 
 	class Meta:
 		model = Articles
@@ -59,8 +60,16 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 			"description",
 			"category",
 			"img",
+			'reading_time_minutes',
 			"time_create",
 			"slug")
+
+	def get_reading_time_minutes(self, obj):
+		""" Функция для расчета время прочтения статьи,
+		при учете 1500 символов в минуту """
+		num_chars = len(obj.description)
+		reading_time_minutes = num_chars / 1500
+		return math.ceil(reading_time_minutes)
 
 
 class UserSerializer(serializers.ModelSerializer):

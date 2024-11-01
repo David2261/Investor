@@ -7,6 +7,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework import generics
@@ -78,6 +80,7 @@ class UserLogoutView(APIView):
 class PasswordResetRequestAPIView(APIView):
 	permission_classes = [permissions.AllowAny]
 
+	@method_decorator(cache_page(60 * 15))
 	def post(self, request):
 		serializer = PasswordResetRequestSerializer(data=request.data)
 		if serializer.is_valid():
@@ -166,6 +169,10 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
+	@method_decorator(cache_page(60 * 15))
+	def get(self, request, *args, **kwargs):
+		return super().get(request, *args, **kwargs)
+
 
 class GoogleLoginView(SocialLoginViewMixin):
 	adapter_class = GoogleOAuth2Adapter
@@ -173,13 +180,11 @@ class GoogleLoginView(SocialLoginViewMixin):
 	callback_url = '/api/v1/allauth/accounts/google/login/callback'
 
 	def get(self, request, *args, **kwargs):
-		# Add any logic for handling GET requests, if applicable
 		return Response(
 				{"message": "GET request successful"},
 				status=status.HTTP_200_OK)
 
 	def post(self, request, *args, **kwargs):
-		# Logic for handling POST requests, if applicable
 		return Response(
 				{"message": "POST request successful"},
 				status=status.HTTP_200_OK)
@@ -191,13 +196,11 @@ class YandexLoginView(SocialLoginViewMixin):
 	callback_url = '/api/v1/allauth/accounts/yandex/login/callback'
 
 	def get(self, request, *args, **kwargs):
-		# Add any logic for handling GET requests, if applicable
 		return Response(
 				{"message": "GET request successful"},
 				status=status.HTTP_200_OK)
 
 	def post(self, request, *args, **kwargs):
-		# Logic for handling POST requests, if applicable
 		return Response(
 				{"message": "POST request successful"},
 				status=status.HTTP_200_OK)
@@ -209,13 +212,11 @@ class MicrosoftLoginView(SocialLoginViewMixin):
 	callback_url = '/api/v1/allauth/accounts/microsoft/login/callback'
 
 	def get(self, request, *args, **kwargs):
-		# Add any logic for handling GET requests, if applicable
 		return Response(
 				{"message": "GET request successful"},
 				status=status.HTTP_200_OK)
 
 	def post(self, request, *args, **kwargs):
-		# Logic for handling POST requests, if applicable
 		return Response(
 				{"message": "POST request successful"},
 				status=status.HTTP_200_OK)

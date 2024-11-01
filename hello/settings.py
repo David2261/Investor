@@ -2,6 +2,8 @@ import os
 import sys
 from datetime import timedelta
 from django.urls import reverse_lazy
+from celery.schedules import crontab
+from .cache import CACHES
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -328,6 +330,19 @@ USE_L10N = True
 USE_TZ = False
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+
+# Celery
+CELERY_BROKER_URL = env('REDIS_BROKER_URL')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BEAT_SCHEDULE = {
+    'update-expired-bonds-every-day': {
+        'task': 'bonds.tasks.update_expired_bonds_task',
+        'schedule': crontab(hour=0, minute=0),
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

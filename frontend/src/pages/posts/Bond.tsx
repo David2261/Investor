@@ -1,65 +1,71 @@
-import { Key, useState, useEffect } from "react";
+import { Key, useState } from "react";
 import axios from 'axios';
 import '/src/styles/Bonds.css';
 // Hooks
-import { useFetch } from '../../hooks/useFetch.ts';
+import { useQuery } from '@tanstack/react-query';
 // Components
 import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
 import tgSuccess from "../../assets/pages/success.webp";
 
-const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
+const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре'];
 
 interface BondsAPIType {
 	results: {
 		id: Key,
-		title: number,
-		category: number,
+		title: string,
+		category: string,
 		price: number,
 		cupon: number,
-		cupon_percent: number
-	}[],
+		cupon_percent: number,
+		maturity: string
+	}[];
 }
 
 const Bonds = () => {
 	const apiURL = import.meta.env.VITE_API_URL;
-	const [dataPosts, setData] = useState<any[]>([]);
-	const [errorPosts, setError] = useState(null);
+	const [selectedCategory, setSelectedCategory] = useState('all');
 
-	const {data, error} : {
-		data: {
-			results: BondsAPIType[];
-		} | null | undefined;
-		error: { message: string };
-	} = useFetch<BondsAPIType[]>(`${apiURL}/api/bonds/bond/all/`, {method: 'GET'});
+	const { data, error, isLoading } = useQuery<BondsAPIType, Error>({
+		queryKey: ['bonds'],
+		queryFn: async () => {
+			const response = await axios.get(`${apiURL}/api/bonds/bond/all`);
+			return response.data;
+		}
+	});
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
-				setData(response.data.results);
-			} catch (err) {
-				setError(err as any);
-			}
-		};
-		fetchData();
-	}, [apiURL]);
+	const { data: dataOld, error: errorOld } = useQuery<BondsAPIType, Error>({
+		queryKey: ['bondsOld'],
+		queryFn: async () => {
+			const response = await axios.get(`${apiURL}/api/bonds/bond/all/old`);
+			return response.data;
+		}
+	});
 
-	const data_posts = dataPosts.length > 0 ? dataPosts.slice(0, 5) : [];
+	const { data: dataPosts, error: errorPosts } = useQuery<BondsAPIType, Error>({
+		queryKey: ['articles'],
+		queryFn: async () => {
+			const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
+			return response.data.results;
+		}
+	});
 
-	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
+	if (error) return <div>Error: {error.message}</div>;
+	if (errorOld) return <div>Error: {errorOld.message}</div>;
+	if (errorPosts) return <div>Error: {errorPosts.message}</div>;
 
-	if (!data) {
-		return <div>Loading...</div>;
-	}
+	if (isLoading) return <div>Loading...</div>;
 
-	if (errorPosts) {
-		return <div>Error: {errorPosts.message}</div>;
-	}
+	// Prepare filtered data
+	const filteredData = selectedCategory === 'old'
+		? dataOld || []
+		: selectedCategory === 'all'
+			? data || []
+			: data.filter(item => item.category === selectedCategory) || [];
 
-	return <>
+	const data_posts = dataPosts?.length > 0 ? dataPosts.slice(0, 5) : [];
+
+	return (
 		<div className="bonds-body">
 			{/* Header */}
 			<h1 className="bonds-title">ОФЗ, Муниципальные и Корпоративные Облигации</h1>
@@ -82,43 +88,43 @@ const Bonds = () => {
 			<div className="bonds-content-body">
 				<h1 className="bonds-content-title">Облигации: календарь на {new Date().getFullYear()}-{new Date().getFullYear() + 1}</h1>
 				<p className="bonds-content-under-title">
-				Дивидендный календарь в {new Date().getFullYear()}-{new Date().getFullYear() + 1} годах. Ближайшие купоны на одну облигацию в {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
+					Дивидендный календарь в {new Date().getFullYear()}-{new Date().getFullYear() + 1} годах. Ближайшие купоны на одну облигацию в {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
 				</p>
 				<div className="bonds-content-categories-block">
 					<div className="bcc-category" role="group">
-						<button className="bcc-category-btn">Все</button>
-						<button className="bcc-category-btn">ОФЗ</button>
-						<button className="bcc-category-btn">Муниципальные</button>
-						<button className="bcc-category-btn">Корпоративные</button>
+						<button className="bcc-category-btn" onClick={() => setSelectedCategory('all')}>Все</button>
+						<button className="bcc-category-btn" onClick={() => setSelectedCategory('federal loan bonds')}>ОФЗ</button>
+						<button className="bcc-category-btn" onClick={() => setSelectedCategory('municipal bonds')}>Муниципальные</button>
+						<button className="bcc-category-btn" onClick={() => setSelectedCategory('Corporate bonds')}>Корпоративные</button>
 					</div>
-					<button className="bonds-content-categories-old-btn">прошедшие купоны</button>
+					<button className="bonds-content-categories-old-btn" onClick={() => setSelectedCategory('old')}>прошедшие купоны</button>
 				</div>
 				<div className="bonds-content-table">
 					<div className="tbl-header">
 						<table cellPadding="0" cellSpacing="0">
 							<thead>
 								<tr>
-								<th>Облигация</th>
-								<th>Реестр</th>
-								<th>Лот</th>
-								<th>Купон</th>
-								<th>Купон в %</th>
+									<th>Облигация</th>
+									<th>Реестр</th>
+									<th>Лот</th>
+									<th>Купон</th>
+									<th>Купон в %</th>
+									<th>Дата погашения</th>
 								</tr>
 							</thead>
 						</table>
 					</div>
 				</div>
 				<div className="tbl-content">
-					<table cellPadding="0" cellSpacing="0" >
+					<table cellPadding="0" cellSpacing="0">
 						<tbody>
-							<DataTab data={data} />
+							<DataTab data={{ results: filteredData }} />
 						</tbody>
 					</table>
 				</div>
 			</div>
-		</div> 
-		</>
+		</div>
+	);
 }
-
 
 export default Bonds;
