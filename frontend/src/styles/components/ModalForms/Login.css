@@ -2,22 +2,26 @@
 
 .screen {
 	user-select: none;
-	overflow-y: hidden;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: #dde5f4;
-	height: 100vh;
+    overflow-y: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #dde5f4;
+    height: 100vh;
+    width: 100vw;
 }
 
 .screen-1 {
 	background: #f1f7fe;
-	padding: 2em;
-	display: flex;
-	flex-direction: column;
-	border-radius: 30px;
-	box-shadow: 0 0 2em #e6e9f9;
-	gap: 1em;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    box-shadow: 0 0 2em #e6e9f9;
+    gap: 1em;
+    /* Делаем контейнер более гибким */
+    width: 100%;
+    max-width: 500px;
 }
 
 .screen-1 .logo {

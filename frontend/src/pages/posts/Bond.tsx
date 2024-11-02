@@ -3,6 +3,8 @@ import axios from 'axios';
 import '/src/styles/Bonds.css';
 // Hooks
 import { useQuery } from '@tanstack/react-query';
+// Hooks
+import useMediaQuery from "../../hooks/useMediaQuery.ts";
 // Components
 import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
@@ -24,6 +26,7 @@ interface BondsAPIType {
 
 const Bonds = () => {
 	const apiURL = import.meta.env.VITE_API_URL;
+	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 	const [selectedCategory, setSelectedCategory] = useState('all');
 
 	const { data, error, isLoading } = useQuery<BondsAPIType, Error>({
@@ -46,7 +49,7 @@ const Bonds = () => {
 		queryKey: ['articles'],
 		queryFn: async () => {
 			const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
-			return response.data.results;
+			return response.data;
 		}
 	});
 
@@ -71,20 +74,30 @@ const Bonds = () => {
 			<h1 className="bonds-title">ОФЗ, Муниципальные и Корпоративные Облигации</h1>
 			<p className="bonds-under-title">Сервис по облигациям на Московской и Санкт-Петербургской бирже</p>
 			{/* News */}
-			<div className="bonds-news-body">
+			<div className="sm:flex bonds-news-body">
+				{isAboveMediumScreens ?
 				<div className="bonds-news-content-block">
 					<h1 className="bonds-news-content-block-header">Последние новости по облигациям</h1>
 					<Article data={data_posts} />
 				</div>
-				<div className="bonds-news-add-block">
-					<div className="bonds-news-add-header">
-						<h1>Телеграм по новостям</h1>
-						<img src={tgSuccess} alt="placeholder+image" />
-					</div>
-					<p className="bonds-news-add-under-text">@investorhome - официальный канал по облигациям.</p>
+				:
+				<div className="flex flex-col">
+					<h1 className="text-2xl justify-center">Последние новости по облигациям</h1>
+					<Article data={data_posts} />
 				</div>
+				}
+				{isAboveMediumScreens ?
+					<div className="bonds-news-add-block">
+						<div className="bonds-news-add-header">
+							<h1>Телеграм по новостям</h1>
+							<img src={tgSuccess} alt="placeholder+image" />
+						</div>
+						<p className="bonds-news-add-under-text">@investorhome - официальный канал по облигациям.</p>
+					</div>
+				: null}
 			</div>
 			{/* Block content bonds */}
+			{isAboveMediumScreens ?
 			<div className="bonds-content-body">
 				<h1 className="bonds-content-title">Облигации: календарь на {new Date().getFullYear()}-{new Date().getFullYear() + 1}</h1>
 				<p className="bonds-content-under-title">
@@ -123,6 +136,39 @@ const Bonds = () => {
 					</table>
 				</div>
 			</div>
+			:
+			<div className="bonds-content-table">
+				<h1 className="bonds-content-title">Облигации: календарь на {new Date().getFullYear()}-{new Date().getFullYear() + 1}</h1>
+				<p className="bonds-content-under-title">
+					Дивидендный календарь в {new Date().getFullYear()}-{new Date().getFullYear() + 1} годах. Ближайшие купоны на одну облигацию в {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
+				</p>
+				<div className="flex md:flex-row justify-between items-center mt-4">
+                    <div className="flex flex-wrap gap-4 space-x-2 mb-4">
+                        <button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('all')}>Все</button>
+                        <button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('federal loan bonds')}>ОФЗ</button>
+                        <button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('municipal bonds')}>Муниципальные</button>
+                        <button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('Corporate bonds')}>Корпоративные</button>
+                    	<button className="text-[#a9a9a9] bg-white font-semibold hover:text-black" onClick={() => setSelectedCategory('old')}>прошедшие купоны</button>
+                    </div>
+                </div>
+				<div className="overflow-x-auto">
+					<table className="min-w-full divide-y divide-gray-200 table-auto">
+						<thead>
+							<tr>
+								<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Облигация</th>
+								<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Реестр</th>
+								<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Лот</th>
+								<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Купон</th>
+								<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Купон в %</th>
+								<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Дата погашения</th>
+							</tr>
+						</thead>
+						<tbody className="bg-white divide-y divide-gray-200">
+							<DataTab data={{ results: filteredData }} />
+						</tbody>
+					</table>
+				</div>
+			</div>}
 		</div>
 	);
 }

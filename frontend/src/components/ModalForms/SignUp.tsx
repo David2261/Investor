@@ -14,8 +14,8 @@ interface SignUpProps {
 
 const SignUp: React.FC<SignUpProps> = (props) => {
 	const { registrationUser } = useContext(AuthContext);
-	const [form, setForm] = useState({ username: "", email: "", password: "", password2: "" });
-	const [error, setError] = useState<string | null>(null);
+	const [ form, setForm ] = useState({ username: "", email: "", password: "", password2: "" });
+	const [ error, setError ] = useState<string | null>(null);
 
 	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { target: { value, name } } = event;

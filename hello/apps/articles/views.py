@@ -44,6 +44,7 @@ log_info = logging.getLogger("root")
 
 class ArticlesListHome(BaseArticleList):
 	serializer_class = ArticlesSerializerHome
+	pagination_class = None
 
 
 class ArticlesList(BaseArticleList):

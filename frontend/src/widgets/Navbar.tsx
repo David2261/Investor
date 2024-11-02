@@ -91,7 +91,7 @@ const Navbar = () => {
 		</nav>
 		{/* MOBILE MENU MODAL */}
 		{!isAboveMediumScreens && isMenuToggled && (
-			<animated.div style={styles} className="fixed z-10 right-0 bottom-0 h-full w-[300px] bg-primary-100 drop-shadow-xl" >
+			<animated.div style={styles} className="fixed z-10 right-0 bottom-0 h-full bg-white w-[300px] drop-shadow-xl" >
 				{/* CLOSE ICON */}
 				<div className="flex justify-end p-12">
 					<button onClick={() => setIsMenuToggled(!isMenuToggled)}>
@@ -106,12 +106,21 @@ const Navbar = () => {
 						<MenuLink page="news" />
 						<MenuLink page="bonds" />
 						<MenuLink page="contact" />
+						{!user ? (<>
 						<button onClick={() => { openLogin(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
 							Login
 						</button>
 						<button onClick={() => { openSignUp(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
 							Sign-Up
 						</button>
+						</>
+						) : (<>
+							<MenuLink page="portfolio" />
+							<button onClick={logoutUser} className="uppercase text-zinc-600">
+								Logout
+							</button>
+						</>
+						)}
 					</div>
 				</div>
 			</animated.div>

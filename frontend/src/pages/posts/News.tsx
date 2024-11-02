@@ -6,6 +6,8 @@ import '../../styles/Blog.css';
 import PostsList from '../../components/Blog/PostsList';
 import DataTab from '../../components/Blog/DataTab';
 import Filter from '../../components/Blog/Filter';
+// Hooks
+import useMediaQuery from "../../hooks/useMediaQuery.ts";
 // Widgets
 import Loader from '../../widgets/Loader';
 import { getRandomImage } from '../../widgets/getRandomImage';
@@ -25,103 +27,67 @@ interface BlogAPIType {
 }
 
 const News = () => {
+	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 	const [page, setPage] = useState(1);
 	const [data, setData] = useState<BlogAPIType[]>([]);
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
-	const [, setTotalItems] = useState(0);
-	const [nextPage, setNextPage] = useState(null);
-	const [previousPage, setPreviousPage] = useState(null);
+	const [error, setError] = useState<string | null>(null);
+	const [_, setTotalItems] = useState(0);
+	const [nextPage, setNextPage] = useState<string | null>(null);
+	const [previousPage, setPreviousPage] = useState<string | null>(null);
 	const [isOpenSidebar, setIsOpenSidebar] = useState(false);
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 	const [filter, setFilter] = useState({ sortBy: 'popularity', order: 'desc' });
 	const apiUrl = import.meta.env.VITE_API_URL;
 
+	const fetchArticles = async () => {
+		setLoading(true);
+		try {
+			const params = new URLSearchParams();
+			params.append("ordering", filter.sortBy);
+			params.append("order", filter.order);
+			if (page > 1) params.append("page", page.toString());
+			if (selectedCategory) params.append("category", selectedCategory);
+
+			const url = `${apiUrl}/api/articles/articles/all/?${params.toString()}`;
+			const response = await axios.get(url);
+			setData(response.data.results);
+			setTotalItems(response.data.count);
+			setNextPage(response.data.next);
+			setPreviousPage(response.data.previous);
+			setError(null);
+		} catch (err) {
+			setError(err instanceof Error ? err.message : "An error occurred");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	useEffect(() => {
-		const fetchNewsArticles = async () => {
-			setLoading(true);
-			try {
-				const params = new URLSearchParams();
-				let url = `${apiUrl}/api/articles/articles/all/`;
-				if (page > 1) {
-                    params.append('page', page.toString());
-                }
-                if (selectedCategory) {
-                    params.append("category", selectedCategory);
-                }
-				url += `?${params.toString()}`;
-				const response = await axios.get(url);
-				setData(response.data.results);
-				setTotalItems(response.data.count);
-				setNextPage(response.data.next);
-				setPreviousPage(response.data.previous);
-			} catch (error) {
-				setError(error);
-			} finally {
-				setLoading(false);
-			}
-		};
-        fetchNewsArticles();
-    }, [apiUrl, page, selectedCategory]);
+		fetchArticles();
+	}, [page, selectedCategory, filter, apiUrl]);
 
-    useEffect(() => {
-		const applyFilters = async () => {
-			setLoading(true);
-			try {
-				const params = new URLSearchParams();
-				let url = `${apiUrl}/api/articles/articles/all/`;
-				params.append("ordering", filter.sortBy);
-                params.append("order", filter.order);
-                if (page > 1) {
-                    params.append('page', page.toString());
-                }
-                if (selectedCategory) {
-                    params.append("category", selectedCategory);
-                }
-				url += `?${params.toString()}`;
-				const response = await axios.get(url);
-				setData(response.data.results);
-				setTotalItems(response.data.count);
-				setNextPage(response.data.next);
-				setPreviousPage(response.data.previous);
-			} catch (error) {
-				setError(error);
-			} finally {
-				setLoading(false);
-			}
-		};
-        applyFilters();
-    }, [apiUrl, filter, page, selectedCategory]);
-
-	const handleFilterChange = (filter: { sortBy: string; order: string }) => {
-		setFilter(filter);
+	const handleFilterChange = (newFilter: { sortBy: string; order: string }) => {
+		setFilter(newFilter);
+		setPage(1);
 	};
 
 	const handleNextPage = () => {
-		if (nextPage != null) {
-			setPage(page + 1);
-		}
+		if (nextPage) setPage(prev => prev + 1);
 	};
 
 	const handlePreviousPage = () => {
-		if (previousPage != null) {
-			setPage(page - 1);
-		}
+		if (previousPage && page > 1) setPage(prev => prev - 1);
 	};
 
-	if (loading) {
-		return <Loader />
-	}
-
-	if (error) {
-		return <p>Error: {error.message}</p>
-	}
+	if (loading) return <Loader />;
+	if (error) return <p>Error: {error}</p>;
 
 	return (
 		<>
 		<h1 className="blog-header">Новости</h1>
 			{!isOpenSidebar ?
-			<div className="relative flex flex-col px-24">
+			<div className="relative flex flex-col px-4 md:px-24">
 				<div className="flex justify-between">
 					<DataTab
 						isSidebarChange={isOpenSidebar}
@@ -130,10 +96,11 @@ const News = () => {
 					/>
 					<Filter onFilterChange={handleFilterChange} />
 				</div>
-				<div className="grid grid-cols-3 gap-4 pt-4">
+				<div className="grid md:grid-cols-3 gap-4 pt-4">
 					<div className="col-span-2">
 					<PostsList data={data} />
 					</div>
+					{isAboveMediumScreens ?
 					<div className="col-span-1">
 						<div className='text-center px-16 text-4xl'>
 							<h1 className='pb-4'>Реклама</h1>
@@ -146,6 +113,7 @@ const News = () => {
 							</a>
 						</div>
 					</div>
+					: null}
 				</div>
 			</div>
 			:

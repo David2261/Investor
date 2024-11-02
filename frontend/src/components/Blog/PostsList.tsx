@@ -21,13 +21,13 @@ interface PostsListType {
 }
 
 // Блок статьи
-const PostsList: FunctionComponent<PostsListType> = (props: PostsListType) => {
+const PostsList: FunctionComponent<PostsListType> = ({ data }) => {
 	const n = 4;
-	return (props.data.map((value: PropsType, index) =>
+	return (data.map((value, index) =>
 		<div key={value.id} className="border-b-2 py-4 border-slate-200 mb-4">
-			{(index + 1) % n == 0 ? <DonateVerticalBlock /> : false }
+			{(index + 1) % n == 0 ? <DonateVerticalBlock /> : null }
 			<Link to={`/news/${value.category.slug}/${value.slug}`}>
-				<div className="grid grid-cols-3 gap-8">
+				<div className="grid grid-cols-2 md:grid-cols-3 gap-8">
 					<div className="col-span-2">
 						<p className="uppercase font-bold pb-2">{value.title}</p>
 						<p className="italic text-slate-300 font-light">{value.time_create}</p>
@@ -40,7 +40,7 @@ const PostsList: FunctionComponent<PostsListType> = (props: PostsListType) => {
 						</p>
 						<p className="text-base">{value.summary}...</p>
 					</div>
-					<div>
+					<div className="col-span-2 md:col-span-1">
 						<img src={value.img} className="rounded-lg" alt="" />
 					</div>
 				</div>

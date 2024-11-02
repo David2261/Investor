@@ -22,7 +22,7 @@ const Home = () => {
 		queryKey: ['articles'],
 		queryFn: async () => {
 			const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
-			return response.data.results;
+			return response.data;
 		},
 	});
 
@@ -48,7 +48,7 @@ const Home = () => {
 			<div className={`${centerContent} mx-6 mt-20 mb-10`} data-name="start-with">
 				<h1 className="font-bold uppercase text-5xl" >НАЧНИТЕ С ЭТОГО</h1>
 			</div>
-			<div className="columns-3 md:mx-6 mb-10">
+			<div className="md:columns-3 sm:flex md:mx-6 mb-10">
 				<div className="ml-4 mr-2">
 					<div className={`${centerContent} w-full`}><img src={realModel} alt="real_model" /></div>
 					<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Реальные и модельные портфели</p></div>
@@ -66,7 +66,7 @@ const Home = () => {
 				</div>
 			</div>
 			<div className="bg-neutral-300 w-full mb-10">
-				<div className="w-full grid grid-cols-2 gap-4 mt-4 mb-4">
+				<div className="w-full grid md:grid-cols-2 gap-4 mt-4 mb-4">
 					<div className={`col-span-2 ${centerContent} my-4`}><h1 className="uppercase font-bold text-2xl">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1></div>
 					<ContentList data={data} />
 					<div className={`col-span-2 ${centerContent} my-4`}>
