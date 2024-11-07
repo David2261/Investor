@@ -32,6 +32,13 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": false
   },
+  "exclude": [
+    "./src/__tests__",
+    "./src/alpha_test_data",
+    "./src/__mocks__",
+    "./src/api",
+    "node_modules"
+  ],
   "include": ["src", "src/**/*.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }
