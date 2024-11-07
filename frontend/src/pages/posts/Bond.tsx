@@ -1,4 +1,4 @@
-import { Key, useState } from "react";
+import { Key, useState, useMemo } from "react";
 import axios from 'axios';
 import '/src/styles/Bonds.css';
 // Hooks
@@ -12,16 +12,18 @@ import tgSuccess from "../../assets/pages/success.webp";
 
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре'];
 
+interface Bond {
+    id: Key;
+    title: string;
+    category: string;
+    price: number;
+    cupon: number;
+    cupon_percent: number;
+    maturity: string;
+}
+
 interface BondsAPIType {
-	results: {
-		id: Key,
-		title: string,
-		category: string,
-		price: number,
-		cupon: number,
-		cupon_percent: number,
-		maturity: string
-	}[];
+    results: Bond[];
 }
 
 const Bonds = () => {
@@ -60,13 +62,18 @@ const Bonds = () => {
 	if (isLoading) return <div>Loading...</div>;
 
 	// Prepare filtered data
-	const filteredData = selectedCategory === 'old'
-		? dataOld || []
-		: selectedCategory === 'all'
-			? data || []
-			: data.filter(item => item.category === selectedCategory) || [];
+	const filteredData = useMemo(() => {
+        if (selectedCategory === 'old') {
+            return dataOld?.results || [];
+        }
+        if (selectedCategory === 'all') {
+            return data?.results || [];
+        }
+        return data?.results.filter(item => item.category === selectedCategory) || [];
+    }, [selectedCategory, data, dataOld]);
 
-	const data_posts = dataPosts?.length > 0 ? dataPosts.slice(0, 5) : [];
+	// @ts-ignore
+    const dataPostsToDisplay = dataPosts?.slice(0, 5) || [];
 
 	return (
 		<div className="bonds-body">
@@ -78,12 +85,12 @@ const Bonds = () => {
 				{isAboveMediumScreens ?
 				<div className="bonds-news-content-block">
 					<h1 className="bonds-news-content-block-header">Последние новости по облигациям</h1>
-					<Article data={data_posts} />
+					<Article data={dataPostsToDisplay} />
 				</div>
 				:
 				<div className="flex flex-col">
 					<h1 className="text-2xl justify-center">Последние новости по облигациям</h1>
-					<Article data={data_posts} />
+					<Article data={dataPostsToDisplay} />
 				</div>
 				}
 				{isAboveMediumScreens ?

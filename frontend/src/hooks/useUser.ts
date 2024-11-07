@@ -10,6 +10,7 @@ export interface User {
 }
 
 export const useUser = () => {
+	// @ts-ignore
 	const { user, setUser } = useContext(AuthContext);
 	const { setItem } = useLocalStorage();
 

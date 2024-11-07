@@ -19,7 +19,7 @@ import NotFound from './pages/static/NotFound.tsx';
 import News from './pages/posts/News.tsx';
 import Bonds from './pages/posts/Bond.tsx';
 // Admin
-import HomeAdmin from './pages/admin/HomeAdmin.tsx';
+// import HomeAdmin from './pages/admin/HomeAdmin.tsx';
 // Personal
 import Portfolio from './pages/personal/Portfolio.tsx';
 
@@ -39,14 +39,14 @@ function App() {
             <Route path="emailagreement" element={ <Emailagreement /> } />
             <Route path="news" element={ <News /> } />
             {/* Private pages */}
-            <Route element={<PrivateRoute children={undefined} />} >
+            <Route element={<PrivateRoute />} >
               <Route path="bonds" element={ <Bonds /> } />
               <Route path="portfolio" element={ <Portfolio /> } />
               <Route path="news/:category/:slug" element={ <ArticleNews />} />
             </Route>
           </Route>
           {/* Admin page */}
-          <Route path="/admin" element={ <HomeAdmin />}></Route>
+          {/* <Route path="/admin" element={ <HomeAdmin />}></Route> */}
           <Route path='*' element={ <NotFound />} />
       </Routes>
     </div>

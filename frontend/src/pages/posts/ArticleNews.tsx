@@ -34,7 +34,7 @@ const ArticleNews = () => {
 	}
 
 	if (error) {
-		return <div>Error: {error,message}</div>;
+		return <div>Error: {error.message}</div>;
 	}
 
 	if (!data) {
