@@ -15,11 +15,15 @@ interface DataTabType {
 	onSelectCategory: (category: string) => void;
 }
 
+interface ErrorType {
+    message: string;
+}
+
 // Боковая панель навигации по категориям
 const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarChange, onSelectCategory }) => {
 	const apiURL = import.meta.env.VITE_API_URL;
 	const [data, setData] = useState<any[]>([]);
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<ErrorType | null>(null);
 	const [dataCount, setDataCount] = useState<number>(0);
 	const [isOpen, setIsOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");

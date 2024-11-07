@@ -1,54 +1,65 @@
 import { Key, FunctionComponent } from "react";
 
 interface BondData {
-	id: Key;
-	title: string;
-	category: string;
-	price: number;
-	cupon: number;
-	cupon_percent: number;
-	maturity: string;
+    id: Key;
+    title: string;
+    category: string;
+    price: number;
+    cupon: number;
+    cupon_percent: number;
+    maturity: string;
 }
 
 interface DataTabType {
-	data: {
-		results: BondData[];
-	};
+    data: {
+        results: BondData[];
+    };
 }
 
 const DataTab: FunctionComponent<DataTabType> = ({ data }) => {
-	if (data.length === 0) {
-		return false;
-	}
-	const translateBondType = (bondType: string) => {
-		const translations = {
-			'municipal bonds': 'Муниципальные облигации',
-			'corporate bonds': 'Корпоративные облигации',
-			'federal loan bonds': 'Облигации федерального займа',
-		};
-		return translations[bondType.toLowerCase()] || bondType;
-	};
+    const results = data.results || [];
 
-	return (
-		<>
-			{data && data.results && data.results.length > 0 ? (
-				data.results.map((value) => (
-					<tr key={value.id}>
-						<td data-label="Облигация">{value.title}</td>
-						<td data-label="Реестр">{translateBondType(value.category)}</td>
-						<td data-label="Лот">{value.price}</td>
-						<td data-label="Купон">{value.cupon}</td>
-						<td data-label="Купон в %">{value.cupon_percent}</td>
-						<td data-label="Дата погашения">{value.maturity.split('T')[0]}</td>
-					</tr>
-				))
-			) : (
-				<tr>
-					<td colSpan={5} style={{ textAlign: "center" }}>Нет данных для отображения</td>
-				</tr>
-			)}
-		</>
-	);
+    const translateBondType = (bondType: string) => {
+        const translations: Record<string, string> = {
+            'municipal bonds': 'Муниципальные облигации',
+            'corporate bonds': 'Корпоративные облигации',
+            'federal loan bonds': 'Облигации федерального займа',
+        };
+        return translations[bondType.toLowerCase()] || bondType;
+    };
+
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>Облигация</th>
+                    <th>Реестр</th>
+                    <th>Лот</th>
+                    <th>Купон</th>
+                    <th>Купон в %</th>
+                    <th>Дата погашения</th>
+                </tr>
+            </thead>
+            <tbody>
+                {results.length > 0 ? (
+                    results.map((value) => (
+                        <tr key={value.id}>
+                            <td data-label="Облигация">{value.title}</td>
+                            <td data-label="Реестр">{translateBondType(value.category)}</td>
+                            <td data-label="Лот">{value.price}</td>
+                            <td data-label="Купон">{value.cupon}</td>
+                            <td data-label="Купон в %">{value.cupon_percent}</td>
+                            <td data-label="Дата погашения">{value.maturity.split('T')[0]}</td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan={6} style={{ textAlign: "center" }}>Нет данных для отображения</td>
+                    </tr>
+                )}
+            </tbody>
+        </table>
+    );
 };
 
 export default DataTab;
