@@ -6,9 +6,9 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      input: {
-        main: 'src/main.tsx',
-        ssr: 'src/ssr-entry.tsx'
+      input: 'index.html',
+      output: {
+        dir: 'dist',
       }
     }
   }
