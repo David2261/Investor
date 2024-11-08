@@ -6,7 +6,7 @@ After=network.target
 User=www
 Group=www-data
 WorkingDirectory=Investor
-ExecStart=Investor/env/bin/gunicorn --workers 3 --bind unix:Investor/gunicorn/gunicorn.sock config.wsgi:application --access-logfile Investor/gunicorn/access.log --error-logfile Investor/gunicorn/error.log
+ExecStart=Investor/env/bin/gunicorn --workers 3 --bind unix:Investor/gunicorn/gunicorn.sock hello.wsgi:application --access-logfile Investor/gunicorn/access.log --error-logfile Investor/gunicorn/error.log
 Restart=on-failure
 
 [Install]
