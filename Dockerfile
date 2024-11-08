@@ -1,5 +1,5 @@
 
-FROM python:3.13.0a3-slim
+FROM python:3.13-slim
 
 WORKDIR /usr/src/app
 
