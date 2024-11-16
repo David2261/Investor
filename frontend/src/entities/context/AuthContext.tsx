@@ -47,12 +47,22 @@ const AuthSwal = withReactContent(Swal)
 
 export const AuthProvider = ({children}: {children: ReactNode}) => {
 	const [authTokens, setAuthTokens] = useState<AuthTokens | null>(() => {
-		const storedAuthTokens = localStorage.getItem("authTokens");
-		return storedAuthTokens ? JSON.parse(storedAuthTokens) : null;
+		try {
+			const storedAuthTokens = localStorage.getItem("authTokens");
+			return storedAuthTokens ? JSON.parse(storedAuthTokens) : null;
+		} catch (error) {
+			console.error("Ошибка при чтении authTokens из localStorage:", error);
+			return null;
+		}
 	});
-	const [user, setUser] = useState<User | null>(() => {
-		const storedAuthTokens = localStorage.getItem("authTokens");
-		return storedAuthTokens ? jwtDecode(storedAuthTokens) : null;
+	const [user, setUser ] = useState<User | null>(() => {
+		try {
+			const storedAuthTokens = localStorage.getItem("authTokens");
+			return storedAuthTokens ? jwtDecode(storedAuthTokens) : null;
+		} catch (error) {
+			console.error("Ошибка при декодировании токена:", error);
+			return null;
+		}
 	});
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
@@ -233,7 +243,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 
 	return (
 		<AuthContext.Provider value={contextData}>
-			{loading ? null : children}
+			{!loading ? children : null}
 		</AuthContext.Provider>
 	)
 }
