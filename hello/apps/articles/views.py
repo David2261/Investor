@@ -1,6 +1,7 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 import csv
+import json
 import logging
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -34,6 +35,7 @@ from .serializers import (
 	ArticleDetailSerializer,
 	ArticlesSerializerHome)
 from .forms import ArticlesCSVForm
+from .forms import ArticlesJSONForm
 from .pagination import ArticlesPagination
 from .filters import ArticleFilter
 
@@ -227,4 +229,76 @@ class UploadCSV(CreateView):
 		except Exception as e:
 			messages.error(request, f"Unable to upload file. {repr(e)}")
 			transaction.rollback()
+		return super().post(request, *args, **kwargs)
+
+
+class GenerateJSON(View):
+	permission_classes = [AdminCreatorOnly]
+
+	def get(self, request, *args, **kwargs):
+		articles = Articles.objects.values(
+			'id',
+			'title',
+			'category__name',
+			'description',
+			'img',
+			'is_published'
+		)
+
+		articles_list = list(articles)
+
+		json_data = json.dumps(articles_list, ensure_ascii=False)
+
+		response = HttpResponse(
+				json_data,
+				content_type='application/json; charset=utf-8')
+		return response
+
+
+class UploadJSON(CreateView):
+	permission_classes = [AdminCreatorOnly]
+	model = Articles
+	form_class = ArticlesJSONForm
+	template_name = "options/upload_json.html"
+
+	def post(self, request, *args, **kwargs):
+		# Instantiate the form with the uploaded file
+		form = self.get_form()
+
+		if form.is_valid():
+			json_file = form.cleaned_data['json_file']
+
+			try:
+				# Read and decode the JSON file
+				file_data = json_file.read().decode("utf-8")
+				articles_data = json.loads(file_data)
+
+				with transaction.atomic():
+					for article in articles_data:
+						# Assuming the JSON structure has keys
+						# matching the fields in your Articles model
+						article_data = {
+							'title': article.get('title'),
+							'category': Category.objects.get(name=article.get('category__name')),
+							'description': article.get('description'),
+							'img': article.get('img'),
+							'is_published': article.get('is_published')
+						}
+						Articles.objects.create(**article_data)
+
+				messages.success(
+						request,
+						"JSON file uploaded and articles created successfully.")
+
+			except json.JSONDecodeError:
+				messages.error(request, "Invalid JSON format.")
+			except Exception as e:
+				messages.error(request, f"Unable to upload file. {repr(e)}")
+				transaction.rollback()
+
+		else:
+			messages.error(
+					request,
+					"There was an error with your form. Please try again.")
+
 		return super().post(request, *args, **kwargs)
