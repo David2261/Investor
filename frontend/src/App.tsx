@@ -3,6 +3,7 @@ import './App.css';
 // Entities
 import PrivateRoute from "./entities/routers/PrivateRoute.tsx";
 import LayoutRoute from './entities/routers/LayoutRoute.tsx';
+import AdminLayoutRoute from './entities/routers/AdminLayoutRoute.tsx';
 // Pages
 import Home from './pages/Home.tsx';
 import ArticleNews from './pages/posts/ArticleNews.tsx';
@@ -19,7 +20,7 @@ import NotFound from './pages/static/NotFound.tsx';
 import News from './pages/posts/News.tsx';
 import Bonds from './pages/posts/Bond.tsx';
 // Admin
-// import HomeAdmin from './pages/admin/HomeAdmin.tsx';
+import AdminLogin from './pages/admin/AdminLogin.tsx';
 // Personal
 import Portfolio from './pages/personal/Portfolio.tsx';
 
@@ -47,6 +48,9 @@ function App() {
           </Route>
           {/* Admin page */}
           {/* <Route path="/admin" element={ <HomeAdmin />}></Route> */}
+          <Route path="/admin" element={ <AdminLayoutRoute /> }>
+            <Route index path="login" element={ <AdminLogin /> } />
+          </Route>
           <Route path='*' element={ <NotFound />} />
       </Routes>
     </div>
