@@ -124,6 +124,25 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 		return token
 
+	def get_role(self):
+		"""
+		Возвращает роль пользователя.
+		Проверяет поля модели `Member` для определения роли.
+		"""
+		try:
+			if self.is_staff:
+				member = self.member
+				if member.is_admin:
+					return "admin"
+				elif member.is_creator:
+					return "creator"
+				else:
+					return "regular user"
+			else:
+				return "regular user"
+		except Member.DoesNotExist:
+			return "regular user"
+
 
 class Member(models.Model):
 	is_admin = models.BooleanField(default=False, verbose_name=_("admin"))

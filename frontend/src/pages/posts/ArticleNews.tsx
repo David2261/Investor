@@ -14,12 +14,13 @@ interface ArticleNewsAPI {
 	img: string;
 	time_create: string;
 	slug: string;
+	reading_time_minutes: number;
 }
 
 const ArticleNews = () => {
 	const { category, slug } = useParams();
 	const apiURL = import.meta.env.VITE_API_URL;
-	const { data, error, isLoading } = useQuery({
+	const { data, error, isLoading } = useQuery<ArticleNewsAPI>({
 		queryKey: ['article', category, slug],
 		queryFn: async () => {
 			const response = await axios.get(`${apiURL}/api/articles/articles/${category}/${slug}`);

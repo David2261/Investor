@@ -41,6 +41,9 @@ env = environ.Env()
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 
+""" Для обычных пользователей """
+
+
 class RegistrationAPIView(CreateAPIView):
 	queryset = User.objects.all()
 	permission_classes = [permissions.AllowAny]

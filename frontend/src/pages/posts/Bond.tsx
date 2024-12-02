@@ -13,17 +13,17 @@ import tgSuccess from "../../assets/pages/success.webp";
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре'];
 
 interface Bond {
-    id: Key;
-    title: string;
-    category: string;
-    price: number;
-    cupon: number;
-    cupon_percent: number;
-    maturity: string;
+	id: Key;
+	title: string;
+	category: string;
+	price: number;
+	cupon: number;
+	cupon_percent: number;
+	maturity: string;
 }
 
 interface BondsAPIType {
-    results: Bond[];
+	results: Bond[];
 }
 
 const Bonds = () => {
@@ -63,17 +63,17 @@ const Bonds = () => {
 
 	// Prepare filtered data
 	const filteredData = useMemo(() => {
-        if (selectedCategory === 'old') {
-            return dataOld?.results || [];
-        }
-        if (selectedCategory === 'all') {
-            return data?.results || [];
-        }
-        return data?.results.filter(item => item.category === selectedCategory) || [];
-    }, [selectedCategory, data, dataOld]);
+		if (selectedCategory === 'old') {
+			return dataOld?.results || [];
+		}
+		if (selectedCategory === 'all') {
+			return data?.results || [];
+		}
+		return data?.results.filter(item => item.category === selectedCategory) || [];
+	}, [selectedCategory, data, dataOld]);
 
-	// @ts-ignore
-    const dataPostsToDisplay = dataPosts?.slice(0, 5) || [];
+	// @ts-expect-error - property 'slice' does not exist on type BondsAPIType
+	const dataPostsToDisplay = dataPosts?.slice(0, 5) || [];
 
 	return (
 		<div className="bonds-body">
@@ -150,14 +150,14 @@ const Bonds = () => {
 					Дивидендный календарь в {new Date().getFullYear()}-{new Date().getFullYear() + 1} годах. Ближайшие купоны на одну облигацию в {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
 				</p>
 				<div className="flex md:flex-row justify-between items-center mt-4">
-                    <div className="flex flex-wrap gap-4 space-x-2 mb-4">
-                        <button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('all')}>Все</button>
-                        <button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('federal loan bonds')}>ОФЗ</button>
-                        <button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('municipal bonds')}>Муниципальные</button>
-                        <button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('Corporate bonds')}>Корпоративные</button>
-                    	<button className="text-[#a9a9a9] bg-white font-semibold hover:text-black" onClick={() => setSelectedCategory('old')}>прошедшие купоны</button>
-                    </div>
-                </div>
+					<div className="flex flex-wrap gap-4 space-x-2 mb-4">
+						<button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('all')}>Все</button>
+						<button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('federal loan bonds')}>ОФЗ</button>
+						<button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('municipal bonds')}>Муниципальные</button>
+						<button className="text-[#a9a9a9] bg-white font-semibold py-2 px-4 rounded" onClick={() => setSelectedCategory('Corporate bonds')}>Корпоративные</button>
+						<button className="text-[#a9a9a9] bg-white font-semibold hover:text-black" onClick={() => setSelectedCategory('old')}>прошедшие купоны</button>
+					</div>
+				</div>
 				<div className="overflow-x-auto">
 					<table className="min-w-full divide-y divide-gray-200 table-auto">
 						<thead>

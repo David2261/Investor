@@ -32,7 +32,7 @@ const News = () => {
 	const [data, setData] = useState<BlogAPIType[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [_, setTotalItems] = useState(0);
+	const [ , setTotalItems] = useState(0);
 	const [nextPage, setNextPage] = useState<string | null>(null);
 	const [previousPage, setPreviousPage] = useState<string | null>(null);
 	const [isOpenSidebar, setIsOpenSidebar] = useState(false);

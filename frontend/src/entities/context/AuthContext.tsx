@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { User } from "../../hooks/useUser";
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -8,6 +7,14 @@ import withReactContent from 'sweetalert2-react-content'
 interface AuthTokens {
 	access: string;
 	refresh: string;
+}
+
+export interface User {
+	url: string;
+	username: string;
+	email: string;
+	groups: string[];
+	role: string;
 }
 
 interface RegistrationForm {
@@ -19,12 +26,14 @@ interface RegistrationForm {
 
 interface AuthContextType {
 	user: User | null;
+	setUser: (user: User | null) => void;
 	authTokens: AuthTokens | null;
 	loginUser: ({ email, password }: { email: string; password: string }) => Promise<void>;
 	registrationUser: (formData: RegistrationForm) => Promise<void>;
 	logoutUser: () => void;
 	login: (user: User) => void;
 	logout: () => void;
+	isAdmin: boolean;
 	resetPassword: (email: string) => Promise<void>;
 }
 
@@ -32,6 +41,7 @@ const apiURL = import.meta.env.VITE_API_URL;
 
 const AuthContext = createContext<AuthContextType>({
 	user: null,
+	setUser: () => {},
 	authTokens: null,
 	loginUser: async () => {},
 	logoutUser: () => {},
@@ -39,6 +49,7 @@ const AuthContext = createContext<AuthContextType>({
 	login: () => {},
 	logout: () => {},
 	resetPassword: async () => {},
+	isAdmin: false,
 });
 
 export default AuthContext;
@@ -66,6 +77,33 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	});
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
+
+	const fetchUserData = useCallback(async () => {
+		if (!authTokens) return;
+
+		const response = await fetch(`${apiURL}/api/v1/user/data/`, {
+			method: "GET",
+			headers: {
+				'Authorization': `Bearer ${authTokens.access}`,
+			},
+		});
+		const data = await response.json();
+
+		if (response.status === 200) {
+			setUser(data);
+			localStorage.setItem('user', JSON.stringify(data));
+		} else {
+			Swal.fire({
+				title: "Error fetching user data",
+				icon: "error",
+				toast: true,
+				timer: 6000,
+				position: 'top-right',
+				timerProgressBar: true,
+				showConfirmButton: false,
+			});
+		}
+	}, [authTokens]);
 
 	const loginUser = async ({ email, password }: { email: string; password: string; }) => {
 		const response = await fetch(`${apiURL}/api/v1/token/`, {
@@ -238,8 +276,13 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		const interval = setInterval(() => {
 			authTokens ? updateToken() : false;
 		}, fourMinutes);
+		if (authTokens) {
+			fetchUserData();
+		} else {
+			setUser(null);
+		}
 		return () => clearInterval(interval);
-	}, [authTokens, loading, updateToken]);
+	}, [authTokens, loading, updateToken, fetchUserData]);
 
 	return (
 		<AuthContext.Provider value={contextData}>

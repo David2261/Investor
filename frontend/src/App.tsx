@@ -20,7 +20,9 @@ import NotFound from './pages/static/NotFound.tsx';
 import News from './pages/posts/News.tsx';
 import Bonds from './pages/posts/Bond.tsx';
 // Admin
-import AdminLogin from './pages/admin/AdminLogin.tsx';
+// import AdminLogin from './pages/admin/AdminLogin.tsx';
+import AdminMain from './pages/admin/AdminMain.tsx';
+import AdminArticleList from './pages/admin/AdminArticleList.tsx';
 // Personal
 import Portfolio from './pages/personal/Portfolio.tsx';
 
@@ -49,7 +51,9 @@ function App() {
           {/* Admin page */}
           {/* <Route path="/admin" element={ <HomeAdmin />}></Route> */}
           <Route path="/admin" element={ <AdminLayoutRoute /> }>
-            <Route index path="login" element={ <AdminLogin /> } />
+            {/* <Route index path="login" element={ <AdminLogin /> } /> */}
+            <Route index path="main" element={ <AdminMain /> } />
+            <Route path="article/list" element={ <AdminArticleList /> } />
           </Route>
           <Route path='*' element={ <NotFound />} />
       </Routes>
