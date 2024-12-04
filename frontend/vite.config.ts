@@ -11,5 +11,8 @@ export default defineConfig({
         dir: 'dist',
       }
     }
-  }
+  },
+  server: {
+    historyApiFallback: true,
+  },
 })

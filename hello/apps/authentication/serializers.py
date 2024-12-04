@@ -97,7 +97,11 @@ class PasswordResetSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	url = serializers.HyperlinkedIdentityField(view_name='authentication:user-detail', lookup_field='pk')
+	role = serializers.SerializerMethodField()
 
 	class Meta:
 		model = User
-		fields = ['url', 'username', 'email', 'groups']
+		fields = ['url', 'username', 'email', 'groups', 'role']
+	
+	def get_role(self, obj):
+		return obj.get_role()

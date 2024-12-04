@@ -42,7 +42,7 @@ const ContentNews: FunctionComponent<ContentListProps> = ({ data }) => {
 				<h2 className="font-bold text-lg md:text-xl md:text-2xl hover:underline">{value.title}</h2>
 			</div>
 			<div className="w-full pb-6 border-b-2">
-				<img className="object-cover w-full h-auto" src={value.img} alt={value.title} />
+				<img className="object-cover w-full h-auto" src={value.img} alt={value.title} loading="lazy" />
 			</div>
 		</Link>
 	</>

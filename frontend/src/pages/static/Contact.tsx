@@ -1,7 +1,12 @@
+import { Helmet } from 'react-helmet-async';
 
 
 const Contact = () => {
 	return <div className="w-full h-auto px-6 md:px-20 text-justify">
+		<Helmet>
+		<title>Contact</title>
+		<meta name='description' content='Contact page' />
+		</Helmet>
 		<div className="py-10">
 			<h1 className="text-5xl font-bold">Контакт</h1>
 		</div>

@@ -1,5 +1,6 @@
 import { Component, useState } from 'react';
 import { useTransition, animated } from '@react-spring/web';
+import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2'
 import axios from 'axios';
 
@@ -127,6 +128,10 @@ const Portfolio = () => {
 	return (
 		<>
 		<div className="w-full h-full">
+			<Helmet>
+			<title>Портфолио</title>
+			<meta name='description' content='Portfolio page' />
+			</Helmet>
 			<div className="flex w-full px-4 md:px-24 mt-10 mb-10">
 			<div className='w-full flex flex-col border rounded-lg bg-slate-100 pt-10 pb-10 px-4 md:px-24'>
 				<div className='flex flex-row justify-center mb-10'>

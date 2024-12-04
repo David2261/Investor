@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { Helmet } from 'react-helmet-async';
 // Components
 import ContentNews from '../components/Home/ContentNews';
 import ContentPost from '../components/Home/ContentPost';
@@ -36,6 +37,10 @@ const Home = () => {
 
 	return (
 		<div className="bg-white flex flex-col pb-4 py-2 md:py-4 w-full">
+			<Helmet>
+			<title>Home</title>
+			<meta name='description' content='Home page' />
+			</Helmet>
 			<div className="flex flex-wrap md:flex-nowrap md:flex-row mx-6">
 				<div className="flex flex-col md:w-3/5 md:mx-6 font-sans text-xl space-y-4 leading-7">
 					<h1 className="uppercase text-5xl"><b>ИНВЕСТИРУЕМ</b> В АКТИВЫ ГЛОБАЛЬНО</h1>
@@ -50,17 +55,17 @@ const Home = () => {
 			</div>
 			<div className="md:columns-3 sm:flex md:mx-6 mb-10">
 				<div className="ml-4 mr-2">
-					<div className={`${centerContent} w-full`}><img src={realModel} alt="real_model" /></div>
+					<div className={`${centerContent} w-full`}><img src={realModel} alt="real_model" loading="lazy"/></div>
 					<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Реальные и модельные портфели</p></div>
 					<div><p className="font-sans text-lg md:text-xl">Не знаете что покупать в свой портфель? Посмотрите на наши инвестиции</p></div>
 				</div>
 				<div className="mx-2">
-					<div className={`${centerContent}`}><img src={liveSituation} alt="live_situation" /></div>
+					<div className={`${centerContent}`}><img src={liveSituation} alt="live_situation" loading="lazy"/></div>
 					<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Текущая ситуация</p></div>
 					<div><p className="font-sans text-lg md:text-xl">Еженедельные обзоры главных тенденций на российских и глобальных финансовых площадках</p></div>
 				</div>
 				<div className="mr-4 ml-2">
-					<div className={`${centerContent}`}><img src={eduYourself} alt="edu_yourself" /></div>
+					<div className={`${centerContent}`}><img src={eduYourself} alt="edu_yourself" loading="lazy"/></div>
 					<div className={`${centerContent}`}><p className="text-lg font-bold hover:text-slate-700">Прокачайте себя</p></div>
 					<div><p className="font-sans text-lg md:text-xl">Инвестируйте сначала в себя, а потом уже в другие активы. Сделайте Upgrade своих навыков</p></div>
 				</div>
@@ -93,7 +98,7 @@ const Home = () => {
 						<p className="uppercase font-bold text-xl hover:underline">Mark Zuckerberg's 'Year of Efficiency' spreads from Meta to Priscilla Chan's charitable organization, which just laid off dozens of people</p> */}
 						{/* Adverts */}
 						<h1 className='uppercase font-bold text-lg mb-4 border-b-2'>Реклама</h1>
-						<img className='h-48 w-auto mb-4' src={getRandomImage()} alt="" />
+						<img className='h-48 w-auto mb-4' src={getRandomImage()} alt="ad_donate" loading="lazy"/>
 						<a href="https://new.donatepay.ru/@1097922" target='_blank' rel="noopener noreferrer">
 							<p className="uppercase font-bold text-xl hover:underline">
 								Ваша поддержка значит для меня очень много!<br />

@@ -1,6 +1,14 @@
 from rest_framework.permissions import BasePermission
 
 
+class IsAdminUser(BasePermission):
+	"""
+	Разрешение для проверки, является ли пользователь администратором.
+	"""
+	def has_permission(self, request, view):
+		return request.user.is_staff
+
+
 class AdminCreatorOnly(BasePermission):
 	def has_permission(self, request, view):
 		return (

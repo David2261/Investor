@@ -1,23 +1,34 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { hydrateRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App.tsx'
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./entities/context/AuthContext.tsx";
 import './index.css'
 
-const root = ReactDOM.createRoot(document.getElementById('root')!);
+const root = document.getElementById('root')!;
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-root.render(
+hydrateRoot(
+  root,
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <App />
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
         </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>
-)
+);

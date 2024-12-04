@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { User } from "../../hooks/useUser";
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -8,6 +7,14 @@ import withReactContent from 'sweetalert2-react-content'
 interface AuthTokens {
 	access: string;
 	refresh: string;
+}
+
+export interface User {
+	url: string;
+	username: string;
+	email: string;
+	groups: string[];
+	role: string;
 }
 
 interface RegistrationForm {
@@ -19,6 +26,7 @@ interface RegistrationForm {
 
 interface AuthContextType {
 	user: User | null;
+	setUser: (user: User | null) => void;
 	authTokens: AuthTokens | null;
 	loginUser: ({ email, password }: { email: string; password: string }) => Promise<void>;
 	registrationUser: (formData: RegistrationForm) => Promise<void>;
@@ -32,6 +40,7 @@ const apiURL = import.meta.env.VITE_API_URL;
 
 const AuthContext = createContext<AuthContextType>({
 	user: null,
+	setUser: () => {},
 	authTokens: null,
 	loginUser: async () => {},
 	logoutUser: () => {},
@@ -47,15 +56,56 @@ const AuthSwal = withReactContent(Swal)
 
 export const AuthProvider = ({children}: {children: ReactNode}) => {
 	const [authTokens, setAuthTokens] = useState<AuthTokens | null>(() => {
-		const storedAuthTokens = localStorage.getItem("authTokens");
-		return storedAuthTokens ? JSON.parse(storedAuthTokens) : null;
+		try {
+			const storedAuthTokens = localStorage.getItem("authTokens");
+			return storedAuthTokens ? JSON.parse(storedAuthTokens) : null;
+		} catch (error) {
+			console.error("Ошибка при чтении authTokens из localStorage:", error);
+			return null;
+		}
 	});
-	const [user, setUser] = useState<User | null>(() => {
-		const storedAuthTokens = localStorage.getItem("authTokens");
-		return storedAuthTokens ? jwtDecode(storedAuthTokens) : null;
+	const [user, setUser ] = useState<User | null>(() => {
+		try {
+			const storedAuthTokens = localStorage.getItem("authTokens");
+			return storedAuthTokens ? jwtDecode(storedAuthTokens) : null;
+		} catch (error) {
+			console.error("Ошибка при декодировании токена:", error);
+			return null;
+		}
 	});
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
+
+	const fetchUserData = useCallback(async () => {
+		try {
+			if (!authTokens) return;
+	
+			const response = await fetch(`${apiURL}/api/v1/user/data/`, {
+				method: "GET",
+				headers: { 'Authorization': `Bearer ${authTokens.access}` },
+			});
+	
+			if (response.ok) {
+				const data = await response.json();
+				setUser(data);
+				localStorage.setItem('user', JSON.stringify(data));
+			} else {
+				throw new Error("Не удалось получить данные пользователя");
+			}
+		} catch (error) {
+			console.error("Ошибка при получении данных пользователя:", error);
+			Swal.fire({
+				title: "Ошибка при загрузке данных пользователя",
+				icon: "error",
+				toast: true,
+				timer: 6000,
+				position: 'top-right',
+				timerProgressBar: true,
+				showConfirmButton: false,
+			});
+		}
+	}, [authTokens?.access]);
+	
 
 	const loginUser = async ({ email, password }: { email: string; password: string; }) => {
 		const response = await fetch(`${apiURL}/api/v1/token/`, {
@@ -182,26 +232,29 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	}, [navigate]);
 
 	const updateToken = useCallback(async () => {
-
-		const response = await fetch(`${apiURL}/api/v1/token/refresh/`, {
-			method:'POST',
-			headers:{
-				'Content-Type':'application/json'
-			},
-			body:JSON.stringify({'refresh':authTokens?.refresh})
-		})
-
-		const data = await response.json()
-
-		if (response.status === 200){
-			setAuthTokens(data)
-			setUser(jwtDecode(data.access))
-			localStorage.setItem('authTokens', JSON.stringify(data))
-		} else {
-			logoutUser()
+		try {
+			const response = await fetch(`${apiURL}/api/v1/token/refresh/`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ refresh: authTokens?.refresh }),
+			});
+	
+			if (response.ok) {
+				const data = await response.json();
+				setAuthTokens(data);
+				setUser(jwtDecode(data.access));
+				localStorage.setItem('authTokens', JSON.stringify(data));
+			} else {
+				logoutUser();
+			}
+		} catch (error) {
+			console.error("Ошибка обновления токена:", error);
+			logoutUser();
+		} finally {
+			setLoading(false);
 		}
-		loading ? setLoading(false) : false;
-	}, [authTokens?.refresh, loading, logoutUser]);
+	}, [authTokens?.refresh, logoutUser]);
+	
 
 	const contextData = {
 		user: user,
@@ -217,6 +270,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setUser(null);
 			setAuthTokens(null);
 		},
+		setUser,
 		resetPassword: resetPassword,
 	};
 
@@ -228,12 +282,17 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		const interval = setInterval(() => {
 			authTokens ? updateToken() : false;
 		}, fourMinutes);
+		if (authTokens) {
+			fetchUserData();
+		} else {
+			setUser(null);
+		}
 		return () => clearInterval(interval);
-	}, [authTokens, loading, updateToken]);
+	}, [authTokens, loading, updateToken, fetchUserData]);
 
 	return (
 		<AuthContext.Provider value={contextData}>
-			{loading ? null : children}
+			{!loading ? children : null}
 		</AuthContext.Provider>
 	)
 }

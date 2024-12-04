@@ -30,16 +30,6 @@ const DataTab: FunctionComponent<DataTabType> = ({ data }) => {
 
     return (
         <table>
-            <thead>
-                <tr>
-                    <th>Облигация</th>
-                    <th>Реестр</th>
-                    <th>Лот</th>
-                    <th>Купон</th>
-                    <th>Купон в %</th>
-                    <th>Дата погашения</th>
-                </tr>
-            </thead>
             <tbody>
                 {results.length > 0 ? (
                     results.map((value) => (

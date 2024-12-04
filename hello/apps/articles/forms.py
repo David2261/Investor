@@ -12,3 +12,14 @@ class ArticlesCSVForm(forms.ModelForm):
 				'description',
 				'img',
 				'is_published']
+
+
+class ArticlesJSONForm(forms.ModelForm):
+	class Meta:
+		model = Articles
+		fields = [
+				'title',
+				'category',
+				'description',
+				'img',
+				'is_published']

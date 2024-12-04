@@ -1,5 +1,6 @@
 import { Key, useState, useEffect } from 'react';
 import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
 // Styles
 import '../../styles/Blog.css';
 // Components
@@ -32,7 +33,7 @@ const News = () => {
 	const [data, setData] = useState<BlogAPIType[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [_, setTotalItems] = useState(0);
+	const [ , setTotalItems] = useState(0);
 	const [nextPage, setNextPage] = useState<string | null>(null);
 	const [previousPage, setPreviousPage] = useState<string | null>(null);
 	const [isOpenSidebar, setIsOpenSidebar] = useState(false);
@@ -86,6 +87,10 @@ const News = () => {
 	return (
 		<>
 		<h1 className="blog-header">Новости</h1>
+			<Helmet>
+			<title>Новости</title>
+			<meta name='description' content='News page' />
+			</Helmet>
 			{!isOpenSidebar ?
 			<div className="relative flex flex-col px-4 md:px-24">
 				<div className="flex justify-between">

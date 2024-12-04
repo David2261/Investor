@@ -1,7 +1,12 @@
+import { Helmet } from 'react-helmet-async';
 
 
 const Payanddelivery = () => {
 	return <div className="w-full h-auto py-10">
+		<Helmet>
+		<title>Pay & Delivery</title>
+		<meta name='description' content='Pay & Delivery page' />
+		</Helmet>
 		<div className="px-10 flex flex-col gap-5 text-xl text-slate-600 text-justify">
 			<h1 className="text-5xl pb-5 text-slate-900">Условия доставки и оплаты</h1>
 			<p className="text-3xl text-slate-900">Условия оплаты</p>
