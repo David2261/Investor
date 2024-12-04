@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, useMemo } from "react";
+import { useState, Key, useMemo } from "react";
 import axios from 'axios';
 import '/src/styles/Bonds.css';
 // Hooks
@@ -16,7 +16,7 @@ const months = ['январе', 'феврале', 'марте', 'апреле', 
 
 // Bond data types
 type Bond = {
-    id: number;
+    id: Key;
     title: string;
     description: string;
     category: string;
@@ -28,6 +28,20 @@ type Bond = {
     slug: string;
     [key: string]: any;
 };
+
+interface NewsAPIType {
+	id: Key;
+	category: {
+		name: string;
+		slug: string;
+	};
+	title: string;
+	img: string | undefined;
+	slug: string;
+	time_create: string;
+	reading_time_minutes: number;
+	summary: string;
+}
 
 type BondsAPIResponse = Bond[];
 
@@ -53,7 +67,7 @@ const Bonds = () => {
         }
     });
 
-    const { data: dataPosts, error: errorPosts } = useQuery<BondsAPIResponse, Error>({
+    const { data: dataPosts, error: errorPosts } = useQuery<NewsAPIType[], Error>({
         queryKey: ['articles'],
         queryFn: async () => {
             const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);

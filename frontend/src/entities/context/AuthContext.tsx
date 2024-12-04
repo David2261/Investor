@@ -34,6 +34,7 @@ interface AuthContextType {
 	login: (user: User) => void;
 	logout: () => void;
 	resetPassword: (email: string) => Promise<void>;
+	loading: boolean;
 }
 
 const apiURL = import.meta.env.VITE_API_URL;
@@ -48,6 +49,7 @@ const AuthContext = createContext<AuthContextType>({
 	login: () => {},
 	logout: () => {},
 	resetPassword: async () => {},
+	loading: true,
 });
 
 export default AuthContext;
@@ -75,36 +77,6 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	});
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
-
-	const fetchUserData = useCallback(async () => {
-		try {
-			if (!authTokens) return;
-	
-			const response = await fetch(`${apiURL}/api/v1/user/data/`, {
-				method: "GET",
-				headers: { 'Authorization': `Bearer ${authTokens.access}` },
-			});
-	
-			if (response.ok) {
-				const data = await response.json();
-				setUser(data);
-				localStorage.setItem('user', JSON.stringify(data));
-			} else {
-				throw new Error("Не удалось получить данные пользователя");
-			}
-		} catch (error) {
-			console.error("Ошибка при получении данных пользователя:", error);
-			Swal.fire({
-				title: "Ошибка при загрузке данных пользователя",
-				icon: "error",
-				toast: true,
-				timer: 6000,
-				position: 'top-right',
-				timerProgressBar: true,
-				showConfirmButton: false,
-			});
-		}
-	}, [authTokens?.access]);
 	
 
 	const loginUser = async ({ email, password }: { email: string; password: string; }) => {
@@ -254,7 +226,6 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setLoading(false);
 		}
 	}, [authTokens?.refresh, logoutUser]);
-	
 
 	const contextData = {
 		user: user,
@@ -274,6 +245,37 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		resetPassword: resetPassword,
 	};
 
+	const fetchUserData = useCallback(async () => {
+		if (!authTokens) return;
+		try {	
+			const response = await fetch(`${apiURL}/api/v1/user/data/`, {
+				method: "GET",
+				headers: { 'Authorization': `Bearer ${authTokens.access}` },
+			});
+	
+			if (response.ok) {
+				const data = await response.json();
+				setUser(data);
+				localStorage.setItem('user', JSON.stringify(data));
+			} else {
+				throw new Error("Не удалось получить данные пользователя");
+			}
+		} catch (error) {
+			console.error("Ошибка при получении данных пользователя:", error);
+			Swal.fire({
+				title: "Ошибка при загрузке данных пользователя",
+				icon: "error",
+				toast: true,
+				timer: 6000,
+				position: 'top-right',
+				timerProgressBar: true,
+				showConfirmButton: false,
+			});
+		} finally {
+            setLoading(false);
+        }
+	}, [authTokens]);
+
 	useEffect(() => {
 		loading ? updateToken() : false;
 
@@ -286,9 +288,10 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			fetchUserData();
 		} else {
 			setUser(null);
+			setLoading(false);
 		}
 		return () => clearInterval(interval);
-	}, [authTokens, loading, updateToken, fetchUserData]);
+	}, [authTokens, loading, fetchUserData, updateToken]);
 
 	return (
 		<AuthContext.Provider value={contextData}>

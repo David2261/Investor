@@ -95,9 +95,7 @@ INSTALLED_APPS = [
 	'authentication.apps.AuthenticationConfig',
 	'bonds.apps.BondsConfig',
 	# admin
-	'grappelli.dashboard',
-	'grappelli',
-	'tinymce',
+	'adminpanel.apps.AdminpanelConfig',
 ]
 
 SITE_ID = 1
@@ -370,10 +368,4 @@ STORAGES = {
 	"staticfiles": {
 		"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
 	},
-}
-
-# Admin
-GRAPPELLI_INDEX_DASHBOARD = 'hello.dashboard.CustomIndexDashboard'
-GRAPPELLI_INDEX_DASHBOARD = {  # alternative method
-	'hello.admin.admin_site': 'hello.dashboard.CustomIndexDashboard',
 }

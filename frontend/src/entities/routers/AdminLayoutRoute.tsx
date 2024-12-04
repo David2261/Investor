@@ -5,8 +5,12 @@ import AuthContext from '../context/AuthContext';
 import Preloader from '../../widgets/preloader.tsx';
 
 const AdminLayoutRoute = () => {
-	const { user } = useContext(AuthContext);
+	const { user, loading } = useContext(AuthContext);
 	const isAdmin = user?.role === 'admin';
+
+	if (loading || user?.role === undefined) {
+		return <Preloader />;
+	}
 
 	return isAdmin ? (
 		<>

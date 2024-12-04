@@ -8,7 +8,7 @@ urlpatterns = [
 	path('api/articles/', include('articles.urls')),
 	path('api/', include('authentication.urls')),
 	path('api/bonds/', include('bonds.urls')),
-	path('grappelli/', include('grappelli.urls')),
+	path('api/admin/', include('adminpanel.urls')),
 	path('admin/', admin.site.urls),
 	# path('accounts/', include('django.contrib.auth.urls')),
 	path('api/v1/auth/', include('djoser.urls')),
