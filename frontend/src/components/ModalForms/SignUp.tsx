@@ -12,10 +12,13 @@ interface SignUpProps {
 	setIsLogin: () => void;
 }
 
+
 const SignUp: React.FC<SignUpProps> = (props) => {
 	const { registrationUser } = useContext(AuthContext);
 	const [ form, setForm ] = useState({ username: "", email: "", password: "", password2: "" });
 	const [ error, setError ] = useState<string | null>(null);
+	const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
+	const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { target: { value, name } } = event;
@@ -26,6 +29,16 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 		e.preventDefault();
 
 		setError(null);
+
+		if (!usernamePattern.test(form.username)) {
+			setError("Invalid username format.");
+			return;
+		}
+
+		if (!emailPattern.test(form.email)) {
+			setError("Invalid email format.");
+			return;
+		}
 
 		try {
 			await registrationUser(form);

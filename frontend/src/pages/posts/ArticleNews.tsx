@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 
@@ -44,6 +45,10 @@ const ArticleNews = () => {
 
 	return (
 		<div className="max-w-screen-md mx-auto font-mono p-4">
+			<Helmet>
+			<title>{data.title}</title>
+			<meta name='description' content={`${data.title} | ${data.category.name}`} />
+			</Helmet>
 			<p className="text-center uppercase text-green-500 text-lg pt-10">{data.category.name}</p>
 			<h1 className="text-center text-2xl font-bold uppercase mb-4 text-gray-800">{data.title}</h1>
 			<div className="flex flex-row justify-center">

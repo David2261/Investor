@@ -33,7 +33,6 @@ interface AuthContextType {
 	logoutUser: () => void;
 	login: (user: User) => void;
 	logout: () => void;
-	isAdmin: boolean;
 	resetPassword: (email: string) => Promise<void>;
 }
 
@@ -49,7 +48,6 @@ const AuthContext = createContext<AuthContextType>({
 	login: () => {},
 	logout: () => {},
 	resetPassword: async () => {},
-	isAdmin: false,
 });
 
 export default AuthContext;
@@ -79,22 +77,25 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	const navigate = useNavigate();
 
 	const fetchUserData = useCallback(async () => {
-		if (!authTokens) return;
-
-		const response = await fetch(`${apiURL}/api/v1/user/data/`, {
-			method: "GET",
-			headers: {
-				'Authorization': `Bearer ${authTokens.access}`,
-			},
-		});
-		const data = await response.json();
-
-		if (response.status === 200) {
-			setUser(data);
-			localStorage.setItem('user', JSON.stringify(data));
-		} else {
+		try {
+			if (!authTokens) return;
+	
+			const response = await fetch(`${apiURL}/api/v1/user/data/`, {
+				method: "GET",
+				headers: { 'Authorization': `Bearer ${authTokens.access}` },
+			});
+	
+			if (response.ok) {
+				const data = await response.json();
+				setUser(data);
+				localStorage.setItem('user', JSON.stringify(data));
+			} else {
+				throw new Error("Не удалось получить данные пользователя");
+			}
+		} catch (error) {
+			console.error("Ошибка при получении данных пользователя:", error);
 			Swal.fire({
-				title: "Error fetching user data",
+				title: "Ошибка при загрузке данных пользователя",
 				icon: "error",
 				toast: true,
 				timer: 6000,
@@ -103,7 +104,8 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 				showConfirmButton: false,
 			});
 		}
-	}, [authTokens]);
+	}, [authTokens?.access]);
+	
 
 	const loginUser = async ({ email, password }: { email: string; password: string; }) => {
 		const response = await fetch(`${apiURL}/api/v1/token/`, {
@@ -230,26 +232,29 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	}, [navigate]);
 
 	const updateToken = useCallback(async () => {
-
-		const response = await fetch(`${apiURL}/api/v1/token/refresh/`, {
-			method:'POST',
-			headers:{
-				'Content-Type':'application/json'
-			},
-			body:JSON.stringify({'refresh':authTokens?.refresh})
-		})
-
-		const data = await response.json()
-
-		if (response.status === 200){
-			setAuthTokens(data)
-			setUser(jwtDecode(data.access))
-			localStorage.setItem('authTokens', JSON.stringify(data))
-		} else {
-			logoutUser()
+		try {
+			const response = await fetch(`${apiURL}/api/v1/token/refresh/`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ refresh: authTokens?.refresh }),
+			});
+	
+			if (response.ok) {
+				const data = await response.json();
+				setAuthTokens(data);
+				setUser(jwtDecode(data.access));
+				localStorage.setItem('authTokens', JSON.stringify(data));
+			} else {
+				logoutUser();
+			}
+		} catch (error) {
+			console.error("Ошибка обновления токена:", error);
+			logoutUser();
+		} finally {
+			setLoading(false);
 		}
-		loading ? setLoading(false) : false;
-	}, [authTokens?.refresh, loading, logoutUser]);
+	}, [authTokens?.refresh, logoutUser]);
+	
 
 	const contextData = {
 		user: user,
@@ -265,6 +270,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setUser(null);
 			setAuthTokens(null);
 		},
+		setUser,
 		resetPassword: resetPassword,
 	};
 

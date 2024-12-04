@@ -27,7 +27,7 @@ const ContentPost: FunctionComponent<ContentPostDataType> = ({ data }) => {
 			<Link to={`/news/${value.category.slug}/${value.slug}`}>
 				<p className="text-lg uppercase text-sky-500">{value.category.name}</p>
 				<p className="text-lg font-bold">{value.title}</p>
-				<img className="w-full h-auto pb-4 border-b-2" src={value.img} alt={value.title} />
+				<img className="w-full h-auto pb-4 border-b-2" src={value.img} alt={value.title} loading="lazy" />
 			</Link>
 		</div>
 	</Fragment>

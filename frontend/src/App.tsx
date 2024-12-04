@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import { Helmet } from 'react-helmet-async';
 // Entities
 import PrivateRoute from "./entities/routers/PrivateRoute.tsx";
 import LayoutRoute from './entities/routers/LayoutRoute.tsx';
@@ -29,6 +30,10 @@ import Portfolio from './pages/personal/Portfolio.tsx';
 function App() {
   return (
     <div className="w-full h-full relative no-scroll-y">
+      <Helmet
+          defaultTitle="Investor Home"
+          titleTemplate="Investor Home | %s"
+        />
       <Routes>
           <Route path="/" element= { <LayoutRoute /> }>
             <Route index element={ <Home /> } />

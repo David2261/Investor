@@ -18,6 +18,9 @@ const Login: React.FC<LoginProps> = (props) => {
 	const { loginUser } = useContext(AuthContext);
 	const [form, setForm] = useState({ email: "", password: "" });
 	const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
+
+	const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { target: { value, name } } = event;
@@ -26,6 +29,18 @@ const Login: React.FC<LoginProps> = (props) => {
 
 	const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
+		if (!emailPattern.test(form.email)) {
+			setError("Please enter a valid email address.");
+			return;
+		}
+
+		if (form.password.length < 6) {
+			setError("Password must be at least 6 characters long.");
+			return;
+		}
+
+		setError(null);
 		loginUser({ 
 			email: form.email,
 			password: form.password 
@@ -77,6 +92,7 @@ const Login: React.FC<LoginProps> = (props) => {
 						<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 					</svg>
 				</button>
+				{error && <div className="error">{error}</div>}
 				<div className="email">
 					<label htmlFor="email-input">Email Address</label>
 					<div className="sec-2">

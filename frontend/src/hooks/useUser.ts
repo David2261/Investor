@@ -2,7 +2,7 @@ import { useContext } from "react";
 import AuthContext from "../entities/context/AuthContext";
 import { useLocalStorage } from "./useLocalStorage";
 
-type User = {
+export type User = {
 	url: string;
 	username: string;
 	email: string;

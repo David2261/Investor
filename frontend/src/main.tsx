@@ -1,6 +1,7 @@
 import React from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App.tsx'
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./entities/context/AuthContext.tsx";
@@ -23,7 +24,9 @@ hydrateRoot(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <App />
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
         </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>

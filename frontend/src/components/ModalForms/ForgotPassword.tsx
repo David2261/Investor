@@ -15,6 +15,9 @@ interface ForgotPasswordProps {
 const ForgotPassword: React.FC<ForgotPasswordProps> = ({ setIsOpen, setIsForgotPassword }) => {
 	const { resetPassword } = useContext(AuthContext);
 	const [email, setEmail] = useState("");
+	const [error, setError] = useState<string | null>(null);
+
+	const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 	
 	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setEmail(event.target.value);
@@ -22,6 +25,12 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ setIsOpen, setIsForgotP
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (!emailPattern.test(email)) {
+			setError("Пожалуйста, введите правильный адрес электронной почты.");
+			return;
+		}
+
+		setError(null);
 		await resetPassword(email);
 		setIsOpen();
 	};
@@ -47,6 +56,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ setIsOpen, setIsForgotP
 						<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 					</svg>
 				</button>
+				{error && <div className="error">{error}</div>}
 				<div className="email">
 					<label htmlFor="email-input">Email адрес</label>
 					<div className="sec-2">

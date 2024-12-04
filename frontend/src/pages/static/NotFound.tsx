@@ -1,9 +1,15 @@
 import '../../styles/pages/static/NotFound.css';
 import React from "react";
+import { Helmet } from 'react-helmet-async';
+
 
 const NotFound: React.FC = () => {
   return (
     <div className="h-screen w-full bg-[#121428] overflow-hidden flex items-center justify-center">
+      <Helmet>
+      <title>Not Found 404</title>
+      <meta name='description' content='Not Found 404 page' />
+      </Helmet>
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-center relative">
         {/* "404" Section */}
         <div className="four0four text-white text-[15rem] md:text-right md:w-[450px] md:mr-8 relative z-10">
