@@ -26,6 +26,7 @@ class AdminUserSerializer(serializers.ModelSerializer):
 class AdminArticleSerializer(serializers.ModelSerializer):
 	category = AdminCategorySerializer()
 	author = AdminUserSerializer()
+
 	class Meta:
 		model = Articles
 		fields = ['title', 'author', 'is_published', 'category', 'time_update']
@@ -35,4 +36,3 @@ class AdminBondSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Bonds
 		fields = ['title', 'is_published', 'maturity', 'cupon_percent', 'category']
-

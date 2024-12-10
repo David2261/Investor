@@ -33,6 +33,8 @@ static/
 systemd/
 nginx/
 .vscode/
+.vscode/settings.json
+.vscode/launch.json
 
 
 # PyInstaller

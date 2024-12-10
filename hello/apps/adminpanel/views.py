@@ -1,6 +1,5 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.db.models import Q
 from articles.models import Articles
 from articles.models import Category
 from bonds.models import Bonds

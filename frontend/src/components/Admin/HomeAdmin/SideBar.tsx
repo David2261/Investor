@@ -1,7 +1,6 @@
 import { FunctionComponent } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 // Assets
 import '../../../styles/pages/admin/AdminMain.css';
 import Logo from '../../../assets/logo/IH.webp';
@@ -21,8 +20,8 @@ interface SideBarProps {
 
 const Sidebar: FunctionComponent<SideBarProps> = ({ dataApps, dataModels }) => {
 	const location = useLocation();
-	let adminApps = dataApps;
-	let adminModels = dataModels;
+	const adminApps = dataApps;
+	const adminModels = dataModels;
 
 	const helpClick = () => {
 		Swal.fire({

@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from .models import Bonds
 
+
 class PriceFilter(SimpleListFilter):
 	title = 'Цена'
 	parameter_name = 'price'
