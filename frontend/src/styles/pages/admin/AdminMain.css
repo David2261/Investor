@@ -1,0 +1,11 @@
+
+
+
+.input-placeholder::placeholder {
+    color: white;
+}
+
+.input-placeholder-white::placeholder {
+    color: black;
+    font-size: 12px;
+}

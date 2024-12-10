@@ -4,19 +4,25 @@ import axios from 'axios';
 // Entities
 import AuthContext from '../../entities/context/AuthContext.tsx';
 
-interface AdminModelsResponse {
-	[key: string]: string[];
+interface Article {
+	id: number;
+	title: string;
+	content: string;
+}
+
+interface ArticlesResponse {
+	articles: Article[];
 }
 
 const apiURL = import.meta.env.VITE_API_URL;
 
-export const useAdminModels = () => {
+export const useAdminArticles = () => {
 	const { authTokens } = useContext(AuthContext);
 
-	return useQuery<AdminModelsResponse, Error>({
-		queryKey: ['adminModels'],
+	return useQuery<ArticlesResponse, Error>({
+		queryKey: ['articles'],
 		queryFn: async () => {
-			const response = await axios.get<AdminModelsResponse>(`${apiURL}/api/admin/apps/models/`, {
+			const response = await axios.get<ArticlesResponse>(`${apiURL}/api/admin/apps/main/articles/`, {
 				headers: {
 					Authorization: `Bearer ${authTokens?.access}`
 				}

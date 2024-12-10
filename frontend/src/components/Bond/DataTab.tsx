@@ -1,4 +1,6 @@
 import { Key, FunctionComponent } from "react";
+// Widgets
+import TranslateBondType from "../../widgets/TranslateBondType.tsx";
 
 interface BondData {
     id: Key;
@@ -19,15 +21,6 @@ interface DataTabType {
 const DataTab: FunctionComponent<DataTabType> = ({ data }) => {
     const results = data.results || [];
 
-    const translateBondType = (bondType: string) => {
-        const translations: Record<string, string> = {
-            'municipal bonds': 'Муниципальные облигации',
-            'corporate bonds': 'Корпоративные облигации',
-            'federal loan bonds': 'Облигации федерального займа',
-        };
-        return translations[bondType.toLowerCase()] || bondType;
-    };
-
     return (
         <table>
             <tbody>
@@ -35,7 +28,7 @@ const DataTab: FunctionComponent<DataTabType> = ({ data }) => {
                     results.map((value) => (
                         <tr key={value.id}>
                             <td data-label="Облигация">{value.title}</td>
-                            <td data-label="Реестр">{translateBondType(value.category)}</td>
+                            <td data-label="Реестр">{TranslateBondType(value.category)}</td>
                             <td data-label="Лот">{value.price}</td>
                             <td data-label="Купон">{value.cupon}</td>
                             <td data-label="Купон в %">{value.cupon_percent}</td>

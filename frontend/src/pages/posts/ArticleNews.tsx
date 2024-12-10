@@ -1,7 +1,10 @@
+import { useContext } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
+// Entities
+import AuthContext from '../../entities/context/AuthContext.tsx';
 
 interface ArticleNewsAPI {
 	author: string | null;
@@ -17,17 +20,22 @@ interface ArticleNewsAPI {
 	slug: string;
 	reading_time_minutes: number;
 }
+const apiURL = import.meta.env.VITE_API_URL;
 
 const ArticleNews = () => {
 	const { category, slug } = useParams();
-	const apiURL = import.meta.env.VITE_API_URL;
+	const { authTokens } = useContext(AuthContext);
 	const { data, error, isLoading } = useQuery<ArticleNewsAPI>({
 		queryKey: ['article', category, slug],
 		queryFn: async () => {
-			const response = await axios.get(`${apiURL}/api/articles/articles/${category}/${slug}`);
+			const response = await axios.get(`${apiURL}/api/articles/articles/${category}/${slug}`, {
+				headers: {
+					Authorization: `Bearer ${authTokens?.access}`
+				}
+			});
 			return response.data;
 		},
-		enabled: !!category && !!slug,
+		enabled: !!category && !!slug && !!authTokens,
 
 	});
 

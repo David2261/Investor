@@ -24,6 +24,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from authentication.models import User
 from authentication.permissions import AdminCreatorOnly
+from authentication.permissions import IsAdminUser
 from segregation.decorators import counted
 from segregation.views import BaseArticleList
 from .models import Articles
@@ -53,6 +54,7 @@ class ArticlesList(BaseArticleList):
 	serializer_class = ArticlesSerializer
 	pagination_class = ArticlesPagination
 	filter_backends = [DjangoFilterBackend, OrderingFilter]
+	permissions_classes = [permissions.IsAuthenticated]
 	filterset_class = ArticleFilter
 	ordering_fields = ['popularity', 'time_create']
 	ordering = ['-time_create']
@@ -89,7 +91,7 @@ class ArticlesList(BaseArticleList):
 
 
 class ArticleDetail(APIView):
-	permissions_classes = [permissions.AllowAny]
+	permissions_classes = [permissions.IsAuthenticated]
 
 	def get_object(self, cat_slug, post_slug):
 		try:
@@ -140,7 +142,7 @@ class ArticleAPICreator(APIView):
 class CategoriesList(ListAPIView):
 	serializer_class = CategorySerializer
 	queryset = Category.objects.all()
-	permission_classes = [permissions.AllowAny]
+	permissions_classes = [permissions.IsAuthenticated]
 
 	@method_decorator(cache_page(60 * 15))
 	def get(self, request, *args, **kwargs):
@@ -151,7 +153,7 @@ class CategoriesList(ListAPIView):
 
 
 class CategoryDetail(APIView):
-	permissions_classes = [permissions.AllowAny]
+	permissions_classes = [permissions.IsAuthenticated]
 
 	def get_object(self, cat_slug):
 		try:
@@ -167,12 +169,12 @@ class CategoryDetail(APIView):
 
 class UserList(ListAPIView):
 	queryset = User.objects.all()
-	permission_classes = [AdminCreatorOnly]
+	permission_classes = [IsAdminUser]
 	serializer_class = UserSerializer
 
 
 class GenerateCSV(View):
-	permission_classes = [AdminCreatorOnly]
+	permission_classes = [IsAdminUser]
 
 	def get(self, request, *args, **kwargs):
 		response = HttpResponse(content_type='text/csv')
@@ -199,7 +201,7 @@ class GenerateCSV(View):
 
 
 class UploadCSV(CreateView):
-	permission_classes = [AdminCreatorOnly]
+	permission_classes = [IsAdminUser]
 	model = Articles
 	form_class = ArticlesCSVForm
 	template_name = "options/upload.html"
@@ -233,7 +235,7 @@ class UploadCSV(CreateView):
 
 
 class GenerateJSON(View):
-	permission_classes = [AdminCreatorOnly]
+	permission_classes = [IsAdminUser]
 
 	def get(self, request, *args, **kwargs):
 		articles = Articles.objects.values(
@@ -256,7 +258,7 @@ class GenerateJSON(View):
 
 
 class UploadJSON(CreateView):
-	permission_classes = [AdminCreatorOnly]
+	permission_classes = [IsAdminUser]
 	model = Articles
 	form_class = ArticlesJSONForm
 	template_name = "options/upload_json.html"

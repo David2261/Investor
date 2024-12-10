@@ -10,6 +10,7 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework import permissions
 
+from authentication.permissions import IsAdminUser
 from .models import Bonds
 from .serializers import (
 	BondDetailSerializer,
@@ -22,7 +23,7 @@ from .forms import BondsForm
 class BondsList(ListAPIView):
 	queryset = Bonds.objects.filter(is_published=True)
 	serializer_class = BondsSerializer
-	permissions_classes = [permissions.AllowAny]
+	permissions_classes = [permissions.IsAuthenticated]
 	pagination_class = None
 
 	def get_queryset(self):
@@ -37,7 +38,7 @@ class BondsList(ListAPIView):
 class BondsListOld(ListAPIView):
 	queryset = Bonds.objects.filter(is_published=False)
 	serializer_class = BondsSerializer
-	permissions_classes = [permissions.AllowAny]
+	permissions_classes = [permissions.IsAuthenticated]
 	pagination_class = None
 
 	def get_queryset(self):
@@ -57,6 +58,8 @@ class BondDetail(RetrieveAPIView):
 
 
 class GenerateCSV(View):
+	permission_classes = [IsAdminUser]
+
 	def get(self, request, *args, **kwargs):
 		response = HttpResponse(content_type='text/csv')
 		response['Content-Disposition'] = 'attachment; filename="bonds.csv"'
@@ -79,6 +82,7 @@ class UploadCSV(CreateView):
 	model = Bonds
 	form_class = BondsForm
 	template_name = "options/upload_bond.html"
+	permission_classes = [IsAdminUser]
 
 	def form_valid(self, form):
 		csv_file = form.cleaned_data.get('csv_file')
