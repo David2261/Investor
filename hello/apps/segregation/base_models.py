@@ -6,13 +6,17 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 
-from authentication.models import User  # type: ignore
+from authentication.models import User
 from .options import check_lang
 
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger("dev")
 log_info = logging.getLogger("root")
+
+
+def get_default_image_path():
+	return 'default/default_image.webp'
 
 
 class BasePost(models.Model):

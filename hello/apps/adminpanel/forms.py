@@ -2,7 +2,30 @@
 from django import forms
 from django.core.exceptions import ValidationError
 import csv
-from .models import Bonds
+from articles.models import Articles
+from bonds.models import Bonds
+
+
+class ArticlesCSVForm(forms.ModelForm):
+	class Meta:
+		model = Articles
+		fields = [
+				'title',
+				'category',
+				'description',
+				'img',
+				'is_published']
+
+
+class ArticlesJSONForm(forms.ModelForm):
+	class Meta:
+		model = Articles
+		fields = [
+				'title',
+				'category',
+				'description',
+				'img',
+				'is_published']
 
 
 class BondsForm(forms.ModelForm):

@@ -1,8 +1,6 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, Key, useMemo } from "react";
+import { useState, useContext, Key, useMemo } from "react";
 import axios from 'axios';
-import '/src/styles/Bonds.css';
-// Hooks
 import { useQuery } from '@tanstack/react-query';
 // Hooks
 import useMediaQuery from "../../hooks/useMediaQuery.ts";
@@ -10,6 +8,10 @@ import useMediaQuery from "../../hooks/useMediaQuery.ts";
 import DataTab from "../../components/Bond/DataTab";
 import Article from "../../components/Bond/Article";
 import tgSuccess from "../../assets/pages/success.webp";
+// Entities
+import AuthContext from '../../entities/context/AuthContext.tsx';
+// Assets
+import '/src/styles/Bonds.css';
 
 // Months for the dividend calendar
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре'];
@@ -45,34 +47,50 @@ interface NewsAPIType {
 
 type BondsAPIResponse = Bond[];
 
-// Bonds component
+const apiURL = import.meta.env.VITE_API_URL;
+
 const Bonds = () => {
-    const apiURL = import.meta.env.VITE_API_URL;
+    const { authTokens } = useContext(AuthContext);
     const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
     const [selectedCategory, setSelectedCategory] = useState('all');
 
     const { data, error } = useQuery<BondsAPIResponse, Error>({
         queryKey: ['bonds'],
         queryFn: async () => {
-            const response = await axios.get(`${apiURL}/api/bonds/bond/all`);
+            const response = await axios.get(`${apiURL}/api/bonds/bond/all`, {
+				headers: {
+					Authorization: `Bearer ${authTokens?.access}`
+				}
+			});
             return response.data;
-        }
+        },
+		enabled: !!authTokens
     });
 
     const { data: dataOld, error: errorOld } = useQuery<BondsAPIResponse, Error>({
         queryKey: ['bondsOld'],
         queryFn: async () => {
-            const response = await axios.get(`${apiURL}/api/bonds/bond/all/old`);
+            const response = await axios.get(`${apiURL}/api/bonds/bond/all/old`, {
+				headers: {
+					Authorization: `Bearer ${authTokens?.access}`
+				}
+			});
             return response.data;
-        }
+        },
+		enabled: !!authTokens
     });
 
     const { data: dataPosts, error: errorPosts } = useQuery<NewsAPIType[], Error>({
         queryKey: ['articles'],
         queryFn: async () => {
-            const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
+            const response = await axios.get(`${apiURL}/api/articles/articles/home/all`, {
+				headers: {
+					Authorization: `Bearer ${authTokens?.access}`
+				}
+			});
             return response.data;
-        }
+        },
+		enabled: !!authTokens
     });
 
 	if (error) return <div>Error: {error.message}</div>;

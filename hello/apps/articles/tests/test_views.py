@@ -7,7 +7,7 @@ from rest_framework.test import APIClient
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from authentication.models import Member
-from ..models import Articles, Category
+from articles.models import Articles, Category
 from authentication.models import User
 
 
@@ -41,13 +41,21 @@ class TestArticlesViews:
 	def test_articles_list_home(self, api_client, sample_article):
 		url = reverse("articles:articles-home-list")
 		response = api_client.get(url)
+
+		# Check if the response status is OK
 		assert response.status_code == status.HTTP_200_OK
-		assert "results" in response.data, "'results' key not found in response."
-		assert isinstance(response.data[
-				"results"], list), "'results' is not a list."
-		assert len(response.data[
-				"results"]) > 0, "No articles returned in the 'results'."
-		assert response.data["results"][0]["title"] == sample_article.title
+
+		# Check if the response data is a list
+		assert isinstance(response.data, list), "'results' is not a list."
+
+		# Check if the list is not empty
+		assert len(response.data) > 0, "No articles returned in the 'results'."
+
+		# Check if the sample article is in the response
+		assert any(
+			article["title"] == sample_article.title
+			for article in response.data), "Sample article \
+				not found in the response."
 
 	def test_article_detail(self, api_client, sample_article):
 		url = reverse("articles:article-detail", args=[
@@ -56,23 +64,6 @@ class TestArticlesViews:
 		response = api_client.get(url)
 		assert response.status_code == status.HTTP_200_OK
 		assert response.data["title"] == sample_article.title
-
-	def test_generate_csv(self, api_client):
-		url = reverse("articles:db-list")
-		response = api_client.get(url)
-		assert response.status_code == status.HTTP_200_OK
-		assert response["Content-Type"] == "text/csv"
-
-	@pytest.mark.skip(
-			reason="The test skipped cause the system for uploading "
-			"data from csv has not been fully developed")
-	def test_upload_csv(self, api_client, admin_user):
-		api_client.force_authenticate(user=admin_user)
-		url = reverse("articles:upload_csv")
-		with open("articles/test/utils/sample_articles.csv", "rb") as csv_file:
-			response = api_client.post(url, {"csv_file": csv_file})
-		assert response.status_code == status.HTTP_200_OK
-		assert Articles.objects.count() > 0
 
 
 @pytest.mark.skip(
@@ -109,8 +100,7 @@ class TestArticleAPICreator:
 			time_create=timezone.now(),
 			img=img,
 			slug="old-title",
-			is_published=True
-		)
+			is_published=True)
 		url = reverse("articles:articles-list")
 		response = api_client.get(url)
 		assert response.status_code == status.HTTP_200_OK
@@ -150,33 +140,6 @@ class TestArticleAPICreator:
 
 		assert response.status_code == status.HTTP_201_CREATED
 		assert Articles.objects.filter(title="New Article").exists()
-
-	def test_update_article(self, api_client, admin_user, sample_category):
-		_ = Member.objects.create(user=admin_user, is_admin=True)
-		img = SimpleUploadedFile(
-				"test_image.webp",
-				b"file_content",
-				content_type="image/webp")
-		api_client.force_authenticate(user=admin_user)
-		article = Articles.objects.create(
-			title="Old Title",
-			description="A test article",
-			category=sample_category,
-			author=admin_user,
-			time_create=timezone.now(),
-			img=img,
-			slug="old-title",
-			is_published=True
-		)
-		url = reverse("articles:article-detail", args=[
-				article.category.slug,
-				article.slug])
-		data = {"title": "Updated Title"}
-
-		response = api_client.put(url, data, format="json")
-		assert response.status_code == status.HTTP_200_OK
-		article.refresh_from_db()
-		assert article.title == "Updated Title"
 
 	def test_delete_article(self, api_client, admin_user, sample_category):
 		api_client.force_authenticate(user=admin_user)

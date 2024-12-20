@@ -1,8 +1,8 @@
 import tempfile
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
-from ..models import Category
-from ..forms import ArticlesCSVForm
+from articles.models import Category
+from adminpanel.forms import ArticlesCSVForm
 
 
 @pytest.mark.django_db

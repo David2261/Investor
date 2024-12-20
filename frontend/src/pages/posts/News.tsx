@@ -1,4 +1,4 @@
-import { Key, useState, useEffect } from 'react';
+import { Key, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 // Styles
@@ -12,6 +12,8 @@ import useMediaQuery from "../../hooks/useMediaQuery.ts";
 // Widgets
 import Loader from '../../widgets/Loader';
 import { getRandomImage } from '../../widgets/getRandomImage';
+// Entities
+import AuthContext from '../../entities/context/AuthContext.tsx';
 
 interface BlogAPIType {
 	id: Key;
@@ -26,8 +28,10 @@ interface BlogAPIType {
 	reading_time_minutes: number;
 	summary: string;
 }
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const News = () => {
+	const { authTokens } = useContext(AuthContext);
 	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 	const [page, setPage] = useState(1);
 	const [data, setData] = useState<BlogAPIType[]>([]);
@@ -39,7 +43,6 @@ const News = () => {
 	const [isOpenSidebar, setIsOpenSidebar] = useState(false);
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 	const [filter, setFilter] = useState({ sortBy: 'popularity', order: 'desc' });
-	const apiUrl = import.meta.env.VITE_API_URL;
 
 	const fetchArticles = async () => {
 		setLoading(true);
@@ -51,7 +54,11 @@ const News = () => {
 			if (selectedCategory) params.append("category", selectedCategory);
 
 			const url = `${apiUrl}/api/articles/articles/all/?${params.toString()}`;
-			const response = await axios.get(url);
+			const response = await axios.get(url, {
+				headers: {
+					Authorization: `Bearer ${authTokens?.access}`
+				}
+			});
 			setData(response.data.results);
 			setTotalItems(response.data.count);
 			setNextPage(response.data.next);

@@ -7,11 +7,7 @@ from .views import (
 	ArticleAPICreator,
 	CategoriesList,
 	UserList,
-	CategoryDetail,
-	GenerateCSV,
-	GenerateJSON,
-	UploadCSV,
-	UploadJSON)
+	CategoryDetail)
 
 
 app_name = 'articles'
@@ -36,8 +32,4 @@ urlpatterns = [
 			name='article-creator'),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
-	path('generate/csv/', GenerateCSV.as_view(), name='db-list'),
-	path('generate-json/', GenerateJSON.as_view(), name='generate_json'),
-	path('upload_csv/', UploadCSV.as_view(), name='upload_csv'),
-	path('upload-json/', UploadJSON.as_view(), name='upload_json'),
 ]

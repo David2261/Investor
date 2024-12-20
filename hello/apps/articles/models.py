@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
 from segregation.base_models import BasePost
+from segregation.base_models import get_default_image_path
 from segregation.fields import WEBPField
 from segregation.options import check_lang
 
@@ -81,12 +82,13 @@ class Articles(BasePost):
 			verbose_name=_("Image"),
 			height_field=None,
 			width_field=None,
-			max_length=100)
+			max_length=100,
+			default=get_default_image_path)
 	time_update = models.DateTimeField(
 			auto_now=True,
 			verbose_name=_("Time of change"))
 	is_published = models.BooleanField(
-			default=True,
+			default=False,
 			verbose_name=_("Publication"))
 
 	def get_absolute_url(self):
