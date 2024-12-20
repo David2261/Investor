@@ -3,9 +3,7 @@ from django.urls import path
 from .views import (
 	BondDetail,
 	BondsList,
-	BondsListOld,
-	GenerateCSV,
-	UploadCSV)
+	BondsListOld)
 
 
 app_name = 'bonds'
@@ -16,7 +14,5 @@ urlpatterns = [
 		'bond/<slug:bond_slug>/',
 		BondDetail.as_view(),
 		name='bond-detail'
-	),
-	path('generate/csv/', GenerateCSV.as_view(), name='db-list'),
-	path('upload_csv/', UploadCSV.as_view(), name='upload_csv'),
+	)
 ]

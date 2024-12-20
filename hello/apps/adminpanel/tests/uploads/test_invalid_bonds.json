@@ -1,0 +1,12 @@
+[
+    {
+        "title": "Bond Title",
+        "category": "Finance",
+        "description": "Bond Description",
+        "price": "1000",
+        "maturity": "2025-12-31",
+        is_published: true,
+        cupon: "Monthly",
+        cupon_percent: 5.0
+    }
+]

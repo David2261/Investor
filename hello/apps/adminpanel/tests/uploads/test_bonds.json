@@ -1,0 +1,12 @@
+[
+    {
+        "title": "Bond Title",
+        "category": "municipal bonds",
+        "description": "Bond Description",
+        "price": 1000,
+        "maturity": "2025-12-31T00:00:00Z",
+        "is_published": false,
+        "cupon": 200,
+        "cupon_percent": 5.0
+    }
+]

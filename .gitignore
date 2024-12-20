@@ -151,3 +151,4 @@ dmypy.json
 
 #Database
 *.sqlite3
+.vscode/settings.json

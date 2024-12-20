@@ -1,7 +1,8 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import Swal from 'sweetalert2'
+import Swal, { SweetAlertIcon } from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 interface AuthTokens {
@@ -56,6 +57,18 @@ export default AuthContext;
 
 const AuthSwal = withReactContent(Swal)
 
+const showNotification = (title: string, icon: SweetAlertIcon | undefined) => {
+    AuthSwal.fire({
+        title,
+        icon,
+        toast: true,
+        timer: 6000,
+        position: 'top-right',
+        timerProgressBar: true,
+        showConfirmButton: false,
+    });
+};
+
 export const AuthProvider = ({children}: {children: ReactNode}) => {
 	const [authTokens, setAuthTokens] = useState<AuthTokens | null>(() => {
 		try {
@@ -93,25 +106,9 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			setUser(jwtDecode(data.access));
 			localStorage.setItem('authTokens', JSON.stringify(data));
 			navigate(-1);
-			AuthSwal.fire({
-				title: "Login Successful",
-				icon: "success",
-				toast: true,
-				timer: 6000,
-				position: 'top-right',
-				timerProgressBar: true,
-				showConfirmButton: false,
-			});
+			showNotification("Login Successful", "success");
 		} else {
-			AuthSwal.fire({
-				title: "Username or password does not exist",
-				icon: "error",
-				toast: true,
-				timer: 6000,
-				position: 'top-right',
-				timerProgressBar: true,
-				showConfirmButton: false,
-			});
+			showNotification("Username or password does not exist", "error");
 		}
 	};
 
@@ -138,27 +135,11 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 					password: formData.password
 				});
 				navigate("/");
-				AuthSwal.fire({
-					title: "Registration Successful, Logging you in now...",
-					icon: "success",
-					toast: true,
-					timer: 6000,
-					position: 'top-right',
-					timerProgressBar: true,
-					showConfirmButton: false,
-				});
+				showNotification("Registration Successful, Logging you in now...", "success");
 			}
 		} else {
 			console.error("Ошибка при регистрации:", data);
-			AuthSwal.fire({
-				title: "An Error Occurred " + response.status,
-				icon: "error",
-				toast: true,
-				timer: 6000,
-				position: 'top-right',
-				timerProgressBar: true,
-				showConfirmButton: false,
-			});
+			showNotification("An Error Occurred " + response.status, "error");
 		}
 	};
 
@@ -172,35 +153,25 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 		});
 
 		if (response.status === 200) {
-			AuthSwal.fire({
-				title: "Password reset link sent to your email.",
-				icon: "success",
-				toast: true,
-				timer: 6000,
-				position: 'top-right',
-				timerProgressBar: true,
-				showConfirmButton: false,
-			});
+			showNotification("Password reset link sent to your email.", "success");
 		} else {
 			const data = await response.json();
-			AuthSwal.fire({
-				title: "Error sending password reset link.",
-				icon: "error",
-				toast: true,
-				timer: 6000,
-				position: 'top-right',
-				timerProgressBar: true,
-				showConfirmButton: false,
-			});
+			showNotification("Error sending password reset link.", "error");
 			console.error("Ошибка при сбросе пароля:", data);
 		}
 	};
 
-	const logoutUser = useCallback(() => {
-		setAuthTokens(null)
-		setUser(null)
-		localStorage.removeItem('authTokens')
-		navigate('/')
+	const logoutUser = useCallback(async () => {
+		try {
+			localStorage.removeItem('authTokens');
+			setAuthTokens(null);
+			setUser(null);
+			navigate('/');
+			showNotification("Logout successful", "success");
+		} catch (error) {
+			console.error("Logout failed:", error);
+			showNotification("Logout failed", "error");
+		}
 	}, [navigate]);
 
 	const updateToken = useCallback(async () => {
@@ -262,15 +233,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 			}
 		} catch (error) {
 			console.error("Ошибка при получении данных пользователя:", error);
-			Swal.fire({
-				title: "Ошибка при загрузке данных пользователя",
-				icon: "error",
-				toast: true,
-				timer: 6000,
-				position: 'top-right',
-				timerProgressBar: true,
-				showConfirmButton: false,
-			});
+			showNotification("Ошибка при загрузке данных пользователя", "error");
 		} finally {
             setLoading(false);
         }

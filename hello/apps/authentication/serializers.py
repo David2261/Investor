@@ -62,39 +62,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 		return user
 
-
-class PasswordResetRequestSerializer(serializers.Serializer):
-	email = serializers.EmailField(required=True)
-
-	def validate_email(self, value):
-		if not User.objects.filter(email=value).exists():
-			raise serializers.ValidationError("User with this email does not exist.")
-		return value
-
-
-class PasswordResetSerializer(serializers.Serializer):
-	new_password = serializers.CharField(write_only=True)
-	confirm_password = serializers.CharField(write_only=True)
-
-	def validate(self, data):
-		if data['new_password'] != data['confirm_password']:
-			raise serializers.ValidationError('Пароли не совпадают!')
-		return data
-
-	def save(self, uidb64, token):
-		try:
-			uid = urlsafe_base64_decode(uidb64).decode()
-			user = User.objects.get(pk=uid)
-		except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-			raise serializers.ValidationError("Невозможно найти пользователя.")
-
-		if not default_token_generator.check_token(user, token):
-			raise serializers.ValidationError("Неверный или истекший токен.")
-
-		user.set_password(self.validated_data['new_password'])
-		user.save()
-
-
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	url = serializers.HyperlinkedIdentityField(view_name='authentication:user-detail', lookup_field='pk')
 	role = serializers.SerializerMethodField()

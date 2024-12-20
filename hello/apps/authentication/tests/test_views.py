@@ -1,156 +1,124 @@
-import json
 import pytest
 from django.urls import reverse
-from django.core import mail
 from django.contrib.auth import get_user_model
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from rest_framework import status
 from rest_framework.test import APIClient
+from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
 
+@pytest.fixture
+def api_client():
+	return APIClient()
+
+
+@pytest.fixture
+def create_user():
+	def _create_user(**kwargs):
+		return User.objects.create_user(**kwargs)
+	return _create_user
+
+
 @pytest.mark.django_db
 class TestAuthenticationViews:
 
-	def setup_method(self):
-		self.client = APIClient()
+	@pytest.fixture(autouse=True)
+	def setup(self, api_client, create_user):
+		self.client = api_client
+		self.create_user = create_user
 
-	def test_user_registration(self):
-		"""Test user registration."""
+	# Тесты для RegistrationAPIView
+	def test_registration_view(self):
 		url = reverse('authentication:user_registration')
 		data = {
 			'username': 'testuser',
-			'email': 'test@example.com',
-			'password': 'testpassword123',
-			'password2': 'testpassword123'
+			'password': 'strongpassword',
+			'email': 'testuser@example.com',
+			'password2': 'strongpassword'
 		}
-		response = self.client.post(
-				url,
-				data=json.dumps(data),
-				content_type='application/json')
+		response = self.client.post(url, data, format='json')
 		assert response.status_code == status.HTTP_201_CREATED
-		assert User.objects.filter(email='test@example.com').exists()
+		assert User.objects.filter(username='testuser').exists()
+		assert response.data['username'] == 'testuser'
+		assert response.data['email'] == 'testuser@example.com'
 
-	def test_password_reset_request(self):
-		"""Test password reset request."""
-		_ = User.objects.create_user(
-				username='testuser',
-				email='test@example.com',
-				password='testpassword123')
-		url = reverse('authentication:password_reset_request')
-		data = {'email': 'test@example.com'}
-
-		response = self.client.post(
-				url,
-				data=json.dumps(data),
-				content_type='application/json')
-		assert response.status_code == status.HTTP_200_OK
-		assert len(mail.outbox) == 1
-		assert "Password Reset" in mail.outbox[0].subject
-
-	@pytest.mark.skip(
-			reason="This test is currently skipped cause sending "
-			"confirmation to the mail has not been fully implemented.")
-	def test_password_change(self):
-		"""Test password change using token."""
-		user = User.objects.create_user(
-				username='testuser',
-				email='test@example.com',
-				password='testpassword123')
-		token = default_token_generator.make_token(user)
-		uid = urlsafe_base64_encode(force_bytes(user.pk))
-
-		url = reverse('authentication:password_reset', args=[uid, token])
+	# Тесты для UserLoginView
+	def test_user_login_view(self):
+		_ = self.create_user(
+			username='testuser',
+			password='strongpassword',
+			email='testuser@example.com')
+		url = reverse('authentication:user_login')
 		data = {
-			'new_password': 'newpassword123',
-			'confirm_password': 'newpassword123'}
-
-		response = self.client.post(
-				url,
-				data=json.dumps(data),
-				content_type='application/json')
+			'email': 'testuser@example.com',
+			'password': 'strongpassword'
+		}
+		response = self.client.post(url, data, format='json')
 		assert response.status_code == status.HTTP_200_OK
-		user.refresh_from_db()
-		assert user.check_password('newpassword123')
+		assert 'access' in response.data
+		assert 'refresh' in response.data
+		assert response.data['access'] is not None
+		assert response.data['refresh'] is not None
 
-	def test_token_refresh(self):
-		"""Test token refresh."""
-		user = User.objects.create_user(
-				username='testuser',
-				email='test@example.com',
-				password='testpassword123')
-		refresh = RefreshToken.for_user(user)
-
+	# Тесты для CustomTokenRefreshView
+	def test_token_refresh_view(self):
+		user = self.create_user(
+			username='testuser',
+			password='strongpassword',
+			email='testuser@example.com')
 		url = reverse('authentication:token_refresh')
-		response = self.client.post(
-				url,
-				data=json.dumps({'refresh': str(refresh)}),
-				content_type='application/json')
+		refresh_token = str(RefreshToken.for_user(user))
+		data = {
+			'refresh': refresh_token
+		}
+		response = self.client.post(url, data, format='json')
 		assert response.status_code == status.HTTP_200_OK
 		assert 'access' in response.data
 
-	def test_user_login(self):
-		"""Test user login."""
-		_ = User.objects.create_user(
-				username='testuser',
-				email='test@example.com',
-				password='testpassword123')
-		url = reverse('authentication:user_login')
-		data = {
-			'username': 'testuser',
-			'email': 'test@example.com',
-			'password': 'testpassword123'
-		}
-		response = self.client.post(
-				url,
-				data=json.dumps(data),
-				content_type='application/json')
-		assert response.status_code == status.HTTP_200_OK
-
-	def test_current_user_data(self):
-		"""Test getting current user data."""
-		_ = User.objects.create_user(
-				username='testuser',
-				email='test@example.com',
-				password='testpassword123')
-		url = reverse('authentication:token_obtain_pair')
-		data = {
-			'username': 'testuser',
-			'email': 'test@example.com',
-			'password': 'testpassword123'
-		}
-		response = self.client.post(
-				url,
-				data=json.dumps(data),
-				content_type='application/json')
-		assert response.status_code == status.HTTP_200_OK, f"Token " \
-									f"retrieval failed: {response.data}"
-		access_token = response.data['access']
-		self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + access_token)
+	# Тесты для CurrentUserView
+	def test_current_user_view(self):
+		user = self.create_user(
+			username='testuser',
+			password='strongpassword',
+			email='testuser@example.com')
+		self.client.force_authenticate(user=user)
 		url = reverse('authentication:current-user')
 		response = self.client.get(url)
-
 		assert response.status_code == status.HTTP_200_OK
-		assert response.data['email'] == 'test@example.com'
+		assert response.data['username'] == user.username
+		assert response.data['email'] == user.email
 
+	# Тесты для UserDetailView
+	def test_user_detail_view(self):
+		user = self.create_user(
+			username='testuser',
+			password='strongpassword',
+			email='testuser@example.com')
+		self.client.force_authenticate(user=user)
+		url = reverse('authentication:user-detail', args=[user.id])
+		response = self.client.get(url)
+		assert response.status_code == status.HTTP_200_OK
+		assert response.data['username'] == user.username
+		assert response.data['email'] == user.email
+
+	# Тесты для GoogleLoginView
 	def test_google_login_view(self):
-		"""Test Google login."""
 		url = reverse('authentication:google_login')
 		response = self.client.get(url)
 		assert response.status_code == status.HTTP_200_OK
+		assert response.data['message'] == "GET request successful"
 
+	# Тесты для YandexLoginView
 	def test_yandex_login_view(self):
-		"""Test Yandex login."""
 		url = reverse('authentication:yandex_login')
 		response = self.client.get(url)
 		assert response.status_code == status.HTTP_200_OK
+		assert response.data['message'] == "GET request successful"
 
+	# Тесты для MicrosoftLoginView
 	def test_microsoft_login_view(self):
-		"""Test Microsoft login."""
 		url = reverse('authentication:microsoft_login')
 		response = self.client.get(url)
 		assert response.status_code == status.HTTP_200_OK
+		assert response.data['message'] == "GET request successful"

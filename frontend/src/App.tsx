@@ -24,6 +24,8 @@ import Bonds from './pages/posts/Bond.tsx';
 // import AdminLogin from './pages/admin/AdminLogin.tsx';
 import AdminMain from './pages/admin/AdminMain.tsx';
 import AdminApps from './pages/admin/AdminApps.tsx';
+import AdminUpload from './pages/admin/AdminUpload.tsx';
+import AdminCreate from './pages/admin/AdminCreate.tsx';
 // Personal
 import Portfolio from './pages/personal/Portfolio.tsx';
 
@@ -59,6 +61,8 @@ function App() {
             {/* <Route index path="login" element={ <AdminLogin /> } /> */}
             <Route index path="main" element={ <AdminMain /> } />
             <Route path="main/:apps" element={ <AdminApps /> } />
+            <Route path="main/:apps/upload" element={ <AdminUpload /> } />
+            <Route path="main/:apps/create" element={ <AdminCreate /> } />
             {/* <Route path="article/list" element={ <AdminArticleList /> } /> */}
           </Route>
           <Route path='*' element={ <NotFound />} />

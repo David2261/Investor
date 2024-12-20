@@ -10,12 +10,12 @@ import SearchBlack from '../../assets/icons/search_black.svg';
 
 
 const AdminMain = () => {
-    const { data: adminArticles, error: articlesError, isLoading: articlesLoding } = useAdminArticles();
-    const navigate = useNavigate();
+	const { data: adminArticles, error: articlesError, isLoading: articlesLoding } = useAdminArticles();
+	const navigate = useNavigate();
 
-    const handleOpenSite = () => {
-        navigate('/');
-    };
+	const handleOpenSite = () => {
+		navigate('/');
+	};
 
 	if (articlesLoding) {
 		return <div>Загрузка...</div>;

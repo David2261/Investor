@@ -15,6 +15,10 @@ logger = logging.getLogger("dev")
 log_info = logging.getLogger("root")
 
 
+def get_default_image_path():
+	return 'default/default_image.webp'
+
+
 class BasePost(models.Model):
 	id = models.AutoField(
 			primary_key=True,

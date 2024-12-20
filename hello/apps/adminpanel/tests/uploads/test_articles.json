@@ -1,0 +1,12 @@
+[
+    {
+        "title": "How to use Django",
+        "description": "This is an article about Django.",
+        "category__name": "Programming"
+    },
+    {
+        "title": "Understanding REST APIs",
+        "description": "Learn about REST APIs and their usage.",
+        "category__name": "Web Development"
+    }
+]

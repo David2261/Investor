@@ -69,6 +69,9 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
+if DEBUG == True:
+	APPEND_SLASH = False
+
 ALLOWED_HOSTS = []
 
 
@@ -236,7 +239,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Default redirect after auth
 LOGIN_REDIRECT_URL = reverse_lazy("authentication:user_login")
-LOGOUT_REDIRECT_URL = reverse_lazy("authentication:user_logout")
+LOGOUT_REDIRECT_URL = "/"
 AUTH_USER_MODEL = 'authentication.User'
 
 # DRF
@@ -251,12 +254,11 @@ REST_FRAMEWORK = {
 		'rest_framework.permissions.AllowAny',
 		# 'rest_framework.permissions.IsAuthenticated',
 	],
-	# 'DEFAULT_RENDERER_CLASSES': [
-	# 	'rest_framework.renderers.JSONRenderer',
-	# ],
 	'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 	'DEFAULT_PARSER_CLASSES': [
 		'rest_framework.parsers.JSONParser',
+		'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser',
 	],
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 	'PAGE_SIZE': 5,
@@ -336,10 +338,10 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULE = {
-    'update-expired-bonds-every-day': {
-        'task': 'bonds.tasks.update_expired_bonds_task',
-        'schedule': crontab(hour=0, minute=0),
-    },
+	'update-expired-bonds-every-day': {
+		'task': 'bonds.tasks.update_expired_bonds_task',
+		'schedule': crontab(hour=0, minute=0),
+	},
 }
 
 # Static files (CSS, JavaScript, Images)

@@ -10,15 +10,29 @@ import AdminTableCategories from '../../components/Admin/Tables/AdminTableCatego
 import '../../styles/pages/admin/AdminMain.css';
 import SearchBlack from '../../assets/icons/search_black.svg';
 
+interface Params {
+	[key: string]: string | undefined;
+}
 
 const AdminApps = () => {
-	const { apps } = useParams();
+	const { apps } = useParams<Params>();
+	if (!apps) {
+		return <div>Нет приложений</div>;
+	}
 	const { data, error, isLoading } = useAdminPages(apps.toLowerCase());
 	const navigate = useNavigate();
 
 	const handleOpenSite = () => {
 		navigate('/');
 	};
+
+	const handleOpenUpload = () => {
+		navigate(`/admin/main/${apps}/upload`);
+	};
+
+	const handleOpenCreate = () => {
+        navigate(`/admin/main/${apps}/create`);
+    };
 
 	if (isLoading) {
 		return <div>Загрузка...</div>;
@@ -33,15 +47,25 @@ const AdminApps = () => {
 	}
 
 	let Info = <></>;
+	let TitleButton = "";
+	let UploadButton = ""
 
 	if (apps?.toLowerCase() == 'articles') {
 		Info = <AdminTableArticles data={data} />
+		TitleButton = "добавить статью"
+		UploadButton = "загрузить статьи"
 	} else if (apps?.toLowerCase() == 'bonds') {
 		Info = <AdminTableBonds data={data} />
+		TitleButton = "добавить облигацию"
+		UploadButton = "загрузить облигации"
 	} else if (apps?.toLowerCase() == 'user') {
 		Info = <AdminTableUsers data={data} />
+		TitleButton = "добавить пользователя"
+		UploadButton = "загрузить пользователей"
 	} else if (apps?.toLowerCase() == 'category') {
 		Info = <AdminTableCategories data={data} />
+		TitleButton = "добавить категорию"
+		UploadButton = "загрузить категории"
 	}
 
 	return <>
@@ -54,6 +78,16 @@ const AdminApps = () => {
 		<div className='relative flex justify-between'>
 			<div className='pt-10 pl-7 pb-5 text-white text-xs'>
 				<p>Выберите {apps} для изменения</p>
+			</div>
+			<div className="mt-10 mb-5">
+				<button
+					onClick={handleOpenUpload}
+					className="w-full h-full px-2 rounded-md uppercase bg-[#E8940D]">{UploadButton}</button>
+			</div>
+			<div className="mt-10 mb-5">
+				<button
+					onClick={handleOpenCreate}
+					className="w-full h-full px-2 rounded-md uppercase bg-[#00FF4D]">{TitleButton}</button>
 			</div>
 			<div className='relative mt-10 mr-7 mb-5'>
 				<img
