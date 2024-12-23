@@ -16,7 +16,6 @@ from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from authentication.models import User
-from authentication.permissions import AdminCreatorOnly
 from authentication.permissions import IsAdminUser
 from segregation.decorators import counted
 from segregation.views import BaseArticleList
@@ -100,17 +99,37 @@ class ArticleDetail(APIView):
 
 
 class ArticleAPICreator(APIView):
-	permission_classes = [AdminCreatorOnly]
-	queryset = Articles.objects.filter(
-		is_published=True).select_related('category')
+	permission_classes = [IsAdminUser]
+
+	def get_queryset(self):
+		return Articles.objects.filter(is_published=True).select_related('category')
 
 	def get(self, request, *args, **kwargs):
 		""" List with all articles """
-		serializer = ArticlesSerializer(self.queryset, many=True)
+		queryset = self.get_queryset()
+		serializer = ArticlesSerializer(queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
 	def post(self, request, *args, **kwargs):
-		serializer = ArticlesSerializer(data=request.data)
+		title = request.data.get("title")
+		description = request.data.get("description")
+		category_name = request.data.get("category")
+
+		if not title or not description or not category_name:
+			return Response(
+				{"error": "Title, description, and category are required."},
+				status=status.HTTP_400_BAD_REQUEST)
+
+		category, _ = Category.objects.get_or_create(name=category_name)
+
+		article = Articles.objects.create(
+			title=title,
+			category=category,
+			description=description,
+			author=request.user
+		)
+
+		serializer = ArticlesSerializer(article)
 		if serializer.is_valid():
 			serializer.save(user=request.user)
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -125,7 +144,7 @@ class ArticleAPICreator(APIView):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def delete(self, request, post_slug):
-		post = Articles.objects.filter(is_published=True, post_slug=post_slug)
+		post = Articles.objects.filter(is_published=True, slug=post_slug)
 		post.delete()
 		return Response(status=status.HTTP_202_ACCEPTED)
 

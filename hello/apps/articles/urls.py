@@ -27,9 +27,13 @@ urlpatterns = [
 			ArticlesListHome.as_view(),
 			name='articles-home-list'),
 	path(
-			'articles/creator/<slug:cat_slug>/<slug:post_slug>/',
+			'articles/creator/',
 			ArticleAPICreator.as_view(),
 			name='article-creator'),
+	path(
+			'articles/creator/<slug:post_slug>/',
+			ArticleAPICreator.as_view(),
+			name='article-creator-detail'),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
 ]
