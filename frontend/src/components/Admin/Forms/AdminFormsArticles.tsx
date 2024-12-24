@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AdminFormsCategories = () => {
+const AdminFormsArticles = () => {
     return (
         <>
             <div className="flex flex-col gap-4 p-4">
@@ -81,4 +81,4 @@ const AdminFormsCategories = () => {
     );
 };
 
-export default AdminFormsCategories;
+export default AdminFormsArticles;
