@@ -27,7 +27,7 @@ class ArticlesSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Articles
-		fields = ['title', 'summary', 'reading_time_minutes', 'category', 'img', 'time_create', 'slug']
+		fields = ['title', 'description', 'summary', 'reading_time_minutes', 'category', 'img', 'time_create', 'slug']
 	
 	def get_reading_time_minutes(self, obj):
 		""" Функция для расчета время прочтения статьи,
@@ -47,6 +47,17 @@ class ArticlesSerializer(serializers.ModelSerializer):
 
 		instance.save()
 		return instance
+	
+	def validate(self, data):
+		if not data.get('title'):
+			raise serializers.ValidationError({'title': 'Title is required.'})
+		if not data.get('description'):
+			raise serializers.ValidationError({'description': 'Description is required.'})
+		if not data.get('category'):
+			raise serializers.ValidationError({'category': 'Category is required.'})
+
+		return data
+
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
 	category = CategorySerializerNS(read_only=True)

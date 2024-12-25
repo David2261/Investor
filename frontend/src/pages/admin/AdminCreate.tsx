@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
-// Hooks
-import { useAdminPages } from '../../hooks/adminPanel/useAdminPages.tsx'
+// Components
+import AdminFormsCategories from '../../components/Admin/Forms/AdminFormsCategories.tsx';
+import AdminFormsArticles from '../../components/Admin/Forms/AdminFormsArticles.tsx';
+import AdminFormsBonds from '../../components/Admin/Forms/AdminFormsBonds.tsx';
 
 interface Params {
     [key: string]: string | undefined;
@@ -11,23 +13,22 @@ const AdminCreate = () => {
 	if (!apps) {
         return <div>Нет приложений</div>;
     }
-	const { data, error, isLoading } = useAdminPages(apps.toLowerCase());
 	const navigate = useNavigate();
 
 	const handleOpenSite = () => {
 		navigate('/');
 	};
 
-	if (isLoading) {
-		return <div>Загрузка...</div>;
-	}
+	let Info = <></>;
 
-	if (error) {
-		return <div>Ошибка при загрузке моделей: {error.message}</div>;
-	}
-
-	if (!data || !Array.isArray(data)) {
-		return <div>Нет данных для отображения.</div>;
+	if (apps?.toLowerCase() == 'articles') {
+		Info = <AdminFormsArticles />
+	} else if (apps?.toLowerCase() == 'bonds') {
+		Info = <AdminFormsBonds />
+	} else if (apps?.toLowerCase() == 'user') {
+		return
+	} else if (apps?.toLowerCase() == 'category') {
+		Info = <AdminFormsCategories />
 	}
 
 	return <>
@@ -44,6 +45,7 @@ const AdminCreate = () => {
 		</div>
 		<div className='flex border-b-[0.2px] w-11/12 mx-auto'></div>
 		<div className='m-6 overflow-y-auto max-h-96'>
+			{ Info }
 		</div>
 	</div>
 	</>

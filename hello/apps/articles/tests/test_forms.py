@@ -1,6 +1,4 @@
-import tempfile
 import pytest
-from django.core.files.uploadedfile import SimpleUploadedFile
 from articles.models import Category
 from adminpanel.forms import ArticlesCSVForm
 
@@ -12,37 +10,6 @@ class TestArticlesCSVForm:
 	def category(self):
 		"""Create a category for the tests."""
 		return Category.objects.create(name="Test Category")
-
-	@pytest.mark.skip(
-			reason="The test skipped cause the system for uploading "
-			"data from csv has not been fully developed")
-	def test_form_valid(self, category):
-		"""Test that the form is valid with valid data."""
-		img = SimpleUploadedFile(
-				"test_image.webp",
-				b"file_content",
-				content_type="image/webp")
-
-		with tempfile.NamedTemporaryFile(
-				suffix='.csv',
-				mode='w+b',
-				delete=False) as csvfile:
-			csvfile.write(b'title,category,description,img,is_published\n')
-			csvfile.write(
-					f'Test Article,{category.id},"This is a test '
-					'description.",True\n'.encode('utf-8'))
-			csvfile.flush()
-			csvfile.seek(0)
-
-			form_data = {
-				'csv_file': csvfile,
-				'img': img,
-			}
-			csvfile.close()
-			form = ArticlesCSVForm(data=form_data)
-			if not form.is_valid():
-				print(form.errors)
-			assert form.is_valid() is True
 
 	def test_form_invalid_missing_title(self, category):
 		"""Test that the form is invalid without a title."""
