@@ -20,15 +20,13 @@ const queryClient = new QueryClient({
 
 hydrateRoot(
   root,
-  <React.StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <HelmetProvider>
-            <App />
-          </HelmetProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </BrowserRouter>
 );
