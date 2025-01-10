@@ -23,6 +23,28 @@ class AdminUserSerializer(serializers.ModelSerializer):
 		fields = ['username']
 
 
+class AdminArticleSerializerEdit(serializers.ModelSerializer):
+	category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+	img = serializers.ImageField(required=False)
+
+	class Meta:
+		model = Articles
+		fields = ['title', 'description', 'img', 'is_published', 'category', 'slug']
+	
+	def create(self, validated_data):
+		return Articles.objects.create(**validated_data)
+
+	def validate_title(self, value):
+		if len(value) < 5:
+			raise serializers.ValidationError("Заголовок должен содержать не менее 5 символов.")
+		return value
+
+	def validate_slug(self, value):
+		if Articles.objects.filter(slug=value).exists():
+			raise serializers.ValidationError("Слаг должен быть уникальным.")
+		return value
+
+
 class AdminArticleSerializer(serializers.ModelSerializer):
 	category = AdminCategorySerializer()
 	author = AdminUserSerializer()
