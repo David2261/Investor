@@ -50,11 +50,11 @@ const AdminFormsArticles = () => {
 			console.log("Auth Tokens:", authTokens);
 			const response = await axios.post(`${apiURL}/api/admin/apps/main/articles/create/`, 
 				data, {
-				headers: {
-					Authorization: `Bearer ${authTokens}`,
-					"Content-Type": "multipart/form-data",
-				},
-			});
+					headers: {
+						Authorization: `Bearer ${authTokens}`,
+						"Content-Type": "application/json",
+					}
+				});
 			console.log("Article created successfully:", response.data);
 			alert("Статья успешно создана!");
 		} catch (error) {
@@ -157,13 +157,13 @@ const AdminFormsArticles = () => {
 			<button
 				type="submit"
 				className="uppercase bg-green-600 text-white px-4 py-2 rounded w-32 hover:bg-green-700">
-			  сохранить
+				сохранить
 			</button>
 			<button className="mx-4 text-white font-light text-left">
-			  Сохранить и добавить другой объект
+				Сохранить и добавить другой объект
 			</button>
 			<button className="text-white font-light text-left">
-			  Сохранить и продолжить редактирование
+				Сохранить и продолжить редактирование
 			</button>
 		  </div>
 		</div>

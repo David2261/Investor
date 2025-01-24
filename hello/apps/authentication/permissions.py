@@ -6,16 +6,19 @@ class IsAdminUser(BasePermission):
 	Разрешение для проверки, является ли пользователь администратором.
 	"""
 	def has_permission(self, request, view):
-		return request.user.is_staff
+		return (
+			request.user.is_authenticated
+			and getattr(request.user, 'is_staff', False))
 
 
 class AdminCreatorOnly(BasePermission):
+	"""
+	Разрешение для проверки, является ли пользователь администратором или создателем.
+	"""
 	def has_permission(self, request, view):
 		return (
 			request.user.is_authenticated
-			and hasattr(request.user, "member")
 			and (
-				request.user.member.is_admin
-				or request.user.member.is_creator
-			)
-		)
+				getattr(request.user, 'is_admin', False)
+				or getattr(request.user, 'is_creator', False)
+			))

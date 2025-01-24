@@ -106,9 +106,6 @@ class TestArticleAPICreator:
 		assert response.data[0]["title"] == "Sample Article"
 		assert response.data[0]["slug"] == "sample-article"
 
-	@pytest.mark.skip(" AssertionError: Cannot call `.is_valid()` as no \
-					`data=` keyword argument was passed when instantiating\
-					the serializer instance.")
 	def test_post_article_with_category(self, api_client, admin_user):
 		"""Тест POST метода для создания статьи
 		с автоматическим созданием категории"""
@@ -120,7 +117,7 @@ class TestArticleAPICreator:
 			"category": "New Category"
 		}
 		response = api_client.post(url, data)
-		print(response.content)
+		print(response)
 		assert response.status_code == 201
 		assert 'category' in response.data
 		assert response.data['category']['name'] == "New Category"

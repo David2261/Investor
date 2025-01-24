@@ -21,7 +21,8 @@ from .uploads import (
 	AppAdminBondsUploadJSON)
 from .create import (
 	AppAdminArticleEdit,
-	AppAdminArticleCreate
+	AppAdminArticleCreate,
+	AppAdminCategoryCreate
 )
 
 
@@ -97,4 +98,8 @@ urlpatterns = [
 		'apps/main/articles/edit/<slug:cat_slug>/<slug:post_slug>/',
 		AppAdminArticleEdit.as_view(),
 		name='articles-edit'),
+	path(
+		'apps/main/categories/create/',
+		AppAdminCategoryCreate.as_view(),
+		name="categories-create")
 ]

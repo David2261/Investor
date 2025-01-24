@@ -124,9 +124,9 @@ class ArticleAPICreator(APIView):
 
 		article = Articles.objects.create(
 			title=title,
-			category=category,
+			category=category.id,
 			description=description,
-			author=request.user
+			author=request.user.id
 		)
 
 		serializer = ArticlesSerializer(article)
