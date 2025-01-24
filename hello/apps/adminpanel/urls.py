@@ -19,10 +19,16 @@ from .uploads import (
 	AppAdminArticlesUploadCSV,
 	AppAdminBondsUploadCSV,
 	AppAdminBondsUploadJSON)
+from .create import (
+	AppAdminArticleEdit,
+	AppAdminArticleCreate,
+	AppAdminCategoryCreate
+)
 
 
 app_name = 'adminpanel'
 urlpatterns = [
+	# main block
 	path('apps/', AppListView.as_view(), name='app-list'),
 	path('apps/models/', AppModelsView.as_view(), name='model-list'),
 	path(
@@ -33,6 +39,7 @@ urlpatterns = [
 		'apps/main/bonds/',
 		AppAdminMainBondsAPI.as_view(),
 		name='bonds-list'),
+	# content
 	path(
 		'apps/main/articles/all/',
 		AppAdminArticlesAPI.as_view(),
@@ -49,6 +56,7 @@ urlpatterns = [
 		'apps/main/user/all/',
 		AppAdminAllUsersAPI.as_view(),
 		name='users-list-all'),
+	# upload and generate
 	path(
 		'apps/main/articles/upload/json/',
 		AppAdminArticlesUploadJSON.as_view(),
@@ -81,4 +89,17 @@ urlpatterns = [
 		'apps/main/bonds/upload/json/',
 		AppAdminBondsUploadJSON.as_view(),
 		name='bonds-upload-json'),
+	# create
+	path(
+		'apps/main/articles/create/',
+		AppAdminArticleCreate.as_view(),
+		name='articles-create'),
+	path(
+		'apps/main/articles/edit/<slug:cat_slug>/<slug:post_slug>/',
+		AppAdminArticleEdit.as_view(),
+		name='articles-edit'),
+	path(
+		'apps/main/categories/create/',
+		AppAdminCategoryCreate.as_view(),
+		name="categories-create")
 ]

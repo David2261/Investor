@@ -1,7 +1,8 @@
-import axios  from 'axios';
-import { useState, useEffect, FunctionComponent } from "react";
+import { useState, FunctionComponent } from "react";
 // Components
 import Sidebar from "./Sidebar";
+// API
+import { useAllCategories } from '../../api/useAllCategories.tsx';
 // Styles
 import '../../styles/components/Blog/DataTabStyles.css';
 // Assets
@@ -15,32 +16,12 @@ interface DataTabType {
 	onSelectCategory: (category: string) => void;
 }
 
-interface ErrorType {
-    message: string;
-}
-
 // Боковая панель навигации по категориям
 const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarChange, onSelectCategory }) => {
-	const apiURL = import.meta.env.VITE_API_URL;
-	const [data, setData] = useState<any[]>([]);
-	const [error, setError] = useState<ErrorType | null>(null);
-	const [dataCount, setDataCount] = useState<number>(0);
+	const { data, dataCount, error } = useAllCategories();
 	const [isOpen, setIsOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await axios.get(`${apiURL}/api/articles/category/all/`);
-				setData(response.data.results);
-				setDataCount(response.data.count);
-			} catch (err) {
-				setError(err as any);
-			}
-		};
-		fetchData();
-	}, [apiURL]);
-	const categories = (!isOpen && dataCount > 5) ? data.slice(0, 5) : data;
+	const categories = !isOpen && dataCount > 5 ? data.slice(0, 5) : data;
 
 	const filteredCategories = categories.filter(category =>
         category.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -53,10 +34,6 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
     };
     const openAllCategories = () => setIsOpen(true);
     const closeAllCategories = () => setIsOpen(false);
-
-	if (error) {
-		return <p>Error: {error.message}</p>
-	}
 
 	return !isSidebarChange ?
 		<button className="data-tab-sidebar-close-btn" onClick={openModal}>

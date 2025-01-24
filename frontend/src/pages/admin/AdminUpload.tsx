@@ -1,4 +1,4 @@
-import React, { useState, DragEvent  } from 'react';
+import React, { useState, DragEvent } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 
 interface Params {

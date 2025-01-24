@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import Swal, { SweetAlertIcon } from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
