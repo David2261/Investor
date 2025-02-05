@@ -111,41 +111,43 @@ class ArticleAPICreator(APIView):
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
 	def post(self, request, *args, **kwargs):
-		title = request.data.get("title")
-		description = request.data.get("description")
-		category_name = request.data.get("category")
-
-		if not title or not description or not category_name:
-			return Response(
-				{"error": "Title, description, and category are required."},
-				status=status.HTTP_400_BAD_REQUEST)
-
-		category, _ = Category.objects.get_or_create(name=category_name)
-
-		article = Articles.objects.create(
-			title=title,
-			category=category.id,
-			description=description,
-			author=request.user.id
-		)
-
-		serializer = ArticlesSerializer(article)
+		data = {
+			"title": request.data.get('title'),
+			"description": request.data.get('description'),
+			"category": request.data.get('category'),
+			"img": request.data.get('img'),
+			"author": request.user
+		}
+		serializer = ArticlesSerializer(data=data)
 		if serializer.is_valid():
-			serializer.save(user=request.user)
+			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def put(self, request, post_slug):
 		article = get_object_or_404(Articles, is_published=True, slug=post_slug)
-		serializer = ArticlesSerializer(article, data=request.data, partial=True)
+		data = {
+			"title": request.data.get('title'),
+			"description": request.data.get('description'),
+			"category": request.data.get('category'),
+			"img": request.data.get('img'),
+			"user": request.user
+		}
+		serializer = ArticlesSerializer(article, data=data, partial=True)
 		if serializer.is_valid(raise_exception=True):
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_200_OK)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-	def delete(self, request, post_slug):
-		post = Articles.objects.filter(is_published=True, slug=post_slug)
-		post.delete()
+	def delete(self, request, post_slug) -> Response:
+		article = get_object_or_404(Articles, is_published=True, slug=post_slug)
+		if article.author != request.user:
+			return Response(
+				{"error": "You do not have permission \
+				to delete this article."},
+				status=status.HTTP_403_FORBIDDEN)
+
+		article.delete()
 		return Response(status=status.HTTP_202_ACCEPTED)
 
 
