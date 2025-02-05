@@ -71,7 +71,6 @@ class AdminArticleSerializerCreate(serializers.ModelSerializer):
 		return value
 
 
-
 class AdminArticleSerializerEdit(serializers.ModelSerializer):
 	category = serializers.PrimaryKeyRelatedField(
 		queryset=Category.objects.all())

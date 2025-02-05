@@ -3,16 +3,18 @@ import pytest
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
+from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
 
-from articles.models import Articles, Category
+from articles.models import Articles
+from articles.models import Category
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 
 @pytest.mark.django_db
-class TestArticlesViews:
+class TestArticlesAdminViews:
 	@pytest.fixture
 	def api_client(self):
 		return APIClient()
@@ -23,9 +25,12 @@ class TestArticlesViews:
 
 	@pytest.fixture
 	def admin_user(self, db):
-		return User.objects.create_superuser(
-			username="admin", password="password", email="admin@example.com"
-		)
+		user = User.objects.create_superuser(
+			username="admin", password="password", email="admin@example.com")
+
+		user.member.is_admin = True
+		user.save()
+		return user
 
 	@pytest.fixture
 	def sample_article(self, db, sample_category, admin_user):
@@ -79,6 +84,7 @@ class TestArticleAPICreator:
 		)
 		user.is_staff = True
 		user.is_active = True
+		user.member.is_creator = True
 		user.save()
 		return user
 
@@ -114,30 +120,36 @@ class TestArticleAPICreator:
 		data = {
 			"title": "New Article",
 			"description": "New Content",
-			"category": "New Category"
+			"category": "New Category",
+			"time_create": timezone.now()
 		}
 		response = api_client.post(url, data)
-		print(response)
 		assert response.status_code == 201
 		assert 'category' in response.data
 		assert response.data['category']['name'] == "New Category"
 
 	def test_post_article_missing_data(self, api_client, admin_user):
-		"""Тест POST метода с отсутствующими обязательными полями"""
+		""" Тест POST метода с отсутствующими обязательными полями """
 		api_client.force_authenticate(user=admin_user)
 		url = reverse('articles:article-creator')
 		data = {
 			"title": "",
 			"description": "New Content",
-			"category": "New Category"
+			"category": "New Category",
+			"time_create": timezone.now(),
 		}
 		response = api_client.post(url, data)
 		assert response.status_code == 400
-		assert 'error' in response.data
-		assert response.data['error'] == "Title, description, \
-			and category are required."
+		assert response.data == {'title': [ErrorDetail(
+				string='Это поле не может быть пустым.',
+				code='blank')],
+			'img': [ErrorDetail(
+				string='Это поле не может быть пустым.',
+				code='null')],
+			'time_create': [ErrorDetail(
+				string='Обязательное поле.',
+				code='required')]}
 
-	@pytest.mark.skip("405")
 	def test_put_article(self, api_client, admin_user, sample_article):
 		"""Тест PUT метода для обновления статьи"""
 		api_client.force_authenticate(user=admin_user)
@@ -154,13 +166,14 @@ class TestArticleAPICreator:
 		assert sample_article.title == "Updated Article"
 		assert sample_article.description == "Updated Content"
 
-	@pytest.mark.skip("405")
 	def test_delete_article(self, api_client, admin_user, sample_article):
-		"""Тест DELETE метода для удаления статьи"""
+		""" Тест DELETE метода для удаления статьи """
 		api_client.force_authenticate(user=admin_user)
+		assert Articles.objects.filter(slug=sample_article.slug).exists()
 		url = reverse(
 			'articles:article-creator-detail',
 			kwargs={"post_slug": sample_article.slug})
 		response = api_client.delete(url)
+		print(response.data)
 		assert response.status_code == 202
 		assert not Articles.objects.filter(slug=sample_article.slug).exists()

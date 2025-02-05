@@ -1,8 +1,12 @@
 import math
+from typing import Any
+from typing import Dict
+from typing import Optional
 from rest_framework import serializers
 
 from authentication.models import User
-from .models import Category, Articles
+from .models import Category
+from .models import Articles
 
 
 class CategorySerializerNS(serializers.ModelSerializer):
@@ -28,18 +32,28 @@ class ArticlesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Articles
 		fields = ['title', 'description', 'summary', 'reading_time_minutes', 'category', 'img', 'time_create', 'slug']
-	
-	def get_reading_time_minutes(self, obj):
+
+	def get_reading_time_minutes(self, obj: Articles) -> int:
 		""" Функция для расчета время прочтения статьи,
 		при учете 1500 символов в минуту """
 		num_chars = len(obj.description)
 		reading_time_minutes = num_chars / 1500
 		return math.ceil(reading_time_minutes)
 
-	def create(self, validated_data):
+	def create(self, validated_data: Dict[str, Any]) -> Articles:
+		user = self.context['request'].user
+		if not (user.member.is_admin or user.member.is_creator):
+			raise serializers.ValidationError(
+				"У вас нет права писать статьи.")
+
 		return Articles.objects.create(**validated_data)
-	
-	def update(self, instance, validated_data):
+
+	def update(self, instance, validated_data: Dict[str, Any]) -> Articles:
+		user = self.context['request'].user
+		if not (user.member.is_admin or user.member.is_creator):
+			raise serializers.ValidationError(
+				"У вас нет права обновлять статьи.")
+
 		instance.title = validated_data.get("title", instance.title)
 		instance.description = validated_data.get("description", instance.description)
 		instance.category = validated_data.get("category", instance.category)
@@ -47,8 +61,8 @@ class ArticlesSerializer(serializers.ModelSerializer):
 
 		instance.save()
 		return instance
-	
-	def validate(self, data):
+
+	def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
 		if not data.get('title'):
 			raise serializers.ValidationError({'title': 'Title is required.'})
 		if not data.get('description'):
@@ -75,7 +89,7 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 			"time_create",
 			"slug")
 
-	def get_reading_time_minutes(self, obj):
+	def get_reading_time_minutes(self, obj: Articles) -> int:
 		""" Функция для расчета время прочтения статьи,
 		при учете 1500 символов в минуту """
 		num_chars = len(obj.description)
@@ -97,5 +111,4 @@ class CategorySerializer(serializers.ModelSerializer):
 			"id",
 			"name",
 			"slug",
-			"posts",
-		)
+			"posts")

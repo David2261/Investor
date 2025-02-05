@@ -1,17 +1,15 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.validators import UniqueValidator
+from rest_framework_simplejwt.tokens import Token
 
 from .models import User
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 	@classmethod
-	def get_token(cls, user):
+	def get_token(cls, user: User) -> Token:
 		token = super().get_token(user)
 
 		# Add custom claims
@@ -33,7 +31,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 		model = User
 		fields = ('username', 'password', 'password2', 'email')
 
-	def validate(self, attrs):
+	def validate(self, attrs: dict) -> dict:
 		if attrs['password'] != attrs['password2']:
 			raise serializers.ValidationError(
 				{"password": "Password fields didn't match."}
@@ -51,7 +49,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 		return attrs
 
-	def create(self, validated_data):
+	def create(self, validated_data: dict) -> User:
 		user = User.objects.create(
 			username=validated_data['username'],
 			email=validated_data['email']
@@ -64,11 +62,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	url = serializers.HyperlinkedIdentityField(view_name='authentication:user-detail', lookup_field='pk')
-	role = serializers.SerializerMethodField()
 
 	class Meta:
 		model = User
-		fields = ['url', 'username', 'email', 'groups', 'role']
-	
-	def get_role(self, obj):
-		return obj.get_role()
+		fields = ['url', 'username', 'email', 'is_active', 'is_staff']

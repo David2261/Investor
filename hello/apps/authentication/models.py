@@ -1,82 +1,98 @@
 import jwt
-from datetime import datetime, timedelta
 from typing import Optional
-from django.conf import settings
+from typing import Any
+from typing import Type
+from datetime import datetime, timedelta
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import BaseUserManager
 from django.db import models
 from django.core import validators
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 
 
 class UserManager(BaseUserManager):
-	"""
-	Django требует, чтобы пользовательские `User`
-	определяли свой собственный класс Manager.
-	"""
-	def _create_user(self, username, email, password=None, **extra_fields):
+	def _create_user(
+			self,
+			username: str,
+			email: str,
+			password: Optional[str] = None,
+			**extra_fields: Any) -> 'User':
+		""" Verifying username, email, and password.
+		Then it writes them to the User object. """
 		if not username:
 			raise ValueError('Указанное имя пользователя должно быть установлено')
-
 		if not email:
 			raise ValueError('Данный адрес электронной почты должен быть установлен')
+		if not password:
+			raise ValueError('Указанный пароль должно быть установлено')
 
 		email = self.normalize_email(email)
 		user = self.model(username=username, email=email, **extra_fields)
 		user.set_password(password)
 		user.save(using=self._db)
-
 		return user
 
-	def create_user(self, username, email, password=None, **extra_fields):
-		extra_fields.setdefault('is_staff', False)
-		extra_fields.setdefault('is_superuser', False)
-
+	def create_user(
+			self,
+			username: str,
+			email: str,
+			password: Optional[str] = None,
+			**extra_fields: Any) -> 'User':
+		""" Creates a standard user to User object and writes
+		is_active = True. """
+		extra_fields.setdefault('is_active', True)
 		return self._create_user(username, email, password, **extra_fields)
 
-	def create_superuser(self, username, email, password, **extra_fields):
+	def create_superuser(
+			self,
+			username: str,
+			email: str,
+			password: Optional[str] = None,
+			**extra_fields: Any) -> 'User':
+		""" Creates a superuser user to User object and writes
+		is_active = True. """
 		extra_fields.setdefault('is_staff', True)
 		extra_fields.setdefault('is_superuser', True)
 
-		if extra_fields.get('is_staff') is not True:
+		if not extra_fields.get('is_staff'):
 			raise ValueError('Суперпользователь должен иметь is_staff=True.')
-
-		if extra_fields.get('is_superuser') is not True:
+		if not extra_fields.get('is_superuser'):
 			raise ValueError('Суперпользователь должен иметь is_superuser=True.')
 
 		return self._create_user(username, email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+	member: Optional['Member'] = None
 	username = models.CharField(db_index=True, max_length=255, unique=True)
 	email = models.EmailField(
 		validators=[validators.validate_email],
 		unique=True,
-		blank=False
-	)
+		blank=False)
+	is_active = models.BooleanField(default=True)
+	is_staff = models.BooleanField(default=False)
 	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = ['username',]
-	objects = UserManager()
-	member: Optional["Member"] = None
+	REQUIRED_FIELDS = ['username']
+	objects: UserManager = UserManager()
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return self.username
 
 	@property
-	def token(self):
-		"""Позволяет нам получить токен пользователя, вызвав `user.token` вместо `user.generate_jwt_token()`."""
+	def token(self) -> str:
+		""" Returns the JWT token. """
 		return self._generate_jwt_token()
 
-	def get_full_name(self):
-		"""Этот метод используется для обработки электронной почты и других операций, требующих имени пользователя."""
-		return self.username
+	@property
+	def is_member_admin(self) -> bool:
+		""" Checks whether the user is an administrator via Member. """
+		member = getattr(self, 'member', None)
+		return member.is_admin if member else False
 
-	def get_short_name(self):
-		"""Как правило, это будет имя пользователя."""
-		return self.username
-
-	def _generate_jwt_token(self):
-		"""Создает веб-токен JSON, в котором хранится идентификатор пользователя и срок его действия составляет 60 дней в будущем."""
+	def _generate_jwt_token(self) -> str:
 		dt = datetime.now() + timedelta(days=60)
 		token = jwt.encode({
 			'id': self.pk,
@@ -84,53 +100,46 @@ class User(AbstractBaseUser, PermissionsMixin):
 		}, settings.SECRET_KEY, algorithm='HS256')
 		return token
 
-	def get_role(self):
-		try:
-			member = getattr(self, 'member', None)
-			if member:
-				if member.is_admin:
-					return "admin"
-				elif member.is_creator:
-					return "creator"
-			return "regular user"
-		except Member.DoesNotExist:
-			return "regular user"
+	def get_full_name(self) -> str:
+		""" This method is under development! """
+		return self.username
 
-	@property
-	def is_staff(self):
-		"""Проверяет, является ли пользователь администратором через объект Member."""
-		return getattr(self, 'member', None).is_admin if hasattr(self, 'member') else False
-
-	@property
-	def is_active(self):
-		"""Проверяет, активен ли пользователь через объект Member."""
-		return getattr(self, 'member', None).is_active if hasattr(self, 'member') else False
-
-	@property
-	def is_creator(self):
-		"""Проверяет, является ли пользователь создателем через объект Member."""
-		return getattr(self, 'member', None).is_creator if hasattr(self, 'member') else False
+	def get_short_name(self) -> str:
+		""" This method is under development! """
+		return self.username
 
 
 class Member(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='member')
+	user = models.OneToOneField(
+		User,
+		on_delete=models.CASCADE,
+		related_name='member')
 	is_admin = models.BooleanField(default=False)
 	is_creator = models.BooleanField(default=False)
-	is_active = models.BooleanField(default=True)
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return f"Member: {self.user.username}"
 
 
 @receiver(post_save, sender=User)
-def create_member_for_user(sender, instance, created, **kwargs):
-	"""Создает объект Member, если он не существует."""
+def create_member_for_user(
+		sender: Type[User],
+		instance: User,
+		created: bool,
+		**kwargs: Any) -> None:
+	""" The signal that the User sends,
+	after which the Member object is created """
 	if created:
-		Member.objects.create(user=instance)
+		Member.objects.get_or_create(user=instance)
 
 
 @receiver(post_save, sender=User)
-def save_member_for_user(sender, instance, **kwargs):
-	"""Сохраняет объект Member при обновлении пользователя."""
-	instance.member.save()
-
+def save_member_for_user(
+		sender: Type[User],
+		instance: User,
+		**kwargs: Any) -> None:
+	""" The signal that the User sends.
+	It checks if there is a Member object and saves it.
+	This is necessary if there have been changes. """
+	if hasattr(instance, 'member'):
+		instance.member.save()
