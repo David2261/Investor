@@ -1,16 +1,19 @@
 # tests/test_views.py
+import os
 import pytest
+import tempfile
+from PIL import Image
+import io
 from django.urls import reverse
 from django.utils import timezone
+from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
 
 from articles.models import Articles
 from articles.models import Category
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from authentication.models import User
 
 
 @pytest.mark.django_db
@@ -89,7 +92,7 @@ class TestArticleAPICreator:
 		return user
 
 	@pytest.fixture
-	def sample_category(self, db):
+	def sample_category(db):
 		return Category.objects.create(name="Test Category", slug="test-category")
 
 	@pytest.fixture
@@ -112,21 +115,44 @@ class TestArticleAPICreator:
 		assert response.data[0]["title"] == "Sample Article"
 		assert response.data[0]["slug"] == "sample-article"
 
-	def test_post_article_with_category(self, api_client, admin_user):
-		"""Тест POST метода для создания статьи
-		с автоматическим созданием категории"""
+	def test_post_article_with_image(
+			self,
+			api_client,
+			admin_user,
+			sample_category):
+		"""Тест POST метода для создания статьи с изображением"""
 		api_client.force_authenticate(user=admin_user)
 		url = reverse('articles:article-creator')
-		data = {
-			"title": "New Article",
-			"description": "New Content",
-			"category": "New Category",
-			"time_create": timezone.now()
-		}
+
+		# Создаем простое изображение
+		image = Image.new('RGB', (100, 100), color='red')
+		img_byte_arr = io.BytesIO()
+		image.save(img_byte_arr, format='PNG')
+		img_byte_arr.seek(0)  # Возвращаем указатель в начало
+
+		# Записываем в временный файл
+		with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
+			temp_file.write(img_byte_arr.getvalue())
+			temp_file_path = temp_file.name
+
+		# Используем with для открытия файла
+		with open(temp_file_path, 'rb') as img_file:
+			data = {
+				"title": "New Article",
+				"description": "New Content",
+				"category": sample_category.id,
+				"img": SimpleUploadedFile(
+					name='image.png',
+					content=img_file.read(),
+					content_type='image/png'
+				),
+			}
+
 		response = api_client.post(url, data)
-		assert response.status_code == 201
-		assert 'category' in response.data
-		assert response.data['category']['name'] == "New Category"
+		assert response.status_code == status.HTTP_201_CREATED
+
+		# Удалите временный файл после теста
+		os.remove(temp_file_path)
 
 	def test_post_article_missing_data(self, api_client, admin_user):
 		""" Тест POST метода с отсутствующими обязательными полями """
@@ -140,39 +166,60 @@ class TestArticleAPICreator:
 		}
 		response = api_client.post(url, data)
 		assert response.status_code == 400
-		assert response.data == {'title': [ErrorDetail(
+		assert response.data == {
+			'title': [ErrorDetail(
 				string='Это поле не может быть пустым.',
 				code='blank')],
 			'img': [ErrorDetail(
 				string='Это поле не может быть пустым.',
 				code='null')],
-			'time_create': [ErrorDetail(
-				string='Обязательное поле.',
-				code='required')]}
+			'category': [ErrorDetail(
+				string='Некорректный тип. Ожидалось значение первичного ключа, получен str.',  # noqa: E501
+				code='incorrect_type')]}
 
-	def test_put_article(self, api_client, admin_user, sample_article):
+	def test_put_article(
+			self,
+			api_client,
+			admin_user,
+			sample_article,
+			sample_category):
 		"""Тест PUT метода для обновления статьи"""
+		admin_user.member.is_creator = True
+		admin_user.save()
 		api_client.force_authenticate(user=admin_user)
-		url = reverse(
-			'articles:article-creator-detail',
-			kwargs={"post_slug": sample_article.slug})
+
+		url = reverse('articles:article-creator-detail', kwargs={
+			'cat_slug': sample_category.slug,
+			'post_slug': sample_article.slug
+		})
+
 		data = {
 			"title": "Updated Article",
 			"description": "Updated Content",
+			"category": sample_article.category.id
 		}
+
 		response = api_client.put(url, data)
+		print(response.data)
 		sample_article.refresh_from_db()
+
 		assert response.status_code == 200
 		assert sample_article.title == "Updated Article"
 		assert sample_article.description == "Updated Content"
 
-	def test_delete_article(self, api_client, admin_user, sample_article):
+	def test_delete_article(
+			self,
+			api_client,
+			admin_user,
+			sample_article,
+			sample_category):
 		""" Тест DELETE метода для удаления статьи """
 		api_client.force_authenticate(user=admin_user)
 		assert Articles.objects.filter(slug=sample_article.slug).exists()
-		url = reverse(
-			'articles:article-creator-detail',
-			kwargs={"post_slug": sample_article.slug})
+		url = reverse('articles:article-creator-detail', kwargs={
+			'cat_slug': sample_category.slug,
+			'post_slug': sample_article.slug
+		})
 		response = api_client.delete(url)
 		print(response.data)
 		assert response.status_code == 202

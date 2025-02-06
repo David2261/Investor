@@ -4,6 +4,7 @@ import logging
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.conf import settings
+from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 # DRF - API
@@ -17,6 +18,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from authentication.models import User
 from authentication.permissions import IsAdminUser
+from authentication.permissions import AdminCreatorOnly
 from segregation.decorators import counted
 from segregation.views import BaseArticleList
 from .models import Articles
@@ -99,7 +101,7 @@ class ArticleDetail(APIView):
 
 
 class ArticleAPICreator(APIView):
-	permission_classes = [IsAdminUser]
+	permission_classes = [AdminCreatorOnly]
 
 	def get_queryset(self):
 		return Articles.objects.filter(is_published=True).select_related('category')
@@ -110,45 +112,55 @@ class ArticleAPICreator(APIView):
 		serializer = ArticlesSerializer(queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
+	def get_object(self, category_slug, post_slug):
+		category = get_object_or_404(Category, slug=category_slug)
+		article = get_object_or_404(Articles, category=category, slug=post_slug)
+		return article
+
 	def post(self, request, *args, **kwargs):
-		data = {
-			"title": request.data.get('title'),
-			"description": request.data.get('description'),
-			"category": request.data.get('category'),
-			"img": request.data.get('img'),
-			"author": request.user
-		}
-		serializer = ArticlesSerializer(data=data)
+		data = self._get_article_data(request)
+		serializer = ArticlesSerializer(data=data, context={"request": request})
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-	def put(self, request, post_slug):
-		article = get_object_or_404(Articles, is_published=True, slug=post_slug)
-		data = {
+	def put(self, request, cat_slug, post_slug):
+		article = self.get_object(cat_slug, post_slug)
+		data = request.data
+		serializer = ArticlesSerializer(
+			article,
+			data=data,
+			partial=True,
+			context={'request': request})
+
+		if serializer.is_valid(raise_exception=True):
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_200_OK)
+
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+	def delete(self, request, cat_slug, post_slug) -> Response:
+		article = self.get_object(cat_slug, post_slug)
+		if article.author != request.user:
+			return Response(
+				{"error": "You do not have permission to delete this article."},
+				status=status.HTTP_403_FORBIDDEN
+			)
+
+		article.delete()
+		return Response(status=status.HTTP_202_ACCEPTED)
+
+	def _get_article_data(self, request):
+		""" Helper method to extract article data from request """
+		return {
 			"title": request.data.get('title'),
 			"description": request.data.get('description'),
 			"category": request.data.get('category'),
 			"img": request.data.get('img'),
-			"user": request.user
+			"author": request.user,
+			"time_create": timezone.now(),
 		}
-		serializer = ArticlesSerializer(article, data=data, partial=True)
-		if serializer.is_valid(raise_exception=True):
-			serializer.save()
-			return Response(serializer.data, status=status.HTTP_200_OK)
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-	def delete(self, request, post_slug) -> Response:
-		article = get_object_or_404(Articles, is_published=True, slug=post_slug)
-		if article.author != request.user:
-			return Response(
-				{"error": "You do not have permission \
-				to delete this article."},
-				status=status.HTTP_403_FORBIDDEN)
-
-		article.delete()
-		return Response(status=status.HTTP_202_ACCEPTED)
 
 
 class CategoriesList(ListAPIView):
