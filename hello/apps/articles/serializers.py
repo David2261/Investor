@@ -1,7 +1,7 @@
 import math
 from typing import Any
 from typing import Dict
-from typing import Optional
+from django.utils import timezone
 from rest_framework import serializers
 
 from authentication.models import User
@@ -24,7 +24,8 @@ class ArticlesSerializerHome(serializers.ModelSerializer):
 
 
 class ArticlesSerializer(serializers.ModelSerializer):
-	category = CategorySerializerNS(read_only=True)
+	category = serializers.PrimaryKeyRelatedField(
+		queryset=Category.objects.all())
 	time_create = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
 	summary = serializers.CharField(read_only=True)
 	reading_time_minutes = serializers.SerializerMethodField()
@@ -32,6 +33,9 @@ class ArticlesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Articles
 		fields = ['title', 'description', 'summary', 'reading_time_minutes', 'category', 'img', 'time_create', 'slug']
+		extra_kwargs = {
+			'time_create': {'required': False}
+		}
 
 	def get_reading_time_minutes(self, obj: Articles) -> int:
 		""" Функция для расчета время прочтения статьи,
@@ -46,6 +50,8 @@ class ArticlesSerializer(serializers.ModelSerializer):
 			raise serializers.ValidationError(
 				"У вас нет права писать статьи.")
 
+		validated_data['author'] = user
+		validated_data['time_create'] = timezone.now()
 		return Articles.objects.create(**validated_data)
 
 	def update(self, instance, validated_data: Dict[str, Any]) -> Articles:
@@ -71,6 +77,12 @@ class ArticlesSerializer(serializers.ModelSerializer):
 			raise serializers.ValidationError({'category': 'Category is required.'})
 
 		return data
+
+	def validate_category(self, value):
+		""" Проверяем, что категория существует """
+		if not Category.objects.filter(id=value.id).exists():
+			raise serializers.ValidationError("Выбрана несуществующая категория.")
+		return value
 
 
 class ArticleDetailSerializer(serializers.ModelSerializer):

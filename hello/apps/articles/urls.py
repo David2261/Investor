@@ -31,7 +31,7 @@ urlpatterns = [
 			ArticleAPICreator.as_view(),
 			name='article-creator'),
 	path(
-			'articles/creator/<slug:post_slug>/',
+			'articles/creator/<slug:cat_slug>/<slug:post_slug>/',
 			ArticleAPICreator.as_view(),
 			name='article-creator-detail'),
 	# utill paths

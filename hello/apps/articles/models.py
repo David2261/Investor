@@ -85,7 +85,7 @@ class Articles(BasePost):
 			max_length=100,
 			default=get_default_image_path)
 	time_update = models.DateTimeField(
-			auto_now=True,
+			auto_now_add=True,
 			verbose_name=_("Time of change"))
 	is_published = models.BooleanField(
 			default=False,

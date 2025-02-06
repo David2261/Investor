@@ -90,7 +90,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	def is_member_admin(self) -> bool:
 		""" Checks whether the user is an administrator via Member. """
 		member = getattr(self, 'member', None)
-		return member.is_admin if member else False
+		return member.is_admin if member and hasattr(member, 'is_admin') else False
 
 	def _generate_jwt_token(self) -> str:
 		dt = datetime.now() + timedelta(days=60)
