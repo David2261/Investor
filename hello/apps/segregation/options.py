@@ -4,7 +4,7 @@ from transliterate import translit
 from transliterate import get_available_language_codes
 
 
-def check_lang(text):
+def check_lang(text: str) -> str:
 	""" Переводит текст на английский для slug """
 	if not isinstance(text, str):
 		raise ValueError("Input must be a string")
@@ -19,4 +19,5 @@ def check_lang(text):
 		# Переводим текст на английский
 		return translit(text, 'ru', reversed=True)
 	except Exception as e:
+		print(f"Caught an exception: {e}")
 		raise ValueError(f"Error during transliteration: {e}")

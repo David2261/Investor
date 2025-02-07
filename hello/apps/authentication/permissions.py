@@ -7,9 +7,17 @@ class IsAdminUser(BasePermission):
 	""" Разрешение для проверки, является ли пользователь
 	администратором. """
 	def has_permission(self, request: Request, view: APIView) -> bool:
-		return (
-			request.user.is_authenticated
-			and getattr(request.user, 'is_staff', False))
+		# Проверяем, что пользователь аутентифицирован
+		if not request.user.is_authenticated:
+			return False
+
+		# Проверяем наличие атрибута member
+		member = getattr(request.user, 'member', None)
+		if member is None:
+			print("У пользователя нет объекта member.")
+			return False
+
+		return member.is_admin
 
 
 class AdminCreatorOnly(BasePermission):
