@@ -10,11 +10,16 @@ from articles.models import PageHit
 
 
 def counted(f: Callable[[Any], Any]) -> Callable[[Any, Any], Any]:
+	"""
+	Декоратор для подсчета количества посещений страницы.
+	Этот декоратор увеличивает счетчик посещений для URL, 
+	переданного в запросе, и сохраняет его в базе данных.
+	"""
 	@wraps(f)
-	def decorator(request: Any, *args: Any, **kwargs: Any) -> Any:
+	def decorator(self, request: Any, *args: Any, **kwargs: Any) -> Any:
 		with transaction.atomic():
 			counter, created = PageHit.objects.get_or_create(url=request.path)
 			counter.count = F('count') + 1
 			counter.save()
-		return f(request, *args, **kwargs)
+		return f(self, request, *args, **kwargs)
 	return decorator
