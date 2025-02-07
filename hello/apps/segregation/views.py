@@ -4,7 +4,7 @@ from articles.models import Articles
 
 
 class BaseArticleList(ListAPIView):
-    permission_classes = [permissions.AllowAny]
-    queryset = Articles.objects.filter(
-        is_published=True).select_related(
-            'category').prefetch_related('author')
+	permission_classes = [permissions.AllowAny]
+	queryset = Articles.objects.filter(
+		is_published=True).select_related(
+			'category').prefetch_related('author')

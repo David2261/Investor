@@ -32,6 +32,7 @@ django-rest-auth = "^0.9.5"
 django-filter = "^24.3"
 celery = "^5.4.0"
 redis = "^5.2.0"
+pytest-mock = "^3.14.0"
 
 
 [build-system]
