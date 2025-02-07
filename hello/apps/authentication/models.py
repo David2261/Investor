@@ -66,6 +66,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+	""" Сам пользователь """
 	member: Optional['Member'] = None
 	username = models.CharField(db_index=True, max_length=255, unique=True)
 	email = models.EmailField(
@@ -110,6 +111,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Member(models.Model):
+	""" Классы пользователя - является ли он админом или креатором. """
 	user = models.OneToOneField(
 		User,
 		on_delete=models.CASCADE,

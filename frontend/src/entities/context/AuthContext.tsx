@@ -9,12 +9,18 @@ interface AuthTokens {
 	refresh: string;
 }
 
+export interface Member {
+	is_admin: boolean;
+	is_creator: boolean;
+}
+
 export interface User {
-	url: string;
-	username: string;
-	email: string;
-	groups: string[];
-	role: string;
+    url: string;
+    username: string;
+    email: string;
+    is_active: boolean;
+    is_staff: boolean;
+    member: Member;
 }
 
 interface RegistrationForm {

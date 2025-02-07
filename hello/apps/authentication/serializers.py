@@ -5,6 +5,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.tokens import Token
 
 from .models import User
+from .models import Member
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -60,9 +61,17 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 		return user
 
+
+class MemberSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Member
+		fields = ['is_admin', 'is_creator']
+
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	url = serializers.HyperlinkedIdentityField(view_name='authentication:user-detail', lookup_field='pk')
+	member = MemberSerializer(read_only=True)
 
 	class Meta:
 		model = User
-		fields = ['url', 'username', 'email', 'is_active', 'is_staff']
+		fields = ['url', 'username', 'email', 'is_active', 'is_staff', 'member']

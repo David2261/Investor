@@ -2,6 +2,7 @@ from django.apps import apps
 
 
 def get_custom_apps(django_apps):
+	""" Возвращает список приложений. """
 	app_list = []
 	for app in apps.get_app_configs():
 		if app.name not in django_apps:
@@ -14,6 +15,7 @@ def get_custom_apps(django_apps):
 
 
 def get_models_info(apps_list):
+	""" Возвращает список моделей внутри приложения. """
 	app_models = {}
 	for app_name in apps_list:
 		try:

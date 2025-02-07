@@ -11,16 +11,12 @@ import Sidebar from '../../components/Admin/HomeAdmin/Sidebar.tsx';
 
 const AdminLayoutRoute = () => {
 	const { user, loading } = useContext(AuthContext);
-	const isAdmin = user?.role === 'admin';
+	const isAdmin = user?.member?.is_admin === true;
 	const { data: adminApps, error: appsError, isLoading: appsLoading } = useAdminApps();
 	const { data: adminModels, error: modelsError, isLoading: modelsLoading } = useAdminModels();
 
-	if (loading || user?.role === undefined) {
+	if (loading || user?.member === undefined || appsLoading || modelsLoading) {
 		return <Preloader />;
-	}
-
-	if (appsLoading || modelsLoading) {
-		return <div>Загрузка...</div>;
 	}
 
 	if (appsError) {
