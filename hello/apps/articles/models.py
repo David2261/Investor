@@ -38,6 +38,11 @@ class Category(models.Model):
 	name = models.CharField(
 			verbose_name=_("Category"),
 			max_length=255)
+	author = models.ForeignKey(
+		settings.AUTH_USER_MODEL,
+		on_delete=models.CASCADE,
+		null=True,
+		blank=True)
 	slug = models.SlugField(
 			default='',
 			editable=False,

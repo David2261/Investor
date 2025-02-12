@@ -32,6 +32,8 @@ urlpatterns = [
 		TokenRefreshView.as_view(),
 		name='token_refresh'),
 	path('v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+	# Возращает данные о пользователе
+	# (т.е. является ли он креатором или админом).
 	path('v1/user/data/', CurrentUserView.as_view(), name="current-user"),
 	path('user/<int:pk>/', UserDetailView.as_view(), name='user-detail'),
 	path('google/login/', GoogleLoginView.as_view(), name='google_login'),

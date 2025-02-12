@@ -1,12 +1,16 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from authentication.permissions import IsAdminUser
 from articles.models import Articles
 from articles.models import Category
+from bonds.models import Bonds
 from .serializers import AdminArticleSerializerEdit
 from .serializers import AdminCategorySerializerCreate
 from .serializers import AdminArticleSerializerCreate
+from .serializers import AdminBondSerializerCreate
+from .serializers import AdminBondSerializerEdit
 
 
 class AppAdminCategoryCreate(generics.CreateAPIView):
@@ -24,13 +28,42 @@ class AppAdminCategoryCreate(generics.CreateAPIView):
 		return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+class AppAdminCategoryEdit(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Category.objects.all()
+	serializer_class = AdminCategorySerializerCreate
+	permission_classes = [IsAdminUser]
+
+	def get_object(self):
+		cat_slug = self.kwargs.get('cat_slug')
+		return get_object_or_404(Category, slug=cat_slug)
+
+	def update(self, request, *args, **kwargs):
+		category = self.get_object()
+		serializer = self.get_serializer(category, data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_update(serializer)
+
+		category_url = category.get_absolute_url()
+		return Response({
+			"detail": "Category updated successfully.",
+			"url": category_url},
+			status=status.HTTP_200_OK)
+
+	def destroy(self, request, *args, **kwargs):
+		category = self.get_object()
+		category.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class AppAdminArticleEdit(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Articles.objects.all()
 	serializer_class = AdminArticleSerializerEdit
 	permission_classes = [IsAdminUser]
 
 	def get_object(self):
-		return super().get_object()
+		cat_slug = self.kwargs.get('cat_slug')
+		post_slug = self.kwargs.get('post_slug')
+		return get_object_or_404(Articles, slug=post_slug, category__slug=cat_slug)
 
 	def update(self, request, *args, **kwargs):
 		article = self.get_object()
@@ -63,3 +96,45 @@ class AppAdminArticleCreate(generics.CreateAPIView):
 		serializer.is_valid(raise_exception=True)
 		self.perform_create(serializer)
 		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class AppAdminBondCreate(generics.CreateAPIView):
+	queryset = Bonds.objects.all()
+	serializer_class = AdminBondSerializerCreate
+	permission_classes = [IsAdminUser]
+
+	def perform_create(self, serializer):
+		serializer.save(author=self.request.user)
+
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_create(serializer)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class AppAdminBondEdit(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Bonds.objects.all()
+	serializer_class = AdminBondSerializerEdit
+	permission_classes = [IsAdminUser]
+
+	def get_object(self):
+		bond_slug = self.kwargs.get('post_slug')
+		return get_object_or_404(Bonds, slug=bond_slug)
+
+	def update(self, request, *args, **kwargs):
+		bond = self.get_object()
+		serializer = self.get_serializer(bond, data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_update(serializer)
+
+		bond_url = bond.get_absolute_url()
+		return Response({
+			"detail": "Bond updated successfully.",
+			"url": bond_url
+		}, status=status.HTTP_200_OK)
+
+	def destroy(self, request, *args, **kwargs):
+		bond = self.get_object()
+		bond.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)

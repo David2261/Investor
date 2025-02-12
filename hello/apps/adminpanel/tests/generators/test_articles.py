@@ -5,9 +5,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from articles.models import Articles
 from articles.models import Category
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from authentication.models import User
 
 
 @pytest.fixture
@@ -54,6 +52,9 @@ def create_articles(db, admin_user, sample_category):
 
 
 class TestAppAdminArticles:
+	"""
+	Тестирование AppAdminArticlesGenerateCSV и AppAdminArticlesGenerateJSON
+	"""
 	@pytest.mark.django_db
 	def test_generate_csv(self, admin_user, api_client, create_articles):
 		api_client.force_authenticate(user=admin_user)

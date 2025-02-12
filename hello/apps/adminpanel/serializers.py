@@ -8,7 +8,7 @@ from authentication.models import User
 class AdminCategorySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Category
-		fields = ['name']
+		fields = ['name', "slug"]
 
 
 class AdminAllUsersSerializer(serializers.ModelSerializer):
@@ -107,4 +107,112 @@ class AdminArticleSerializer(serializers.ModelSerializer):
 class AdminBondSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Bonds
-		fields = ['title', 'is_published', 'maturity', 'cupon_percent', 'category']
+		fields = [
+			'title',
+			'description',
+			'price',
+			'maturity',
+			'cupon',
+			'cupon_percent',
+			'time_create',
+			'slug']
+
+
+class AdminBondSerializerCreate(serializers.ModelSerializer):
+	class Meta:
+		model = Bonds
+		fields = [
+			'title',
+			'description',
+			'price',
+			'maturity',
+			'cupon',
+			'cupon_percent',
+			'time_create',
+			'slug']
+
+	def create(self, validated_data):
+		"""
+		Custom logic for creating a bond instance.
+		"""
+		return Bonds.objects.create(**validated_data)
+
+	def validate_title(self, value):
+		"""
+		Validate that the title meets the required criteria.
+		"""
+		if len(value) < 5:
+			raise serializers.ValidationError(
+				"Заголовок должен содержать не менее 5 символов."
+			)
+		return value
+
+	def validate_price(self, value):
+		"""
+		Validate that the price is a positive number.
+		"""
+		if value <= 0:
+			raise serializers.ValidationError("Цена должна быть положительным числом.")
+		return value
+
+	def validate_slug(self, value):
+		"""
+		Ensure the slug is unique for new bonds.
+		"""
+		if Bonds.objects.filter(slug=value).exists():
+			raise serializers.ValidationError("Слаг должен быть уникальным.")
+		return value
+
+
+class AdminBondSerializerEdit(serializers.ModelSerializer):
+	class Meta:
+		model = Bonds
+		fields = [
+			'title',
+			'description',
+			'price',
+			'maturity',
+			'cupon',
+			'cupon_percent',
+			'slug']
+
+	def update(self, instance, validated_data):
+		"""
+		Custom logic for updating a bond instance.
+		"""
+		instance.title = validated_data.get('title', instance.title)
+		instance.description = validated_data.get(
+			'description',
+			instance.description)
+		instance.price = validated_data.get('price', instance.price)
+		instance.maturity = validated_data.get('maturity', instance.maturity)
+		instance.cupon = validated_data.get('cupon', instance.cupon)
+		instance.cupon_percent = validated_data.get(
+			'cupon_percent',
+			instance.cupon_percent)
+		instance.slug = validated_data.get('slug', instance.slug)
+		instance.save()
+		return instance
+
+	def validate_title(self, value):
+		if len(value) < 5:
+			raise serializers.ValidationError(
+				"Заголовок должен содержать не менее 5 символов."
+			)
+		return value
+
+	def validate_slug(self, value):
+		if Bonds.objects.filter(slug=value).exists():
+			raise serializers.ValidationError("Слаг должен быть уникальным.")
+		return value
+
+	def validate_price(self, value):
+		if value <= 0:
+			raise serializers.ValidationError("Цена должна быть положительным числом.")
+		return value
+
+	def validate_maturity(self, value):
+		from django.utils import timezone
+		if value <= timezone.now().date():
+			raise serializers.ValidationError("Дата погашения должна быть в будущем.")
+		return value
