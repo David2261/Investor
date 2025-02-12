@@ -22,8 +22,10 @@ from .uploads import (
 from .create import (
 	AppAdminArticleEdit,
 	AppAdminArticleCreate,
-	AppAdminCategoryCreate
-)
+	AppAdminCategoryCreate,
+	AppAdminCategoryEdit,
+	AppAdminBondCreate,
+	AppAdminBondEdit)
 
 
 app_name = 'adminpanel'
@@ -101,5 +103,17 @@ urlpatterns = [
 	path(
 		'apps/main/categories/create/',
 		AppAdminCategoryCreate.as_view(),
-		name="categories-create")
+		name="categories-create"),
+	path(
+		'apps/main/categories/edit/<slug:cat_slug>/',
+		AppAdminCategoryEdit.as_view(),
+		name="categories-edit"),
+	path(
+		'apps/main/bonds/create/',
+		AppAdminBondCreate.as_view(),
+		name="bonds-create"),
+	path(
+		'apps/main/bonds/edit/<slug:post_slug>/',
+		AppAdminBondEdit.as_view(),
+		name="bonds-edit")
 ]
