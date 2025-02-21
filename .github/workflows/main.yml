@@ -1,0 +1,28 @@
+name: Main Workflow
+
+on:
+  workflow_run:
+    workflows: ["node.yml", "django.yml"]
+    types:
+      - completed
+
+jobs:
+  run-node:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Node.js workflow
+        uses: ./.github/workflows/node.yml
+
+  run-django:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Django workflow
+        uses: ./.github/workflows/django.yml
