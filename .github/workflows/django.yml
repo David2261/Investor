@@ -32,6 +32,21 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.11"]
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}  # Your database name
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}  # Your database user
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}  # Your database password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ${{ vars.POSTGRES_USER }}"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3
