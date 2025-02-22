@@ -76,13 +76,6 @@ jobs:
           docker logs $(docker ps -q --filter ancestor=postgres:13)
 
       # Создание БД
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          until pg_isready -h localhost -U ${{ secrets.POSTGRES_USER }}; do
-            echo "Waiting for PostgreSQL..."
-            sleep 2
-          done
-
       - name: Create test database
         run: |
           PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d postgres -c "CREATE DATABASE ih_data;"
