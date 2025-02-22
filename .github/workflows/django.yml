@@ -69,25 +69,26 @@ jobs:
         run: |
           printenv | sort  # Покажет все переменные окружения
         continue-on-error: true
-      
-        # Даем время запуститься
+
+      # Даем время для запуска PostgreSQL
       - name: Wait for PostgreSQL
         run: sleep 10
-      
-       # Проверим статус контейнера
+
+      # Проверка статуса контейнера PostgreSQL
       - name: Check PostgreSQL container logs
         run: |
           docker logs $(docker ps -q --filter ancestor=postgres:13)
 
-      # Создание БД
+      # Создание тестовой базы данных
       - name: Create test database
         run: |
-          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -c "CREATE DATABASE test_db_for_tests;"
+          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d postgres -c "CREATE DATABASE test_db_for_tests;"
           echo "Test database created."
 
       - name: Run tests on test database
         run: |
           PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d test_db_for_tests -c "SELECT NOW();"
+          
       - name: Run Tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
