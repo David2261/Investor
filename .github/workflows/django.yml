@@ -36,8 +36,8 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: test_db
-          POSTGRES_USER: test_user
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         ports:
           - 5432:5432
@@ -73,7 +73,7 @@ jobs:
       # Создание БД
       - name: Create test database
         run: |
-          PGPASSWORD="test_password" psql -h localhost -U test_user -d postgres -c "CREATE DATABASE test_db;"
+          ${{ vars.POSTGRES_DB }} ${{ vars.POSTGRES_USER }} ${{ secrets.POSTGRES_PASSWORD }} ${{ vars.PGDATA }} psql -h localhost -U postgres -d postgres -c "CREATE DATABASE ih_data;"
   
       - name: Run Tests
         env:
