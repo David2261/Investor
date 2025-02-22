@@ -63,6 +63,11 @@ jobs:
       # Подтверждение, что переменные переданы
       - name: Debug environment variables
         run: env | grep POSTGRES
+
+      - name: Debug environment variables
+        run: |
+          printenv | sort  # Покажет все переменные окружения
+        continue-on-error: true
       
         # Даем время запуститься
       - name: Wait for PostgreSQL
