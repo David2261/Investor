@@ -34,15 +34,15 @@ jobs:
         python-version: ["3.11"]
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:13
         env:
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres"
+          --health-cmd "pg_isready -U ${{ secrets.POSTGRES_USER }}"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -68,13 +68,17 @@ jobs:
       
         # Даем время запуститься
       - name: Wait for PostgreSQL
-        run: sleep 30
+        run: sleep 10
+      
+       # Проверим статус контейнера
+      - name: Check PostgreSQL container logs
+        run: |
+          docker logs $(docker ps -q --filter ancestor=postgres:13)
 
       # Создание БД
       - name: Create test database
         run: |
-          ${{ vars.POSTGRES_DB }} ${{ vars.POSTGRES_USER }} ${{ secrets.POSTGRES_PASSWORD }} ${{ vars.PGDATA }} psql -h localhost -U postgres -d postgres -c "CREATE DATABASE ih_data;"
-  
+          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d postgres -c "CREATE DATABASE ih_data;"  
       - name: Run Tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
