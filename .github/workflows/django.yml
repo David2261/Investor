@@ -99,10 +99,8 @@ jobs:
           OAUTH_MICROSOFT_SECRET: ${{ secrets.OAUTH_MICROSOFT_SECRET }}
           OAUTH_YANDEX_CLIENTID: ${{ secrets.OAUTH_YANDEX_CLIENTID }}
           OAUTH_YANDEX_SECRET: ${{ secrets.OAUTH_YANDEX_SECRET }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
           DEBUG: ${{ vars.DEBUG }}
-          PGDATA: ${{ vars.PGDATA }}
         run: |
           mkdir -p /home/runner/work/Investor/Investor/__logs__
           touch /home/runner/work/Investor/Investor/__logs__/error.log
