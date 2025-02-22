@@ -68,7 +68,7 @@ jobs:
       
         # Даем время запуститься
       - name: Wait for PostgreSQL
-        run: sleep 10
+        run: sleep 30
 
       # Создание БД
       - name: Create test database
