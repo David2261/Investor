@@ -78,7 +78,7 @@ jobs:
       # Создание БД
       - name: Create test database
         run: |
-          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d postgres -c "CREATE DATABASE ih_data;"
+          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -U ${{ secrets.POSTGRES_USER }} -h localhost -d postgres -c "CREATE DATABASE ih_data;"
       - name: Run Tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
