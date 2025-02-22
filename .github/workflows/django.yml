@@ -36,9 +36,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}  # Your database name
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}  # Your database user
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}  # Your database password
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
@@ -73,8 +73,6 @@ jobs:
           REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
           DEBUG: ${{ vars.DEBUG }}
           PGDATA: ${{ vars.PGDATA }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
         run: |
           mkdir -p /home/runner/work/Investor/Investor/__logs__
           touch /home/runner/work/Investor/Investor/__logs__/error.log
