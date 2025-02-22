@@ -35,17 +35,16 @@ jobs:
     services:
       postgres:
         image: postgres:13
-        env:
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        ports:
-          - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres"
+          --env POSTGRES_USER=test_user
+          --env POSTGRES_PASSWORD=test_password
+          --env POSTGRES_DB=test_db
+          --health-cmd "pg_isready -U test_user"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - name: Checkout repo code
@@ -60,6 +59,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Set up PostgreSQL client
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
 
       - name: Debug environment variables
         run: |
@@ -78,7 +82,12 @@ jobs:
       # Создание БД
       - name: Create test database
         run: |
-          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d postgres -c "CREATE DATABASE ih_data;"
+          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -c "CREATE DATABASE test_db_for_tests;"
+          echo "Test database created."
+
+      - name: Run tests on test database
+        run: |
+          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d test_db_for_tests -c "SELECT NOW();"
       - name: Run Tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
