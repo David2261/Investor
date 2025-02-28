@@ -103,6 +103,7 @@ jobs:
           REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
           DEBUG: ${{ vars.DEBUG }}
           PGDATA: ${{ vars.PGDATA }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
         run: |
           mkdir -p /home/runner/work/Investor/Investor/__logs__
           touch /home/runner/work/Investor/Investor/__logs__/error.log
