@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-// Entities
+// Импортируем контекст авторизации
 import AuthContext from "../../../entities/context/AuthContext.tsx";
 
 const apiURL = import.meta.env.VITE_API_URL;
@@ -11,15 +11,18 @@ const AdminFormsCategories = () => {
 		name: ""
 	});
 
+	// Обработчик изменения ввода
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name } = e.target;
 		setFormData({
 			...formData,
-			[e.target.id]: e.target.value,
+			[e.target.id]: name,
 		});
 	};
 
+	// Обработчик отправки формы
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+		e.preventDefault(); // Предотвращаем перезагрузку страницы
 
 		if (!authTokens) {
 			alert("Токен авторизации отсутствует.");
@@ -34,44 +37,50 @@ const AdminFormsCategories = () => {
 						"Content-Type": "application/json",
 					}
 				});
-			console.log("Category created successfully:", response.data);
+			console.log("Категория успешно создана:", response.data);
 			alert("Категория успешно создана!");
-			setFormData({ name: "" });
+			setFormData({ name: "" }); // Сбрасываем форму
 		} catch (error) {
-			console.error("Error creating category:", error.response?.data || error);
+			console.error("Ошибка при создании категории:", error.response?.data || error);
 			alert("Произошла ошибка при создании категории.");
 		}
 	};
 
 	return (
 		<>
-			<div className="flex flex-col gap-4 p-4">
+			<form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
 				<div className="flex items-center gap-2">
 					<label className="text-white text-xl" htmlFor="category">Категория:</label>
 					<input
-						id="category"
+						id="title"
 						type="text"
-						className="border border-gray-400 rounded px-2 py-1 w-full max-w-sm"
+						placeholder="Название статьи"
+						className="border border-gray-400 rounded px-2 py-1 text-black"
 						value={formData.name}
-                        onChange={handleChange}
-                        required
-					/>
+						onChange={handleChange}
+						required
+						/>
 				</div>
 
 				<div className="flex flex-row justify-between items-center">
 					<div className="flex justify-start">
 						<button type="submit" className="uppercase bg-green-600 text-white px-4 py-2 rounded w-32 hover:bg-green-700">
-							сохранить
+							Сохранить
 						</button>
-						<button className="mx-4 text-white font-light text-left">
+						<button type="button" className="mx-4 text-white font-light text-left" onClick={() => {
+							alert("Сохранено! Добавьте другой объект.");
+							setFormData({ name: "" });
+						}}>
 							Сохранить и добавить другой объект
 						</button>
-						<button className="text-white font-light text-left">
+						<button type="button" className="text-white font-light text-left" onClick={() => {
+							alert("Сохранено! Продолжайте редактирование.");
+						}}>
 							Сохранить и продолжить редактирование
 						</button>
 					</div>
 				</div>
-			</div>
+			</form>
 		</>
 	);
 };

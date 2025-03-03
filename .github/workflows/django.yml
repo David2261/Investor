@@ -71,8 +71,14 @@ jobs:
         continue-on-error: true
 
       # Даем время для запуска PostgreSQL
-      - name: Wait for PostgreSQL
-        run: sleep 10
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            pg_isready -h 127.0.0.1 -U test_user && echo "PostgreSQL is ready" && exit 0
+            echo "Waiting for PostgreSQL..."
+            sleep 3
+          done
+          echo "PostgreSQL failed to start" && exit 1
 
       # Проверка статуса контейнера PostgreSQL
       - name: Check PostgreSQL container logs
@@ -82,12 +88,12 @@ jobs:
       # Создание тестовой базы данных
       - name: Create test database
         run: |
-          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d postgres -c "CREATE DATABASE test_db_for_tests;"
+          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d postgres -c "CREATE DATABASE test_db;"
           echo "Test database created."
 
       - name: Run tests on test database
         run: |
-          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d test_db_for_tests -c "SELECT NOW();"
+          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d postgres -c "SELECT NOW();"
           
       - name: Run Tests
         env:
@@ -103,8 +109,8 @@ jobs:
           REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
           DEBUG: ${{ vars.DEBUG }}
           PGDATA: ${{ vars.PGDATA }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
         run: |
           mkdir -p /home/runner/work/Investor/Investor/__logs__
           touch /home/runner/work/Investor/Investor/__logs__/error.log
