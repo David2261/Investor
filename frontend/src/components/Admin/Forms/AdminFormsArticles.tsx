@@ -36,6 +36,11 @@ const AdminFormsArticles = () => {
 
 	const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		e.preventDefault();
+
+		if (!authTokens) {
+			alert("Токен авторизации отсутствует.");
+			return;
+		}
 		
 		const data = new FormData();
 		data.append("title", formData.title);
@@ -47,12 +52,11 @@ const AdminFormsArticles = () => {
 		}
 
 		try {
-			console.log("Auth Tokens:", authTokens);
 			const response = await axios.post(`${apiURL}/api/admin/apps/main/articles/create/`, 
 				data, {
 					headers: {
 						Authorization: `Bearer ${authTokens}`,
-						"Content-Type": "application/json",
+						"Content-Type": "multipart/form-data",
 					}
 				});
 			console.log("Article created successfully:", response.data);
@@ -78,6 +82,7 @@ const AdminFormsArticles = () => {
 			  className="border border-gray-400 rounded px-2 py-1 text-black"
 			  value={formData.title}
 			  onChange={handleChange}
+			  required
 			/>
 		  </div>
 		</div>
