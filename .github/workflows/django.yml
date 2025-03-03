@@ -86,10 +86,10 @@ jobs:
           docker logs $(docker ps -q --filter ancestor=postgres:13)
 
       # Создание тестовой базы данных
-      - name: Create test database
-        run: |
-          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d postgres -c "CREATE DATABASE test_db;"
-          echo "Test database created."
+      # - name: Create test database
+      #   run: |
+      #     PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d postgres -c "CREATE DATABASE test_db;"
+      #     echo "Test database created."
 
       - name: Run tests on test database
         run: |
