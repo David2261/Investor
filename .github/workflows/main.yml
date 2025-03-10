@@ -1,8 +1,10 @@
 name: Main Workflow
 
+# , "django.yml"
+
 on:
   workflow_run:
-    workflows: ["node.yml", "django.yml"]
+    workflows: ["node.yml"]
     types:
       - completed
 
