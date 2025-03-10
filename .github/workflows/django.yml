@@ -3,15 +3,13 @@ run-name: ${{ github.actor }} is testing out Github CI/CD
 
 on:
   push:
-    branches: ["backend"]
   pull_request:
-    branches: ["backend"]
+  workflow_dispatch:
 
 jobs:
   flake8:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
     steps:
@@ -19,22 +17,35 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
-      - run: |
-          python3 -m pip install --upgrade pip
-          python -m pip install flake8
-      - name: flake8
-        uses: liskin/gh-problem-matcher-wrap@d8afa2cfb66dd3f982b1950429e652bc14d0d7d2
         with:
+          python-version: ${{ matrix.python-version }}
           cache: "pip"
-          linters: flake8
-          run: flake8
+      - name: Install flake8
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+      - name: Run flake8
+        run: flake8 .
 
   run_tests:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
       matrix:
         python-version: ["3.11"]
+    services:
+      postgres:
+        image: postgres:13
+        options: >-
+          --env POSTGRES_USER=test_user
+          --env POSTGRES_PASSWORD=test_password
+          --env POSTGRES_DB=test_db
+          --health-cmd "pg_isready -U test_user"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3
@@ -43,16 +54,65 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
+      # Установка зависимостей
       - name: Install Dependencies
         run: |
-          python3 -m pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Set up PostgreSQL client
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
+
+      - name: Debug environment variables
+        run: |
+          printenv | sort  # Покажет все переменные окружения
+        continue-on-error: true
+
+      # Даем время для запуска PostgreSQL
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            pg_isready -h 127.0.0.1 -U test_user && echo "PostgreSQL is ready" && exit 0
+            echo "Waiting for PostgreSQL..."
+            sleep 3
+          done
+          echo "PostgreSQL failed to start" && exit 1
+
+      # Проверка статуса контейнера PostgreSQL
+      - name: Check PostgreSQL container logs
+        run: |
+          docker logs $(docker ps -q --filter ancestor=postgres:13)
+
+      # Создание тестовой базы данных
+      # - name: Create test database
+      #   run: |
+      #     PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d postgres -c "CREATE DATABASE test_db;"
+      #     echo "Test database created."
+
+      - name: Run tests on test database
+        run: |
+          PGPASSWORD=test_password psql -h 127.0.0.1 -U test_user -d postgres -c "SELECT NOW();"
+          
       - name: Run Tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DEBUG: ${{ secrets.DEBUG }}
+          FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
+          OAUTH_GOOGLE_CLIENTID: ${{ secrets.OAUTH_GOOGLE_CLIENTID }}
+          OAUTH_GOOGLE_SECRET: ${{ secrets.OAUTH_GOOGLE_SECRET }}
+          OAUTH_MICROSOFT_CLIENTID: ${{ secrets.OAUTH_MICROSOFT_CLIENTID }}
+          OAUTH_MICROSOFT_SECRET: ${{ secrets.OAUTH_MICROSOFT_SECRET }}
+          OAUTH_YANDEX_CLIENTID: ${{ secrets.OAUTH_YANDEX_CLIENTID }}
+          OAUTH_YANDEX_SECRET: ${{ secrets.OAUTH_YANDEX_SECRET }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
+          DEBUG: ${{ vars.DEBUG }}
+          PGDATA: ${{ vars.PGDATA }}
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
         run: |
-          mkdir /home/runner/work/Investor/Investor/__logs__
+          mkdir -p /home/runner/work/Investor/Investor/__logs__
           touch /home/runner/work/Investor/Investor/__logs__/error.log
           chmod 777 -R .
           pytest --ff -v hello
