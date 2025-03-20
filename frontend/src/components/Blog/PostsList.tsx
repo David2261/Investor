@@ -38,7 +38,7 @@ const PostsList: FunctionComponent<PostsListType> = ({ data }) => {
 								<>Статью можно прочитать за {value.reading_time_minutes} минуты!</>
 							)}
 						</p>
-						<p className="text-base">{value.summary}...</p>
+						<p dangerouslySetInnerHTML={{ __html: value.summary }} className="text-base" />
 					</div>
 					<div className="col-span-2 md:col-span-1">
 						<img src={value.img} className="rounded-lg" alt="" />

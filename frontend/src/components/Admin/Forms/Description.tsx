@@ -1,15 +1,24 @@
-import React, { useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
+import "../../../styles/components/Admin/AdminDescriptions.css";
+
 
 interface DescriptionProps {
 	value: string;
 	onChange: (updatedValue: string) => void;
-  }
+}
 
 const Description: React.FC<DescriptionProps> = React.memo(({ value = "", onChange }) => {
 	const editorContainerRef = useRef<HTMLDivElement | null>(null);
 	const quillInstanceRef = useRef<Quill | null>(null);
+
+	const handleTextChange = useCallback(() => {
+		if (onChange && quillInstanceRef.current) {
+			const html = editorContainerRef.current?.querySelector(".ql-editor")?.innerHTML || "";
+			onChange(html);
+		}
+	}, [onChange]);
 
 	useEffect(() => {
 		if (editorContainerRef.current && !quillInstanceRef.current) {
@@ -27,12 +36,7 @@ const Description: React.FC<DescriptionProps> = React.memo(({ value = "", onChan
 				},
 			});
 
-			quillInstanceRef.current.on("text-change", () => {
-				if (onChange && quillInstanceRef.current) {
-					const html = editorContainerRef.current.querySelector(".ql-editor")?.innerHTML || "";
-					onChange(html);
-				}
-			});
+			quillInstanceRef.current.on("text-change", handleTextChange);
 
 			if (value) {
 				quillInstanceRef.current.root.innerHTML = value;
@@ -44,7 +48,7 @@ const Description: React.FC<DescriptionProps> = React.memo(({ value = "", onChan
 				quillInstanceRef.current = null;
 			}
 		};
-	}, []);
+	}, [value, handleTextChange]);
 
 	useEffect(() => {
 		if (

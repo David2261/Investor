@@ -1,9 +1,7 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { DEFAULT_TITLE } from '../constants/const';
 
-const DEFAULT_TITLE = 'Investor Home';
-
-const SEO = ({ title, children } : { title: string, children: any }) => {
+const SEOProvider = ({ title, children } : { title: string, children: any }) => {
   const fullTitle = title ? `${DEFAULT_TITLE} | ${title}` : DEFAULT_TITLE;
 
   return (
@@ -16,4 +14,4 @@ const SEO = ({ title, children } : { title: string, children: any }) => {
   );
 };
 
-export default SEO;
+export default SEOProvider;

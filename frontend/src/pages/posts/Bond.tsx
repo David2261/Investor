@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, useContext, Key, useMemo } from "react";
+import { useState, useContext, Key } from "react";
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 // Hooks
@@ -33,18 +33,8 @@ type Bond = {
 	[key: string]: any;
 };
 
-interface NewsAPIType {
-	id: Key;
-	category: {
-		name: string;
-		slug: string;
-	};
-	title: string;
-	img: string | undefined;
-	slug: string;
-	time_create: string;
-	reading_time_minutes: number;
-	summary: string;
+interface ErrorType {
+    message: string;
 }
 
 type BondsAPIResponse = Bond[];
@@ -85,23 +75,28 @@ const Bonds = () => {
 		enabled: !!authTokens
 	});
 
-	if (error) return <div>Error: {error.message}</div>;
-	if (errorOld) return <div>Error: {errorOld.message}</div>;
+	const getErrorMessage = (err: ErrorType | string | null | undefined) => {
+		if (!err) return null;
+		return typeof err === "string" ? err : err.message || "Unknown error";
+	};
+	
+	const errorMessage = getErrorMessage(error) || getErrorMessage(errorNews) || getErrorMessage(errorOld);
+	if (errorMessage) {
+		return <div>Error: {errorMessage}</div>;
+	}
 
 	// Current year and next year for dynamic content
 	const currentYear = new Date().getFullYear();
 	const nextYear = currentYear + 1;
 
 	// Prepare filtered data based on selected category
-	const filteredData = useMemo(() => {
-		if (selectedCategory === 'old') {
-			return dataOld || [];
-		}
-		if (selectedCategory === 'all') {
-			return data || [];
-		}
-		return data?.filter(item => item.category === selectedCategory) || [];
-	}, [selectedCategory, data, dataOld]);
+	const filteredData = !data && selectedCategory !== "old" 
+		? [] 
+		: selectedCategory === 'old'
+		? dataOld ?? []
+		: selectedCategory === 'all'
+		? data ?? []
+		: data?.filter(item => item.category === selectedCategory) ?? [];
 
 	const dataPostsToDisplay = news?.slice(0, 5) || [];
 

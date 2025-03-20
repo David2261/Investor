@@ -24,8 +24,7 @@ class ArticlesSerializerHome(serializers.ModelSerializer):
 
 
 class ArticlesSerializer(serializers.ModelSerializer):
-	category = serializers.PrimaryKeyRelatedField(
-		queryset=Category.objects.all())
+	category = CategorySerializerNS(read_only=True)
 	time_create = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
 	summary = serializers.CharField(read_only=True)
 	reading_time_minutes = serializers.SerializerMethodField()

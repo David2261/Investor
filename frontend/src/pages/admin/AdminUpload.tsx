@@ -7,16 +7,16 @@ interface Params {
 
 const AdminUpload: React.FC = () => {
 	const { apps } = useParams<Params>();
+	const navigate = useNavigate();
+	const [file, setFile] = useState<File | null>(null);
+	const [error, setError] = useState<string | null>(null);
+
 	if (!apps) {
 		return <div>Нет приложений</div>;
 	}
-	const navigate = useNavigate();
 	const handleOpenSite = () => {
 		navigate('/');
 	};
-
-	const [file, setFile] = useState<File | null>(null);
-	const [error, setError] = useState<string | null>(null);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = event.target.files?.[0];

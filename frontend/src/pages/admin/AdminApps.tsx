@@ -16,11 +16,8 @@ interface Params {
 
 const AdminApps = () => {
 	const { apps } = useParams<Params>();
-	if (!apps) {
-		return <div>Нет приложений</div>;
-	}
-	const { data, error, isLoading } = useAdminPages(apps.toLowerCase());
 	const navigate = useNavigate();
+	const { data, error, isLoading } = useAdminPages(apps ? apps.toLowerCase() : "");
 
 	const handleOpenSite = () => {
 		navigate('/');

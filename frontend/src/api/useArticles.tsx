@@ -17,9 +17,6 @@ interface BlogAPIType {
 	summary: string;
 }
 
-interface ErrorType {
-	message: string;
-}
 
 export const useArticles = (
 	page: number,
@@ -63,7 +60,7 @@ export const useArticles = (
 		}
 		};
 		fetchArticles();
-	}, [authTokens, page, selectedCategory, filter]);
+	}, [authTokens, page, selectedCategory, filter, apiURL]);
 
 	return {
 		data,

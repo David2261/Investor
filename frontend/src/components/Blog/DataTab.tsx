@@ -26,6 +26,9 @@ const DataTab: FunctionComponent<DataTabType> = ({ isSidebarChange, onSidebarCha
 	const filteredCategories = categories.filter(category =>
         category.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+	if (error) {
+		return <div>Error: {error.message}</div>;
+	}
 
 	const openModal = () => onSidebarChange(true);
     const closeModal = () => {

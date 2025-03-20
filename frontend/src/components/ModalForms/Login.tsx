@@ -20,8 +20,6 @@ const Login: React.FC<LoginProps> = (props) => {
 	const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 
-	const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
 	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { target: { value, name } } = event;
 		setForm(prevForm => ({ ...prevForm, [name]: value }));
@@ -29,6 +27,7 @@ const Login: React.FC<LoginProps> = (props) => {
 
 	const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 		if (!emailPattern.test(form.email)) {
 			setError("Please enter a valid email address.");
