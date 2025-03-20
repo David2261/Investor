@@ -30,14 +30,14 @@ const AdminFormsCategories = () => {
 		}
 
 		try {
-			const response = await axios.post(`${apiURL}/api/admin/apps/main/categories/create/`, 
+			await axios.post(`${apiURL}/api/admin/apps/main/categories/create/`, 
 				{ name: formData.name }, {
 					headers: {
 						Authorization: `Bearer ${authTokens.trim()}`,
 						"Content-Type": "application/json",
 					}
 				});
-			console.log("Категория успешно создана:", response.data);
+			// console.log("Категория успешно создана:", response.data);
 			alert("Категория успешно создана!");
 			setFormData({ name: "" }); // Сбрасываем форму
 		} catch (error) {

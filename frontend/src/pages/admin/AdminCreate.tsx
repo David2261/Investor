@@ -10,11 +10,10 @@ interface Params {
 
 const AdminCreate = () => {
 	const { apps } = useParams<Params>();
+	const navigate = useNavigate();
 	if (!apps) {
         return <div>Нет приложений</div>;
     }
-	const navigate = useNavigate();
-
 	const handleOpenSite = () => {
 		navigate('/');
 	};
@@ -37,9 +36,9 @@ const AdminCreate = () => {
 			onClick={handleOpenSite}
 			className='uppercase w-auto h-8 px-2 bg-black text-white rounded-lg'>открыть сайт</button>
 	</div>
-	<div className='flex flex-col bg-black rounded w-full w-height relative'>
+	<div className='flex flex-col bg-black rounded w-full relative'>
 		<div className='relative flex justify-between'>
-			<div className='pt-10 pl-7 pb-5 text-white text-xs'>
+			<div className='pt-10 pl-7 pb-5 font-bold text-white text-lg'>
 				<p>Добавить {apps}</p>
 			</div>
 		</div>

@@ -71,7 +71,7 @@ const ArticleNews = () => {
 				<img className='object-cover w-auto h-1/3 rounded-md' src={`${apiURL}/${data.img}`} alt={data.title} />
 			</div>
 			<div className="flex px-8 text-gray-700 leading-relaxed">
-				<p className="px-2 md:px-[11rem] text-justify mb-4">{data.description}</p>
+				<p dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 md:px-[11rem] text-justify mb-4" />
 			</div>
 		</div>
 	);

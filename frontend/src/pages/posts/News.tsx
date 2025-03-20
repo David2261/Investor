@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 // Styles
 import '../../styles/Blog.css';
