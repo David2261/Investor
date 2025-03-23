@@ -127,12 +127,15 @@ class ArticleAPICreator(APIView):
 
 	def put(self, request, cat_slug, post_slug):
 		article = self.get_object(cat_slug, post_slug)
-		data = request.data
+		data = request.data.copy()
+		print(data)
+
 		serializer = ArticlesSerializer(
 			article,
 			data=data,
 			partial=True,
-			context={'request': request})
+			context={"request": request},
+		)
 
 		if serializer.is_valid(raise_exception=True):
 			serializer.save()

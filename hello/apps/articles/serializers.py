@@ -24,7 +24,10 @@ class ArticlesSerializerHome(serializers.ModelSerializer):
 
 
 class ArticlesSerializer(serializers.ModelSerializer):
-	category = CategorySerializerNS(read_only=True)
+	category = serializers.SlugRelatedField(
+		queryset=Category.objects.all(),
+		slug_field='slug'
+	)
 	time_create = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
 	summary = serializers.CharField(read_only=True)
 	reading_time_minutes = serializers.SerializerMethodField()
@@ -61,7 +64,8 @@ class ArticlesSerializer(serializers.ModelSerializer):
 
 		instance.title = validated_data.get("title", instance.title)
 		instance.description = validated_data.get("description", instance.description)
-		instance.category = validated_data.get("category", instance.category)
+		if "category" in validated_data:
+			instance.category = validated_data["category"]
 		instance.img = validated_data.get("img", instance.img)
 
 		instance.save()

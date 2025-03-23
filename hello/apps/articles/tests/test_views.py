@@ -140,7 +140,7 @@ class TestArticleAPICreator:
 			data = {
 				"title": "New Article",
 				"description": "New Content",
-				"category": sample_category.id,
+				"category": sample_category.slug,
 				"img": SimpleUploadedFile(
 					name='image.png',
 					content=img_file.read(),
@@ -167,15 +167,16 @@ class TestArticleAPICreator:
 		response = api_client.post(url, data)
 		assert response.status_code == 400
 		assert response.data == {
-			'title': [ErrorDetail(
-				string='Это поле не может быть пустым.',
-				code='blank')],
-			'img': [ErrorDetail(
-				string='Это поле не может быть пустым.',
-				code='null')],
-			'category': [ErrorDetail(
-				string='Некорректный тип. Ожидалось значение первичного ключа, получен str.',  # noqa: E501
-				code='incorrect_type')]}
+			'title': [
+				ErrorDetail(
+					string='Это поле не может быть пустым.',
+					code='blank')],
+			'img': [
+				ErrorDetail(
+					string='Это поле не может быть пустым.',
+					code='null')],
+			'category': [
+				ErrorDetail(string='Объект с slug=New Category не существует.', code='does_not_exist')]}  # noqa: E501
 
 	def test_put_article(
 			self,
@@ -196,7 +197,7 @@ class TestArticleAPICreator:
 		data = {
 			"title": "Updated Article",
 			"description": "Updated Content",
-			"category": sample_article.category.id
+			"category": sample_article.category.slug
 		}
 
 		response = api_client.put(url, data)
