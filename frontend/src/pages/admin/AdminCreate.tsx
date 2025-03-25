@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 // Components
-import AdminFormsCategories from '../../components/Admin/Forms/AdminFormsCategories.tsx';
-import AdminFormsArticles from '../../components/Admin/Forms/AdminFormsArticles.tsx';
-import AdminFormsBonds from '../../components/Admin/Forms/AdminFormsBonds.tsx';
+import AdminFormCategories from '@/components/Admin/Forms/AdminFormCategories.tsx';
+import AdminFormArticles from '@/components/Admin/Forms/AdminFormArticles.tsx';
+import AdminFormBonds from '@/components/Admin/Forms/AdminFormBonds.tsx';
 
 interface Params {
     [key: string]: string | undefined;
@@ -21,13 +21,13 @@ const AdminCreate = () => {
 	let Info = <></>;
 
 	if (apps?.toLowerCase() == 'articles') {
-		Info = <AdminFormsArticles />
+		Info = <AdminFormArticles />
 	} else if (apps?.toLowerCase() == 'bonds') {
-		Info = <AdminFormsBonds />
+		Info = <AdminFormBonds />
 	} else if (apps?.toLowerCase() == 'user') {
 		return
 	} else if (apps?.toLowerCase() == 'category') {
-		Info = <AdminFormsCategories />
+		Info = <AdminFormCategories />
 	}
 
 	return <>

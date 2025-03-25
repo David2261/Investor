@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { animated, useSpring } from '@react-spring/web';
 // Entities
-import AuthContext from '../../entities/context/AuthContext';
+import AuthContext from '@/entities/context/AuthContext';
 // Assets
-import IH from '../../assets/logo/IH.webp';
+import IH from '@/assets/logo/IH.webp';
 // Styles
-import '../../styles/components/ModalForms/SignUp.css';
+import '@/styles/components/ModalForms/SignUp.css';
 
 interface SignUpProps {
 	setIsOpen: () => void;

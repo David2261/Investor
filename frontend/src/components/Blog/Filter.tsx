@@ -1,8 +1,8 @@
 import { useState, FunctionComponent } from "react";
 // Assets
-import downBlack from '../../assets/icons/down_black.svg';
-import popularBlack from '../../assets/icons/popular_black.svg';
-import upBlack from '../../assets/icons/up_black.svg';
+import downBlack from '@/assets/icons/down_black.svg';
+import popularBlack from '@/assets/icons/popular_black.svg';
+import upBlack from '@/assets/icons/up_black.svg';
 
 interface FilterType {
 	onFilterChange: (filter: { sortBy: string, order: string }) => void;

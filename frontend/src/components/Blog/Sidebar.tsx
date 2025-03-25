@@ -1,5 +1,5 @@
 import { Key, FunctionComponent } from "react";
-import "../../styles/components/Sidebar.css";
+import "@/styles/components/Sidebar.css";
 
 interface PostType {
     title: string;

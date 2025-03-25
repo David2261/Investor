@@ -2,13 +2,13 @@ import { useState, FunctionComponent } from "react";
 // Components
 import Sidebar from "./Sidebar";
 // API
-import { useAllCategories } from '../../api/useAllCategories.tsx';
+import { useAllCategories } from '@/api/useAllCategories.tsx';
 // Styles
-import '../../styles/components/Blog/DataTabStyles.css';
+import '@/styles/components/Blog/DataTabStyles.css';
 // Assets
-import homeBlack from '../../assets/icons/menu_black.svg';
-import closeBlack from '../../assets/icons/close_black.svg';
-import searchBlack from '../../assets/icons/search_black.svg';
+import homeBlack from '@/assets/icons/menu_black.svg';
+import closeBlack from '@/assets/icons/close_black.svg';
+import searchBlack from '@/assets/icons/search_black.svg';
 
 interface DataTabType {
 	isSidebarChange: boolean;

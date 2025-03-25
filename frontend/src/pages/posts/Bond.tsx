@@ -3,17 +3,17 @@ import { useState, useContext, Key } from "react";
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 // Hooks
-import useMediaQuery from "../../hooks/useMediaQuery.ts";
+import useMediaQuery from "@/hooks/useMediaQuery.ts";
 // API
-import { useArticles } from "../../api/useArticles.tsx";
+import { useArticles } from "@/api/useArticles.tsx";
 // Components
-import DataTab from "../../components/Bond/DataTab";
-import Article from "../../components/Bond/Article";
-import tgSuccess from "../../assets/pages/success.webp";
+import DataTab from "@/components/Bond/DataTab";
+import Article from "@/components/Bond/Article";
+import tgSuccess from "@/assets/pages/success.webp";
 // Entities
-import AuthContext from '../../entities/context/AuthContext.tsx';
+import AuthContext from '@/entities/context/AuthContext.tsx';
 // Assets
-import '/src/styles/Bonds.css';
+import '@/styles/Bonds.css';
 
 // Months for the dividend calendar
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре'];

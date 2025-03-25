@@ -2,12 +2,12 @@ import { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 // Hooks
-import { useAdminApps } from '../../hooks/adminPanel/useAdminApps.tsx';
-import { useAdminModels } from '../../hooks/adminPanel/useAdminModels.tsx';
+import { useAdminApps } from '@/hooks/adminPanel/useAdminApps.tsx';
+import { useAdminModels } from '@/hooks/adminPanel/useAdminModels.tsx';
 // Widgets
-import Preloader from '../../widgets/preloader.tsx';
+import Preloader from '@/widgets/preloader.tsx';
 // Components
-import Sidebar from '../../components/Admin/HomeAdmin/Sidebar.tsx';
+import Sidebar from '@/components/Admin/HomeAdmin/Sidebar.tsx';
 
 const AdminLayoutRoute = () => {
 	const { user, loading } = useContext(AuthContext);

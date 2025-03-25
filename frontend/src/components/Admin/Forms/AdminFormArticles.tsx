@@ -1,13 +1,13 @@
 import { useState, useContext, FormEvent } from "react";
 import axios, { AxiosError } from 'axios';
 // API
-import { useAllCategories } from "../../../api/useAllCategories.tsx";
+import { useAllCategories } from "@/api/useAllCategories.tsx";
 // Components
-import Description from "./Description";
+import Description from "./Description.tsx";
 // Entities
-import AuthContext from "../../../entities/context/AuthContext.tsx";
+import AuthContext from "@/entities/context/AuthContext.tsx";
 // Styles
-import "../../../styles/components/Admin/AdminFormsArticles.css";
+import "@/styles/components/Admin/AdminFormsArticles.css";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
@@ -18,7 +18,7 @@ interface FormData {
 	is_published: boolean;
 }
 
-const AdminFormsArticles = () => {
+const AdminFormArticles = () => {
 	const { authTokens } = useContext(AuthContext);
 	const [formData, setFormData] = useState<FormData>({
 		title: "",
@@ -190,4 +190,4 @@ const AdminFormsArticles = () => {
 	);
 };
 
-export default AdminFormsArticles;
+export default AdminFormArticles;

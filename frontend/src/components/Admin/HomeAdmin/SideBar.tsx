@@ -2,11 +2,11 @@ import { FunctionComponent } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Swal from 'sweetalert2'
 // Assets
-import '../../../styles/pages/admin/AdminMain.css';
-import Logo from '../../../assets/logo/IH.webp';
-import SearchWhite from '../../../assets/icons/search_white.svg';
-import HelpWhite from '../../../assets/icons/help_black.svg';
-import SettingsWhite from '../../../assets/icons/settings_black.svg';
+import '@/styles/pages/admin/AdminMain.css';
+import Logo from '@/assets/logo/IH.webp';
+import SearchWhite from '@/assets/icons/search_white.svg';
+import HelpWhite from '@/assets/icons/help_black.svg';
+import SettingsWhite from '@/assets/icons/settings_black.svg';
 
 interface App {
     name: string;

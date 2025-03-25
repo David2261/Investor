@@ -18,7 +18,7 @@ interface ContentListProps {
 
 const ContentNews: FunctionComponent<ContentListProps> = ({ data }) => {
 	if (!data || data.length === 0) {
-        return <div>No content available</div>;  // Display a message if data is empty
+        return <div>No content available</div>;
     }
     const value = data[0];
 	return <>

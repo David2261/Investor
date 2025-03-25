@@ -7,7 +7,6 @@ interface State<T> {
 
 type Cache<T> = { [url: string]: T }
 
-// различаемый тип объединения
 type Action<T> =
   | { type: 'loading' }
   | { type: 'fetched'; payload: T }
@@ -19,7 +18,6 @@ export function useFetch<T = unknown>(
 ): State<T> {
   const cache = useRef<Cache<T>>({})
 
-	// Используется для предотвращения обновления состояния, если компонент размонтирован
 	const cancelRequest = useRef<boolean>(false)
 
 	const initialState: State<T> = {

@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 // Styles
-import '../../styles/Blog.css';
+import '@/styles/Blog.css';
 // Components
-import PostsList from '../../components/Blog/PostsList';
-import DataTab from '../../components/Blog/DataTab';
-import Filter from '../../components/Blog/Filter';
+import PostsList from '@/components/Blog/PostsList';
+import DataTab from '@/components/Blog/DataTab';
+import Filter from '@/components/Blog/Filter';
 // Widgets
-import Loader from '../../widgets/Loader';
-import { getRandomImage } from '../../widgets/getRandomImage';
+import Loader from '@/widgets/Loader';
+import { getRandomImage } from '@/widgets/getRandomImage';
 // API
-import { useArticles } from '../../api/useArticles.tsx';
+import { useArticles } from '@/api/useArticles.tsx';
 
 const News = () => {
   const [page, setPage] = useState(1);

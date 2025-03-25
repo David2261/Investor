@@ -1,6 +1,6 @@
 import { Key, FunctionComponent } from "react";
 // Widgets
-import TranslateBondType from "../../widgets/TranslateBondType.tsx";
+import TranslateBondType from "@/widgets/TranslateBondType.tsx";
 
 interface BondData {
     id: Key;

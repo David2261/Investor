@@ -1,10 +1,86 @@
-import Description from './Description';
-import '../../../styles/components/Admin/AdminFormsArticles.css';
+import { useState, useContext, FormEvent } from "react";
+import axios, { AxiosError } from 'axios';
+// Entities
+import AuthContext from "@/entities/context/AuthContext.tsx";
+// Components
+import Description from './Description.tsx';
+// Styles
+import '@/styles/components/Admin/AdminFormsArticles.css';
 
 
-const AdminFormsBonds = () => {
+interface AdminFormBonds {
+	title: string;
+	description: string;
+	categories: string;
+	price: number;
+	publication: boolean;
+	durationDate: string;
+	durationTime: string;
+	couponIncome: number;
+	couponPercent: number;
+}
+
+const apiURL = import.meta.env.VITE_API_URL;
+
+const AdminFormBonds = () => {
+	const { authTokens } = useContext(AuthContext);
+	const [formData, setFormData] = useState<AdminFormBonds>({
+		title: "",
+		description: "",
+		categories: "",
+		price: 0,
+		publication: false,
+		durationDate: "",
+		durationTime: "",
+		couponIncome: 0,
+		couponPercent: 0
+	});
+
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		if (!authTokens) {
+			alert("Токен авторизации отсутствует.");
+			return;
+		}
+
+		const data = new FormData();
+		data.append('title', formData.title);
+		data.append('description', formData.description);
+		data.append('category', formData.categories);
+		data.append('is_published', formData.publication.toString());
+
+		try {
+			await axios.post(
+				`${apiURL}/api/admin/apps/main/articles/create/`,
+				data,
+				{
+					headers: {
+						Authorization: `Bearer ${authTokens?.access}`,
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
+			alert("Статья успешно создана!");
+		} catch (error) {
+			const axiosError = error as AxiosError;
+			if (axiosError.response) {
+				console.error("Error creating article:", axiosError.response?.data);
+				alert("Произошла ошибка при создании статьи.");
+			} else {
+				console.error("Unknown error:", error);
+				alert("Произошла неизвестная ошибка.");
+			}
+		}
+	};
+
+	if (error) {
+		return <div>Error: {error}</div>;
+	}
+
 	return (
 		<>
+		<form  onSubmit={handleSubmit} action="POST">
 			<div className="flex flex-col gap-4 p-4">
 				{/* Заголовок облигации */}
 				<div className="flex items-center gap-2">
@@ -27,7 +103,12 @@ const AdminFormsBonds = () => {
 						Текст облигации:
 					</label>
 					<div className="flex-grow bg-white">
-						<Description />
+						<Description
+							value={formData.description}
+							onChange={(updatedValue) =>
+								setFormData((prev) => ({ ...prev, description: updatedValue }))
+							}
+						/>
 					</div>
 				</div>
 
@@ -137,8 +218,9 @@ const AdminFormsBonds = () => {
 					</div>
 				</div>
 			</div>
+		</form>
 		</>
 	);
 };
 
-export default AdminFormsBonds;
+export default AdminFormBonds;

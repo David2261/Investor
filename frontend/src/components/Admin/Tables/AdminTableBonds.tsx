@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FormatData from '../HomeAdmin/FormatDate.tsx';
-import TranslateBondType from '../../../widgets/TranslateBondType.tsx';
+import TranslateBondType from '@/widgets/TranslateBondType.tsx';
 
 interface Bond {
 	title: string;
