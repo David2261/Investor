@@ -90,8 +90,8 @@ const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
 						options={statusOptions}
 					/>
 				</th>
-				<th className='bg-[#111111] text-center text-base py-2 px-4'>Автор</th>
-				<th className='bg-[#111111] text-center text-base py-2 px-4'>Название</th>
+				<th className='bg-[#111111] text-center text-[#D9D9D9] text-base py-2 px-4'>Автор</th>
+				<th className='bg-[#111111] text-center text-[#D9D9D9] text-base py-2 px-4'>Название</th>
 				<th className='bg-[#111111] text-center text-base py-2 px-4'>
 					<Dropdown
 						name="category"
