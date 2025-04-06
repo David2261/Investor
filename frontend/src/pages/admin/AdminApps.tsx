@@ -1,14 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 // Hooks
-import { useAdminPages } from '../../hooks/adminPanel/useAdminPages.tsx'
+import { useAdminPages } from '@/hooks/adminPanel/useAdminPages.tsx'
 // Components
-import AdminTableArticles from '../../components/Admin/Tables/AdminTableArticles.tsx';
-import AdminTableBonds from '../../components/Admin/Tables/AdminTableBonds.tsx';
-import AdminTableUsers from '../../components/Admin/Tables/AdminTableUsers.tsx';
-import AdminTableCategories from '../../components/Admin/Tables/AdminTableCategories.tsx';
+import AdminTableArticles from '@/components/Admin/Tables/AdminTableArticles.tsx';
+import AdminTableBonds from '@/components/Admin/Tables/AdminTableBonds.tsx';
+import AdminTableUsers from '@/components/Admin/Tables/AdminTableUsers.tsx';
+import AdminTableCategories from '@/components/Admin/Tables/AdminTableCategories.tsx';
 // Assets
-import '../../styles/pages/admin/AdminMain.css';
-import SearchBlack from '../../assets/icons/search_black.svg';
+import '@/styles/pages/admin/AdminMain.css';
+import SearchBlack from '@/assets/icons/search_black.svg';
 
 interface Params {
 	[key: string]: string | undefined;
@@ -98,7 +98,7 @@ const AdminApps = () => {
 			</div>
 		</div>
 		<div className='flex border-b-[0.2px] w-11/12 mx-auto'></div>
-		<div className='m-6 overflow-y-auto max-h-96'>
+		<div className='m-6 overflow-y-auto max-h-96 min-h-48'>
 			{ Info }
 		</div>
 	</div>

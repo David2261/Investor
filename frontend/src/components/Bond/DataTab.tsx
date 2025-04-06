@@ -1,20 +1,14 @@
 import { Key, FunctionComponent } from "react";
 // Widgets
 import TranslateBondType from "@/widgets/TranslateBondType.tsx";
+// Types
+import { Bond } from '@/types/Bond';
 
-interface BondData {
-    id: Key;
-    title: string;
-    category: string;
-    price: number;
-    cupon: number;
-    cupon_percent: number;
-    maturity: string;
-}
+
 
 interface DataTabType {
     data: {
-        results: BondData[];
+        results: Bond[];
     };
 }
 

@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
+import { motion } from "motion/react";
+// Components
 import FormatData from '../HomeAdmin/FormatDate.tsx';
+// Widgets
+import Dropdown from '@/widgets/Dropdown.tsx';
 import TranslateBondType from '@/widgets/TranslateBondType.tsx';
+// Types
+import { Bond } from '@/types/Bond';
+// Entities
+import {
+	maturityOptions,
+	publishedOptions,
+	couponOptions,
+	categoryOptions } from '@/entities/constants/options.ts';
 
-interface Bond {
-	title: string;
-	is_published: boolean;
-	category: string;
-	maturity: string;
-	cupon_percent: string;
-}
 
 interface AdminTableBondsProps {
 	data: Bond[];
@@ -22,16 +27,15 @@ const AdminTableBonds: React.FC<AdminTableBondsProps> = ({data}) => {
 		category: ''
 	});
 
-	const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-		const { name, value } = e.target;
+	const handleFilterChange = (value: string, name: string) => {
 		setFilters(prevFilters => ({
-			...prevFilters,
-			[name]: value
+		  ...prevFilters,
+		  [name]: value
 		}));
 	};
 
 	const filteredData = data.filter(bond => {
-		const couponPercent = parseFloat(bond.cupon_percent);
+		const couponPercent = bond.cupon_percent;
 		const filterCoupon = filters.cupon_percent;
 
 		const couponFilterCondition = 
@@ -73,64 +77,43 @@ const AdminTableBonds: React.FC<AdminTableBondsProps> = ({data}) => {
 	<table className='w-full h-1/3'>
 		<thead>
 			<tr>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 rounded-l-md opacity-70'>
-					<select
+				<th className='bg-[#111111] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="maturity"
 						value={filters.maturity}
-						onChange={handleFilterChange}
-						className="rounded-md text-black border p-2 mr-2"
-					>
-						<option value="">Все дюрации</option>
-						<option value="Сегодня">Сегодня</option>
-						<option value="Эта неделя">Эта неделя</option>
-						<option value="Этот месяц">Этот месяц</option>
-						<option value="Этот год">Этот год</option>
-					</select>
+						onChange={(value) => handleFilterChange(value, 'maturity')}
+						options={maturityOptions}
+					/>
 				</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>
-					<select
+				<th className='bg-[#111111] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="is_published"
 						value={filters.is_published}
-						onChange={handleFilterChange}
-						className="rounded-md text-black border p-2 mr-2"
-					>
-						<option value="">Все облигации</option>
-						<option value="Опубликован">Опубликован</option>
-						<option value="Не Опубликован">Не Опубликован</option>
-					</select>
+						onChange={(value) => handleFilterChange(value, 'is_published')}
+						options={publishedOptions}
+					/>
 				</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>
-					<select
+				<th className='bg-[#111111] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="cupon_percent"
-						value={filters.cupon_percent}
-						onChange={handleFilterChange}
-						className="rounded-md text-black border p-2 mr-2"
-					>
-						<option value="">Все купоны</option>
-						<option value="Менее 5%">Менее 5%</option>
-						<option value="5%-10%">5%-10%</option>
-						<option value="Более 10%">Более 10%</option>
-					</select>
+						options={couponOptions} 
+						onChange={(value) => handleFilterChange(value, 'cupon_percent')}
+						value={filters.cupon_percent} 
+					/>
 				</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>Название</th>
-				<th className='overflow-hidden bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 rounded-r-md opacity-70'>
-					<select
+				<th className='bg-[#111111] text-center text-[#D9D9D9] text-base py-2 px-4'>Название</th>
+				<th className='bg-[#111111] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="category"
-						value={filters.category}
-						onChange={handleFilterChange}
-						className="w-full text-black rounded-md border p-2"
-					>
-						<option value="">Все категории</option>
-						<option value="Corporate bonds">Корпоративные облигации</option>
-						<option value="municipal bonds">Муниципальные облигации</option>
-						<option value="federal loan bonds">ОФЗ</option>
-					</select>
+						options={categoryOptions} 
+						onChange={(value) => handleFilterChange(value, 'category')}
+						value={filters.category} />
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			{filteredData.map((value, index) => (
-			<tr key={index} className='w-full'>
+			<tr key={index}>
 				<td className="text-center text-white text-sm py-2 px-4"><FormatData date={value.maturity} /></td>
 				<td className="text-center text-white text-sm py-2 px-4">{value.is_published ? "Опубликован" : "Не Опубликован"}</td>
 				<td className="text-center text-white text-sm py-2 px-4">{value.cupon_percent}</td>

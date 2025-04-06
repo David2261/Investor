@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
 import { Helmet } from 'react-helmet-async';
 // Entities
 import PrivateRoute from "./entities/routers/PrivateRoute.tsx";

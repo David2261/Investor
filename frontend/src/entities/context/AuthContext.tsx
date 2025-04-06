@@ -56,7 +56,7 @@ const showNotification = (title: string, icon: SweetAlertIcon | undefined) => {
         icon,
         toast: true,
         timer: 6000,
-        position: 'top-right',
+        position: 'top',
         timerProgressBar: true,
         showConfirmButton: false,
     });

@@ -111,11 +111,18 @@ input::placeholder {
 }
 .screen-1 .signup {
 	padding: 1em;
-	background: #3e4684;
+	background-color: #3e4684;
 	color: white;
 	border: none;
 	border-radius: 30px;
 	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.screen-1 .signup:hover {
+	background-color: #5059a3;
+	box-shadow: 0 0 10px rgba(94, 104, 192, 0.7);
+	transform: scale(1.1);
 }
 .screen-1 .footer {
 	display: flex;
