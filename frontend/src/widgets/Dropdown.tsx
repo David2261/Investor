@@ -21,6 +21,14 @@ const Dropdown: React.FC<DropdownProps> = ({ className, name, value, onChange, o
 		onChange(optionValue);
 		setIsOpen(false);
 	};
+
+	const handleMouseEnter = () => {
+        setIsOpen(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsOpen(false);
+    };
   
 	const handleClickOutside = (event: MouseEvent) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -36,28 +44,32 @@ const Dropdown: React.FC<DropdownProps> = ({ className, name, value, onChange, o
 	}, []);
   
 	return (
-		<div className={`relative bg-[#A9A9A9] ${className} ${isOpen ? "rounded-t-md" : "rounded-md"}`} ref={dropdownRef}>
 		<div
-			className={`flex justify-between items-center p-2 text-white bg-[#A9A9A9] cursor-pointer rounded-md`}
-			onClick={toggleDropdown}>
-			<span>{options.find(option => option.value === value)?.label || 'Select an option'}</span>
-			<span className="ml-2">{isOpen ? '▲' : '▼'}</span>
-		</div>
-		{isOpen && (
-		<ul className="bg-[#A9A9A9] absolute top-full left-0 w-full z-10 rounded-b-md">
-		{options.map((option, index) => (
-			<li
-				key={option.value}
-				className={`text-white cursor-pointer p-2 dropdown-item transition-all duration-300 ease-in-out delay-${index * 60}ms hover:bg-[#B0B0B0]`}
-				style={{
-					animation: `scaleZ 300ms ${index * 60}ms ease-in-out forwards`,
-				}}
-				onClick={() => handleOptionClick(option.value)}>
-				{option.label}
-			</li>
-		))}
-		</ul>
-		)}
+			className={`relative bg-[#A9A9A9] ${className} ${isOpen ? "rounded-t-md" : "rounded-md"}`}
+			ref={dropdownRef}
+			onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}>
+			<div
+				className={`flex justify-between items-center p-2 text-white bg-[#A9A9A9] cursor-pointer rounded-md`}
+				onClick={toggleDropdown}>
+				<span>{options.find(option => option.value === value)?.label || 'Select an option'}</span>
+				<span className="ml-2">{isOpen ? '▲' : '▼'}</span>
+			</div>
+			{isOpen && (
+			<ul className="bg-[#A9A9A9] absolute top-full left-0 w-full z-10 rounded-b-md">
+			{options.map((option, index) => (
+				<li
+					key={option.value}
+					className={`text-white cursor-pointer p-2 dropdown-item transition-all duration-300 ease-in-out delay-${index * 60}ms hover:bg-[#B0B0B0]`}
+					style={{
+						animation: `scaleZ 300ms ${index * 60}ms ease-in-out forwards`,
+					}}
+					onClick={() => handleOptionClick(option.value)}>
+					{option.label}
+				</li>
+			))}
+			</ul>
+			)}
 		</div>
 	);
 };

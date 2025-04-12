@@ -38,7 +38,7 @@ const AdminCreate = () => {
 	</div>
 	<div className='flex flex-col bg-black rounded w-full relative'>
 		<div className='relative flex justify-between'>
-			<div className='pt-10 pl-7 pb-5 font-bold text-white text-lg'>
+			<div className='pt-4 pl-7 font-bold text-white text-lg'>
 				<p>Добавить {apps}</p>
 			</div>
 		</div>

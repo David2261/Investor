@@ -105,7 +105,7 @@ const AdminFormBonds = () => {
 	return (
 		<>
 		<form  onSubmit={handleSubmit} action="POST">
-			<div className="flex flex-col gap-4 p-4">
+			<div className="flex flex-col gap-4 p-4 text-white">
 				{/* Заголовок облигации */}
 				<div className="flex items-center gap-2">
 					<label className="w-48 text-right text-white" htmlFor="title">
@@ -116,7 +116,7 @@ const AdminFormBonds = () => {
 							id="title"
 							type="text"
 							placeholder="Название облигации"
-							className="w-full border border-gray-400 rounded px-2 py-1 text-black"
+							className="w-full border border-gray-400 rounded px-2 py-1"
 							value={formData.title}
 							onChange={(e) => setFormData({ ...formData, title: e.target.value })}
 							required
@@ -129,7 +129,7 @@ const AdminFormBonds = () => {
 					<label className="w-48 text-right pt-1 text-white" htmlFor="content">
 						Текст облигации:
 					</label>
-					<div id="content" className="flex-grow bg-white">
+					<div id="content" className="flex-grow bg-white text-black">
 						<Description
 							value={formData.description}
 							onChange={(updatedValue) =>
@@ -147,14 +147,14 @@ const AdminFormBonds = () => {
 					<div className="flex-grow">
 						<select
 							id="categories"
-							className="w-full border border-gray-400 rounded px-2 py-1 text-black"
+							className="w-full border border-gray-400 rounded px-2 py-1"
 							value={formData.category}
 							onChange={(e) => setFormData({ ...formData, category: e.target.value })}
 							required
 						>
-							<option value="Municipal bonds">Муниципальные облигации</option>
-							<option value="Corporate bonds">Корпоративные облигации</option>
-							<option value="Federal loan bonds">Облигации федеральные займа</option>
+							<option className="text-black" value="Municipal bonds">Муниципальные облигации</option>
+							<option className="text-black" value="Corporate bonds">Корпоративные облигации</option>
+							<option className="text-black" value="Federal loan bonds">Облигации федеральные займа</option>
 						</select>
 					</div>
 				</div>
@@ -168,7 +168,7 @@ const AdminFormBonds = () => {
 						<input
 							id="price"
 							type="number"
-							className="w-full border border-gray-400 rounded px-2 py-1 text-black"
+							className="w-full border border-gray-400 rounded px-2 py-1"
 							value={formData.price}
 							onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
 							required
@@ -201,7 +201,7 @@ const AdminFormBonds = () => {
 					<input
 						id="duration-date"
 						type="date"
-						className="w-full border border-gray-400 rounded px-2 py-1 text-black"
+						className="w-full border border-gray-400 rounded px-2 py-1"
 						value={formData.maturityDate}
 						onChange={(e) => setFormData({ ...formData, maturityDate: String(e.target.value) })}
 						required
@@ -210,7 +210,7 @@ const AdminFormBonds = () => {
 					<input
 						id="duration-time"
 						type="time"
-						className="w-full border border-gray-400 rounded px-2 py-1 text-black"
+						className="w-full border border-gray-400 rounded px-2 py-1"
 						value={formData.maturityTime}
 						onChange={(e) => setFormData({ ...formData, maturityTime: String(e.target.value) })}
 						required
@@ -227,7 +227,7 @@ const AdminFormBonds = () => {
 						<input
 							id="coupon-income"
 							type="number"
-							className="w-full border border-gray-400 rounded px-2 py-1 text-black"
+							className="w-full border border-gray-400 rounded px-2 py-1"
 							value={formData.cupon}
 							onChange={(e) => setFormData({ ...formData, cupon: Number(e.target.value) })}
 							required
@@ -244,7 +244,7 @@ const AdminFormBonds = () => {
 						<input
 							id="coupon-percent"
 							type="number"
-							className="w-full border border-gray-400 rounded px-2 py-1 text-black"
+							className="w-full border border-gray-400 rounded px-2 py-1"
 							value={formData.cupon_percent}
 							onChange={(e) => setFormData({ ...formData, cupon_percent: Number(e.target.value) })}
 							required

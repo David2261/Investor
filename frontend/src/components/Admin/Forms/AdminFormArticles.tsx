@@ -79,9 +79,10 @@ const AdminFormArticles = () => {
 
 	return (
 		<>
-			<form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit}>
+				<div className="flex flex-col gap-4 p-4 text-white">
 				{/* Заголовок статьи */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white" htmlFor="title">
 						Заголовок статьи:
 					</label>
@@ -90,7 +91,7 @@ const AdminFormArticles = () => {
 							id="title"
 							type="text"
 							placeholder="Название статьи"
-							className="border border-gray-400 w-full rounded px-2 py-2 text-black"
+							className="border border-gray-400 w-full rounded px-2 py-2"
 							required
 							value={formData.title}
 							onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -99,7 +100,7 @@ const AdminFormArticles = () => {
 				</div>
 
 				{/* Текст статьи */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white pt-1" htmlFor="content">
 						Текст статьи:
 					</label>
@@ -114,14 +115,14 @@ const AdminFormArticles = () => {
 				</div>
 
 				{/* Категории */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white" htmlFor="categories">
 						Категории:
 					</label>
 					<div className="flex-grow">
 						<select
 							id="category"
-							className="border border-gray-400 rounded px-2 py-1 text-black"
+							className="border border-gray-400 rounded px-2 py-1"
 							required
 							value={formData.category}
 							onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -138,7 +139,7 @@ const AdminFormArticles = () => {
 				</div>
 
 				{/* Изображение */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white" htmlFor="image">
 						Изображение:
 					</label>
@@ -154,7 +155,7 @@ const AdminFormArticles = () => {
 				</div>
 
 				{/* Статус публикации */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white" htmlFor="publication">
 						Статус публикации:
 					</label>
@@ -184,6 +185,7 @@ const AdminFormArticles = () => {
 							Сохранить и добавить другой объект
 						</button>
 					</div>
+				</div>
 				</div>
 			</form>
 		</>
