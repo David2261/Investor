@@ -39,9 +39,10 @@ const AdminFormCategories = () => {
 
 	return (
 		<>
-			<form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
-				<div className="grid gap-2">
-					<label className="text-white text-xl" htmlFor="category">Категория:</label>
+			<form onSubmit={handleSubmit}>
+				<div className="flex flex-col gap-4 p-4">
+				<div className="flex items-center gap-2">
+					<label className="w-48 text-right text-white" htmlFor="category">Категория:</label>
 					<input
 						id="title"
 						type="text"
@@ -71,6 +72,7 @@ const AdminFormCategories = () => {
 							Сохранить и продолжить редактирование
 						</button>
 					</div>
+				</div>
 				</div>
 			</form>
 		</>

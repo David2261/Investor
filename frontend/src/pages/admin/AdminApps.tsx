@@ -6,6 +6,7 @@ import AdminTableArticles from '@/components/Admin/Tables/AdminTableArticles.tsx
 import AdminTableBonds from '@/components/Admin/Tables/AdminTableBonds.tsx';
 import AdminTableUsers from '@/components/Admin/Tables/AdminTableUsers.tsx';
 import AdminTableCategories from '@/components/Admin/Tables/AdminTableCategories.tsx';
+import UnderConstruction from "@/components/Admin/HomeAdmin/UnderPage";
 // Widgets
 import AdminButton from '@/widgets/buttons/AdminButton.tsx';
 import AdminSearch from '@/widgets/buttons/AdminSearch.tsx';
@@ -38,7 +39,7 @@ const AdminApps = () => {
 	}
 
 	if (error) {
-		return <div>Ошибка при загрузке моделей: {error.message}</div>;
+		return <><UnderConstruction />{console.log(error.message)}</>;
 	}
 
 	if (!data || !Array.isArray(data)) {

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import AdminFormCategories from '@/components/Admin/Forms/AdminFormCategories.tsx';
 import AdminFormArticles from '@/components/Admin/Forms/AdminFormArticles.tsx';
 import AdminFormBonds from '@/components/Admin/Forms/AdminFormBonds.tsx';
+import UnderConstruction from '@/components/Admin/HomeAdmin/UnderPage.tsx';
 
 interface Params {
     [key: string]: string | undefined;
@@ -25,7 +26,7 @@ const AdminCreate = () => {
 	} else if (apps?.toLowerCase() == 'bonds') {
 		Info = <AdminFormBonds />
 	} else if (apps?.toLowerCase() == 'user') {
-		return
+		Info = <UnderConstruction />
 	} else if (apps?.toLowerCase() == 'category') {
 		Info = <AdminFormCategories />
 	}

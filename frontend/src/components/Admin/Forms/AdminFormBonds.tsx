@@ -116,7 +116,7 @@ const AdminFormBonds = () => {
 							id="title"
 							type="text"
 							placeholder="Название облигации"
-							className="w-full border border-gray-400 rounded px-2 py-1"
+							className="w-full text-white border border-gray-400 rounded px-2 py-1"
 							value={formData.title}
 							onChange={(e) => setFormData({ ...formData, title: e.target.value })}
 							required
