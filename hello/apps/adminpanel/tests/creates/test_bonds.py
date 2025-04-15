@@ -48,7 +48,7 @@ class TestAppAdminBondCreate:
 		data = {
 			"title": "Test Bond",
 			"description": "This is a test bond.",
-			"category": category.pk,
+			"category": "municipal bonds",
 			"price": 1000.00,
 			"maturity": "2025-12-31",
 			"cupon": 50.00,
@@ -57,6 +57,7 @@ class TestAppAdminBondCreate:
 		}
 
 		response = api_client.post(url, data)
+		print(response.data)
 
 		assert response.status_code == status.HTTP_201_CREATED
 		assert Bonds.objects.filter(title="Test Bond").exists()

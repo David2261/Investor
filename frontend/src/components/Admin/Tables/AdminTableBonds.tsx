@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from "motion/react";
+// import { motion } from "motion/react";
 // Components
 import FormatData from '../HomeAdmin/FormatDate.tsx';
 // Widgets
@@ -29,8 +29,8 @@ const AdminTableBonds: React.FC<AdminTableBondsProps> = ({data}) => {
 
 	const handleFilterChange = (value: string, name: string) => {
 		setFilters(prevFilters => ({
-		  ...prevFilters,
-		  [name]: value
+			...prevFilters,
+			[name]: value
 		}));
 	};
 

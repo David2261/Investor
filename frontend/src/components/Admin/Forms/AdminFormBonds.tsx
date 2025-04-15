@@ -22,7 +22,7 @@ const AdminFormBonds = () => {
 		category: "",
 		price: 0,
 		maturityDate: "",
-    	maturityTime: "",
+		maturityTime: "",
 		cupon: 0,
 		cupon_percent: 0,
 		is_published: false,
@@ -79,28 +79,6 @@ const AdminFormBonds = () => {
 			return { ...prev, is_published: newState };
 		});
 	};
-
-
-	// Styles for is_publisher
-	const container = {
-        width: 100,
-        height: 50,
-        backgroundColor: isOn ? "#4CAF50" : "var(--hue-3-transparent)",
-        borderRadius: 50,
-        cursor: "pointer",
-        display: "flex",
-        padding: 10,
-        justifyContent: isOn ? "flex-end" : "flex-start",
-        transition: "background-color 0.3s ease",
-    };
-
-    const handle = {
-        width: 50,
-        height: 50,
-        backgroundColor: "#9911ff",
-        borderRadius: "50%",
-        transition: "transform 0.3s ease",
-    };
 
 	return (
 		<>

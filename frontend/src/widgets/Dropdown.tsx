@@ -9,7 +9,7 @@ interface DropdownProps {
 	options: Array<{ value: string; label: string }>;
 }
   
-const Dropdown: React.FC<DropdownProps> = ({ className, name, value, onChange, options }) => {
+const Dropdown: React.FC<DropdownProps> = ({ className, value, onChange, options }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
   

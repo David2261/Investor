@@ -54,8 +54,8 @@ const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
 
 	const handleFilterChange = (value: string, name: string) => {
 		setFilters(prevFilters => ({
-		  ...prevFilters,
-		  [name]: value
+			...prevFilters,
+			[name]: value
 		}));
 	};
 

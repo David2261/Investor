@@ -1,4 +1,4 @@
-import { Key, FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 // Widgets
 import TranslateBondType from "@/widgets/TranslateBondType.tsx";
 // Types
