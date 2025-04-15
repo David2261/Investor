@@ -1,14 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
 // Hooks
-import { useAdminPages } from '../../hooks/adminPanel/useAdminPages.tsx'
+import { useAdminPages } from '@/hooks/adminPanel/useAdminPages.tsx'
 // Components
-import AdminTableArticles from '../../components/Admin/Tables/AdminTableArticles.tsx';
-import AdminTableBonds from '../../components/Admin/Tables/AdminTableBonds.tsx';
-import AdminTableUsers from '../../components/Admin/Tables/AdminTableUsers.tsx';
-import AdminTableCategories from '../../components/Admin/Tables/AdminTableCategories.tsx';
+import AdminTableArticles from '@/components/Admin/Tables/AdminTableArticles.tsx';
+import AdminTableBonds from '@/components/Admin/Tables/AdminTableBonds.tsx';
+import AdminTableUsers from '@/components/Admin/Tables/AdminTableUsers.tsx';
+import AdminTableCategories from '@/components/Admin/Tables/AdminTableCategories.tsx';
+import UnderConstruction from "@/components/Admin/HomeAdmin/UnderPage";
+// Widgets
+import AdminButton from '@/widgets/buttons/AdminButton.tsx';
+import AdminSearch from '@/widgets/buttons/AdminSearch.tsx';
 // Assets
-import '../../styles/pages/admin/AdminMain.css';
-import SearchBlack from '../../assets/icons/search_black.svg';
+import '@/styles/pages/admin/AdminMain.css';
 
 interface Params {
 	[key: string]: string | undefined;
@@ -36,7 +39,7 @@ const AdminApps = () => {
 	}
 
 	if (error) {
-		return <div>Ошибка при загрузке моделей: {error.message}</div>;
+		return <><UnderConstruction />{console.log(error.message)}</>;
 	}
 
 	if (!data || !Array.isArray(data)) {
@@ -73,32 +76,21 @@ const AdminApps = () => {
 	</div>
 	<div className='flex flex-col bg-black rounded w-full w-height relative'>
 		<div className='relative flex justify-between'>
-			<div className='pt-10 pl-7 pb-5 text-white text-xs'>
+			<div className='pt-8 text-lg pl-7 text-white'>
 				<p>Выберите {apps} для изменения</p>
 			</div>
-			<div className="mt-10 mb-5">
-				<button
-					onClick={handleOpenUpload}
-					className="w-full h-full px-2 rounded-md uppercase bg-[#E8940D]">{UploadButton}</button>
+			<div className="mt-4">
+				<AdminButton onClick={handleOpenUpload} children={UploadButton} />
 			</div>
-			<div className="mt-10 mb-5">
-				<button
-					onClick={handleOpenCreate}
-					className="w-full h-full px-2 rounded-md uppercase bg-[#00FF4D]">{TitleButton}</button>
+			<div className="mt-4">
+				<AdminButton onClick={handleOpenCreate} children={TitleButton} />
 			</div>
-			<div className='relative mt-10 mr-7 mb-5'>
-				<img
-					className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
-					src={SearchBlack}
-					alt="Search Icon" />
-				<input
-					type="text"
-					placeholder="Поиск..."
-					className='w-full h-full input-placeholder-white rounded-md pl-10' />
+			<div className='mt-8 mr-7'>
+				<AdminSearch />
 			</div>
 		</div>
 		<div className='flex border-b-[0.2px] w-11/12 mx-auto'></div>
-		<div className='m-6 overflow-y-auto max-h-96'>
+		<div className='m-6 overflow-y-auto max-h-96 min-h-48'>
 			{ Info }
 		</div>
 	</div>

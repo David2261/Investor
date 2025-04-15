@@ -1,14 +1,8 @@
 import { useContext } from "react";
 import AuthContext from "../entities/context/AuthContext";
 import { useLocalStorage } from "./useLocalStorage";
-
-export type User = {
-	url: string;
-	username: string;
-	email: string;
-	groups: string[];
-	role: string;
-};
+// Types
+import { User } from '@/types/User';
 
 export const useUser = () => {
 	const { user, setUser } = useContext(AuthContext);

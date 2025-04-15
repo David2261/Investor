@@ -1,6 +1,6 @@
 import { Key, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-import DonateVerticalBlock from '../../widgets/DonationBlocks.tsx';
+import DonateVerticalBlock from '@/widgets/DonationBlocks.tsx';
 
 interface PropsType {
 	id: Key,

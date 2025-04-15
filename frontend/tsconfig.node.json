@@ -6,8 +6,10 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "paths": {
+      "@/*": ["*"],
       "*": ["./*", "./src/*", "./src/alpha_test_data/*.tsx"]
     },
+    "baseUrl": "./src",
     "types": ["@testing-library/jest-dom"]
   },
   "exclude": [

@@ -17,6 +17,10 @@
       "@testing-library/jest-dom",
       "vite/client"
     ],
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -39,6 +43,6 @@
     "./src/api",
     "node_modules"
   ],
-  "include": ["src", "src/**/*.tsx"],
+  "include": ["src", "src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import FormatData from '../HomeAdmin/FormatDate.tsx';
+// Widgets
+import Dropdown from '@/widgets/Dropdown.tsx';
+import { dateOptions, statusOptions } from '@/entities/constants/options.ts';
 
 interface Article {
 	title: string;
@@ -49,8 +52,7 @@ const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
 		}
 	};
 
-	const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-		const { name, value } = e.target;
+	const handleFilterChange = (value: string, name: string) => {
 		setFilters(prevFilters => ({
 			...prevFilters,
 			[name]: value
@@ -72,46 +74,33 @@ const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
 	<table className='w-full h-1/3'>
 		<thead>
 			<tr>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 overflow-hidden rounded-l-md opacity-70'>
-					<select
+				<th className='bg-[#111111] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="date"
 						value={filters.date}
-						onChange={handleFilterChange}
-						className="w-full text-black border p-2 rounded-md"
-					>
-						<option value="">Все даты</option>
-						<option value="today">Сегодня</option>
-						<option value="last7days">За последние 7 дней</option>
-						<option value="lastMonth">За месяц назад</option>
-						<option value="lastYear">За 1 год назад</option>
-					</select>
+						onChange={(value) => handleFilterChange(value, 'date')}
+						options={dateOptions}
+					/>
 				</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>
-					<select
+				<th className='bg-[#111111] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="status"
 						value={filters.status}
-						onChange={handleFilterChange}
-						className="border text-black p-2 rounded-md mr-2"
-					>
-						<option value="">Все статусы</option>
-						<option value="Опубликован">Опубликован</option>
-						<option value="Не Опубликован">Не Опубликован</option>
-					</select>
+						onChange={(value) => handleFilterChange(value, 'status')}
+						options={statusOptions}
+					/>
 				</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>Автор</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>Название</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 overflow-hidden rounded-r-md opacity-70'>
-					<select
+				<th className='bg-[#111111] text-center text-[#D9D9D9] text-base py-2 px-4'>Автор</th>
+				<th className='bg-[#111111] text-center text-[#D9D9D9] text-base py-2 px-4'>Название</th>
+				<th className='bg-[#111111] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="category"
 						value={filters.category}
-						onChange={handleFilterChange}
-						className="w-full text-black border p-2 rounded-md"
-					>
-						<option value="">Все категории</option>
-						{uniqueCategories.map((category, index) => (
-							<option key={index} value={category}>{category}</option>
-						))}
-					</select>
+						onChange={(value) => handleFilterChange(value, 'category')}
+						options={[
+							{ value: '', label: 'Все категории' },
+							...uniqueCategories.map(category => ({ value: category, label: category })),
+						]}/>
 				</th>
 			</tr>
 		</thead>

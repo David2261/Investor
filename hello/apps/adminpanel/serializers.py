@@ -110,6 +110,7 @@ class AdminBondSerializer(serializers.ModelSerializer):
 		fields = [
 			'title',
 			'description',
+			'category',
 			'price',
 			'maturity',
 			'cupon',
@@ -124,11 +125,13 @@ class AdminBondSerializerCreate(serializers.ModelSerializer):
 		fields = [
 			'title',
 			'description',
+			'category',
 			'price',
 			'maturity',
 			'cupon',
 			'cupon_percent',
 			'time_create',
+			'is_published',
 			'slug']
 
 	def create(self, validated_data):

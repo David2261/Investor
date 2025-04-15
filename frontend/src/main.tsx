@@ -1,4 +1,4 @@
-import React from 'react'
+import { StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
@@ -21,6 +21,7 @@ const queryClient = new QueryClient({
 hydrateRoot(
   root,
   <BrowserRouter>
+    <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <HelmetProvider>
@@ -28,5 +29,6 @@ hydrateRoot(
         </HelmetProvider>
       </AuthProvider>
     </QueryClientProvider>
+    </StrictMode>
   </BrowserRouter>
 );

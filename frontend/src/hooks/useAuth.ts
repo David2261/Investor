@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import { useUser, User } from "./useUser";
+import { useUser } from "./useUser";
 import { useLocalStorage } from "./useLocalStorage";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+// Types
+import { User } from '@/types/User';
 
 const AuthSwal = withReactContent(Swal)
 

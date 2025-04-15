@@ -1,13 +1,13 @@
 import { useState, useContext, FormEvent } from "react";
 import axios, { AxiosError } from 'axios';
 // API
-import { useAllCategories } from "../../../api/useAllCategories.tsx";
+import { useAllCategories } from "@/api/useAllCategories.tsx";
 // Components
-import Description from "./Description";
+import Description from "./Description.tsx";
 // Entities
-import AuthContext from "../../../entities/context/AuthContext.tsx";
+import AuthContext from "@/entities/context/AuthContext.tsx";
 // Styles
-import "../../../styles/components/Admin/AdminFormsArticles.css";
+import "@/styles/components/Admin/AdminFormsArticles.css";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
@@ -18,7 +18,7 @@ interface FormData {
 	is_published: boolean;
 }
 
-const AdminFormsArticles = () => {
+const AdminFormArticles = () => {
 	const { authTokens } = useContext(AuthContext);
 	const [formData, setFormData] = useState<FormData>({
 		title: "",
@@ -79,9 +79,10 @@ const AdminFormsArticles = () => {
 
 	return (
 		<>
-			<form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit}>
+				<div className="flex flex-col gap-4 p-4 text-white">
 				{/* Заголовок статьи */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white" htmlFor="title">
 						Заголовок статьи:
 					</label>
@@ -90,7 +91,7 @@ const AdminFormsArticles = () => {
 							id="title"
 							type="text"
 							placeholder="Название статьи"
-							className="border border-gray-400 w-full rounded px-2 py-2 text-black"
+							className="border border-gray-400 w-full rounded px-2 py-2"
 							required
 							value={formData.title}
 							onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -99,7 +100,7 @@ const AdminFormsArticles = () => {
 				</div>
 
 				{/* Текст статьи */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white pt-1" htmlFor="content">
 						Текст статьи:
 					</label>
@@ -114,14 +115,14 @@ const AdminFormsArticles = () => {
 				</div>
 
 				{/* Категории */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white" htmlFor="categories">
 						Категории:
 					</label>
 					<div className="flex-grow">
 						<select
 							id="category"
-							className="border border-gray-400 rounded px-2 py-1 text-black"
+							className="border border-gray-400 rounded px-2 py-1"
 							required
 							value={formData.category}
 							onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -138,7 +139,7 @@ const AdminFormsArticles = () => {
 				</div>
 
 				{/* Изображение */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white" htmlFor="image">
 						Изображение:
 					</label>
@@ -154,7 +155,7 @@ const AdminFormsArticles = () => {
 				</div>
 
 				{/* Статус публикации */}
-				<div className="grid gap-2">
+				<div className="flex items-center gap-2">
 					<label className="w-40 font-bold text-white" htmlFor="publication">
 						Статус публикации:
 					</label>
@@ -185,9 +186,10 @@ const AdminFormsArticles = () => {
 						</button>
 					</div>
 				</div>
+				</div>
 			</form>
 		</>
 	);
 };
 
-export default AdminFormsArticles;
+export default AdminFormArticles;

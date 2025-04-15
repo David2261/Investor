@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 // Entities
-import AuthContext from '../../entities/context/AuthContext.tsx';
+import AuthContext from '@/entities/context/AuthContext.tsx';
 
 interface ArticleNewsAPI {
 	author: string | null;

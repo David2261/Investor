@@ -22,7 +22,6 @@ const ContentList: FunctionComponent<ContentListProps> = ({ data }) => {
 	}
 	const content = data.slice(0, 8);
 	return (content.map((value) => 
-	// return <div><ContentPost title={value.title} /></div>;
 	<Fragment key={value.id}>
 		<div className="ml-10">
 			<Link to={`/news/${value.category.slug}/${value.slug}`}>

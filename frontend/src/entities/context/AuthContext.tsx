@@ -3,24 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import Swal, { SweetAlertIcon } from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+// Types
+import { User } from '@/types/User';
 
 interface AuthTokens {
 	access: string;
 	refresh: string;
-}
-
-export interface Member {
-	is_admin: boolean;
-	is_creator: boolean;
-}
-
-export interface User {
-    url: string;
-    username: string;
-    email: string;
-    is_active: boolean;
-    is_staff: boolean;
-    member: Member;
 }
 
 interface RegistrationForm {
@@ -68,7 +56,7 @@ const showNotification = (title: string, icon: SweetAlertIcon | undefined) => {
         icon,
         toast: true,
         timer: 6000,
-        position: 'top-right',
+        position: 'top',
         timerProgressBar: true,
         showConfirmButton: false,
     });

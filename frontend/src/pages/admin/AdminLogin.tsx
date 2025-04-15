@@ -1,6 +1,6 @@
 import { useState, useContext, useCallback, useEffect } from 'react';
-import AuthContext from '../../entities/context/AuthContext';
-import eagleLogin from '../../assets/admin/eagle_login.png';
+import AuthContext from '@/entities/context/AuthContext';
+import eagleLogin from '@/assets/admin/eagle_login.png';
 
 
 const AdminLogin = () => {

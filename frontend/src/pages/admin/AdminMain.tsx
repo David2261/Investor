@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 // Hooks
-import { useAdminArticles } from '../../hooks/adminPanel/useAdminArticles.tsx';
+import { useAdminArticles } from '@/hooks/adminPanel/useAdminArticles.tsx';
 // Components
-import AdminTableArticles from '../../components/Admin/Tables/AdminTableArticles.tsx';
+import AdminTableArticles from '@/components/Admin/Tables/AdminTableArticles.tsx';
 // Assets
-import '../../styles/pages/admin/AdminMain.css';
-import SearchBlack from '../../assets/icons/search_black.svg';
+import '@/styles/pages/admin/AdminMain.css';
+import SearchBlack from '@/assets/icons/search_black.svg';
 
 
 

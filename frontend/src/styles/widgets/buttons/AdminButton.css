@@ -1,0 +1,115 @@
+:root {
+    --bg: hsl(0, 0%, 6%);
+    --fg: hsl(56, 100%, 97%);
+    --hover-fg: hsl(0, 0%, 20%);
+}
+
+  
+.blend-button {
+    --button-bg: var(--bg);
+    --button-fg: var(--fg);
+    --hover-bg: var(--fg);
+    --x: 0;
+    --y: 0;
+    --active: 0;
+    --text-color: var(--button-fg);
+    display: flex;
+  
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 100px;
+    border: 2px solid var(--button-fg);
+    background: var(--button-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    overflow: hidden;
+    transition: background 0.3s, color 0.3s;
+    touch-action: none;
+    max-height: 64px;
+    aspect-ratio: 3 / 1;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    z-index: 1;
+}
+
+.blend-button:hover,
+.blend-button:focus-visible {
+    --active: 1.5;
+    --text-color: var(--hover-fg);
+}
+
+.blend-button:active {
+    --active: 3;
+}
+
+.blend-button .back {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    overflow: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: 0;
+}
+
+.blend-button .back > span {
+    position: absolute;
+    width: 50%;
+    padding-top: 50%;
+    left: calc(var(--x, 0) * 1px);
+    top: calc(var(--y, 0) * 1px);
+    transform: translate(-50%, -50%) scale(var(--active));
+    background: var(--hover-bg);
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: exclusion;
+    transition: transform 0.25s ease-out;
+    box-shadow: none !important;
+    will-change: transform;
+}
+
+.blend-button:active .back > span {
+    transition-duration: 0.15s;
+}
+
+.blend-button .label {
+    position: relative;
+    z-index: 2;
+    mix-blend-mode: difference; /* FARK BURADA */
+    color: white; /* Arka plan siyahsa bu görünür */
+    transition: color 0.3s ease;
+}
+
+@supports (transition-timing-function: linear(0, 1)) {
+    .blend-button:hover .back > span,
+    .blend-button:focus-visible .back > span {
+      transition-duration: 0.5s;
+      transition-timing-function: linear(
+        0,
+        0.5007 7.21%,
+        0.7803 12.29%,
+        0.8883 14.93%,
+        0.9724 17.63%,
+        1.0343 20.44%,
+        1.0754 23.44%,
+        1.0898 25.22%,
+        1.0984 27.11%,
+        1.1014 29.15%,
+        1.0989 31.4%,
+        1.0854 35.23%,
+        1.0196 48.86%,
+        1.0043 54.06%,
+        0.9956 59.6%,
+        0.9925 68.11%,
+        1
+      );
+    }
+}
+  

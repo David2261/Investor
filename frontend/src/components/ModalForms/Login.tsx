@@ -3,11 +3,11 @@ import { animated, useSpring } from '@react-spring/web';
 // Components
 import ForgotPassword from './ForgotPassword';
 // Entities
-import AuthContext from '../../entities/context/AuthContext';
+import AuthContext from '@/entities/context/AuthContext';
 // Assets
-import IH from '../../assets/logo/IH.webp';
+import IH from '@/assets/logo/IH.webp';
 // Styles
-import '../../styles/components/ModalForms/Login.css';
+import '@/styles/components/ModalForms/Login.css';
 
 interface LoginProps {
 	setIsOpen: () => void,

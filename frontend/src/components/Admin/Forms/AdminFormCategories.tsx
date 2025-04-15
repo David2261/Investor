@@ -1,29 +1,17 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-// Импортируем контекст авторизации
-import AuthContext from "../../../entities/context/AuthContext.tsx";
+import AuthContext from "@/entities/context/AuthContext.tsx";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
-const AdminFormsCategories = () => {
+const AdminFormCategories = () => {
 	const { authTokens } = useContext(AuthContext);
 	const [formData, setFormData] = useState({
 		name: ""
 	});
 
-	// Обработчик изменения ввода
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name } = e.target;
-		setFormData({
-			...formData,
-			[e.target.id]: name,
-		});
-	};
-
-	// Обработчик отправки формы
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault(); // Предотвращаем перезагрузку страницы
-
+		e.preventDefault();
 		if (!authTokens) {
 			alert("Токен авторизации отсутствует.");
 			return;
@@ -33,31 +21,35 @@ const AdminFormsCategories = () => {
 			await axios.post(`${apiURL}/api/admin/apps/main/categories/create/`, 
 				{ name: formData.name }, {
 					headers: {
-						Authorization: `Bearer ${authTokens.trim()}`,
+						Authorization: `Bearer ${authTokens?.access}`,
 						"Content-Type": "application/json",
 					}
 				});
-			// console.log("Категория успешно создана:", response.data);
 			alert("Категория успешно создана!");
-			setFormData({ name: "" }); // Сбрасываем форму
+			setFormData({ name: "" });
 		} catch (error) {
-			console.error("Ошибка при создании категории:", error.response?.data || error);
+			if (axios.isAxiosError(error)) {
+				console.error("Ошибка при создании категории:", error.response?.data || error.message);
+			} else {
+				console.error("Неизвестная ошибка:", error);
+			}
 			alert("Произошла ошибка при создании категории.");
 		}
 	};
 
 	return (
 		<>
-			<form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
+			<form onSubmit={handleSubmit}>
+				<div className="flex flex-col gap-4 p-4">
 				<div className="flex items-center gap-2">
-					<label className="text-white text-xl" htmlFor="category">Категория:</label>
+					<label className="w-48 text-right text-white" htmlFor="category">Категория:</label>
 					<input
 						id="title"
 						type="text"
 						placeholder="Название статьи"
-						className="border border-gray-400 rounded px-2 py-1 text-black"
+						className="border border-gray-400 rounded px-2 py-1"
 						value={formData.name}
-						onChange={handleChange}
+						onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 						required
 						/>
 				</div>
@@ -75,14 +67,16 @@ const AdminFormsCategories = () => {
 						</button>
 						<button type="button" className="text-white font-light text-left" onClick={() => {
 							alert("Сохранено! Продолжайте редактирование.");
+							setFormData({ name: `${formData.name}`})
 						}}>
 							Сохранить и продолжить редактирование
 						</button>
 					</div>
+				</div>
 				</div>
 			</form>
 		</>
 	);
 };
 
-export default AdminFormsCategories;
+export default AdminFormCategories;
