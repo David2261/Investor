@@ -41,3 +41,16 @@ export const statusOptions = [
     { value: 'Опубликован', label: 'Опубликован' },
     { value: 'Не Опубликован', label: 'Не Опубликован' },
 ]
+
+// Users
+export const statusStaff = [
+    { value: '', label: 'Все сотрудники' },
+    { value: 'yes', label: 'Сотрудник' },
+    { value: 'no', label: 'Не сотрудник' },
+]
+
+export const statusUserActive = [
+    { value: '', label: 'Все разрешения' },
+    { value: 'active', label: 'Активен' },
+    { value: 'blocked', label: 'Заблокирован' },
+]

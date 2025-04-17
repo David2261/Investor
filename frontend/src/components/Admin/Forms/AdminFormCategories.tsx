@@ -47,7 +47,7 @@ const AdminFormCategories = () => {
 						id="title"
 						type="text"
 						placeholder="Название статьи"
-						className="border border-gray-400 rounded px-2 py-1"
+						className="border border-gray-400 text-white rounded px-2 py-1"
 						value={formData.name}
 						onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 						required
