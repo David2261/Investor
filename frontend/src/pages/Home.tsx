@@ -71,7 +71,7 @@ const Home = () => {
 				</div>
 			</div>
 			<div className="bg-neutral-300 w-full mb-10">
-				<div className="w-full grid md:grid-cols-2 gap-4 mt-4 mb-4">
+				<div className="w-full relative grid md:grid-cols-2 gap-4 mt-4 mb-4">
 					<div className={`col-span-2 ${centerContent} my-4`}><h1 className="uppercase font-bold text-2xl">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1></div>
 					<ContentList data={data} />
 					<div className={`col-span-2 ${centerContent} my-4`}>

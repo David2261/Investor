@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import FormatData from '../HomeAdmin/FormatDate.tsx';
 // Widgets
 import Dropdown from '@/widgets/Dropdown.tsx';
@@ -79,7 +79,7 @@ const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
 					<Dropdown
 						name="date"
 						value={filters.date}
-						onChange={(value) => handleFilterChange(value, 'date')}
+						onChange={(value: string) => handleFilterChange(value, 'date')}
 						options={dateOptions}
 					/>
 				</th>
@@ -87,7 +87,7 @@ const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
 					<Dropdown
 						name="status"
 						value={filters.status}
-						onChange={(value) => handleFilterChange(value, 'status')}
+						onChange={(value: string) => handleFilterChange(value, 'status')}
 						options={statusOptions}
 					/>
 				</th>
@@ -97,7 +97,7 @@ const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
 					<Dropdown
 						name="category"
 						value={filters.category}
-						onChange={(value) => handleFilterChange(value, 'category')}
+						onChange={(value: string) => handleFilterChange(value, 'category')}
 						options={[
 							{ value: '', label: 'Все категории' },
 							...uniqueCategories.map(category => ({ value: category, label: category })),

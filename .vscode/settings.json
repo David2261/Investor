@@ -2,7 +2,6 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.analysis.typeCheckingMode": "basic",
-    "jest.jestCommandLine": "yarn test cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "python.analysis.languageServerMode": "full",
     "python.languageServer": "Pylance",
     "python.autoComplete.extraPaths": [
@@ -15,5 +14,7 @@
     ],
     "python.analysis.extraPaths": [
         "./hello/apps"
-    ]
+    ],
+    "jest.rootPath": "./frontend",
+    "jest.jestCommandLine": "yarn test --runInBand --experimental-vm-modules",
 }

@@ -4,16 +4,15 @@ import { animated, useSpring } from '@react-spring/web';
 // Components
 import HeadLink from './Link.tsx';
 import MenuLink from './MenuLink.tsx';
-import SignUp from '../components/ModalForms/SignUp.tsx';
-import Login from '../components/ModalForms/Login.tsx';
+import SignUp from '@/components/ModalForms/SignUp.tsx';
+import Login from '@/components/ModalForms/Login.tsx';
 // Hooks
-import useMediaQuery from "../hooks/useMediaQuery.ts";
+import useMediaQuery from "@/hooks/useMediaQuery.ts";
 // Entities
-import AuthContext from '../entities/context/AuthContext.tsx';
+import AuthContext from '@/entities/context/AuthContext.tsx';
 // Assets
-import IH from '../assets/logo/IH.webp';
-import '../styles/Navbar.css';
-
+import IH from '@/assets/logo/IH.webp';
+import '@/styles/Navbar.css';
 
 const Navbar = () => {
 	const styleNav = "uppercase p-2 lg:px-4 md:mx-2 rounded transation-colors duration-300";
@@ -107,10 +106,10 @@ const Navbar = () => {
 						<MenuLink page="bonds" />
 						<MenuLink page="contact" />
 						{!user ? (<>
-						<button onClick={() => { openLogin(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
+						<button id="login" onClick={() => { openLogin(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
 							Login
 						</button>
-						<button onClick={() => { openSignUp(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
+						<button id="sign-up" onClick={() => { openSignUp(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
 							Sign-Up
 						</button>
 						</>

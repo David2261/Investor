@@ -15,7 +15,10 @@ module.exports = {
     './src/alpha_test_data/*.tsx'
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: [
+    'react-refresh',
+    "jest"
+  ],
   rules: {
     'react-refresh/only-export-components': [
       'warn',

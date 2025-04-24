@@ -7,14 +7,13 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["*"],
-      "*": ["./*", "./src/*", "./src/alpha_test_data/*.tsx"]
+      "*": ["./*", "./src/*"]
     },
     "baseUrl": "./src",
     "types": ["@testing-library/jest-dom"]
   },
   "exclude": [
     "./src/__tests__",
-    "./src/alpha_test_data",
     "./src/__mocks__",
     "node_modules"
   ],

@@ -1,23 +1,31 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\frontend\\src\\__tests__\\pages\\Blog.tsx",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js",
-                "${workspaceFolder}/**/*.tsx",
-                "${workspaceFolder}/**/*.ts",
-                "${workspaceFolder}/**/*.jsx"
-            ]
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Jest Tests",
+      "runtimeExecutable": "${workspaceFolder}/frontend/node_modules/.bin/jest",
+      "args": [
+        "--runInBand",
+        "--config=${workspaceFolder}/frontend/jest.config.cjs"
+      ],
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnSessionStart",
+      "cwd": "${workspaceFolder}/frontend",
+      "env": {
+        "NODE_ENV": "test"
+      },
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/frontend/**/*.tsx",
+        "${workspaceFolder}/frontend/**/*.ts"
+      ],
+      "preLaunchTask": "yarn test"
+    }
+  ]
 }

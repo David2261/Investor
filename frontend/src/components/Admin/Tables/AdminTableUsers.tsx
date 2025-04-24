@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 // Widgets
 import Dropdown from '@/widgets/Dropdown.tsx';
 // Entities
@@ -45,7 +45,7 @@ const AdminTableUsers: React.FC<AdminTableUsersProps> = ({data}) => {
 					<Dropdown
 						name="isStaff"
 						value={filters.isStaff}
-						onChange={(value) => handleFilterChange(value, 'isStaff')}
+						onChange={(value: string) => handleFilterChange(value, 'isStaff')}
 						options={statusStaff}
 					/>
 				</th>
@@ -53,7 +53,7 @@ const AdminTableUsers: React.FC<AdminTableUsersProps> = ({data}) => {
 					<Dropdown
 						name="isActive"
 						value={filters.isActive}
-						onChange={(value) => handleFilterChange(value, 'isActive')}
+						onChange={(value: string) => handleFilterChange(value, 'isActive')}
 						options={statusUserActive}
 					/>
 				</th>
