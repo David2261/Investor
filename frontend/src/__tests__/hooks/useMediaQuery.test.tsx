@@ -1,23 +1,45 @@
-import {expect, describe, beforeEach, it} from 'vitest';
+import {expect, describe, beforeEach, it, vi} from 'vitest';
 import { renderHook } from '@testing-library/react';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
 // Мокаем window.matchMedia
-const mockMatchMedia = jest.fn();
-Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: mockMatchMedia,
-});
+const mockMatchMedia = vi.fn();
 
 describe('Хук useMediaQuery', () => {
+    let originalAddEventListener: typeof window.addEventListener;
+    let originalRemoveEventListener: typeof window.removeEventListener;
+
     beforeEach(() => {
-        // Сбрасываем все моки перед каждым тестом
-        jest.clearAllMocks();
+        vi.clearAllMocks();
+        originalAddEventListener = window.addEventListener;
+        originalRemoveEventListener = window.removeEventListener;
+
+        // Мокаем window.matchMedia
+        Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: mockMatchMedia,
+        });
+
+        // Мокаем window.addEventListener и window.removeEventListener
+        window.addEventListener = vi.fn();
+        window.removeEventListener = vi.fn();
+    });
+
+    afterEach(() => {
+        window.addEventListener = originalAddEventListener;
+        window.removeEventListener = originalRemoveEventListener;
     });
 
     it('возвращает false при инициализации', () => {
+        const mockMediaQuery = {
+            matches: false,
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
+        };
+        mockMatchMedia.mockReturnValue(mockMediaQuery);
+    
         const { result } = renderHook(() => useMediaQuery('(min-width: 768px)'));
-
+    
         expect(result.current).toBe(false);
     });
 
@@ -25,8 +47,8 @@ describe('Хук useMediaQuery', () => {
         const query = '(min-width: 768px)';
         const mockMediaQuery = {
             matches: true,
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
         };
 
         mockMatchMedia.mockReturnValue(mockMediaQuery);
@@ -41,8 +63,8 @@ describe('Хук useMediaQuery', () => {
         const query = '(min-width: 768px)';
         const mockMediaQuery = {
             matches: false,
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
         };
 
         mockMatchMedia.mockReturnValue(mockMediaQuery);
@@ -56,26 +78,20 @@ describe('Хук useMediaQuery', () => {
     it('добавляет и удаляет обработчик события resize', () => {
         const query = '(min-width: 768px)';
         const mockMediaQuery = {
-            matches: false,
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
+          matches: false,
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
         };
-
+    
         mockMatchMedia.mockReturnValue(mockMediaQuery);
-
+    
         const { unmount } = renderHook(() => useMediaQuery(query));
-
-        expect(mockMediaQuery.addEventListener).toHaveBeenCalledWith(
-            'resize',
-            expect.any(Function)
-        );
-
+    
+        expect(window.addEventListener).toHaveBeenCalledWith('resize', expect.any(Function));
+    
         unmount();
-
-        expect(mockMediaQuery.removeEventListener).toHaveBeenCalledWith(
-            'resize',
-            expect.any(Function)
-        );
+    
+        expect(window.removeEventListener).toHaveBeenCalledWith('resize', expect.any(Function));
     });
 });
 

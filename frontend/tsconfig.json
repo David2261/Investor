@@ -13,11 +13,11 @@
     "esModuleInterop": true,
     "types": [
       "node",
-      // "jest",
       "jsdom",
       "@testing-library/jest-dom",
       "vite/client",
-      "vitest/globals"
+      "vitest/globals",
+      "testing-library__jest-dom"
     ],
     "baseUrl": "./src",
     "paths": {
@@ -45,7 +45,8 @@
     "noUnusedLocals": false
   },
   "exclude": [
-    "./src/__mocks__",
+    "./src/__mocks__/**/*",
+    // "./src/__tests__/**/*",
     "./src/api",
     "node_modules"
   ],

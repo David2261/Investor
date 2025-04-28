@@ -1,24 +1,25 @@
 import React from 'react';
+import { vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import SignUp from '../../../components/ModalForms/SignUp';
 import AuthContext from '../../../entities/context/AuthContext';
 
 describe('SignUp Component', () => {
-    const mockSetIsOpen = jest.fn();
-    const mockSetIsLogin = jest.fn();
-    const mockRegistrationUser = jest.fn();
+    const mockSetIsOpen = vi.fn();
+    const mockSetIsLogin = vi.fn();
+    const mockRegistrationUser = vi.fn();
 
     const mockAuthContext = {
         user: null,
-        setUser: jest.fn(),
+        setUser: vi.fn(),
         authTokens: null,
-        loginUser: jest.fn(),
+        loginUser: vi.fn(),
         registrationUser: mockRegistrationUser,
-        logoutUser: jest.fn(),
-        login: jest.fn(),
-        logout: jest.fn(),
-        resetPassword: jest.fn(),
+        logoutUser: vi.fn(),
+        login: vi.fn(),
+        logout: vi.fn(),
+        resetPassword: vi.fn(),
         loading: false,
     };
 
@@ -33,7 +34,7 @@ describe('SignUp Component', () => {
     };
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should render sign up form', () => {

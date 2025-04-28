@@ -4,9 +4,9 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 // Мокаем localStorage
 const mockLocalStorage = {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
 };
 
 Object.defineProperty(window, 'localStorage', {
@@ -16,7 +16,7 @@ Object.defineProperty(window, 'localStorage', {
 describe('Хук useLocalStorage', () => {
     beforeEach(() => {
         // Сбрасываем все моки перед каждым тестом
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('корректно инициализируется', () => {

@@ -2,7 +2,6 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
@@ -23,6 +22,22 @@ export default defineConfig(({ mode }) => {
       environment: 'jsdom',
       setupFiles: ['./config/jest.setup.ts'],
       globals: true,
+      maxConcurrency: 20,
+      pool: 'vmThreads',
+      poolOptions: {
+        threads: {
+          singleThread: true,
+        },
+      },
+      isolate: false,
+      css: false,
+      deps: {
+        optimizer: {
+          web: {
+            enabled: true,
+          },
+        },
+      },
     },
     server: {
       historyApiFallback: true,

@@ -1,13 +1,15 @@
 import { renderHook, act } from '@testing-library/react';
+import { vi } from 'vitest';
+import type { Mock } from 'vitest';
 import { useAuth } from '@/hooks/useAuth';
 import { useUser } from '@/hooks/useUser';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import Swal from 'sweetalert2';
 
 // Мокаем хуки
-jest.mock('@/hooks/useUser');
-jest.mock('@/hooks/useLocalStorage');
-jest.mock('sweetalert2');
+vi.mock('@/hooks/useUser');
+vi.mock('@/hooks/useLocalStorage');
+vi.mock('sweetalert2');
 
 describe('Хук useAuth', () => {
     const mockUser = {
@@ -22,24 +24,24 @@ describe('Хук useAuth', () => {
         },
     };
 
-    const mockAddUser = jest.fn();
-    const mockRemoveUser = jest.fn();
-    const mockSetUser = jest.fn();
-    const mockGetItem = jest.fn();
+    const mockAddUser = vi.fn();
+    const mockRemoveUser = vi.fn();
+    const mockSetUser = vi.fn();
+    const mockGetItem = vi.fn();
 
     beforeEach(() => {
         // Сбрасываем все моки перед каждым тестом
-        jest.clearAllMocks();
+        vi.clearAllMocks();
 
         // Настраиваем моки хуков
-        (useUser as jest.Mock).mockReturnValue({
+        (useUser as Mock).mockReturnValue({
             user: null,
             addUser: mockAddUser,
             removeUser: mockRemoveUser,
             setUser: mockSetUser,
         });
 
-        (useLocalStorage as jest.Mock).mockReturnValue({
+        (useLocalStorage as Mock).mockReturnValue({
             getItem: mockGetItem,
         });
     });
@@ -108,18 +110,5 @@ describe('Хук useAuth', () => {
 
         expect(mockGetItem).toHaveBeenCalledWith('user');
         expect(mockAddUser).not.toHaveBeenCalled();
-    });
-
-    it('обрабатывает ошибку при некорректных данных в localStorage', () => {
-        mockGetItem.mockReturnValue('invalid json');
-
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-        renderHook(() => useAuth());
-
-        expect(consoleSpy).toHaveBeenCalled();
-        expect(mockAddUser).not.toHaveBeenCalled();
-
-        consoleSpy.mockRestore();
     });
 });

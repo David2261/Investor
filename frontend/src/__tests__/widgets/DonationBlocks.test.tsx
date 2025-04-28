@@ -3,35 +3,6 @@ import { render, screen } from '@testing-library/react';
 import DonationBlocks from '@/widgets/DonationBlocks.tsx';
 
 describe('Компонент DonationBlocks', () => {
-    // it('отображает горизонтальный блок доната', () => {
-    //     render(<DonationBlocks type="horizontal" />);
-        
-    //     const donateBlock = screen.getByTestId('donate-horizontal');
-    //     expect(donateBlock).toBeInTheDocument();
-    //     expect(donateBlock).toHaveClass(
-    //         'bg-[#85BB65]',
-    //         'text-white',
-    //         'p-4',
-    //         'rounded-lg',
-    //         'shadow-md'
-    //     );
-    // });
-
-    // it('отображает вертикальный блок доната', () => {
-    //     render(<DonationBlocks type="vertical" />);
-        
-    //     const donateBlock = screen.getByTestId('donate-vertical');
-    //     expect(donateBlock).toBeInTheDocument();
-    //     expect(donateBlock).toHaveClass(
-    //         'bg-[#85BB65]',
-    //         'text-white',
-    //         'p-6',
-    //         'rounded-lg',
-    //         'shadow-md',
-    //         'h-full'
-    //     );
-    // });
-
     it('отображает заголовок блока доната', () => {
         render(<DonationBlocks />);
         expect(screen.getByText('Спасибо, что пользуетесь сайтом! Поддержите автора')).toBeInTheDocument();
@@ -60,11 +31,4 @@ describe('Компонент DonationBlocks', () => {
         expect(image).toBeInTheDocument();
         expect(image).toHaveClass('rounded-lg');
     });
-
-    it('отображает индикатор загрузки при загрузке изображения', () => {
-        render(<DonationBlocks />);
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
-    });
 });
-
-

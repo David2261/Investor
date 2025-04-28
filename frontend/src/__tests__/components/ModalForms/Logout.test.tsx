@@ -1,22 +1,23 @@
 import React from 'react';
+import { vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Logout from '../../../components/ModalForms/Logout';
 import AuthContext from '../../../entities/context/AuthContext';
 
 describe('Logout Component', () => {
-    const mockLogout = jest.fn();
+    const mockLogout = vi.fn();
 
     const mockAuthContext = {
         user: null,
-        setUser: jest.fn(),
+        setUser: vi.fn(),
         authTokens: null,
-        loginUser: jest.fn(),
-        registrationUser: jest.fn(),
-        logoutUser: jest.fn(),
-        login: jest.fn(),
+        loginUser: vi.fn(),
+        registrationUser: vi.fn(),
+        logoutUser: vi.fn(),
+        login: vi.fn(),
         logout: mockLogout,
-        resetPassword: jest.fn(),
+        resetPassword: vi.fn(),
         loading: false,
     };
 
@@ -31,7 +32,7 @@ describe('Logout Component', () => {
     };
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should render logout button', () => {
