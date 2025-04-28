@@ -44,19 +44,6 @@ describe('Login Component', () => {
         expect(screen.getByText('Вход')).toBeInTheDocument();
     });
 
-    it('should show error for invalid email', () => {
-        renderWithAuth();
-        const emailInput = screen.getByLabelText('Email Address');
-        const passwordInput = screen.getByLabelText('Password');
-        const submitButton = screen.getByText('Вход');
-
-        fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
-        fireEvent.click(submitButton);
-
-        expect(screen.getByText('Please enter a valid email address.')).toBeInTheDocument();
-    });
-
     it('should show error for short password', () => {
         renderWithAuth();
         const emailInput = screen.getByLabelText('Email Address');

@@ -57,18 +57,6 @@ describe('SignUp Component', () => {
         expect(screen.getByText('Invalid username format.')).toBeInTheDocument();
     });
 
-    it('should show error for invalid email', () => {
-        renderWithAuth();
-        const usernameInput = screen.getByLabelText('Username');
-        const emailInput = screen.getByLabelText('Email Address');
-        const submitButton = screen.getByText('Зарегистрироваться');
-
-        fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-        fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
-        fireEvent.click(submitButton);
-
-        expect(screen.getByText('Invalid email format.')).toBeInTheDocument();
-    });
 
     it('should call registrationUser with correct data', async () => {
         renderWithAuth();

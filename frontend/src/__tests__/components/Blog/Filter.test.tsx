@@ -1,10 +1,10 @@
 import React from 'react';
-import {expect, describe, beforeEach, jest, it} from '@jest/globals';
+import { expect, describe, beforeEach, it } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Filter from '../../../components/Blog/Filter';
 
 describe('Компонент Filter', () => {
-    const mockOnFilterChange = jest.fn();
+    const mockOnFilterChange = vi.fn();
 
     beforeEach(() => {
         mockOnFilterChange.mockClear();

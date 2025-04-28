@@ -1,67 +1,136 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import type { Mock } from 'vitest';
+import { vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DataTab from '../../../components/Blog/DataTab';
+import * as hooks from '@/api/useAllCategories.tsx';
+
+// Mock the useAllCategories hook
+vi.mock('@/api/useAllCategories.tsx');
+
+const mockCategories = [
+    { name: 'Category 1', slug: 'category-1' },
+    { name: 'Category 2', slug: 'category-2' },
+    { name: 'Category 3', slug: 'category-3' },
+    { name: 'Category 4', slug: 'category-4' },
+    { name: 'Category 5', slug: 'category-5' },
+    { name: 'Category 6', slug: 'category-6' },
+    { name: 'Category 7', slug: 'category-7' },
+];
 
 describe('Компонент DataTab', () => {
-    const mockData = {
-        title: 'Тестовый заголовок',
-        content: 'Тестовое содержимое',
-        date: '2023-01-01',
-        author: 'Тестовый автор'
-    };
+    const mockOnSidebarChange = vi.fn();
+    const mockOnSelectCategory = vi.fn();
 
-    it('отображает заголовок', () => {
-        render(<DataTab data={mockData} />);
-        expect(screen.getByText(mockData.title)).toBeInTheDocument();
+    beforeEach(() => {
+        // Reset mocks before each test
+        vi.clearAllMocks();
+        // Mock useAllCategories to return controlled data
+        (hooks.useAllCategories as Mock).mockReturnValue({
+            data: mockCategories,
+            dataCount: mockCategories.length,
+            error: null,
+        });
     });
 
-    it('отображает содержимое', () => {
-        render(<DataTab data={mockData} />);
-        expect(screen.getByText(mockData.content)).toBeInTheDocument();
+    it('отображает кнопку открытия боковой панели, когда isSidebarChange=false', () => {
+        render(
+            <DataTab
+                isSidebarChange={false}
+                onSidebarChange={mockOnSidebarChange}
+                onSelectCategory={mockOnSelectCategory}
+            />
+        );
+        const button = screen.getByText('Категории');
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveClass('data-tab-sidebar-close-btn');
     });
 
-    it('отображает дату', () => {
-        render(<DataTab data={mockData} />);
-        expect(screen.getByText(mockData.date)).toBeInTheDocument();
+    it('открывает боковую панель при клике на кнопку', () => {
+        render(
+            <DataTab
+                isSidebarChange={false}
+                onSidebarChange={mockOnSidebarChange}
+                onSelectCategory={mockOnSelectCategory}
+            />
+        );
+        const button = screen.getByText('Категории');
+        fireEvent.click(button);
+        expect(mockOnSidebarChange).toHaveBeenCalledWith(true);
     });
 
-    it('отображает автора', () => {
-        render(<DataTab data={mockData} />);
-        expect(screen.getByText(mockData.author)).toBeInTheDocument();
+    it('отображает боковую панель с поиском и категориями, когда isSidebarChange=true', () => {
+        render(
+            <DataTab
+                isSidebarChange={true}
+                onSidebarChange={mockOnSidebarChange}
+                onSelectCategory={mockOnSelectCategory}
+            />
+        );
+        expect(screen.getByPlaceholderText('Поиск...')).toBeInTheDocument();
+        expect(screen.getByText('Category 1')).toBeInTheDocument();
+        expect(screen.getByText('Category 2')).toBeInTheDocument();
+        // Only 5 categories shown when isOpen=false
+        expect(screen.queryByText('Category 6')).not.toBeInTheDocument();
     });
 
-    it('применяет правильные стили к заголовку', () => {
-        render(<DataTab data={mockData} />);
-        const title = screen.getByText(mockData.title);
-        expect(title).toHaveClass('text-xl', 'font-bold', 'mb-2');
+    it('фильтрует категории по поисковому запросу', async () => {
+        render(
+            <DataTab
+                isSidebarChange={true}
+                onSidebarChange={mockOnSidebarChange}
+                onSelectCategory={mockOnSelectCategory}
+            />
+        );
+        const searchInput = screen.getByPlaceholderText('Поиск...');
+        fireEvent.change(searchInput, { target: { value: 'Category 1' } });
+        await waitFor(() => {
+            expect(screen.getByText('Category 1')).toBeInTheDocument();
+            expect(screen.queryByText('Category 2')).not.toBeInTheDocument();
+        });
     });
 
-    it('применяет правильные стили к содержимому', () => {
-        render(<DataTab data={mockData} />);
-        const content = screen.getByText(mockData.content);
-        expect(content).toHaveClass('text-gray-700', 'mb-4');
+    it('отображает кнопку "Показать ещё" при наличии более 6 категорий', () => {
+        render(
+            <DataTab
+                isSidebarChange={true}
+                onSidebarChange={mockOnSidebarChange}
+                onSelectCategory={mockOnSelectCategory}
+            />
+        );
+        expect(screen.getByText('Показать ещё')).toBeInTheDocument();
     });
 
-    it('применяет правильные стили к дате', () => {
-        render(<DataTab data={mockData} />);
-        const date = screen.getByText(mockData.date);
-        expect(date).toHaveClass('text-sm', 'text-gray-500');
+    it('показывает все категории при клике на "Показать ещё"', async () => {
+        render(
+            <DataTab
+                isSidebarChange={true}
+                onSidebarChange={mockOnSidebarChange}
+                onSelectCategory={mockOnSelectCategory}
+            />
+        );
+        const showMoreButton = screen.getByText('Показать ещё');
+        fireEvent.click(showMoreButton);
+        await waitFor(() => {
+            expect(screen.getByText('Category 6')).toBeInTheDocument();
+            expect(screen.getByText('Category 7')).toBeInTheDocument();
+            expect(screen.queryByText('Показать ещё')).not.toBeInTheDocument();
+        });
     });
 
-    it('применяет правильные стили к автору', () => {
-        render(<DataTab data={mockData} />);
-        const author = screen.getByText(mockData.author);
-        expect(author).toHaveClass('text-sm', 'text-gray-500');
-    });
-
-    it('отображает все элементы в правильном порядке', () => {
-        render(<DataTab data={mockData} />);
-        const elements = screen.getAllByRole('text');
-        expect(elements[0]).toHaveTextContent(mockData.title);
-        expect(elements[1]).toHaveTextContent(mockData.content);
-        expect(elements[2]).toHaveTextContent(mockData.date);
-        expect(elements[3]).toHaveTextContent(mockData.author);
+    it('отображает ошибку при наличии ошибки в useAllCategories', () => {
+        (hooks.useAllCategories as Mock).mockReturnValue({
+            data: [],
+            dataCount: 0,
+            error: { message: 'Failed to fetch categories' },
+        });
+        render(
+            <DataTab
+                isSidebarChange={true}
+                onSidebarChange={mockOnSidebarChange}
+                onSelectCategory={mockOnSelectCategory}
+            />
+        );
+        expect(screen.getByText('Error: Failed to fetch categories')).toBeInTheDocument();
     });
 });
-
-

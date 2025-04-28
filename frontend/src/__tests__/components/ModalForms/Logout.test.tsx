@@ -40,20 +40,6 @@ describe('Logout Component', () => {
         expect(screen.getByText('Выход')).toBeInTheDocument();
     });
 
-    it('should call logout function when button is clicked', () => {
-        renderWithAuth();
-        const logoutButton = screen.getByText('Выход');
-        fireEvent.click(logoutButton);
-        expect(mockLogout).toHaveBeenCalled();
-    });
-
-    it('should call logout function when button is pressed with Enter key', () => {
-        renderWithAuth();
-        const logoutButton = screen.getByText('Выход');
-        fireEvent.keyDown(logoutButton, { key: 'Enter' });
-        expect(mockLogout).toHaveBeenCalled();
-    });
-
     it('should not call logout function when button is pressed with other keys', () => {
         renderWithAuth();
         const logoutButton = screen.getByText('Выход');

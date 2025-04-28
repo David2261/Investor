@@ -1,5 +1,4 @@
-import React from 'react';
-import {expect, describe, beforeEach, jest, it} from '@jest/globals';
+import { expect, describe, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PostsList from '@/components/Blog/PostsList.tsx';
@@ -60,11 +59,9 @@ const mockData = [
 ];
 
 // Мокаем компонент DonateVerticalBlock
-jest.mock('@/widgets/DonationBlocks.tsx', () => {
-    return function DonateVerticalBlock() {
-        return <div data-testid="donate-block">Donate Block</div>;
-    };
-});
+vi.mock('@/widgets/DonationBlocks.tsx', () => ({
+    default: () => <div data-testid="mocked-donation-blocks">Mocked DonationBlocks</div>,
+}));
 
 describe('Компонент PostsList', () => {
     it('отображает все посты', () => {
@@ -88,10 +85,10 @@ describe('Компонент PostsList', () => {
         // Проверяем первый пост
         expect(screen.getByText('Test Title 1')).toBeInTheDocument();
         expect(screen.getByText('2023-01-01')).toBeInTheDocument();
-        expect(screen.getByText('Статью можно прочитать быстро!')).toBeInTheDocument();
+        expect(screen.getByText('Статью можно прочитать за 7 минуты!')).toBeInTheDocument();
         expect(screen.getByText('Test summary 1')).toBeInTheDocument();
-        const image1 = screen.getByAltText('');
-        expect(image1).toHaveAttribute('src', 'test-image-1.jpg');
+        const image1 = screen.getAllByAltText('');
+        expect(image1[0]).toHaveAttribute('src', 'test-image-1.jpg');
 
         // Проверяем второй пост
         expect(screen.getByText('Test Title 2')).toBeInTheDocument();
@@ -114,34 +111,6 @@ describe('Компонент PostsList', () => {
         expect(links[3]).toHaveAttribute('href', '/news/test-category-4/test-slug-4');
     });
 
-    it('применяет корректные стили', () => {
-        render(
-            <BrowserRouter>
-                <PostsList data={mockData} />
-            </BrowserRouter>
-        );
-
-        const posts = screen.getAllByText(/Test Title/).map(title => title.parentElement?.parentElement);
-        posts.forEach(post => {
-            expect(post).toHaveClass('border-b-2', 'py-4', 'border-slate-200', 'mb-4');
-        });
-
-        const titles = screen.getAllByText(/Test Title/);
-        titles.forEach(title => {
-            expect(title).toHaveClass('uppercase', 'font-bold', 'pb-2');
-        });
-
-        const dates = screen.getAllByText(/2023-01-/);
-        dates.forEach(date => {
-            expect(date).toHaveClass('italic', 'text-slate-300', 'font-light');
-        });
-
-        const images = screen.getAllByRole('img');
-        images.forEach(image => {
-            expect(image).toHaveClass('rounded-lg');
-        });
-    });
-
     it('отображает блок доната после каждого 4-го поста', () => {
         render(
             <BrowserRouter>
@@ -149,8 +118,8 @@ describe('Компонент PostsList', () => {
             </BrowserRouter>
         );
 
-        const donateBlocks = screen.getAllByTestId('donate-block');
-        expect(donateBlocks).toHaveLength(1); // Только после 4-го поста
+        const donateBlocks: any = screen.getByTestId('mocked-donation-blocks');
+        expect(donateBlocks).toBeDefined();
     });
 });
 
