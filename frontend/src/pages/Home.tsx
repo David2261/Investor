@@ -70,9 +70,11 @@ const Home = () => {
 					<div><p className="font-sans text-lg md:text-xl">Инвестируйте сначала в себя, а потом уже в другие активы. Сделайте Upgrade своих навыков</p></div>
 				</div>
 			</div>
-			<div className="bg-neutral-300 w-full mb-10">
-				<div className="w-full relative grid md:grid-cols-2 gap-4 mt-4 mb-4">
-					<div className={`col-span-2 ${centerContent} my-4`}><h1 className="uppercase font-bold text-2xl">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1></div>
+			<div className="bg-neutral-300 relative w-full mb-10">
+				<div className="mt-4 mb-4">
+					<div className={`col-span-2 ${centerContent} my-4`}>
+						<h1 className="uppercase font-bold text-2xl">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1>
+					</div>
 					<ContentList data={data} />
 					<div className={`col-span-2 ${centerContent} my-4`}>
 						<NavLink to="news/">
@@ -82,7 +84,7 @@ const Home = () => {
 				</div>
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-3 w-full px-2 gap-16 md:gap-20">
-				<div className="mt-10 col-span-1 md:col-span-2">
+				<div className="grid mt-10 col-span-1 md:col-span-2">
 					<div className="w-full flex flex-col md:ml-10">
 						<ContentNews data={data} />
 						<div className="w-full grid grid-cols-2 gap-4">
@@ -90,13 +92,14 @@ const Home = () => {
 						</div>
 					</div>
 				</div>
+				
 				<div className="flex flex-col mx-4">
 					<div className="w-full sm:justify-center">
-						{/* Favorite post */}
-						{/* <p className="uppercase font-bold text-lg mb-4 border-b-2">POPULAR WITH SUBSCRIBERS</p>
+						{/* Favorite post
+						<p className="uppercase font-bold text-lg mb-4 border-b-2">POPULAR WITH SUBSCRIBERS</p>
 						<img className="h-48 w-auto mb-4" src="http://dummyimage.com/400x300/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
-						<p className="uppercase font-bold text-xl hover:underline">Mark Zuckerberg's 'Year of Efficiency' spreads from Meta to Priscilla Chan's charitable organization, which just laid off dozens of people</p> */}
-						{/* Adverts */}
+						<p className="uppercase font-bold text-xl hover:underline">Mark Zuckerberg's 'Year of Efficiency' spreads from Meta to Priscilla Chan's charitable organization, which just laid off dozens of people</p>
+						Adverts */}
 						<h1 className='uppercase font-bold text-lg mb-4 border-b-2'>Реклама</h1>
 						<img className='h-48 w-auto mb-4' src={getRandomImage()} alt="ad_donate" loading="lazy"/>
 						<a href="https://new.donatepay.ru/@1097922" target='_blank' rel="noopener noreferrer">

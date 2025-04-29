@@ -18,9 +18,18 @@ const queryClient = new QueryClient({
   },
 });
 
+const configFuture =  {
+  v7_relativeSplatPath: true, // Включает относительные пути во вложенных маршрутах
+  v7_startTransition: true,
+  v7_fetcherPersist: true,   // Сохраняет состояние выборки во время навигации
+  v7_normalizeFormMethod: true, // Нормализует методы формирования (POST или GET)
+  v7_partialHydration: true, // Поддерживает частичную гидратацию для рендеринга на стороне сервера
+  v7_skipActionErrorRevalidation: true, // Предотвращает повторную проверку при возникновении ошибок действий
+}
+
 hydrateRoot(
   root,
-  <BrowserRouter>
+  <BrowserRouter future={configFuture}>
     <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>

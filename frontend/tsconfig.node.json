@@ -5,11 +5,10 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "paths": {
-      "@/*": ["*"],
-      "*": ["./*", "./src/*"]
-    },
     "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    },
     "types": ["@testing-library/jest-dom"]
   },
   "exclude": [
