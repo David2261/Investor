@@ -5,18 +5,22 @@ import { useLocalStorage } from "./useLocalStorage";
 import { User } from '@/types/User';
 
 export const useUser = () => {
-	const { user, setUser } = useContext(AuthContext);
+	const context = useContext(AuthContext);
+	if (!context) {
+	  throw new Error('useUser must be used within an AuthProvider');
+	}
+	const { user, setUser } = context;
 	const { setItem } = useLocalStorage();
-
+  
 	const addUser = (user: User) => {
-		setUser(user);
-		setItem("user", JSON.stringify(user));
+	  setUser(user);
+	  setItem('user', JSON.stringify(user));
 	};
-
+  
 	const removeUser = () => {
-		setUser(null);
-		setItem("user", "");
+	  setUser(null);
+	  setItem('user', '');
 	};
-
+  
 	return { user, addUser, removeUser, setUser };
-};
+  };

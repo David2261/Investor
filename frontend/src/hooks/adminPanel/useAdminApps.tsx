@@ -5,6 +5,7 @@ import axios from 'axios';
 import AuthContext from '../../entities/context/AuthContext.tsx';
 
 interface AdminApp {
+	id: number;
 	name: string;
 	label: string;
 	verbose_name: string;
@@ -13,7 +14,7 @@ interface AdminApp {
 const apiURL = import.meta.env.VITE_API_URL;
 
 export const useAdminApps = () => {
-	const { authTokens } = useContext(AuthContext);
+	const { authTokens } = useContext(AuthContext) ?? { authTokens: null };
 
 	return useQuery<AdminApp[], Error>({
 		queryKey: ['adminApps'],
@@ -25,6 +26,8 @@ export const useAdminApps = () => {
 			});
 			return response.data;
 		},
-		enabled: !!authTokens
+		enabled: !!authTokens,
+		retry: 2,
+		staleTime: 5 * 60 * 1000,
 	});
 };

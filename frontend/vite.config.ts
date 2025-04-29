@@ -1,24 +1,51 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from "path";
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    rollupOptions: {
-      input: 'index.html',
-      output: {
-        dir: 'dist',
-      }
-    }
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+
+  return {
+    plugins: [react()],
+    build: {
+      outDir: 'dist',
+      rollupOptions: {
+        input: 'index.html',
+      },
     },
-  },
-  server: {
-    historyApiFallback: true,
-  },
-})
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
+    },
+    test: {
+      environment: 'jsdom',
+      setupFiles: ['./config/jest.setup.ts'],
+      globals: true,
+      maxConcurrency: 20,
+      pool: 'vmThreads',
+      poolOptions: {
+        threads: {
+          singleThread: true,
+        },
+      },
+      isolate: false,
+      css: false,
+      deps: {
+        optimizer: {
+          web: {
+            enabled: true,
+          },
+        },
+      },
+    },
+    server: {
+      historyApiFallback: true,
+    },
+    define: {
+      'import.meta.env': JSON.stringify({
+        VITE_API_URL: env.VITE_API_URL || 'https://mocked-api.local',
+      }),
+    },
+  };
+});

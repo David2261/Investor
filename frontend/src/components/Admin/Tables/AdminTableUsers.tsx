@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+// Widgets
+import Dropdown from '@/widgets/Dropdown.tsx';
+// Entities
+import { statusStaff, statusUserActive } from '@/entities/constants/options.ts';
 
 interface User {
 	username: string;
@@ -17,8 +21,7 @@ const AdminTableUsers: React.FC<AdminTableUsersProps> = ({data}) => {
 		isActive: ''
 	});
 
-	const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-		const { name, value } = e.target;
+	const handleFilterChange = (value: string, name: string) => {
 		setFilters(prevFilters => ({
 			...prevFilters,
 			[name]: value
@@ -36,31 +39,23 @@ const AdminTableUsers: React.FC<AdminTableUsersProps> = ({data}) => {
 	<table className='w-full h-1/3'>
 		<thead>
 			<tr>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 rounded-l-md opacity-70'>Пользователь</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>Email</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>
-					<select
+				<th className='bg-[#111111] text-[#D9D9D9] text-center text-base py-2 px-4'>Пользователь</th>
+				<th className='bg-[#111111] text-[#D9D9D9] text-center text-base py-2 px-4'>Email</th>
+				<th className='bg-[#111111] text-[#D9D9D9] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="isStaff"
 						value={filters.isStaff}
-						onChange={handleFilterChange}
-						className="border text-black p-2 rounded-md mr-2"
-					>
-						<option value="">Все сотрудники</option>
-						<option value="yes">Сотрудник</option>
-						<option value="no">Не сотрудник</option>
-					</select>
+						onChange={(value: string) => handleFilterChange(value, 'isStaff')}
+						options={statusStaff}
+					/>
 				</th>
-				<th className='bg-[#A9A9A9] text-center text-[#D9D9D9] text-base py-2 px-4 opacity-70'>
-					<select
+				<th className='bg-[#111111] text-center text-base py-2 px-4'>
+					<Dropdown
 						name="isActive"
 						value={filters.isActive}
-						onChange={handleFilterChange}
-						className="border text-black p-2 rounded-md"
-					>
-						<option value="">Все разрешения</option>
-						<option value="active">Активен</option>
-						<option value="blocked">Заблокирован</option>
-					</select>
+						onChange={(value: string) => handleFilterChange(value, 'isActive')}
+						options={statusUserActive}
+					/>
 				</th>
 			</tr>
 		</thead>

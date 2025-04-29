@@ -5,21 +5,29 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ES2022",
     "skipLibCheck": true,
-    "rootDir": "src",
+    "rootDir": "./",
     "declaration": true,
     "declarationMap": true,
     "incremental": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "types": [
       "node",
-      "jest",
       "jsdom",
       "@testing-library/jest-dom",
-      "vite/client"
+      "vite/client",
+      "vitest/globals",
+      "testing-library__jest-dom"
     ],
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "@tests/*": ["src/__tests__/*"],
+      "@/components/*": ["src/components/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/entities/*": ["src/entities/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/widgets/*": ["src/widgets/*"]
     },
 
     /* Bundler mode */
@@ -37,12 +45,18 @@
     "noUnusedLocals": false
   },
   "exclude": [
-    "./src/__tests__",
-    "./src/alpha_test_data",
-    "./src/__mocks__",
+    "./src/__mocks__/**/*",
+    // "./src/__tests__/**/*",
     "./src/api",
     "node_modules"
   ],
-  "include": ["src", "src/**/*"],
+  "include": [
+    "src",
+    "src/**/*",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "config/jest.setup.ts",
+    "config/setupTests.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }],
 }

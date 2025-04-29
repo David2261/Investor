@@ -13,7 +13,7 @@ const DonateVerticalBlock = () => {
     }, []);
 
     return (
-    <div className="grid grid-cols-3 gap-8 border-b-2 py-4 border-slate-200 mb-4">
+    <div id="donate-block" className="grid grid-cols-3 gap-8 border-b-2 py-4 border-slate-200 mb-4">
       <div className="col-span-2">
         <p className="uppercase font-bold pb-2">Спасибо, что пользуетесь сайтом! Поддержите автора</p>
         <p className="text-base pt-4">

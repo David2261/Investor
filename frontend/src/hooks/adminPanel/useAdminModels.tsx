@@ -11,7 +11,7 @@ interface AdminModelsResponse {
 const apiURL = import.meta.env.VITE_API_URL;
 
 export const useAdminModels = () => {
-	const { authTokens } = useContext(AuthContext);
+	const { authTokens } = useContext(AuthContext) ?? { authTokens: null };
 
 	return useQuery<AdminModelsResponse, Error>({
 		queryKey: ['adminModels'],

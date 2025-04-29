@@ -30,12 +30,12 @@ jobs:
           yarn lint
         env:
           CI: true
-      # - name: Test
-      #   run: |
-      #     cd frontend
-      #     yarn test
-        # env:
-        #   CI: true
+      - name: Test
+        run: |
+          cd frontend
+          yarn test
+        env:
+          CI: true
       # - name: Create Build
       #   run: |
       #     cd frontend

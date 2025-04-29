@@ -82,7 +82,7 @@ const AdminFormBonds = () => {
 
 	return (
 		<>
-		<form  onSubmit={handleSubmit} action="POST">
+		<form aria-label="admin-form-bonds" onSubmit={handleSubmit} action="POST">
 			<div className="flex flex-col gap-4 p-4 text-white">
 				{/* Заголовок облигации */}
 				<div className="flex items-center gap-2">

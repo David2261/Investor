@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import '../styles/widgets/Dropdown.css';
 
 interface DropdownProps {
@@ -9,7 +9,7 @@ interface DropdownProps {
 	options: Array<{ value: string; label: string }>;
 }
   
-const Dropdown: React.FC<DropdownProps> = ({ className, value, onChange, options }) => {
+const Dropdown: React.FC<DropdownProps> = ({ className, name, value, onChange, options }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -51,7 +51,8 @@ const Dropdown: React.FC<DropdownProps> = ({ className, value, onChange, options
             onMouseLeave={handleMouseLeave}>
 			<div
 				className={`flex justify-between items-center p-2 text-white bg-[#A9A9A9] cursor-pointer rounded-md`}
-				onClick={toggleDropdown}>
+				onClick={toggleDropdown}
+				id={`${name}`} >
 				<span>{options.find(option => option.value === value)?.label || 'Select an option'}</span>
 				<span className="ml-2">{isOpen ? '▲' : '▼'}</span>
 			</div>
