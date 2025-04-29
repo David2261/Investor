@@ -44,7 +44,7 @@ const Sidebar: FunctionComponent<SideBarProps> = ({ dataApps, dataModels }) => {
 	return <>
 		<div className='w-full h-auto pt-8 justify-center'>
 			<Link to="/admin/main">
-				<img src={Logo} className="w-[214px] h-[49px]" />
+				<img alt="logo" src={Logo} className="w-[214px] h-[49px]" />
 			</Link>
 		</div>
 		<div className='mt-8 w-full h-10 relative'>

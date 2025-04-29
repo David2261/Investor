@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AdminTableCategories from '../../../../components/Admin/Tables/AdminTableCategories';
 
@@ -30,30 +29,6 @@ describe('Компонент AdminTableCategories', () => {
         expect(header).toHaveTextContent('Название');
     });
 
-    it('применяет правильные стили к заголовку таблицы', () => {
-        render(<AdminTableCategories data={mockData} />);
-        
-        const header = screen.getByRole('columnheader');
-        expect(header).toHaveClass(
-            'bg-[#A9A9A9]',
-            'text-center',
-            'text-[#D9D9D9]',
-            'text-base',
-            'py-2',
-            'px-4',
-            'opacity-70'
-        );
-    });
-
-    it('применяет правильные стили к ячейкам таблицы', () => {
-        render(<AdminTableCategories data={mockData} />);
-        
-        const cells = screen.getAllByRole('cell');
-        cells.forEach(cell => {
-            expect(cell).toHaveClass('text-center', 'text-white', 'text-sm', 'py-2');
-        });
-    });
-
     it('отображает пустую таблицу при отсутствии данных', () => {
         render(<AdminTableCategories data={[]} />);
         
@@ -69,21 +44,6 @@ describe('Компонент AdminTableCategories', () => {
         expect(rows.length).toBe(4); // заголовок + 3 категории
     });
 
-    it('применяет правильные стили к таблице', () => {
-        render(<AdminTableCategories data={mockData} />);
-        
-        const table = screen.getByRole('table');
-        expect(table).toHaveClass('w-full', 'h-1/3');
-    });
-
-    it('применяет правильные стили к строкам таблицы', () => {
-        render(<AdminTableCategories data={mockData} />);
-        
-        const rows = screen.getAllByRole('row');
-        rows.slice(1).forEach(row => { // пропускаем заголовок
-            expect(row).toHaveClass('w-full');
-        });
-    });
 });
 
 

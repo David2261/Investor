@@ -235,11 +235,11 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 	useEffect(() => {
 		loading ? updateToken() : false;
 
-		const fourMinutes = 1000 * 60 * 4;
+		const fifteenMinutes = 15 * 60 * 1000;
 
 		const interval = setInterval(() => {
 			authTokens ? updateToken() : false;
-		}, fourMinutes);
+		}, fifteenMinutes);
 		if (authTokens) {
 			fetchUserData();
 		} else {

@@ -42,8 +42,8 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 		try {
 			await registrationUser(form);
 			props.setIsOpen();
-		} catch (err) {
-			setError("Произошла ошибка при регистрации. Пожалуйста, проверьте данные.");
+		} catch (err: any) {
+			setError("Произошла ошибка при регистрации. Пожалуйста, проверьте данные.\n" + err);
 		}
 	}, [form, registrationUser, props]);
 

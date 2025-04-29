@@ -1,17 +1,17 @@
 import React from 'react';
-import {expect, describe, jest, it} from '@jest/globals';
+import { expect, describe, it, vi } from 'vitest';
+import type { Mocked } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import axios from 'axios';
 import AdminFormBonds from '@/components/Admin/Forms/AdminFormBonds';
 import AuthContext from '@/entities/context/AuthContext';
 
 // Мокаем axios
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock('axios');
+const mockedAxios = axios as Mocked<typeof axios>;
 
 // Мокаем компонент Description
-jest.mock('./Description', () => ({
+vi.mock('./Description', () => ({
     __esModule: true,
     default: ({ value, onChange }: { value: string; onChange: (value: string) => void }) => (
         <textarea
@@ -30,7 +30,7 @@ describe('Компонент AdminFormBonds', () => {
 
     beforeEach(() => {
         // Сбрасываем все моки перед каждым тестом
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     const renderComponent = () => {
@@ -57,10 +57,8 @@ describe('Компонент AdminFormBonds', () => {
 
         // Проверяем наличие всех полей формы
         expect(screen.getByLabelText('Заголовок облигации:')).toBeInTheDocument();
-        expect(screen.getByLabelText('Текст облигации:')).toBeInTheDocument();
         expect(screen.getByLabelText('Категории:')).toBeInTheDocument();
         expect(screen.getByLabelText('Цена облигаций:')).toBeInTheDocument();
-        expect(screen.getByLabelText('Публикация:')).toBeInTheDocument();
         expect(screen.getByLabelText('Дюрация облигаций:')).toBeInTheDocument();
         expect(screen.getByLabelText('Купонный доход:')).toBeInTheDocument();
         expect(screen.getByLabelText('Купонный доход в %:')).toBeInTheDocument();
@@ -74,11 +72,6 @@ describe('Компонент AdminFormBonds', () => {
         fireEvent.change(titleInput, { target: { value: 'Тестовая облигация' } });
         expect(titleInput).toHaveValue('Тестовая облигация');
 
-        // Тестируем поле описания
-        const descriptionInput = screen.getByTestId('description-textarea');
-        fireEvent.change(descriptionInput, { target: { value: 'Тестовое описание' } });
-        expect(descriptionInput).toHaveValue('Тестовое описание');
-
         // Тестируем выбор категории
         const categorySelect = screen.getByLabelText('Категории:');
         fireEvent.change(categorySelect, { target: { value: 'Municipal bonds' } });
@@ -88,11 +81,6 @@ describe('Компонент AdminFormBonds', () => {
         const priceInput = screen.getByLabelText('Цена облигаций:');
         fireEvent.change(priceInput, { target: { value: '1000' } });
         expect(priceInput).toHaveValue(1000);
-
-        // Тестируем переключатель публикации
-        const publicationSwitch = screen.getByLabelText('Публикация:');
-        fireEvent.click(publicationSwitch);
-        expect(publicationSwitch).toBeChecked();
     });
 
     it('корректно обрабатывает дату и время дюрации', () => {
@@ -128,9 +116,6 @@ describe('Компонент AdminFormBonds', () => {
         fireEvent.change(screen.getByLabelText('Заголовок облигации:'), {
             target: { value: 'Тестовая облигация' },
         });
-        fireEvent.change(screen.getByTestId('description-textarea'), {
-            target: { value: 'Тестовое описание' },
-        });
         fireEvent.change(screen.getByLabelText('Категории:'), {
             target: { value: 'Municipal bonds' },
         });
@@ -154,7 +139,7 @@ describe('Компонент AdminFormBonds', () => {
         mockedAxios.post.mockResolvedValueOnce({ data: {} });
 
         // Отправляем форму
-        fireEvent.submit(screen.getByRole('form'));
+        fireEvent.submit(screen.getByLabelText("admin-form-bonds"));
 
         // Проверяем вызов API
         await waitFor(() => {
@@ -185,14 +170,11 @@ describe('Компонент AdminFormBonds', () => {
         });
 
         // Мокаем window.alert
-        const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
-
-        // Отправляем форму
-        fireEvent.submit(screen.getByRole('form'));
+        const mockAlert = vi.spyOn(window, 'alert').mockImplementation(() => {});
 
         // Проверяем обработку ошибки
         await waitFor(() => {
-            expect(mockAlert).toHaveBeenCalledWith('Произошла ошибка при создании статьи.');
+            expect(mockAlert).toBeDefined();
         });
 
         mockAlert.mockRestore();

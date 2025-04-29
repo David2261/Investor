@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings=0",
+    "lint": "oxlint . --report-unused-disable-directives --max-warnings=0",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -56,8 +56,11 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "identity-obj-proxy": "^3.0.0",
     "jsdom": "^26.1.0",
+    "msw": "^2.7.5",
+    "oxlint": "^0.16.8",
     "react-test-renderer": "^18.3.1",
     "ts-prune": "^0.10.3",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.1",
+    "web-streams-polyfill": "^4.1.0"
   }
 }

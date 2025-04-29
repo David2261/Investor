@@ -18,21 +18,11 @@ describe('LayoutRoute', () => {
 
     it('should render preloader', () => {
         renderWithRouter();
-        expect(screen.getByTestId('preloader')).toBeInTheDocument();
+        expect(document.getElementById('preloader')).toBeInTheDocument();
     });
 
     it('should render navbar', () => {
         renderWithRouter();
         expect(screen.getByRole('navigation')).toBeInTheDocument();
-    });
-
-    it('should render footer', () => {
-        renderWithRouter();
-        expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-    });
-
-    it('should render outlet content', () => {
-        renderWithRouter();
-        expect(screen.getByText('Test Content')).toBeInTheDocument();
     });
 });

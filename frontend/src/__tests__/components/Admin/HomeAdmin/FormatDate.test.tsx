@@ -1,12 +1,11 @@
 import formatDate from '@/components/Admin/HomeAdmin/FormatDate';
-import {expect, describe, jest, it} from '@jest/globals';
+import { expect, describe, it } from 'vitest';
 
 describe('Утилита formatDate', () => {
     it('форматирует дату в правильном формате', () => {
         const date = '2024-03-20T12:30:45Z';
         const formattedDate = formatDate({ date });
         
-        // В русской локали это будет выглядеть как "20 марта 2024 г., 12:30:45"
         expect(formattedDate).toMatch("20 марта 2024 г. в 15:30:45");
     });
 

@@ -7,11 +7,6 @@ import AuthContext from '../../entities/context/AuthContext.tsx';
 interface AdminModelsResponse {
 	[key: string]: string[];
 }
-  
-interface AdminModel {
-	id: number;
-	name: string;
-}
 
 const apiURL = import.meta.env.VITE_API_URL;
 

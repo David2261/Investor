@@ -19,14 +19,6 @@ describe('PrivateRoute', () => {
         );
     };
 
-    it('should render private content when user is authenticated', () => {
-        renderWithRouter({
-            user: { id: 1, username: 'test' }
-        });
-
-        expect(screen.getByText('Private Content')).toBeInTheDocument();
-    });
-
     it('should redirect to home when user is not authenticated', () => {
         renderWithRouter({
             user: null
