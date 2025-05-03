@@ -4,10 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 // Components
 import ContentNews from '../components/Home/ContentNews';
-import ContentPost from '../components/Home/ContentPost';
 import ContentList from '../components/Home/ContentList';
-// Widgets
-import { getRandomImage } from '../widgets/getRandomImage';
 // Assets
 import investmentGlobal from '../assets/pages/invest_global.webp';
 import realModel from '../assets/pages/real_and_model.webp';
@@ -71,7 +68,7 @@ const Home = () => {
 				</div>
 			</div>
 			<div className="bg-neutral-300 relative w-full mb-10">
-				<div className="mt-4 mb-4">
+				<div className="mt-4 mb-4 grid col-span-2">
 					<div className={`col-span-2 ${centerContent} my-4`}>
 						<h1 className="uppercase font-bold text-2xl">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1>
 					</div>
@@ -83,32 +80,25 @@ const Home = () => {
 					</div>
 				</div>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-3 w-full px-2 gap-16 md:gap-20">
-				<div className="grid mt-10 col-span-1 md:col-span-2">
-					<div className="w-full flex flex-col md:ml-10">
-						<ContentNews data={data} />
-						<div className="w-full grid grid-cols-2 gap-4">
-							<ContentPost data={data} />
+			<div className="flex flex-col md:flex-row">
+				<div className="flex justify-center bg-black basis-2/3 rounded-xl md:ml-10">
+					<ContentNews data={data} />
+				</div>
+				<div className="w-full basis-1/3 flex-col mx-4 justify-center">
+					<div className='w-full flex flex-col h-1/2 justify-around rounded-xl bg-[#BAD6D9]'>
+						<div className='pt-4 pl-4 bg-transparent'>
+							<div className='p-2 w-auto border-solid border-black rounded-xl'>
+								<p className='uppercase text-black text-lg'>Реклама</p>
+							</div>
+						</div>
+						<div className='pt-4 pl-4 bg-transparent'>
+							<p className='text-black font-bold text-2xl'>Ваша поддержка — это вклад в честный и независимый инвест-контент.</p>
+						</div>
+						<div className='flex flex-row justify-center'>
+							<button className='p-2 rounded-xl border-solid border-black bg-transparent text-xl text-black font-bold'>Все статьи</button>
 						</div>
 					</div>
-				</div>
-				
-				<div className="flex flex-col mx-4">
-					<div className="w-full sm:justify-center">
-						{/* Favorite post
-						<p className="uppercase font-bold text-lg mb-4 border-b-2">POPULAR WITH SUBSCRIBERS</p>
-						<img className="h-48 w-auto mb-4" src="http://dummyimage.com/400x300/4d494d/686a82.jpeg&text=placeholder+image" alt="placeholder+image" />
-						<p className="uppercase font-bold text-xl hover:underline">Mark Zuckerberg's 'Year of Efficiency' spreads from Meta to Priscilla Chan's charitable organization, which just laid off dozens of people</p>
-						Adverts */}
-						<h1 className='uppercase font-bold text-lg mb-4 border-b-2'>Реклама</h1>
-						<img className='h-48 w-auto mb-4' src={getRandomImage()} alt="ad_donate" loading="lazy"/>
-						<a href="https://new.donatepay.ru/@1097922" target='_blank' rel="noopener noreferrer">
-							<p className="uppercase font-bold text-xl hover:underline">
-								Ваша поддержка значит для меня очень много!<br />
-								Пожертвование
-							</p>
-						</a>
-					</div>
+					<div className='w-full h-1/2'></div>
 				</div>
 			</div>
 		</div>

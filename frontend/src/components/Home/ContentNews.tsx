@@ -22,7 +22,7 @@ const ContentNews: FunctionComponent<ContentListProps> = ({ data }) => {
     }
     const value = data[0];
 	return <>
-		<Link to={`/news`}>
+		{/* <Link to={`/news`}>
 			<div className="border-t-2 w-full relative">
 				<div className="absolute left-0 top-0">
 					<h3 className="font-sans font-medium text-2xl md:text-3xl mb-4">{value.category.name}</h3>
@@ -33,16 +33,16 @@ const ContentNews: FunctionComponent<ContentListProps> = ({ data }) => {
 					</svg>
 				</div>
 			</div>
-		</Link>
+		</Link> */}
 		<Link to={`/news/${value.category.slug}/${value.slug}`}>
-			<div className="w-full mt-10 mb-4">
+			{/* <div className="w-full mt-10 mb-4">
 				<p className="left-0 top-0 uppercase text-sky-500">{value.category.name}</p>
 			</div>
 			<div className="w-full mb-4">
 				<h2 className="font-bold text-lg md:text-xl md:text-2xl hover:underline">{value.title}</h2>
-			</div>
-			<div className="w-full pb-6 border-b-2">
-				<img className="object-cover w-full h-auto" src={value.img} alt={value.title} loading="lazy" />
+			</div> */}
+			<div className="w-full pb-6">
+				<img className="object-cover h-[650px]" src={value.img} alt={value.title} loading="lazy" />
 			</div>
 		</Link>
 	</>
