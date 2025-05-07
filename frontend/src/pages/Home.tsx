@@ -10,6 +10,7 @@ import investmentGlobal from '../assets/pages/invest_global.webp';
 import realModel from '../assets/pages/real_and_model.webp';
 import liveSituation from '../assets/pages/live_situation.webp';
 import eduYourself from '../assets/pages/edu_yourself.webp';
+import AdvertisingBlock from '@/components/Home/AdvertisingBlock';
 
 
 const centerContent = `flex justify-center`;
@@ -84,21 +85,11 @@ const Home = () => {
 				<div className="flex justify-center bg-black basis-2/3 rounded-xl md:ml-10">
 					<ContentNews data={data} />
 				</div>
-				<div className="w-full basis-1/3 flex-col mx-4 justify-center">
-					<div className='w-full flex flex-col h-1/2 justify-around rounded-xl bg-[#BAD6D9]'>
-						<div className='pt-4 pl-4 bg-transparent'>
-							<div className='p-2 w-auto border-solid border-black rounded-xl'>
-								<p className='uppercase text-black text-lg'>Реклама</p>
-							</div>
-						</div>
-						<div className='pt-4 pl-4 bg-transparent'>
-							<p className='text-black font-bold text-2xl'>Ваша поддержка — это вклад в честный и независимый инвест-контент.</p>
-						</div>
-						<div className='flex flex-row justify-center'>
-							<button className='p-2 rounded-xl border-solid border-black bg-transparent text-xl text-black font-bold'>Все статьи</button>
-						</div>
+				<div className="w-full basis-1/3 flex flex-col mx-4 justify-center">
+					<div className="w-full flex flex-col h-1/2 justify-around rounded-xl bg-[#BAD6D9]">
+						<AdvertisingBlock />
 					</div>
-					<div className='w-full h-1/2'></div>
+					<div className="w-full h-1/2"></div>
 				</div>
 			</div>
 		</div>
