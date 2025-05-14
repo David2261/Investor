@@ -2,16 +2,17 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
+import { FaArrowRightLong } from "react-icons/fa6";
 // Components
 import ContentNews from '../components/Home/ContentNews';
 import ContentList from '../components/Home/ContentList';
+import AdvertisingBlock from '@/components/Home/AdvertisingBlock';
 // Assets
 import investmentGlobal from '../assets/pages/invest_global.webp';
 import realModel from '../assets/pages/real_and_model.webp';
 import liveSituation from '../assets/pages/live_situation.webp';
 import eduYourself from '../assets/pages/edu_yourself.webp';
-import AdvertisingBlock from '@/components/Home/AdvertisingBlock';
-
+import listArticles from '../assets/pages/mountain.jpg';
 
 const centerContent = `flex justify-center`;
 
@@ -45,7 +46,7 @@ const Home = () => {
 					<p>У меня более чем <b>4-летний опыт работы на финансовых рынках</b> по всему миру. Мы инвестируем в акции, облигации, драгоценные металлы и крипто-активы. Основная цель — прирост капитала и <b>стабильный пассивный денежный поток.</b> Присоединяйтесь к нам, чтобы лучше понимать в какие активы сейчас наиболее выгодно вкладывать капитал!</p>
 				</div>
 				<div className="flex flex-col h-full w-full md:w-2/5 md:h-2/5">
-					<img src={investmentGlobal} alt="investment_global" />
+					<img className='rounded-xl' src={investmentGlobal} alt="investment_global" />
 				</div>
 			</div>
 			<div className={`${centerContent} mx-6 mt-20 mb-10`} data-name="start-with">
@@ -76,20 +77,32 @@ const Home = () => {
 					<ContentList data={data} />
 					<div className={`col-span-2 ${centerContent} my-4`}>
 						<NavLink to="news/">
-							<button className="bg-green-600 text-white p-3 rounded-md hover:bg-slate-500">ВСЕ ПОСЛЕДНИЕ МАТЕРИАЛЫ САЙТА</button>
+							<button className="bg-green-600 text-white transition-all duration-300 ease-in-out p-3 rounded-md hover:bg-transparent hover:text-black">ВСЕ ПОСЛЕДНИЕ МАТЕРИАЛЫ САЙТА</button>
 						</NavLink>
 					</div>
 				</div>
 			</div>
 			<div className="flex flex-col md:flex-row">
-				<div className="flex justify-center bg-black basis-2/3 rounded-xl md:ml-10">
+				<div className="relative flex justify-center bg-black basis-2/3 rounded-xl md:ml-10">
 					<ContentNews data={data} />
 				</div>
 				<div className="w-full basis-1/3 flex flex-col mx-4 justify-center">
-					<div className="w-full flex flex-col h-1/2 justify-around rounded-xl bg-[#BAD6D9]">
+					<div className="w-full flex flex-col h-1/2 justify-around rounded-xl bg-[#BAD6D9] pb-2">
 						<AdvertisingBlock />
 					</div>
-					<div className="w-full h-1/2"></div>
+					<div className="w-full h-1/2 pt-2">
+						<div className='relative'>
+						<img className='rounded-xl max-w-full h-auto mx-auto' src={listArticles} alt="posts_image" />
+						<div className='text-white border rounded-full absolute top-0 right-4 p-2 mt-4'>25</div>
+							<div className='absolute inset-x-0 bottom-0 flex justify-center mb-4'>
+								<NavLink to="news/">
+									<button className='rounded-full font-bold uppercase p-4 text-xl bg-white text-black rounded-full font-bold uppercase p-4 text-xl bg-white text-black flex items-center gap-2 shadow-md transition-all duration-300 ease-in-out hover:text-white hover:bg-transparent'>
+										Все статьи <FaArrowRightLong />
+									</button>
+								</NavLink>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
