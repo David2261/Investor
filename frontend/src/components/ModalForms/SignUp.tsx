@@ -92,7 +92,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 									id="username-input"
 									type="text"
 									name="username"
-									placeholder="Mark"
+									placeholder="Ник нейм"
 									autoComplete='username'
 									value={form.username}
 									onChange={onInputChange} />
