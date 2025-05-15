@@ -27,7 +27,8 @@ djangorestframework-simplejwt==5.3.1
 djoser==2.2.2
 flake8==6.1.0
 flake8-django==1.4
-gunicorn==22.0.0
+gunicorn==20.1.0
+-e git+https://github.com/David2261/Investor.git@abc2401f9e183d1a7ad8ff179950d3ed95a39f19#egg=hello
 idna==3.7
 iniconfig==2.0.0
 kombu==5.4.2
@@ -47,6 +48,7 @@ pyflakes==3.1.0
 PyJWT==2.8.0
 pytest==8.2.0
 pytest-django==4.8.0
+pytest-mock==3.14.0
 python-dateutil==2.9.0.post0
 python3-openid==3.2.0
 redis==5.2.0
@@ -64,4 +66,3 @@ vine==5.1.0
 wcwidth==0.2.13
 whitenoise==6.6.0
 wrapt==1.16.0
-setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability

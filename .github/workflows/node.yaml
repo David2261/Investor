@@ -20,14 +20,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
-          cache-dependency-path: frontend/yarn.lock
 
       - name: Install Yarn globally
         run: npm install --global yarn
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Run lint
         run: yarn lint
@@ -43,10 +41,3 @@ jobs:
         run: yarn build
         env:
           CI: true
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-build
-          path: frontend/build/
-          retention-days: 7
