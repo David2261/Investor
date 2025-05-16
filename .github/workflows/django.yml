@@ -44,6 +44,18 @@ jobs:
           POSTGRES_USER: test_user
           POSTGRES_PASSWORD: test_password
           POSTGRES_DB: test_db
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+          DJANGO_SETTINGS_MODULE: hello.settings
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
+          OAUTH_GOOGLE_CLIENTID: ${{ secrets.OAUTH_GOOGLE_CLIENTID }}
+          OAUTH_GOOGLE_SECRET: ${{ secrets.OAUTH_GOOGLE_SECRET }}
+          OAUTH_MICROSOFT_CLIENTID: ${{ secrets.OAUTH_MICROSOFT_CLIENTID }}
+          OAUTH_MICROSOFT_SECRET: ${{ secrets.OAUTH_MICROSOFT_SECRET }}
+          OAUTH_YANDEX_CLIENTID: ${{ secrets.OAUTH_YANDEX_CLIENTID }}
+          OAUTH_YANDEX_SECRET: ${{ secrets.OAUTH_YANDEX_SECRET }}
+          REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
+          DEBUG: "False"
         options: >-
           --health-cmd "pg_isready -U test_user"
           --health-interval 10s
@@ -55,6 +67,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Check SECRET_KEY is set
+        run: |
+          echo "SECRET_KEY is: ${SECRET_KEY}"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -83,17 +99,4 @@ jobs:
         run: python manage.py migrate
 
       - name: Run tests
-        env:
-          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
-          DJANGO_SETTINGS_MODULE: hello.settings
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
-          OAUTH_GOOGLE_CLIENTID: ${{ secrets.OAUTH_GOOGLE_CLIENTID }}
-          OAUTH_GOOGLE_SECRET: ${{ secrets.OAUTH_GOOGLE_SECRET }}
-          OAUTH_MICROSOFT_CLIENTID: ${{ secrets.OAUTH_MICROSOFT_CLIENTID }}
-          OAUTH_MICROSOFT_SECRET: ${{ secrets.OAUTH_MICROSOFT_SECRET }}
-          OAUTH_YANDEX_CLIENTID: ${{ secrets.OAUTH_YANDEX_CLIENTID }}
-          OAUTH_YANDEX_SECRET: ${{ secrets.OAUTH_YANDEX_SECRET }}
-          REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
-          DEBUG: "False"
         run: pytest --verbose --fail-fast

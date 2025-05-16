@@ -2,7 +2,7 @@ import React from 'react';
 import {expect, describe, it} from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import Sidebar from '../../../../components/Admin/HomeAdmin/Sidebar';
+import Sidebar from '@/components/Admin/HomeAdmin/Sidebar';
 import Swal from 'sweetalert2';
 
 vi.mock('sweetalert2', () => ({
