@@ -91,6 +91,7 @@ jobs:
           OAUTH_YANDEX_SECRET: ${{ secrets.OAUTH_YANDEX_SECRET }}
           REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
           DEBUG: "False"
+          POSTGRES_DB: 'ih_data'
         run: python manage.py migrate
 
       - name: Run tests
