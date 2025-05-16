@@ -4,7 +4,6 @@ import path from 'path';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-
   return {
     plugins: [react()],
     build: {
@@ -15,7 +14,7 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, 'src'),
+        '@': path.resolve(__dirname, './src'),
       },
     },
     test: {
@@ -30,7 +29,13 @@ export default defineConfig(({ mode }) => {
         },
       },
       isolate: false,
-      css: false,
+      css: {
+        postcss: {
+          plugins: {
+            '@tailwindcss/postcss': {},
+          },
+        },
+      },
       deps: {
         optimizer: {
           web: {
@@ -41,6 +46,13 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       historyApiFallback: true,
+      proxy: {
+        '/api': {
+          target: 'http://127.0.0.1:8000',
+          changeOrigin: true,
+          secure: false,
+        },
+      },
     },
     define: {
       'import.meta.env': JSON.stringify({

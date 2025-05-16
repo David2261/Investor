@@ -24,12 +24,19 @@ module.exports = {
         dmsans: ["DM Sans", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
       },
+      rotate: {
+        '210': '210deg',
+        '-45': '-45deg',
+      },
       content: {
         // evolvetext: "url('./assets/EvolveText.png')",
         // abstractwaves: "url('./assets/AbstractWaves.png')",
         // sparkles: "url('./assets/Sparkles.png')",
         // circles: "url('./assets/Circles.png')",
       },
+      spacing: {
+        6: '1.5rem',
+      }
     },
     screens: {
       xs: "480px",

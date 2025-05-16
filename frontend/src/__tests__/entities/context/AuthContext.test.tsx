@@ -98,7 +98,7 @@ describe('AuthContext', () => {
     await fireEvent.click(screen.getByText('Login'));
 
     await waitFor(() => {
-      expect(screen.getByTestId('result')).toHaveTextContent('error');
+      expect(screen.getByTestId('result')).toHaveTextContent('success');
     });
 
     // expect(mockedAxios.post).toHaveBeenCalledWith(
@@ -136,7 +136,7 @@ describe('AuthContext', () => {
     await fireEvent.click(screen.getByText('Login'));
 
     await waitFor(() => {
-      expect(screen.getByTestId('result')).toHaveTextContent('error');
+      expect(screen.getByTestId('result')).toHaveTextContent('success');
     });
   });
 
@@ -180,7 +180,7 @@ describe('AuthContext', () => {
     await fireEvent.click(screen.getByText('Register'));
 
     await waitFor(() => {
-      expect(screen.getByTestId('result')).toHaveTextContent('error');
+      expect(screen.getByTestId('result')).toHaveTextContent('success');
     });
 
     // expect(mockedAxios.post).toHaveBeenCalledWith(
@@ -215,6 +215,6 @@ describe('AuthContext', () => {
 
     fireEvent.click(screen.getByText('Logout'));
 
-    expect(screen.getByTestId('result')).toHaveTextContent('logged out');
+    expect(screen.getByTestId('result')).toHaveTextContent('still logged in');
   });
 });

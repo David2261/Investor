@@ -5,7 +5,7 @@ const DOT = <div className="hidden md:flex rounded-full h-0.5 w-0.5 bg-slate-400
 
 const Messangers = (
 	<div className="md:mx-4 flex flex-col">
-		<div className="flex flex-row py-4 md:py-10 gap-2 md:gap-4 border-b-2">
+		<div className="flex flex-row py-4 md:py-10 gap-2 md:gap-4 border-b">
 			<div className="px-2 md:px-6">
 				<NavLink to="https://www.instagram.com/life_sultan/" target='_blank' rel="noopener noreferrer">
 					<svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 hover:fill-purple-300" viewBox="0 0 512 512">
@@ -61,7 +61,7 @@ const Messangers = (
 
 const GlobalLinks = (
 	<div className="md:mx-4 flex flex-col">
-		<div className="flex flex-wrap justify-center md:flex-row py-2 md:py-10 gap-4 border-b-2">
+		<div className="flex flex-wrap justify-center md:flex-row py-2 md:py-10 gap-4 border-b">
 			<div className="px-2 md:px-4 hover:text-red-600">
 				<NavLink to="agreement/">Соглашение</NavLink>
 			</div>
@@ -87,7 +87,7 @@ const GlobalLinks = (
 
 const LocalLinks = (
 	<div id="subscribe-form" className="md:mx-4 flex flex-col sm:h-full">
-		<div className="flex flex-wrap items-center justify-center py-10 gap-2 md:gap-4 border-b-2">
+		<div className="flex flex-wrap items-center justify-center py-10 gap-2 md:gap-4 border-b">
 		<div className="px-2 md:px-4 hover:text-slate-900">
 			<NavLink to="contact/">Связаться с нами</NavLink>
 		</div>

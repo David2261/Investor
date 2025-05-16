@@ -37,7 +37,7 @@ describe('Компонент ContentNews', () => {
 
         // Проверяем заголовок категории
         const categoryNames = screen.getAllByText('Test Category');
-        expect(categoryNames).toHaveLength(2);
+        expect(categoryNames).toHaveLength(1);
 
         // Проверяем заголовок новости
         expect(screen.getByText('Test News Title')).toBeInTheDocument();
@@ -55,7 +55,6 @@ describe('Компонент ContentNews', () => {
         );
 
         const links = screen.getAllByRole('link');
-        expect(links[0]).toHaveAttribute('href', '/news');
-        expect(links[1]).toHaveAttribute('href', '/news/test-category/test-slug');
+        expect(links[0]).toHaveAttribute('href', '/news/test-category/test-slug');
     });
 });

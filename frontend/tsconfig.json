@@ -22,23 +22,13 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"],
-      "@tests/*": ["src/__tests__/*"],
-      "@/components/*": ["src/components/*"],
-      "@/pages/*": ["src/pages/*"],
-      "@/entities/*": ["src/entities/*"],
-      "@/hooks/*": ["src/hooks/*"],
-      "@/widgets/*": ["src/widgets/*"]
     },
-
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
-    /* Linting */
     "strict": true,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
@@ -46,7 +36,7 @@
   },
   "exclude": [
     "./src/__mocks__/**/*",
-    // "./src/__tests__/**/*",
+    "./src/__tests__/**/*",
     "./src/api",
     "node_modules"
   ],
@@ -58,5 +48,5 @@
     "config/jest.setup.ts",
     "config/setupTests.ts"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
