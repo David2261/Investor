@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { FaArrowRightLong } from "react-icons/fa6";
+// Widgets
+import NotFound from '@/widgets/handlerError/404';
 // Components
 import ContentNews from '../components/Home/ContentNews';
 import ContentList from '../components/Home/ContentList';
@@ -27,7 +29,7 @@ const Home = () => {
 	});
 
 	if (error) {
-		return <div>Error: {error.message}</div>;
+		return <NotFound />;
 	}
 
 	if (!data || isLoading) {

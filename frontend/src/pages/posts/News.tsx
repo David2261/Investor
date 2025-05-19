@@ -7,6 +7,7 @@ import PostsList from '@/components/Blog/PostsList';
 import DataTab from '@/components/Blog/DataTab';
 import Filter from '@/components/Blog/Filter';
 // Widgets
+import NotFound from '@/widgets/handlerError/404';
 import Loader from '@/widgets/Loader';
 import { getRandomImage } from '@/widgets/getRandomImage';
 // API
@@ -38,7 +39,7 @@ const News = () => {
   };
 
   if (loading) return <Loader />;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <NotFound />;
 
   return (
     <>
