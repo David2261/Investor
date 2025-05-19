@@ -16,6 +16,7 @@ import Confidentiality from './pages/static/Confidentiality.tsx';
 import Agreement from './pages/static/Agreement.tsx';
 import Emailagreement from './pages/static/Emailagreement.tsx';
 import NotFound from './pages/static/NotFound.tsx';
+import ConfidentialityCookies from './pages/static/ConfidentialityCookies.tsx';
 // Posts
 import News from './pages/posts/News.tsx';
 import Bonds from './pages/posts/Bond.tsx';
@@ -44,6 +45,7 @@ function App() {
             <Route path="responsibility" element={ <Responsibility /> } />
             <Route path="payanddelivery" element={ <Payanddelivery /> } />
             <Route path="confidentiality" element={ <Confidentiality /> } />
+            <Route path="confidentialityandcookies" element={ <ConfidentialityCookies /> } />
             <Route path="agreement" element={ <Agreement /> } />
             <Route path="emailagreement" element={ <Emailagreement /> } />
             <Route path="news" element={ <News /> } />

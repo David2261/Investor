@@ -96,7 +96,8 @@ const LocalLinks = (
 		{ DOT }
 		<div className="px-2 md:px-4 hover:text-slate-900">Условия использования</div>
 		{ DOT }
-		<div className="px-2 md:px-4 hover:text-slate-900">Конфиденциальность и файлы cookie</div>
+		<div className="px-2 md:px-4 hover:text-slate-900">
+			<NavLink to="confidentialityandcookies/">Конфиденциальность и файлы cookie</NavLink></div>
 		{ DOT }
 		<div className="md:px-4 hover:text-slate-900">Your Privacy Choices</div>
 		</div>
