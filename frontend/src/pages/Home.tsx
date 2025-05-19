@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import { FaArrowRightLong } from "react-icons/fa6";
 // Widgets
 import NotFound from '@/widgets/handlerError/404';
+// Hooks
+import useMediaQuery from "@/hooks/useMediaQuery.ts";
 // Components
 import ContentNews from '../components/Home/ContentNews';
 import ContentList from '../components/Home/ContentList';
@@ -20,13 +22,15 @@ const centerContent = `flex justify-center`;
 
 const Home = () => {
 	const apiURL = import.meta.env.VITE_API_URL;
-	const { data, error, isLoading } = useQuery({
+	let { data, error, isLoading } = useQuery({
 		queryKey: ['articles'],
 		queryFn: async () => {
 			const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
 			return response.data;
 		},
 	});
+	const isAboveMinimumScreens = useMediaQuery("(max-width: 768px)")
+	const displayedData = isAboveMinimumScreens == true ? data.slice(0, 4) : data;
 
 	if (error) {
 		return <NotFound />;
@@ -44,8 +48,8 @@ const Home = () => {
 			</Helmet>
 			<div className="flex flex-wrap md:flex-nowrap md:flex-row mx-6">
 				<div className="flex flex-col md:w-3/5 md:mx-6 font-sans text-xl space-y-4 leading-7">
-					<h1 className="uppercase text-5xl"><b>ИНВЕСТИРУЕМ</b> В АКТИВЫ ГЛОБАЛЬНО</h1>
-					<p>У меня более чем <b>4-летний опыт работы на финансовых рынках</b> по всему миру. Мы инвестируем в акции, облигации, драгоценные металлы и крипто-активы. Основная цель — прирост капитала и <b>стабильный пассивный денежный поток.</b> Присоединяйтесь к нам, чтобы лучше понимать в какие активы сейчас наиболее выгодно вкладывать капитал!</p>
+					<h1 className="uppercase text-3xl md:text-5xl"><b>ИНВЕСТИРУЕМ</b> В АКТИВЫ ГЛОБАЛЬНО</h1>
+					<p className="text-justify">У меня более чем <b>4-летний опыт работы на финансовых рынках</b> по всему миру. Мы инвестируем в акции, облигации, драгоценные металлы и крипто-активы. Основная цель — прирост капитала и <b>стабильный пассивный денежный поток.</b> Присоединяйтесь к нам, чтобы лучше понимать в какие активы сейчас наиболее выгодно вкладывать капитал!</p>
 				</div>
 				<div className="flex flex-col h-full w-full md:w-2/5 md:h-2/5">
 					<img className='rounded-xl' src={investmentGlobal} alt="investment_global" />
@@ -74,9 +78,9 @@ const Home = () => {
 			<div className="bg-neutral-300 relative w-full mb-10">
 				<div className="mt-4 mb-4 grid col-span-2">
 					<div className={`col-span-2 ${centerContent} my-4`}>
-						<h1 className="uppercase font-bold text-2xl">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1>
+						<h1 className="uppercase font-bold text-2xl text-center">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1>
 					</div>
-					<ContentList data={data} />
+					<ContentList data={displayedData} />
 					<div className={`col-span-2 ${centerContent} my-4`}>
 						<NavLink to="news/">
 							<button className="bg-green-600 text-white transition-all duration-300 ease-in-out p-3 rounded-md hover:bg-transparent hover:text-black">ВСЕ ПОСЛЕДНИЕ МАТЕРИАЛЫ САЙТА</button>
@@ -85,10 +89,10 @@ const Home = () => {
 				</div>
 			</div>
 			<div className="flex flex-col md:flex-row">
-				<div className="relative flex justify-center bg-black basis-2/3 rounded-xl md:ml-10">
+				<div className="relative flex justify-center bg-black basis-2/3 mb-2 rounded-xl md:ml-10">
 					<ContentNews data={data} />
 				</div>
-				<div className="w-full basis-1/3 flex flex-col mx-4 justify-center">
+				<div className="w-full basis-1/3 flex flex-col md:mx-4 justify-center">
 					<div className="w-full flex flex-col h-1/2 justify-around rounded-xl bg-[#BAD6D9] pb-2">
 						<AdvertisingBlock />
 					</div>
