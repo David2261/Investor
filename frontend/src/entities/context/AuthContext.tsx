@@ -161,7 +161,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const resetPassword = async (email: string) => {
         try {
-            const response = await fetch(`${apiURL}/api/v1/password-reset/`, {
+            const response = await fetch(`${apiURL}/api/password/reset/`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

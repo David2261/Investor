@@ -12,7 +12,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 
-
 class UserManager(BaseUserManager):
 	def _create_user(
 			self,

@@ -15,6 +15,12 @@ module.exports = {
         "secondary-500": "#FFC132",
         "bg-sidebar-blue": "#009DFF",
       },
+      width: {
+        16: '16rem',
+      },
+      height: {
+        16: '16rem',
+      },
       // backgroundImage: (theme) => ({
       //   "gradient-yellowred":
       //     "linear-gradient(90deg, #FF616A 0%, #FFC837 100%)",

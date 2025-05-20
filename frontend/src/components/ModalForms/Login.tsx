@@ -1,135 +1,166 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { animated, useSpring } from '@react-spring/web';
-// Components
+import { IoIosClose } from 'react-icons/io';
 import ForgotPassword from './ForgotPassword';
-// Entities
 import AuthContext from '@/entities/context/AuthContext';
-// Assets
 import IH from '@/assets/logo/IH.webp';
-// Styles
 import '@/styles/components/ModalForms/Login.css';
 
 interface LoginProps {
-	setIsOpen: () => void,
-	setIsSignUp: () => void
+  setIsOpen: () => void;
+  setIsSignUp: () => void;
 }
 
-const Login: React.FC<LoginProps> = (props) => {
-	const { loginUser } = useContext(AuthContext);
-	const [form, setForm] = useState({ email: "", password: "" });
-	const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
-	const [error, setError] = useState<string | null>(null);
+const Login: React.FC<LoginProps> = ({ setIsOpen, setIsSignUp }) => {
+  const { loginUser } = useContext(AuthContext);
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { target: { value, name } } = event;
-		setForm(prevForm => ({ ...prevForm, [name]: value }));
-	};
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    // Проверка на опасные символы для XSS
+    if (/[<>"'`]/.test(value)) {
+      setError('Недопустимые символы в поле.');
+      return;
+    }
+    setForm((prevForm) => ({ ...prevForm, [name]: value }));
+  };
 
-	const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setError(null);
 
-		if (!emailPattern.test(form.email)) {
-			setError("Please enter a valid email address.");
-			return;
-		}
+      // Валидация email
+      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (!emailPattern.test(form.email)) {
+        setError('Неверный формат email.');
+        return;
+      }
 
-		if (form.password.length < 6) {
-			setError("Password must be at least 6 characters long.");
-			return;
-		}
+      // Валидация пароля
+      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
+      if (!passwordPattern.test(form.password)) {
+        setError('Пароль должен содержать минимум 8 символов, включая буквы разного регистра и цифры.');
+        return;
+      }
 
-		setError(null);
-		loginUser({ 
-			email: form.email,
-			password: form.password 
-		});
-		props.setIsOpen();
-	}, [form, loginUser, props]);
+      try {
+        await loginUser({
+          email: form.email,
+          password: form.password,
+        });
+        setIsOpen();
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Произошла ошибка при входе.';
+        setError(`Ошибка: ${errorMessage}`);
+      }
+    },
+    [form, loginUser, setIsOpen]
+  );
 
-	const closeForgotPassword = () => setIsForgotPassword(false);
-	const openForgotPassword = () => setIsForgotPassword(true);
+  const closeForgotPassword = () => setIsForgotPassword(false);
+  const openForgotPassword = () => setIsForgotPassword(true);
 
-	const handleSignUpClick = () => {
-		props.setIsOpen();
-		props.setIsSignUp();
-	};
-	const handleForgotPasswordClick = () => {
-		openForgotPassword();
-	};
+  const handleSignUpClick = () => {
+    setIsOpen();
+    setIsSignUp();
+  };
 
-	const styles = useSpring({
-		from: { opacity: 0, delay: 50 },
-		to: { opacity: 1, delay: 50 },
-	});
+  const handleForgotPasswordClick = () => {
+    openForgotPassword();
+  };
 
-	useEffect(() => {
-		const onKeyDown = (e: KeyboardEvent) => {
-			if(e.key === 'Enter') {
-				e.preventDefault();
-				handleSubmit(e as any);
-			}
-		};
+  const styles = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+    config: { duration: 300 },
+  });
 
-		document.addEventListener('keydown', onKeyDown);
-		return () => {
-			document.removeEventListener('keydown', onKeyDown);
-		};
-	}, [handleSubmit]);
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        const formElement = document.querySelector('form');
+        if (formElement) {
+          e.preventDefault();
+          handleSubmit({ preventDefault: () => {}, target: formElement } as React.FormEvent<HTMLFormElement>);
+        }
+      }
+    };
 
-	return <>
-	{isForgotPassword ? (
-		<ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} />
-	) : (
-	<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30 h-12">
-		<animated.div className='screen' style={styles}>
-			<form onSubmit={handleSubmit}>
-			<div className="screen-1">
-			<img className='logo' alt="logo" src={IH} />
-				<button onClick={props.setIsOpen} className="fixed top-16 right-8">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-32 h-32">
-						<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-					</svg>
-				</button>
-				{error && <div className="error">{error}</div>}
-				<div className="email">
-					<label htmlFor="email-input">Email Address</label>
-					<div className="sec-2">
-						<input
-							id='email-input'
-							type="email"
-							name="email"
-							placeholder="Example@gmail.com"
-							autoComplete="email"
-							value={form.email}
-							onChange={onInputChange} />
-					</div>
-				</div>
-				<div className="password">
-					<label htmlFor="password-input">Password</label>
-					<div className="sec-2">
-						<input
-							id="password-input"
-							className="pas"
-							type="password"
-							name="password"
-							placeholder="············"
-							autoComplete="current-password"
-							value={form.password}
-							onChange={onInputChange} />
-					</div>
-				</div>
-				<button className="signup" type='submit'>Вход</button>
-				<div className="footer">
-					<span onClick={handleSignUpClick}>Регистрация</span>
-					<span onClick={handleForgotPasswordClick}>Забыли пароль?</span>
-				</div>
-			</div>
-			</form>
-		</animated.div>
-	</div>
-	)}
-	</>
-}
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [handleSubmit]);
+
+  return (
+    <>
+      {isForgotPassword ? (
+        <ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} />
+      ) : (
+        <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30">
+          <animated.div className="screen" style={styles}>
+            <form onSubmit={handleSubmit}>
+              <div className="screen-1">
+                <img className="logo" alt="Логотип" src={IH} />
+                <button
+                  onClick={setIsOpen}
+                  className="fixed top-16 right-8"
+                  type="button"
+                  aria-label="Закрыть"
+                >
+                  <IoIosClose className="text-black w-16 h-16" />
+                </button>
+
+                {error && <div className="error">{error}</div>}
+
+                <div className="email">
+                  <label htmlFor="email-input">Email</label>
+                  <div className="sec-2">
+                    <input
+                      id="email-input"
+                      type="email"
+                      name="email"
+                      placeholder="example@gmail.com"
+                      autoComplete="email"
+                      value={form.email}
+                      onChange={onInputChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="password">
+                  <label htmlFor="password-input">Пароль</label>
+                  <div className="sec-2">
+                    <input
+                      id="password-input"
+                      className="pas"
+                      type="password"
+                      name="password"
+                      placeholder="············"
+                      autoComplete="current-password"
+                      value={form.password}
+                      onChange={onInputChange}
+                    />
+                  </div>
+                </div>
+
+                <button className="signup" type="submit">
+                  Вход
+                </button>
+                <div className="footer">
+                  <span onClick={handleSignUpClick}>Регистрация</span>
+                  <span onClick={handleForgotPasswordClick}>Забыли пароль?</span>
+                </div>
+              </div>
+            </form>
+          </animated.div>
+        </div>
+      )}
+    </>
+  );
+};
 
 export default Login;

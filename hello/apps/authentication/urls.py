@@ -4,7 +4,8 @@ from rest_framework_simplejwt.views import (
 	TokenRefreshView,
 	TokenVerifyView,
 )
-
+from .views import PasswordResetRequestView
+from .views import PasswordResetConfirmView
 from .views import CurrentUserView
 from .views import UserDetailView
 from .views import UserLoginView
@@ -31,6 +32,8 @@ urlpatterns = [
 		'v1/token/refresh/',
 		TokenRefreshView.as_view(),
 		name='token_refresh'),
+	path('password/reset/', PasswordResetRequestView.as_view(), name='password_reset_request'),
+	path('password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 	path('v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 	# Возращает данные о пользователе
 	# (т.е. является ли он креатором или админом).

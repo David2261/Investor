@@ -26,7 +26,7 @@ const PostsList: FunctionComponent<PostsListType> = ({ data }) => {
 	return (data.map((value, index) =>
 		<div key={value.id} className="border-b-2 py-4 border-slate-200 mb-4">
 			{(index + 1) % n == 0 ? <DonateVerticalBlock /> : null }
-			<Link to={`/news/${value.category.slug}/${value.slug}`}>
+			<Link to={`/news/${value.category}/${value.slug}`}>
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-8">
 					<div className="col-span-2">
 						<p className="uppercase font-bold pb-2">{value.title}</p>

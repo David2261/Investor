@@ -114,8 +114,12 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'csp.middleware.CSPMiddleware',
 	"allauth.account.middleware.AccountMiddleware",
 ]
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
 
 ROOT_URLCONF = 'hello.urls'
 
@@ -185,6 +189,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hello.wsgi.application'
+
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -321,13 +327,15 @@ SIMPLE_JWT = {
 
 # myaccount.google.com/lesssecureapps
 # Email Settings
-DEFAULT_FROM_EMAIL = ''
-EMAIL_BACKEND = ''
-EMAIL_HOST = ''
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+# Email for sendgrid
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.brevo.com' # 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'gw2raidar@example.com'
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 

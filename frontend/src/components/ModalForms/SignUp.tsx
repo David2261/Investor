@@ -1,157 +1,196 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { animated, useSpring } from '@react-spring/web';
-// Entities
 import AuthContext from '@/entities/context/AuthContext';
+import { IoIosClose } from "react-icons/io";
 // Assets
 import IH from '@/assets/logo/IH.webp';
-// Styles
 import '@/styles/components/ModalForms/SignUp.css';
 
 interface SignUpProps {
-	setIsOpen: () => void;
-	setIsLogin: () => void;
+  setIsOpen: () => void;
+  setIsLogin: () => void;
 }
 
+const SignUp: React.FC<SignUpProps> = ({ setIsOpen, setIsLogin }) => {
+  const { registrationUser } = useContext(AuthContext);
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [passwordMismatch, setPasswordMismatch] = useState<boolean>(false);
 
-const SignUp: React.FC<SignUpProps> = (props) => {
-	const { registrationUser } = useContext(AuthContext);
-	const [ form, setForm ] = useState({ username: "", email: "", password: "", password2: "" });
-	const [ error, setError ] = useState<string | null>(null);
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+	if (/[<>"'`]/.test(value)) {
+		setError('Недопустимые символы в поле.');
+		return;
+	}
+    setForm((prevForm) => ({ ...prevForm, [name]: value }));
+    if (name === 'password' || name === 'password2') {
+      setPasswordMismatch(form.password !== value && name === 'password2');
+    }
+  };
 
-	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { target: { value, name } } = event;
-		setForm(prevForm => ({ ...prevForm, [name]: value }));
-	};
-
-	const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setError(null);
-		const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
-		const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
+		const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
 		if (!usernamePattern.test(form.username)) {
-			setError("Invalid username format.");
+			setError('Имя пользователя должно быть от 3 до 20 символов и содержать только буквы, цифры или подчеркивания.');
 			return;
 		}
-	
+
+		const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 		if (!emailPattern.test(form.email)) {
-			setError("Invalid email format.");
+			setError('Неверный формат email.');
 			return;
 		}
-	
+
+		const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
+		if (!passwordPattern.test(form.password)) {
+			setError('Пароль должен содержать минимум 8 символов, включая буквы разного регистра и цифры.');
+			return;
+    	}
+
+		if (form.password !== form.password2) {
+			setError('Пароли не совпадают.');
+			return;
+		}
+
 		try {
 			await registrationUser(form);
-			props.setIsOpen();
-		} catch (err: any) {
-			setError("Произошла ошибка при регистрации. Пожалуйста, проверьте данные.\n" + err);
+			setIsOpen();
+		} catch (err: unknown) {
+			const errorMessage = err instanceof Error ? err.message : 'Произошла ошибка при регистрации.';
+			setError(`Ошибка: ${errorMessage}`);
 		}
-	}, [form, registrationUser, props]);
+		},
+		[form, registrationUser, setIsOpen]
+	);
 
 	const handleLoginClick = () => {
-		props.setIsOpen();
-		props.setIsLogin();
+		setIsOpen();
+		setIsLogin();
 	};
 
 	const styles = useSpring({
-		from: { opacity: 0, delay: 50 },
-		to: { opacity: 1, delay: 50 },
+		from: { opacity: 0 },
+		to: { opacity: 1 },
+		config: { duration: 300 },
 	});
 
 	useEffect(() => {
 		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === 'Enter') {
-				e.preventDefault();
-				handleSubmit(e as any);
+		if (e.key === 'Enter') {
+			const formElement = document.querySelector('form');
+			if (formElement) {
+			e.preventDefault();
+			handleSubmit({ preventDefault: () => {}, target: formElement } as React.FormEvent<HTMLFormElement>);
 			}
+		}
 		};
 
 		document.addEventListener('keydown', onKeyDown);
 		return () => {
-			document.removeEventListener('keydown', onKeyDown);
+		document.removeEventListener('keydown', onKeyDown);
 		};
-	}, [handleSubmit]);
+  }, [handleSubmit]);
 
-	return (
-		<div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30">
-			<animated.div className='screen' style={styles}>
-				<form onSubmit={handleSubmit}>
-					<div className="screen-1">
-						<img className='logo' alt="logo" src={IH} />
-						<button onClick={props.setIsOpen} className="fixed top-16 right-8" type="button">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-32 h-32">
-								<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-							</svg>
-						</button>
+  return (
+    <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30">
+      <animated.div className="screen" style={styles}>
+        <form onSubmit={handleSubmit}>
+          <div className="screen-1">
+            <img className="logo" alt="Логотип" src={IH} />
+            <button
+              onClick={setIsOpen}
+              className="fixed top-16 right-8"
+              type="button"
+              aria-label="Закрыть"
+            >
+				<IoIosClose className='text-black w-16 h-16' />
+            </button>
 
-						{error && <div className="error">{error}</div>} {/* Display error message */}
+            {error && <div className="error">{error}</div>}
 
-						<div className="username">
-							<label htmlFor="username-input">Username</label>
-							<div className="sec-2">
-								<input
-									id="username-input"
-									type="text"
-									name="username"
-									placeholder="Ник нейм"
-									autoComplete='username'
-									value={form.username}
-									onChange={onInputChange} />
-							</div>
-						</div>
+            <div className="username">
+              <label htmlFor="username-input">Имя пользователя</label>
+              <div className="sec-2">
+                <input
+                  id="username-input"
+                  type="text"
+                  name="username"
+                  placeholder="Никнейм"
+                  autoComplete="username"
+                  value={form.username}
+                  onChange={onInputChange}
+                />
+              </div>
+            </div>
 
-						<div className="email">
-							<label htmlFor="email-input">Email Address</label>
-							<div className="sec-2">
-								<input
-									id="email-input"
-									type="email"
-									name="email"
-									placeholder="Username@gmail.com"
-									autoComplete='email'
-									value={form.email}
-									onChange={onInputChange} />
-							</div>
-						</div>
+            <div className="email">
+              <label htmlFor="email-input">Email</label>
+              <div className="sec-2">
+                <input
+                  id="email-input"
+                  type="email"
+                  name="email"
+                  placeholder="example@gmail.com"
+                  autoComplete="email"
+                  value={form.email}
+                  onChange={onInputChange}
+                />
+              </div>
+            </div>
 
-						<div className="password">
-							<label htmlFor="password-input">Password</label>
-							<div className="sec-2">
-								<input
-									id="password-input"
-									className="pas"
-									type="password"
-									name="password"
-									placeholder="············"
-									autoComplete='new-password'
-									value={form.password}
-									onChange={onInputChange} />
-							</div>
-						</div>
+            <div className="password">
+              <label htmlFor="password-input">Пароль</label>
+              <div className="sec-2">
+                <input
+                  id="password-input"
+                  className="pas"
+                  type="password"
+                  name="password"
+                  placeholder="············"
+                  autoComplete="new-password"
+                  value={form.password}
+                  onChange={onInputChange}
+                />
+              </div>
+            </div>
 
-						<div className="password">
-							<label htmlFor="password2-input">Confirm Password</label>
-							<div className="sec-2">
-								<input
-									id="password2-input"
-									className="pas"
-									type="password"
-									name="password2"
-									placeholder="············"
-									autoComplete='new-password'
-									value={form.password2}
-									onChange={onInputChange} />
-							</div>
-						</div>
+            <div className="password">
+              <label htmlFor="password2-input">Подтверждение пароля</label>
+              <div className="sec-2">
+                <input
+                  id="password2-input"
+                  className="pas"
+                  type="password"
+                  name="password2"
+                  placeholder="············"
+                  autoComplete="new-password"
+                  value={form.password2}
+                  onChange={onInputChange}
+                />
+              </div>
+            </div>
 
-						<button className="signup" type='submit'>Зарегистрироваться</button>
-						<div className="footer">
-							<span onClick={handleLoginClick}>Вход</span>
-						</div>
-					</div>
-				</form>
-			</animated.div>
-		</div>
-	);
-}
+            <button className="signup" type="submit">
+              Зарегистрироваться
+            </button>
+            <div className="footer">
+              <span onClick={handleLoginClick}>Вход</span>
+            </div>
+          </div>
+        </form>
+      </animated.div>
+    </div>
+  );
+};
 
 export default SignUp;

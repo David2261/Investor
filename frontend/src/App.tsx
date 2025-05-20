@@ -20,6 +20,7 @@ import TermsOfUse from './pages/static/TermsOfUse.tsx';
 import NotFound from './pages/static/NotFound.tsx';
 import SiteMap from './pages/static/SiteMap.tsx';
 import ConfidentialityCookies from './pages/static/ConfidentialityCookies.tsx';
+import ResetPassword from './components/ModalForms/ResetPassword.tsx';
 // Posts
 import News from './pages/posts/News.tsx';
 import Bonds from './pages/posts/Bond.tsx';
@@ -55,6 +56,7 @@ function App() {
             <Route path="sitemap" element={ <SiteMap /> } />
             <Route path="emailagreement" element={ <Emailagreement /> } />
             <Route path="news" element={ <News /> } />
+            <Route path="resetpassword/:uidb64/:token" element={ <ResetPassword /> } />
             {/* Private pages */}
             <Route element={<PrivateRoute />} >
               <Route path="bonds" element={ <Bonds /> } />
