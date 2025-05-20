@@ -1,5 +1,6 @@
 from django.urls import path
-
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import StaticViewSitemap, ArticlesSitemap
 from .views import (
 	ArticleDetail,
 	ArticlesListHome,
@@ -9,6 +10,10 @@ from .views import (
 	UserList,
 	CategoryDetail)
 
+sitemaps = {
+    'static': StaticViewSitemap,
+    'articles': ArticlesSitemap,
+}
 
 app_name = 'articles'
 urlpatterns = [
@@ -34,6 +39,7 @@ urlpatterns = [
 			'articles/creator/<slug:cat_slug>/<slug:post_slug>/',
 			ArticleAPICreator.as_view(),
 			name='article-creator-detail'),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
 	# utill paths
 	path('user/list/', UserList.as_view(), name='user-list'),
 ]

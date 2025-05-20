@@ -14,8 +14,11 @@ import Responsibility from './pages/static/Responsibility.tsx';
 import Payanddelivery from './pages/static/Payanddelivery.tsx';
 import Confidentiality from './pages/static/Confidentiality.tsx';
 import Agreement from './pages/static/Agreement.tsx';
+import CyberSecurity from './pages/static/CyberSecurity.tsx';
 import Emailagreement from './pages/static/Emailagreement.tsx';
+import TermsOfUse from './pages/static/TermsOfUse.tsx';
 import NotFound from './pages/static/NotFound.tsx';
+import SiteMap from './pages/static/SiteMap.tsx';
 import ConfidentialityCookies from './pages/static/ConfidentialityCookies.tsx';
 // Posts
 import News from './pages/posts/News.tsx';
@@ -46,7 +49,10 @@ function App() {
             <Route path="payanddelivery" element={ <Payanddelivery /> } />
             <Route path="confidentiality" element={ <Confidentiality /> } />
             <Route path="confidentialityandcookies" element={ <ConfidentialityCookies /> } />
+            <Route path="cybersecurity" element={<CyberSecurity />} />
             <Route path="agreement" element={ <Agreement /> } />
+            <Route path="termsofuse" element={ <TermsOfUse /> } />
+            <Route path="sitemap" element={ <SiteMap /> } />
             <Route path="emailagreement" element={ <Emailagreement /> } />
             <Route path="news" element={ <News /> } />
             {/* Private pages */}
