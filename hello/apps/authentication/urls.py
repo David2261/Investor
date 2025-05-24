@@ -1,9 +1,8 @@
 from django.urls import path
 from rest_framework_simplejwt.views import (
-	TokenObtainPairView,
-	TokenRefreshView,
 	TokenVerifyView,
 )
+from .views import CustomTokenRefreshView
 from .views import PasswordResetRequestView
 from .views import PasswordResetConfirmView
 from .views import CurrentUserView
@@ -13,6 +12,8 @@ from .views import RegistrationAPIView
 from .views import GoogleLoginView
 from .views import YandexLoginView
 from .views import MicrosoftLoginView
+from .views import CustomTokenObtainPairView
+from .views import get_csrf
 
 
 app_name = 'authentication'
@@ -24,16 +25,24 @@ urlpatterns = [
 	# Login
 	path(
 		'v1/token/',
-		TokenObtainPairView.as_view(),
+		CustomTokenObtainPairView.as_view(),
 		name='token_obtain_pair'),
 	# Login для будущей кастомизации
 	path('v1/login/', UserLoginView.as_view(), name='user_login'),
+	# Предыдущая версия JWT токена
 	path(
 		'v1/token/refresh/',
-		TokenRefreshView.as_view(),
-		name='token_refresh'),
-	path('password/reset/', PasswordResetRequestView.as_view(), name='password_reset_request'),
-	path('password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+		CustomTokenRefreshView.as_view(),
+		name="token_refresh"),
+	path('csrf/', get_csrf, name='get_csrf'),
+	path(
+		'password/reset/',
+		PasswordResetRequestView.as_view(),
+		name='password_reset_request'),
+	path(
+		'password/reset/confirm/<uidb64>/<token>/',
+		PasswordResetConfirmView.as_view(),
+		name='password_reset_confirm'),
 	path('v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 	# Возращает данные о пользователе
 	# (т.е. является ли он креатором или админом).

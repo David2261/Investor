@@ -17,6 +17,7 @@ const AdminFormBonds = () => {
 	const { authTokens } = useContext(AuthContext);
 	const [isOn, setIsOn] = useState(false)
 	const [formData, setFormData] = useState<ExtendedBond>({
+		id: 0,
 		title: "",
 		description: "",
 		category: "",

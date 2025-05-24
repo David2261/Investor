@@ -1,94 +1,149 @@
 import pytest
 import json
+import requests
 from django.urls import reverse
+from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.files.uploadedfile import SimpleUploadedFile
-from rest_framework import status
-from articles.models import Articles
 from pathlib import Path
+from authentication.models import User
+from articles.models import Category, Articles
 
+# Базовый URL для API
+BASE_URL = "http://127.0.0.1:8000"
+
+@pytest.fixture
+def client():
+	return APIClient()
+
+@pytest.fixture
+def admin_user(db):
+	return User.objects.create_superuser(
+		username="admin",
+		email="admin@example.com",
+		password="password"
+	)
+
+@pytest.fixture
+def auth_client(client, admin_user):
+	login_url = reverse('authentication:user_login')
+	response = client.post(
+		login_url,
+		data={"email": "admin@example.com", "password": "password"},
+		format='json'
+	)
+	if response.status_code != 200:
+		raise Exception(f"Login failed: {response.content}")
+	assert 'jwt_access' in client.cookies, "JWT access token cookie not set"
+	return client
+
+@pytest.fixture
+def category(db):
+	return Category.objects.create(name="Test Category")
 
 @pytest.mark.django_db
 class TestAdminArticlesUploads:
 	@pytest.fixture(autouse=True)
-	def setup(self, django_user_model):
-		# Настройка: создаем пользователя-администратора и нужные URL
-		self.admin_user = django_user_model.objects.create_superuser(
-			username="admin",
-			email="admin@example.com",
-			password="password")
+	def setup(self, admin_user, category):
 		self.articles_csv_url = reverse('adminpanel:articles-upload-csv')
 		self.articles_json_url = reverse('adminpanel:articles-upload-json')
 
-	def test_upload_invalid_articles_csv(self, client):
-		client.login(email='admin@example.com', password="password")
+	def test_upload_invalid_articles_csv(self, auth_client):
+		invalid_csv_content = "invalid_column,wrong_data\nvalue1,value2"
+		csv_file = SimpleUploadedFile(
+			name="test_invalid_articles.csv",
+			content=invalid_csv_content.encode('utf-8'),
+			content_type="text/csv"
+		)
 
-		# Загружаем невалидный CSV файл
-		current_dir = Path(__file__).parent
-		csv_file_path = current_dir / "test_invalid_articles.csv"
+		response = auth_client.post(self.articles_csv_url, files={"csv_file": csv_file})
 
-		assert csv_file_path.exists(), f"Test file {csv_file_path} does not exist."
+		assert response.status_code == 400, f"Expected 400, got {response.status_code}: {response.content}"
+		response_data = response.json()
+		assert "error" in response_data, "Expected 'error' key in response"
 
-		with open(csv_file_path, "rb") as csv_file:
-			uploaded_file = SimpleUploadedFile(
-				csv_file_path.name,
-				csv_file.read(),
-				content_type="text/csv")
+	def test_upload_valid_articles_csv(self, auth_client, category):
+		valid_csv_content = f"title,category_id,content\nTest Article,{category.id},This is a test article"
+		csv_file = SimpleUploadedFile(
+			name="test_valid_articles.csv",
+			content=valid_csv_content.encode('utf-8'),
+			content_type="text/csv"
+		)
 
-			response = client.post(self.articles_csv_url, {'csv_file': uploaded_file})
+		response = auth_client.post(self.articles_csv_url, files={"csv_file": csv_file})
 
-		# Ожидаем ошибку
-		assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+		assert response.status_code == 201, f"Expected 201, got {response.status_code}: {response.content}"
+		assert Articles.objects.filter(title="Test Article").exists(), "Article was not created"
+
+	def test_upload_articles_csv_unauthenticated(self, client):
+		invalid_csv_content = "invalid_column,wrong_data\nvalue1,value2"
+		csv_file = SimpleUploadedFile(
+			name="test_invalid_articles.csv",
+			content=invalid_csv_content.encode('utf-8'),
+			content_type="text/csv"
+		)
+
+		response = client.post(self.articles_csv_url, files={"csv_file": csv_file})
+
+		assert response.status_code == 401, f"Expected 401, got {response.status_code}: {response.content}"
 
 	@pytest.mark.parametrize("url, file_path, model", [
-		("adminpanel:articles-upload-json", "test_articles.json", Articles)])
-	def test_upload_valid_articles_json(self, client, url, file_path, model):
-		client.login(email='admin@example.com', password='password')
+		("adminpanel:articles-upload-json", "test_articles.json", Articles)
+	])
+	def test_upload_valid_articles_json(self, session, auth_cookies, url, file_path, model):
+		"""Тест загрузки валидного JSON-файла."""
+		session.cookies = auth_cookies
 
-		# Загружаем валидный JSON файл
+		# Подготавливаем валидный JSON-файл
 		current_dir = Path(__file__).parent
 		json_file_path = current_dir / file_path
+		assert json_file_path.exists(), f"Test file {json_file_path} does not exist."
 
 		with open(json_file_path, "rb") as json_file:
-			uploaded_file = SimpleUploadedFile(
-				json_file_path.name,
-				json_file.read(),
-				content_type="application/json")
+			uploaded_file = {
+				"json_file": (json_file_path.name, json_file, "application/json")
+			}
+			response = session.post(
+				f"{BASE_URL}{reverse(url)}",
+				files=uploaded_file
+			)
 
-			response = client.post(
-				reverse(url),
-				{'json_file': uploaded_file})
+			# Отладочный вывод
+			print(response.status_code, response.text)
 
-		assert response.status_code == status.HTTP_201_CREATED
+			# Проверки
+			assert response.status_code == 201, f"Expected 201, got {response.status_code}"
 
-		with open(json_file_path, "r", encoding="utf-8") as json_file:
-			articles_data = json.load(json_file)
-
-			for article in articles_data:
-				assert "title" in article, "Missing 'title' in JSON data"
-				assert Articles.objects.filter(
-					title=article["title"]).exists()
+			with open(json_file_path, "r", encoding="utf-8") as json_file:
+				articles_data = json.load(json_file)
+				for article in articles_data:
+					assert "title" in article, "Missing 'title' in JSON data"
+					assert model.objects.filter(title=article["title"]).exists()
 
 	@pytest.mark.parametrize("url, file_path", [
-		("adminpanel:articles-upload-json", "test_invalid_articles.json")])
-	def test_upload_invalid_articles_json(self, client, url, file_path):
-		client.login(email='admin@example.com', password="password")
+		("adminpanel:articles-upload-json", "test_invalid_articles.json")
+	])
+	def test_upload_invalid_articles_json(self, session, auth_cookies, url, file_path):
+		"""Тест загрузки невалидного JSON-файла."""
+		session.cookies = auth_cookies
 
-		# Загружаем невалидный JSON файл
+		# Подготавливаем невалидный JSON-файл
 		current_dir = Path(__file__).parent
 		json_file_path = current_dir / file_path
-
-		assert json_file_path.exists(), \
-			f"Test file {json_file_path} does not exist."
+		assert json_file_path.exists(), f"Test file {json_file_path} does not exist."
 
 		with open(json_file_path, "rb") as json_file:
-			uploaded_file = SimpleUploadedFile(
-				json_file_path.name,
-				json_file.read(),
-				content_type="application/json")
+			uploaded_file = {
+				"json_file": (json_file_path.name, json_file, "application/json")
+			}
+			response = session.post(
+				f"{BASE_URL}{reverse(url)}",
+				files=uploaded_file
+			)
 
-			response = client.post(
-				reverse(url),
-				{'json_file': uploaded_file})
+			# Отладочный вывод
+			print(response.status_code, response.text)
 
-		# Ожидаем ошибку
-		assert response.status_code == status.HTTP_400_BAD_REQUEST
+			# Проверки
+			assert response.status_code != 401, f"Unauthorized: {response.text}"
+			assert response.status_code == 400, f"Expected 400, got {response.status_code}"

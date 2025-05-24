@@ -19,7 +19,7 @@ export const useAllCategories = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiURL}/api/articles/category/all/`);
+        const response = await axios.get(`${apiURL}/api/articles/category/all/`, { withCredentials: true });
         setData(response.data.results);
         setDataCount(response.data.count);
       } catch (err) {

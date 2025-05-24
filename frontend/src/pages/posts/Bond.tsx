@@ -1,38 +1,30 @@
-import React, { useState, useContext, Suspense, lazy } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-// Hooks
 import useMediaQuery from '@/hooks/useMediaQuery.ts';
-// API
 import { useArticles } from '@/api/useArticles.tsx';
-// Entities
-import AuthContext from '@/entities/context/AuthContext.tsx';
-// Assets
 import '@/styles/Bonds.css';
 import tgSuccess from '@/assets/pages/success.webp';
 
-// Lazy-loaded components
 const DataTab = lazy(() => import('@/components/Bond/DataTab'));
 const Article = lazy(() => import('@/components/Bond/Article'));
 const NotFound = lazy(() => import('@/widgets/handlerError/404'));
 
-// Months for the dividend calendar
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре'];
 
-// Bond data types
 interface Bond {
-	id: React.Key;
-	title: string;
-	description: string;
-	category: string;
-	price: number;
-	maturity: string;
-	cupon: number;
-	cupon_percent: number;
-	is_published: boolean;
-	slug: string;
-	[key: string]: any;
+  id: React.Key;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  maturity: string;
+  cupon: number;
+  cupon_percent: number;
+  is_published: boolean;
+  slug: string;
+  [key: string]: any;
 }
 
 interface ErrorType {
@@ -44,37 +36,27 @@ type BondsAPIResponse = Bond[];
 const apiURL = import.meta.env.VITE_API_URL;
 
 const Bonds: React.FC = () => {
-  const { authTokens } = useContext(AuthContext);
   const isAboveMediumScreens = useMediaQuery('(min-width: 1060px)');
+  const isMobile = useMediaQuery('(max-width: 640px)'); // Новый брейкпоинт для мобильных
   const { data: news, error: errorNews } = useArticles(1, { sortBy: 'popularity', order: 'desc' }, null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const { data, error } = useQuery<BondsAPIResponse, ErrorType>({
     queryKey: ['bonds'],
     queryFn: async () => {
-      const response = await axios.get(`${apiURL}/api/bonds/bond/all`, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.access}`,
-        },
-      });
+      const response = await axios.get(`${apiURL}/api/bonds/bond/all`, { withCredentials: true });
       return response.data;
     },
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
-    enabled: !!authTokens,
   });
 
   const { data: dataOld, error: errorOld } = useQuery<BondsAPIResponse, ErrorType>({
     queryKey: ['bondsOld'],
     queryFn: async () => {
-      const response = await axios.get(`${apiURL}/api/bonds/bond/all/old`, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.access}`,
-        },
-      });
+      const response = await axios.get(`${apiURL}/api/bonds/bond/all/old`, { withCredentials: true });
       return response.data;
-    },
-    enabled: !!authTokens,
+    }
   });
 
   const getErrorMessage = (err: ErrorType | string | null | undefined): string | null => {
@@ -91,11 +73,9 @@ const Bonds: React.FC = () => {
     );
   }
 
-  // Current year and next year for dynamic content
   const currentYear = new Date().getFullYear();
   const nextYear = currentYear + 1;
 
-  // Prepare filtered data based on selected category
   const filteredData = selectedCategory === 'old'
     ? dataOld ?? []
     : selectedCategory === 'all'
@@ -116,21 +96,15 @@ const Bonds: React.FC = () => {
         <h1 className="bonds-title">ОФЗ, Муниципальные и Корпоративные Облигации</h1>
         <p className="bonds-under-title">Сервис по облигациям на Московской и Санкт-Петербургской бирже</p>
 
-        {/* News */}
-        <div className="sm:flex bonds-news-body">
-          {isAboveMediumScreens ? (
-            <div className="bonds-news-content-block">
-              <h1 className="bonds-news-content-block-header">Последние новости по облигациям</h1>
-              <Article data={dataPostsToDisplay} />
-            </div>
-          ) : (
-            <div className="flex flex-col items-center">
-              <h1 className="text-2xl text-center">Последние новости по облигациям</h1>
-              <Article data={dataPostsToDisplay} />
-            </div>
-          )}
-
-          {isAboveMediumScreens && (
+        {/* News Section */}
+        <div className={isMobile ? 'flex flex-col items-center' : 'sm:flex bonds-news-body'}>
+          <div className={isMobile ? 'w-full' : 'bonds-news-content-block'}>
+            <h1 className={isMobile ? 'text-2xl text-center mb-4' : 'bonds-news-content-block-header'}>
+              Последние новости по облигациям
+            </h1>
+            <Article data={dataPostsToDisplay} />
+          </div>
+          {!isMobile && isAboveMediumScreens && (
             <div className="bonds-news-add-block">
               <div className="bonds-news-add-header">
                 <h1>Телеграм по новостям</h1>
@@ -139,19 +113,31 @@ const Bonds: React.FC = () => {
               <p className="bonds-news-add-under-text">@investorhome - официальный канал по облигациям.</p>
             </div>
           )}
+          {isMobile && (
+            <div className="mt-6 text-center">
+              <h3 className="text-lg font-semibold">Телеграм по новостям</h3>
+              <p className="text-sm text-gray-600">@investorhome - официальный канал по облигациям.</p>
+              <img
+                src={tgSuccess}
+                alt="Телеграм-канал по облигациям"
+                loading="lazy"
+                className="mt-4 w-32 mx-auto"
+              />
+            </div>
+          )}
         </div>
 
-        {/* Block content bonds */}
-        <div className={isAboveMediumScreens ? 'bonds-content-body' : ''}>
+        {/* Bonds Content */}
+        <div className={isAboveMediumScreens ? 'bonds-content-body' : 'px-4'}>
           <h1 className="bonds-content-title">Облигации: календарь на {currentYear}-{nextYear}</h1>
           <p className="bonds-content-under-title">
             Дивидендный календарь в {currentYear}-{nextYear} годах. Ближайшие купоны на одну облигацию в{' '}
             {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
           </p>
 
-          {/* Category selection */}
-          <div className="bonds-content-categories-block">
-            <div className="bcc-category" role="group">
+          {/* Category Selection */}
+          <div className="bonds-content-categories-block flex flex-wrap gap-2 justify-center">
+            <div className="bcc-category flex gap-2" role="group">
               {[
                 { key: 'all', label: 'Все' },
                 { key: 'federal loan bonds', label: 'ОФЗ' },
@@ -175,10 +161,10 @@ const Bonds: React.FC = () => {
             </button>
           </div>
 
-          {/* Table content */}
-          <div className={isAboveMediumScreens ? 'bonds-content-table' : 'overflow-x-auto'}>
+          {/* Table Content */}
+          <div className={isMobile ? 'overflow-x-auto w-full' : 'bonds-content-table'}>
             <div className="tbl-header">
-              <table cellPadding="0" cellSpacing="0">
+              <table cellPadding="0" cellSpacing="0" className="w-full">
                 <thead>
                   <tr>
                     <th>Облигация</th>
@@ -192,10 +178,10 @@ const Bonds: React.FC = () => {
               </table>
             </div>
             <div className="tbl-content">
-              <table cellPadding="0" cellSpacing="0">
+              <table cellPadding="0" cellSpacing="0" className="w-full">
                 <tbody>
                   {filteredData.length > 0 ? (
-                    <DataTab data={{ results: filteredData }} />
+                    <DataTab data={{ results: filteredData as any }} />
                   ) : (
                     <tr>
                       <td colSpan={6} className="text-center py-4">

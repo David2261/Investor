@@ -1,20 +1,12 @@
-import { useContext } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-// Entities
-import AuthContext from "../entities/context/AuthContext.tsx";
 
-const apiURL = import.meta.env.VITE_API_URL;
+
 
 const useBonds = () => {
-    const { authTokens } = useContext(AuthContext);
-
+    const apiURL = import.meta.env.VITE_API_URL;
     const fetchBonds = async () => {
-        const response = await axios.get(`${apiURL}/api/bonds/bond/all`, {
-        headers: {
-            Authorization: `Bearer ${authTokens}`,
-        },
-        });
+        const response = await axios.get(`${apiURL}/api/bonds/bond/all`, { withCredentials: true });
         return response.data;
     };
 
@@ -23,7 +15,6 @@ const useBonds = () => {
         queryFn: async () => fetchBonds,
 		staleTime: 5 * 60 * 1000,
 		refetchOnWindowFocus: false,
-        enabled: !!authTokens
     },
 );
 

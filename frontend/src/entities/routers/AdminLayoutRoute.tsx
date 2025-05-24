@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+// Types
+import type { AuthContextType } from "@/types/AuthContext";
 // Hooks
 import { useAdminApps } from '@/hooks/adminPanel/useAdminApps.tsx';
 import { useAdminModels } from '@/hooks/adminPanel/useAdminModels.tsx';
@@ -10,7 +12,7 @@ import Preloader from '@/widgets/preloader.tsx';
 import Sidebar from '@/components/Admin/HomeAdmin/Sidebar.tsx';
 
 const AdminLayoutRoute = () => {
-	const { user, loading } = useContext(AuthContext);
+	const { user, loading } = useContext(AuthContext) as AuthContextType;
 	const isAdmin = user?.member?.is_admin === true;
 	const { data: adminApps, error: appsError, isLoading: appsLoading } = useAdminApps();
 	const { data: adminModels, error: modelsError, isLoading: modelsLoading } = useAdminModels();

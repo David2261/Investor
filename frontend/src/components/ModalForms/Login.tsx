@@ -80,14 +80,20 @@ const Login: React.FC<LoginProps> = ({ setIsOpen, setIsSignUp }) => {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        const formElement = document.querySelector('form');
-        if (formElement) {
-          e.preventDefault();
-          handleSubmit({ preventDefault: () => {}, target: formElement } as React.FormEvent<HTMLFormElement>);
-        }
+    if (e.key === 'Enter') {
+      const formElement = document.querySelector('form');
+      if (formElement) {
+        e.preventDefault();
+        // Создаем синтетическое событие формы
+        const formEvent = new Event('submit', { bubbles: true, cancelable: true }) as unknown as React.FormEvent<HTMLFormElement>;
+        Object.defineProperty(formEvent, 'target', { value: formElement });
+        Object.defineProperty(formEvent, 'currentTarget', { value: formElement });
+        Object.defineProperty(formEvent, 'preventDefault', { value: () => e.preventDefault() });
+        
+        handleSubmit(formEvent);
       }
-    };
+    }
+  };
 
     document.addEventListener('keydown', onKeyDown);
     return () => {

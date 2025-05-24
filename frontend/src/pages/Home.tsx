@@ -1,16 +1,17 @@
+import { lazy } from "react";
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { FaArrowRightLong } from "react-icons/fa6";
 // Widgets
-import NotFound from '@/widgets/handlerError/404';
+const NotFound = lazy(() => import('@/widgets/handlerError/404'));
 // Hooks
 import useMediaQuery from "@/hooks/useMediaQuery.ts";
 // Components
-import ContentNews from '../components/Home/ContentNews';
-import ContentList from '../components/Home/ContentList';
-import AdvertisingBlock from '@/components/Home/AdvertisingBlock';
+const ContentNews = lazy(() => import('../components/Home/ContentNews'));
+const ContentList = lazy(() => import('../components/Home/ContentList'));
+const AdvertisingBlock = lazy(() => import('@/components/Home/AdvertisingBlock'));
 // Assets
 import investmentGlobal from '../assets/pages/invest_global.webp';
 import realModel from '../assets/pages/real_and_model.webp';
@@ -30,12 +31,11 @@ const Home = () => {
 		},
 	});
 	const isAboveMinimumScreens = useMediaQuery("(max-width: 768px)")
-	const displayedData = isAboveMinimumScreens == true ? data.slice(0, 4) : data;
+	const displayedData = data ? (isAboveMinimumScreens ? data.slice(0, 4) : data) : [];
 
 	if (error) {
 		return <NotFound />;
 	}
-
 	if (!data || isLoading) {
 		return <div>Loading...</div>;
 	}
@@ -102,7 +102,7 @@ const Home = () => {
 						<div className='text-white border rounded-full absolute top-0 right-4 p-2 mt-4'>25</div>
 							<div className='absolute inset-x-0 bottom-0 flex justify-center mb-4'>
 								<NavLink to="news/">
-									<button className='rounded-full font-bold uppercase p-4 text-xl bg-white text-black rounded-full font-bold uppercase p-4 text-xl bg-white text-black flex items-center gap-2 shadow-md transition-all duration-300 ease-in-out hover:text-white hover:bg-transparent'>
+									<button className='rounded-full font-bold uppercase p-4 text-xl bg-white text-black flex items-center gap-2 shadow-md transition-all duration-300 ease-in-out hover:text-white hover:bg-transparent'>
 										Все статьи <FaArrowRightLong />
 									</button>
 								</NavLink>

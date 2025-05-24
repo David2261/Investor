@@ -1,5 +1,4 @@
 from django.contrib.sitemaps import Sitemap
-from django.utils import timezone
 from .models import Articles
 
 

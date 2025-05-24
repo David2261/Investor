@@ -39,9 +39,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 	@classmethod
 	def get_token(cls, user: User) -> Token:
 		token = super().get_token(user)
-
-		# Add custom claims
 		token['username'] = user.username
+		print(f"Generated token payload: {token}")
 
 		return token
 

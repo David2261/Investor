@@ -1,27 +1,30 @@
 import os
-from tokenize import TokenError
-from jwt import InvalidTokenError
 import environ
 
 from django.conf import settings
 from django.urls import reverse
+from django.http import JsonResponse
+from django.contrib.auth import authenticate
+from django.middleware.csrf import get_token
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from django.utils.html import escape
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
-from django.utils.html import escape
 from django.core.mail import send_mail
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework.generics import CreateAPIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.yandex.views import YandexOAuth2Adapter
@@ -33,12 +36,15 @@ from hello.settings import BASE_DIR
 
 from .models import User
 from .tokens import account_activation_token
+from .csrf import enforce_csrf
+from .csrf import set_jwt_cookies
 from .social import SocialLoginViewMixin
 from .serializers import RegistrationSerializer
 from .serializers import MyTokenObtainPairSerializer
 from .serializers import UserSerializer
 from .serializers import ResetPasswordRequestSerializer
 from .serializers import ResetPasswordConfirmSerializer
+from .backends import CookieJWTAuthentication
 
 env = environ.Env()
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
@@ -67,34 +73,91 @@ class RegistrationAPIView(CreateAPIView):
 
 
 class UserLoginView(TokenObtainPairView):
-	serializer_class = MyTokenObtainPairSerializer
+	@enforce_csrf
+	def post(self, request):
+		email = request.data.get('email')
+		password = request.data.get('password')
+		user = authenticate(email=email, password=password)
+
+		if user:
+			refresh = RefreshToken.for_user(user)
+			response = Response({
+				'status': 'success',
+				'user_id': user.id,
+				'email': user.email,
+			}, status=status.HTTP_200_OK)
+			response.set_cookie(
+				key='access_token',
+				value=str(refresh.access_token),
+				httponly=True,
+				secure=False,
+				samesite='Lax',
+				max_age=5 * 60)
+			response.set_cookie(
+				key='refresh_token',
+				value=str(refresh),
+				httponly=True,
+				secure=False,
+				samesite='Lax',
+				max_age=24 * 60 * 60)
+			return response
+		return Response(
+			{'error': 'Invalid credentials'},
+			status=status.HTTP_401_UNAUTHORIZED)
 
 
 class CustomTokenRefreshView(TokenRefreshView):
+	@enforce_csrf
 	def post(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
-
 		try:
 			serializer.is_valid(raise_exception=True)
 		except TokenError as e:
-			raise InvalidTokenError(f'Invalid token {e}')
+			raise InvalidToken(f'Invalid token {e}')
 
 		tokens = serializer.validated_data
-		response = Response(tokens, status=status.HTTP_200_OK)
-		response.set_cookie(
-				key='refresh_token',
-				value=tokens['refresh'],
-				httponly=True)
+		print("Tokens generated:", tokens)
+		response = Response({
+			'access': tokens['access'],
+			'refresh': tokens['refresh']
+		}, status=status.HTTP_200_OK)
+		response = set_jwt_cookies(response, tokens['access'], tokens['refresh'])
 		return response
 
 
+class CustomTokenObtainPairView(TokenObtainPairView):
+	serializer_class = MyTokenObtainPairSerializer
+	permission_classes = ()
+
+	@enforce_csrf
+	def post(self, request, *args, **kwargs):
+		try:
+			print(f"Request data: {request.data}")  # Debug
+			print(f"Request cookies: {request.COOKIES}")  # Debug
+			serializer = self.get_serializer(data=request.data)
+			serializer.is_valid(raise_exception=True)
+			tokens = serializer.validated_data
+			print("Tokens generated:", tokens)  # Debug
+			response = Response({
+				'access': tokens['access'],
+				'refresh': tokens['refresh']
+			}, status=status.HTTP_200_OK)
+			response = set_jwt_cookies(response, tokens['access'], tokens['refresh'])
+			print("Response cookies set")  # Debug
+			return response
+		except Exception as e:
+			print(f"Error in CustomTokenObtainPairView: {str(e)}")  # Debug
+			raise
+
+
 class CurrentUserView(generics.RetrieveAPIView):
+	authentication_classes = [CookieJWTAuthentication]
 	permission_classes = [permissions.IsAuthenticated]
 	serializer_class = UserSerializer
 
-	def get_object(self):
-		user = self.request.user
-		return user
+	def get(self, request, *args, **kwargs):
+		serializer = self.get_serializer(self.request.user)
+		return Response(serializer.data)
 
 
 class PasswordResetRequestView(APIView):
@@ -104,7 +167,7 @@ class PasswordResetRequestView(APIView):
 		serializer = ResetPasswordRequestSerializer(data=request.data)
 		serializer.is_valid(raise_exception=True)
 		email = serializer.validated_data['email']
-		
+
 		# Санитизация и валидация email
 		clean_email = escape(email)
 		validator = EmailValidator()
@@ -140,7 +203,8 @@ class PasswordResetRequestView(APIView):
 		except User.DoesNotExist:
 			# Не раскрываем, существует ли email, для безопасности
 			return Response(
-				{"message": "Письмо для сброса пароля отправлено, если email зарегистрирован."},
+				{"message": "Письмо для сброса пароля отправлено, \
+				если email зарегистрирован."},
 				status=status.HTTP_200_OK
 			)
 		except Exception as e:
@@ -148,6 +212,7 @@ class PasswordResetRequestView(APIView):
 				{"error": f"Ошибка при отправке письма: {str(e)}"},
 				status=status.HTTP_500_INTERNAL_SERVER_ERROR
 			)
+
 
 # Эндпоинт для подтверждения сброса пароля
 class PasswordResetConfirmView(APIView):
@@ -188,6 +253,12 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 	@method_decorator(cache_page(60 * 15))
 	def get(self, request, *args, **kwargs):
 		return super().get(request, *args, **kwargs)
+
+
+def get_csrf(request: Request) -> Response:
+	response = JsonResponse({'detail': 'CSRF cookie set'})
+	response['X-CSRFToken'] = get_token(request)
+	return response
 
 
 class GoogleLoginView(SocialLoginViewMixin):

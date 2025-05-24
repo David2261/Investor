@@ -1,7 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-// Entities
-import AuthContext from "../entities/context/AuthContext.tsx";
 
 interface BlogAPIType {
 	id: number;
@@ -24,7 +22,6 @@ export const useArticles = (
 	selectedCategory: string | null
 	) => {
 	const apiURL = import.meta.env.VITE_API_URL;
-	const { authTokens } = useContext(AuthContext);
 	const [data, setData] = useState<BlogAPIType[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -33,21 +30,18 @@ export const useArticles = (
 	const [previousPage, setPreviousPage] = useState<string | null>(null);
 
 	useEffect(() => {
-		const fetchArticles = async () => {
+	const fetchArticles = async () => {
 		setLoading(true);
 		try {
 			const params = new URLSearchParams();
-			params.append("ordering", filter.sortBy);
-			params.append("order", filter.order);
+			const ordering = filter.order === 'desc' ? `-${filter.sortBy}` : filter.sortBy;
+			params.append("ordering", ordering);
 			if (page > 1) params.append("page", page.toString());
 			if (selectedCategory) params.append("category", selectedCategory);
 
 			const url = `${apiURL}/api/articles/articles/all/?${params.toString()}`;
-			const response = await axios.get(url, {
-			headers: {
-				Authorization: `Bearer ${authTokens?.access}`,
-			},
-			});
+			const response = await axios.get(url, { withCredentials: true });
+
 			setData(response.data.results);
 			setTotalItems(response.data.count);
 			setNextPage(response.data.next);
@@ -58,9 +52,10 @@ export const useArticles = (
 		} finally {
 			setLoading(false);
 		}
-		};
-		fetchArticles();
-	}, [authTokens, page, selectedCategory, filter, apiURL]);
+	};
+
+	fetchArticles();
+}, [page, selectedCategory, filter.sortBy, filter.order]);
 
 	return {
 		data,

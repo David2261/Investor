@@ -6,6 +6,11 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     plugins: [react()],
+
+    preview: {
+      port: 5137,
+      host: '127.0.0.1',
+    },
     build: {
       outDir: 'dist',
       rollupOptions: {
@@ -45,6 +50,8 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
+      port: 5137,
+      host: '127.0.0.1',
       historyApiFallback: true,
       proxy: {
         '/api': {

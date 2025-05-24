@@ -2,11 +2,48 @@ from typing import Optional
 from typing import Tuple
 import jwt
 from django.conf import settings
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import authentication
 from rest_framework import exceptions
 from rest_framework.request import Request
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 from .models import User
+
+
+class CookieJWTAuthentication(JWTAuthentication):
+	def authenticate(self, request):
+		access_token = request.COOKIES.get('access_token')
+		if not access_token:
+			return None
+		try:
+			validated_token = self.get_validated_token(access_token)
+			return self.get_user(validated_token), validated_token
+		except TokenError as e:
+			raise InvalidToken(f'Invalid token: {e}')
+
+	def _authenticate_credentials(
+			self,
+			request: Request,
+			token: str) -> Tuple[User, str]:
+		try:
+			payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+		except jwt.ExpiredSignatureError:
+			print("Token expired")
+			raise exceptions.AuthenticationFailed('Токен истек.')
+		except jwt.InvalidTokenError:
+			print("Invalid token")
+			raise exceptions.AuthenticationFailed('Неверная аутентификация.')
+		try:
+			user = User.objects.get(pk=payload['id'])
+			print(f"User found: {user.username}")
+		except User.DoesNotExist:
+			print("User not found for id:", payload.get('id'))
+			raise exceptions.AuthenticationFailed('Пользователь не найден.')
+		if not user.is_active:
+			print(f"User {user.username} is inactive")
+			raise exceptions.AuthenticationFailed('Пользователь деактивирован.')
+		return (user, token)
 
 
 class JWTAuthentication(authentication.BaseAuthentication):

@@ -1,4 +1,4 @@
-import { Bond } from "./Bond";
+import type { Bond } from "./Bond";
 
 interface ExtendedBond extends Bond {
     maturityDate: string; // "YYYY-MM-DD"
