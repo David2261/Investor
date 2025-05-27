@@ -1,17 +1,7 @@
-import { Key, FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
-
-interface ContentItemType {
-    id: Key;
-    title: string;
-    category: {
-        name: string;
-        slug: string;
-    };
-    img: string;
-    slug: string;
-}
+import { BlogAPIType as ContentItemType } from "@/types/Articles";
 
 interface ContentListProps {
     data: ContentItemType[];

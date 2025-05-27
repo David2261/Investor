@@ -1,30 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import AuthContext from "@/entities/context/AuthContext.tsx";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
 const AdminFormCategories = () => {
-	const { authTokens } = useContext(AuthContext);
 	const [formData, setFormData] = useState({
 		name: ""
 	});
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!authTokens) {
-			alert("Токен авторизации отсутствует.");
-			return;
-		}
-
 		try {
 			await axios.post(`${apiURL}/api/admin/apps/main/categories/create/`, 
-				{ name: formData.name }, {
-					headers: {
-						Authorization: `Bearer ${authTokens?.access}`,
-						"Content-Type": "application/json",
-					}
-				});
+				{ name: formData.name }, { withCredentials: true });
 			alert("Категория успешно создана!");
 			setFormData({ name: "" });
 		} catch (error) {

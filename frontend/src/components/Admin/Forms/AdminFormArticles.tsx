@@ -1,11 +1,9 @@
-import { useState, useContext, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import axios, { AxiosError } from 'axios';
 // API
 import { useAllCategories } from "@/api/useAllCategories.tsx";
 // Components
 import Description from "./Description.tsx";
-// Entities
-import AuthContext from "@/entities/context/AuthContext.tsx";
 // Styles
 import "@/styles/components/Admin/AdminFormsArticles.css";
 
@@ -19,7 +17,6 @@ interface FormData {
 }
 
 const AdminFormArticles = () => {
-	const { authTokens } = useContext(AuthContext);
 	const [formData, setFormData] = useState<FormData>({
 		title: "",
 		description: "",
@@ -31,11 +28,6 @@ const AdminFormArticles = () => {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-	
-		if (!authTokens) {
-			alert("Токен авторизации отсутствует.");
-			return;
-		}
 	
 		const data = new FormData();
 		data.append('title', formData.title);
@@ -51,15 +43,7 @@ const AdminFormArticles = () => {
 		try {
 			await axios.post(
 				`${apiURL}/api/admin/apps/main/articles/create/`,
-				data,
-				{
-					headers: {
-						Authorization: `Bearer ${authTokens?.access}`,
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
-			// console.log("Article успешно создана:", response.data);
+				data, { withCredentials: true });
 			alert("Статья успешно создана!");
 		} catch (error) {
 			const axiosError = error as AxiosError;

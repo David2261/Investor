@@ -3,23 +3,9 @@ import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { ArticleNewsAPI } from '@/types/Article';
 const AdvertisingBlock = lazy(() => import('@/components/Home/AdvertisingBlock'));
 import "@/styles/pages/posts/ArticleNews.css";
-
-interface ArticleNewsAPI {
-  author: string | null;
-  readTime: string | null;
-  title: string;
-  description: string;
-  category: {
-    name: string;
-    slug: string;
-  };
-  img: string;
-  time_create: string;
-  slug: string;
-  reading_time_minutes: number;
-}
 
 const apiURL = import.meta.env.VITE_API_URL;
 

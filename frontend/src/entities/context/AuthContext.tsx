@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		setUser(null);
 	  }
 	} catch (err) {
-	  console.error("Ошибка получения пользователя", err);
+		console.log("Error in AuthProvider with: " + err)
 	  logoutUser();
 	} finally {
 	  setLoading(false);

@@ -1,8 +1,6 @@
-import { useState, useContext, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import axios, { AxiosError } from 'axios';
 import { motion } from "motion/react";
-// Entities
-import AuthContext from "@/entities/context/AuthContext.tsx";
 // Components
 import Description from './Description.tsx';
 // Types
@@ -14,7 +12,6 @@ const apiURL = import.meta.env.VITE_API_URL;
 
 
 const AdminFormBonds = () => {
-	const { authTokens } = useContext(AuthContext);
 	const [isOn, setIsOn] = useState(false)
 	const [formData, setFormData] = useState<ExtendedBond>({
 		id: 0,
@@ -31,12 +28,6 @@ const AdminFormBonds = () => {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
-		if (!authTokens) {
-			alert("Токен авторизации отсутствует.");
-			return;
-		}
-
 		const maturity = new Date(`${formData.maturityDate}T${formData.maturityTime}`).toISOString();
 
 		const data = new FormData();
@@ -52,14 +43,7 @@ const AdminFormBonds = () => {
 		try {
 			await axios.post(
 				`${apiURL}/api/admin/apps/main/articles/create/`,
-				data,
-				{
-					headers: {
-						Authorization: `Bearer ${authTokens?.access}`,
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
+				data, { withCredentials: true });
 			alert("Статья успешно создана!");
 		} catch (error) {
 			const axiosError = error as AxiosError;

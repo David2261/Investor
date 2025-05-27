@@ -1,6 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru" lazy-loaded="true">
   <head>
+    <!--ssr-head-->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Investor Home</title>
@@ -8,11 +9,12 @@
     <meta name="googlebot" content="index,follow">
     <meta name="theme-color" content="#2F4F4F">
     <meta name="rating" content="14 years">
-    <link href="/src/index.css" rel="stylesheet">
+    <link rel="preload" href="/src/index.css" as="style">
+    <link rel="stylesheet" href="/src/index.css">
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--ssr-outlet--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

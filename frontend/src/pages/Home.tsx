@@ -1,13 +1,15 @@
 import { lazy } from "react";
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { FaArrowRightLong } from "react-icons/fa6";
 // Widgets
 const NotFound = lazy(() => import('@/widgets/handlerError/404'));
+// Types
+import { BlogAPIType as Article } from "@/types/Articles";
 // Hooks
 import useMediaQuery from "@/hooks/useMediaQuery.ts";
+import useCompressedQuery from "@/hooks/useCompressedQuery";
 // Components
 const ContentNews = lazy(() => import('../components/Home/ContentNews'));
 const ContentList = lazy(() => import('../components/Home/ContentList'));
@@ -23,15 +25,20 @@ const centerContent = `flex justify-center`;
 
 const Home = () => {
 	const apiURL = import.meta.env.VITE_API_URL;
-	let { data, error, isLoading } = useQuery({
-		queryKey: ['articles'],
-		queryFn: async () => {
-			const response = await axios.get(`${apiURL}/api/articles/articles/home/all`);
-			return response.data;
-		},
-	});
 	const isAboveMinimumScreens = useMediaQuery("(max-width: 768px)")
-	const displayedData = data ? (isAboveMinimumScreens ? data.slice(0, 4) : data) : [];
+
+	const fetchArticles = async (): Promise<Article[]> => {
+		const response = await axios.get(`${apiURL}/api/articles/articles/home/all`, { withCredentials: true });
+		return response.data;
+	};
+
+	const { data, isLoading, error } = useCompressedQuery<Article[]>(
+		'home_articles_compressed',
+		fetchArticles,
+		{ staleTime: 1000 * 60 * 10 }
+	);
+
+	const displayedData = data ? (isAboveMinimumScreens ? data.slice(0, 4) : data) as Article[] : [];
 
 	if (error) {
 		return <NotFound />;

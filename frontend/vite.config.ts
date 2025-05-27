@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         input: 'index.html',
       },
+      ssr: 'src/entry-server.tsx',
     },
     resolve: {
       alias: {
@@ -60,11 +61,16 @@ export default defineConfig(({ mode }) => {
           secure: false,
         },
       },
+      hmr: {
+        host: '127.0.0.1',
+        port: 24678,
+      },
     },
     define: {
-      'import.meta.env': JSON.stringify({
-        VITE_API_URL: env.VITE_API_URL || 'https://mocked-api.local',
-      }),
+      'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || 'https://mocked-api.local'),
+    },
+    ssr: {
+      noExternal: ['react-router-dom', 'react-helmet-async'],
     },
   };
 });

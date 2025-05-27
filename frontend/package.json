@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build && vite build --ssr src/entry-server.tsx",
     "lint": "oxlint . --report-unused-disable-directives --max-warnings=0",
-    "preview": "vite preview",
+    "preview": "node server/server.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -28,6 +28,7 @@
     "express": "^4.19.2",
     "framer-motion": "^12.7.4",
     "jwt-decode": "^4.0.0",
+    "lz-string": "^1.5.0",
     "motion": "^12.6.3",
     "quill": "^2.0.3",
     "react": "^18.2.0",

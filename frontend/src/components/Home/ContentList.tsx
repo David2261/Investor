@@ -1,16 +1,6 @@
-import { Key, Fragment, FunctionComponent } from "react";
+import { Fragment, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-
-interface ContentItemType {
-	id: Key;
-	title: string;
-	category: {
-		name: string;
-		slug: string;
-	};
-	img: string;
-	slug: string;
-}
+import { BlogAPIType as ContentItemType } from "@/types/Articles";
 
 interface ContentListProps {
 	data: ContentItemType[];

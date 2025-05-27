@@ -1,9 +1,9 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import useMediaQuery from '@/hooks/useMediaQuery.ts';
 import { useArticles } from '@/api/useArticles.tsx';
+import { useBonds, useBondsOld } from '@/api/useBonds';
+import { BlogAPIType } from '@/types/Articles';
 import '@/styles/Bonds.css';
 import tgSuccess from '@/assets/pages/success.webp';
 
@@ -13,55 +13,24 @@ const NotFound = lazy(() => import('@/widgets/handlerError/404'));
 
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре'];
 
-interface Bond {
-  id: React.Key;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  maturity: string;
-  cupon: number;
-  cupon_percent: number;
-  is_published: boolean;
-  slug: string;
-  [key: string]: any;
-}
-
 interface ErrorType {
   message: string;
 }
 
-type BondsAPIResponse = Bond[];
-
-const apiURL = import.meta.env.VITE_API_URL;
-
 const Bonds: React.FC = () => {
   const isAboveMediumScreens = useMediaQuery('(min-width: 1060px)');
-  const isMobile = useMediaQuery('(max-width: 640px)'); // Новый брейкпоинт для мобильных
+  const isMobile = useMediaQuery('(max-width: 640px)');
   const { data: news, error: errorNews } = useArticles(1, { sortBy: 'popularity', order: 'desc' }, null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const { data, error } = useQuery<BondsAPIResponse, ErrorType>({
-    queryKey: ['bonds'],
-    queryFn: async () => {
-      const response = await axios.get(`${apiURL}/api/bonds/bond/all`, { withCredentials: true });
-      return response.data;
-    },
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading, error } = useBonds(selectedCategory);
+  const { data: dataOld, isLoading: isLoadingOld, error: errorOld } = useBondsOld();
 
-  const { data: dataOld, error: errorOld } = useQuery<BondsAPIResponse, ErrorType>({
-    queryKey: ['bondsOld'],
-    queryFn: async () => {
-      const response = await axios.get(`${apiURL}/api/bonds/bond/all/old`, { withCredentials: true });
-      return response.data;
-    }
-  });
-
-  const getErrorMessage = (err: ErrorType | string | null | undefined): string | null => {
+  const getErrorMessage = (err: ErrorType | Error | string | null | undefined): string | null => {
     if (!err) return null;
-    return typeof err === 'string' ? err : err.message || 'Неизвестная ошибка';
+    if (typeof err === 'string') return err;
+    if (err instanceof Error) return err.message;
+    return err.message || 'Неизвестная ошибка';
   };
 
   const errorMessage = getErrorMessage(error) || getErrorMessage(errorNews) || getErrorMessage(errorOld);
@@ -82,7 +51,21 @@ const Bonds: React.FC = () => {
     ? data ?? []
     : data?.filter((item) => item.category === selectedCategory) ?? [];
 
-  const dataPostsToDisplay = news?.slice(0, 5) || [];
+  // Transform news to ContentItemType[]
+  const dataPostsToDisplay = news
+    ? news.slice(0, 5).map((item) => ({
+        ...item,
+        img: item.img ?? null,
+      })) as BlogAPIType[]
+    : [];
+
+  if (isLoading || isLoadingOld) {
+    return (
+      <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>
+        <div className="flex justify-center items-center h-screen">Загрузка...</div>
+      </Suspense>
+    );
+  }
 
   return (
     <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>

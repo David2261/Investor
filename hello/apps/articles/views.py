@@ -169,7 +169,7 @@ class ArticleAPICreator(APIView):
 class CategoriesList(ListAPIView):
 	serializer_class = CategorySerializer
 	queryset = Category.objects.all()
-	permissions_classes = [permissions.IsAuthenticated]
+	permissions_classes = [permissions.AllowAny]
 
 	@method_decorator(cache_page(60 * 15))
 	def get(self, request, *args, **kwargs):

@@ -52,6 +52,6 @@
     "src/**/*.tsx",
     "config/jest.setup.ts",
     "config/setupTests.ts"
-  ],
+, "server"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
