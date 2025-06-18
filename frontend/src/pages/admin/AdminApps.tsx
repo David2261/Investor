@@ -11,7 +11,7 @@ import UnderConstruction from "@/components/Admin/HomeAdmin/UnderPage";
 import AdminButton from '@/widgets/buttons/AdminButton.tsx';
 import AdminSearch from '@/widgets/buttons/AdminSearch.tsx';
 // Assets
-import '@/styles/pages/admin/AdminMain.css';
+import '@/styles/pages/admin/AdminMain.module.css';
 
 interface Params {
 	[key: string]: string | undefined;

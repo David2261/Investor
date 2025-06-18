@@ -8,7 +8,8 @@ const AdminArticleList = () => {
 		<title>Admin Article List</title>
 		<meta name='description' content='Admin Article List page' />
 		</Helmet>
-        <h1>This is AdminArticleList!</h1></>
+		<h1>This is AdminArticleList!</h1>
+	</>
 }
 
 export default AdminArticleList;

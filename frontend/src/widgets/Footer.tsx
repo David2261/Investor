@@ -92,13 +92,17 @@ const LocalLinks = (
 			<NavLink to="contact/">Связаться с нами</NavLink>
 		</div>
 		{ DOT }
-		<div className="px-2 md:px-4 hover:text-slate-900">Кибербезопасность</div>
+		<div className="px-2 md:px-4 hover:text-slate-900">
+			<NavLink to="cybersecurity/">Кибербезопасность</NavLink></div>
 		{ DOT }
-		<div className="px-2 md:px-4 hover:text-slate-900">Условия использования</div>
+		<div className="px-2 md:px-4 hover:text-slate-900">
+			<NavLink to="termsofuse/">Условия использования</NavLink></div>
 		{ DOT }
-		<div className="px-2 md:px-4 hover:text-slate-900">Конфиденциальность и файлы cookie</div>
+		<div className="px-2 md:px-4 hover:text-slate-900">
+			<NavLink to="confidentialityandcookies/">Конфиденциальность и файлы cookie</NavLink></div>
 		{ DOT }
-		<div className="md:px-4 hover:text-slate-900">Your Privacy Choices</div>
+		<div className="md:px-4 hover:text-slate-900">
+			<NavLink to="sitemap/">Карта сайта</NavLink></div>
 		</div>
   </div>
 );

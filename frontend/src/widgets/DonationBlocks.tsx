@@ -1,16 +1,35 @@
 import { useState, useEffect } from 'react';
 import { getRandomImage } from './getRandomImage';
-  
+
 const DonateVerticalBlock = () => {
-    const [randomImage, setRandomImage] = useState('');
-    const [loading, setLoading] = useState(false);
-  
-    useEffect(() => {
-      setLoading(true);
-      const randomImageUrl = getRandomImage();
-      setRandomImage(randomImageUrl);
-      setLoading(false);
-    }, []);
+	const [randomImage, setRandomImage] = useState('');
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		let isMounted = true;
+
+		const fetchImage = async () => {
+			try {
+				setLoading(true);
+				const imageUrl = await getRandomImage();
+				if (isMounted) {
+					setRandomImage(imageUrl);
+				}
+			} catch (error) {
+				console.error('Ошибка при загрузке изображения:', error);
+			} finally {
+				if (isMounted) {
+					setLoading(false);
+				}
+			}
+		};
+
+		fetchImage();
+
+		return () => {
+			isMounted = false;
+		};
+	}, []);
 
     return (
     <div id="donate-block" className="grid grid-cols-3 gap-8 border-b-2 py-4 border-slate-200 mb-4">

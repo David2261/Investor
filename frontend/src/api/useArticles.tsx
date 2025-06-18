@@ -1,73 +1,55 @@
-import { useState, useEffect, useContext } from 'react';
+import useCompressedQuery from '@/hooks/useCompressedQuery';
 import axios from 'axios';
-// Entities
-import AuthContext from "../entities/context/AuthContext.tsx";
+import { BlogAPIType } from '../types/Articles';
 
-interface BlogAPIType {
-	id: number;
-	category: {
-		name: string;
-		slug: string;
-	};
-	title: string;
-	img: string | undefined;
-	slug: string;
-	time_create: string;
-	reading_time_minutes: number;
-	summary: string;
+interface PaginatedArticlesResponse {
+  results: BlogAPIType[];
+  count: number;
+  next: string | null;
+  previous: string | null;
 }
 
-
 export const useArticles = (
-	page: number,
-	filter: { sortBy: string; order: string },
-	selectedCategory: string | null
-	) => {
-	const apiURL = import.meta.env.VITE_API_URL;
-	const { authTokens } = useContext(AuthContext);
-	const [data, setData] = useState<BlogAPIType[]>([]);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
-	const [totalItems, setTotalItems] = useState(0);
-	const [nextPage, setNextPage] = useState<string | null>(null);
-	const [previousPage, setPreviousPage] = useState<string | null>(null);
+  page: number,
+  filter: { sortBy: string; order: string },
+  selectedCategory: string | null
+) => {
+  const apiURL = import.meta.env.VITE_API_URL;
 
-	useEffect(() => {
-		const fetchArticles = async () => {
-		setLoading(true);
-		try {
-			const params = new URLSearchParams();
-			params.append("ordering", filter.sortBy);
-			params.append("order", filter.order);
-			if (page > 1) params.append("page", page.toString());
-			if (selectedCategory) params.append("category", selectedCategory);
+  const queryKey = [
+    'articles',
+    page.toString(),
+    selectedCategory ?? 'none',
+    filter.sortBy,
+    filter.order,
+  ];
 
-			const url = `${apiURL}/api/articles/articles/all/?${params.toString()}`;
-			const response = await axios.get(url, {
-			headers: {
-				Authorization: `Bearer ${authTokens?.access}`,
-			},
-			});
-			setData(response.data.results);
-			setTotalItems(response.data.count);
-			setNextPage(response.data.next);
-			setPreviousPage(response.data.previous);
-			setError(null);
-		} catch (err) {
-			setError(err instanceof Error ? err.message : "An error occurred");
-		} finally {
-			setLoading(false);
-		}
-		};
-		fetchArticles();
-	}, [authTokens, page, selectedCategory, filter, apiURL]);
+  // Функция для загрузки данных
+  const fetchArticles = async (): Promise<PaginatedArticlesResponse> => {
+    const params = new URLSearchParams();
+    const ordering = filter.order === 'desc' ? `-${filter.sortBy}` : filter.sortBy;
+    params.append('ordering', ordering);
+    if (page > 1) params.append('page', page.toString());
+    if (selectedCategory) params.append('category', selectedCategory);
 
-	return {
-		data,
-		loading,
-		error,
-		totalItems,
-		nextPage,
-		previousPage,
-	};
+    const url = `${apiURL}/api/articles/articles/all/?${params.toString()}`;
+    const response = await axios.get<PaginatedArticlesResponse>(url, { withCredentials: true });
+    return response.data;
+  };
+
+  // Используем useCompressedQuery
+  const { data, isLoading, error } = useCompressedQuery<PaginatedArticlesResponse>(
+    queryKey,
+    fetchArticles,
+    { staleTime: 1000 * 60 * 10 } // 10 минут
+  );
+
+  return {
+    data: data?.results ?? [],
+    loading: isLoading,
+    error: error ? (error instanceof Error ? error.message : 'An error occurred') : null,
+    totalItems: data?.count ?? 0,
+    nextPage: data?.next ?? null,
+    previousPage: data?.previous ?? null,
+  };
 };

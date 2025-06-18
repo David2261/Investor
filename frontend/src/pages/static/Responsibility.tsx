@@ -1,23 +1,209 @@
 import { Helmet } from 'react-helmet-async';
 
-
 const Responsibility = () => {
-	return <div className="w-full h-auto">
-		<Helmet>
-		<title>Responsibility</title>
-		<meta name='description' content='Responsibility page' />
-		</Helmet>
-		<div className="flex flex-col px-10 py-10 gap-6 text-lg text-slate-600 text-justify">
-			<h1 className="text-5xl text-slate-900 text-left">Отказ от ответственности</h1>
-			<p>Все заявления о получении или увеличении прибыли или дохода, а также примеры получения (увеличения) прибыли или дохода, которые могут быть размещены в будущем или уже были размещены ранее на данном сайте, являются только предположительной оценкой возможного заработка или увеличения Вашего текущего заработка и не гарантируют его получения. Считая предполагаемую прибыль или увеличение будущих заработков гарантированными, Вы принимаете на себя также риск ее неполучения.При указании конкретной величины дохода и использовании ее относительно лица или вида бизнеса в качестве заработанной ими суммы не гарантируется получение вами аналогичного дохода. Считая предполагаемую прибыль или увеличение будущих заработков гарантированными, Вы принимаете на себя также риск ее неполучения.</p>
-			<p>Любые заявления или представления, размещенные на данном сайте, касающиеся возможного получения прибыли, не считаются средней величиной заработка.</p>
-			<p>Гарантии того, что какие-либо предшествующие успехи или результаты предшествующей деятельности, касающиеся получения доходов, могут использоваться в качестве указания на последующие финансовые результаты, отсутствуют.</p>
-			<p>Величина дохода и ее денежное выражение базируются на многих факторах. Мы не располагаем информацией об успешности Вашей деятельности в будущем, а также касающейся лично Вас или Ваших анкетных данных, об используемых Вами этических принципах, деловых навыках или алгоритмах деятельности, и не гарантируем вытекающей отсюда вероятности получения каких-либо больших, малых или вообще каких-либо денежных сумм. Мы не гарантируем получение вами аналогичных сумм. Считая предполагаемую прибыль или увеличение будущих заработков гарантированными, Вы принимаете на себя также риск ее неполучения.</p>
-			<p>Ведение деловой деятельности через интернет и связанное с ним получение прибыли сопряжены с неизвестными рисками. Решение о занятии подобными видами деятельности не может основываться на какой-либо информации, размещенной на наших продуктах, касающейся предоставляемых нами услуг, представленной на данном веб-сайте, и должно приниматься исключительно с учетом возможных значительных (или незначительных) убытков или неполучения прибыли.</p>
-			<p>Все продукты и услуги представленные на этом сайт предназначены исключительно для использования в образовательных или ознакомительных целях, подлежат использованию с осторожностью и под наблюдением квалифицированных профессионалов (или наставников). До начала деятельности на основе данной или иной информации необходима консультация бухгалтера, юриста или профессионального консультанта.</p>
-			<p>Потребители нашей продукции и услуг, посетители данного веб-сайта должны полагаться на свой здравый смысл и рассчитывать на собственные силы при принятии решений, касающихся ведения бизнеса. Вся предоставленная информация относительно продуктов и услуг должна пройти независимую экспертную оценку квалифицированными профессионалами. Представленная на данном сайте наша информация, продукция и услуги подлежат тщательному анализу и оценке перед принятием Вами решения о ведении бизнеса, об их соответствии действительности.</p>
-		</div>
-	</div>
+  return (
+    <div className="w-full h-auto bg-gray-50">
+      <Helmet>
+        <title>Responsibility</title>
+        <meta name="description" content="Responsibility page" />
+      </Helmet>
+      <div className="flex flex-col px-4 sm:px-6 md:px-10 py-10 gap-8 text-base sm:text-lg text-slate-700 max-w-4xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl text-slate-900 font-bold text-left">
+          Отказ от ответственности
+        </h1>
+        <p className="leading-relaxed">
+          Информация на данном сайте предоставляется исключительно в ознакомительных и образовательных целях.
+          Пожалуйста, внимательно ознакомьтесь с приведенными ниже положениями, чтобы понять риски и
+          ограничения, связанные с использованием наших продуктов и услуг.
+        </p>
+
+        {/* Пункт 1 */}
+        <details className="group">
+          <summary className="font-semibold text-xl text-slate-900 cursor-pointer flex items-center">
+            1. Предположительная оценка прибыли
+            <svg
+              className="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div className="mt-4 pl-4 space-y-4 text-slate-700 leading-relaxed">
+            <p>
+              Все заявления о получении или увеличении прибыли или дохода, размещенные на данном сайте,
+              являются только предположительной оценкой возможного заработка. Они не гарантируют его
+              получения.
+            </p>
+            <p>
+              Если вы считаете предполагаемую прибыль или увеличение будущих заработков гарантированными, вы
+              принимаете на себя риск их неполучения. Указание конкретной величины дохода не означает, что вы
+              достигнете аналогичных результатов.
+            </p>
+          </div>
+        </details>
+
+        {/* Пункт 2 */}
+        <details className="group">
+          <summary className="font-semibold text-xl text-slate-900 cursor-pointer flex items-center">
+            2. Отсутствие средней величины заработка
+            <svg
+              className="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div className="mt-4 pl-4 space-y-4 text-slate-700 leading-relaxed">
+            <p>
+              Заявления или представления, касающиеся возможного получения прибыли, размещенные на сайте, не
+              считаются средней величиной заработка.
+            </p>
+          </div>
+        </details>
+
+        {/* Пункт 3 */}
+        <details className="group">
+          <summary className="font-semibold text-xl text-slate-900 cursor-pointer flex items-center">
+            3. Отсутствие гарантий на основе прошлых результатов
+            <svg
+              className="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div className="mt-4 pl-4 space-y-4 text-slate-700 leading-relaxed">
+            <p>
+              Гарантии того, что прошлые успехи или результаты деятельности, связанные с получением доходов,
+              могут использоваться как указание на последующие финансовые результаты, отсутствуют.
+            </p>
+          </div>
+        </details>
+
+        {/* Пункт 4 */}
+        <details className="group">
+          <summary className="font-semibold text-xl text-slate-900 cursor-pointer flex items-center">
+            4. Факторы, влияющие на доход
+            <svg
+              className="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div className="mt-4 pl-4 space-y-4 text-slate-700 leading-relaxed">
+            <p>
+              Величина дохода зависит от множества факторов, включая ваши деловые навыки, этические принципы и
+              алгоритмы деятельности. Мы не располагаем информацией о вашей будущей успешности и не
+              гарантируем получения каких-либо денежных сумм.
+            </p>
+            <p>
+              Считая предполагаемую прибыль гарантированной, вы принимаете на себя риск ее неполучения.
+            </p>
+          </div>
+        </details>
+
+        {/* Пункт 5 */}
+        <details className="group">
+          <summary className="font-semibold text-xl text-slate-900 cursor-pointer flex items-center">
+            5. Риски деловой деятельности через интернет
+            <svg
+              className="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div className="mt-4 pl-4 space-y-4 text-slate-700 leading-relaxed">
+            <p>
+              Ведение деловой деятельности через интернет и связанное с ним получение прибыли сопряжены с
+              неизвестными рисками. Решение о занятии подобной деятельностью должно приниматься с учетом
+              возможных убытков или неполучения прибыли.
+            </p>
+          </div>
+        </details>
+
+        {/* Пункт 6 */}
+        <details className="group">
+          <summary className="font-semibold text-xl text-slate-900 cursor-pointer flex items-center">
+            6. Образовательные и ознакомительные цели
+            <svg
+              className="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div className="mt-4 pl-4 space-y-4 text-slate-700 leading-relaxed">
+            <p>
+              Все продукты и услуги, представленные на этом сайте, предназначены исключительно для
+              образовательных или ознакомительных целей. Их использование требует осторожности и консультации с
+              квалифицированными профессионалами, такими как бухгалтер, юрист или бизнес-консультант.
+            </p>
+          </div>
+        </details>
+
+        {/* Пункт 7 */}
+        <details className="group">
+          <summary className="font-semibold text-xl text-slate-900 cursor-pointer flex items-center">
+            7. Независимая оценка и ответственность
+            <svg
+              className="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div className="mt-4 pl-4 space-y-4 text-slate-700 leading-relaxed">
+            <p>
+              Посетители сайта должны полагаться на свой здравый смысл при принятии решений, связанных с
+              ведением бизнеса. Вся предоставленная информация, продукты и услуги подлежат независимой
+              экспертной оценке квалифицированными профессионалами перед использованием.
+            </p>
+            <p>
+              Мы рекомендуем тщательно анализировать и оценивать информацию, представленную на сайте, на
+              предмет ее соответствия вашим целям и действительности перед принятием деловых решений.
+            </p>
+          </div>
+        </details>
+      </div>
+
+      {/* Добавление пользовательского CSS для плавной анимации */}
+      <style>
+        {`
+          details > div {
+            transition: max-height 0.3s ease-out;
+            max-height: 0;
+            overflow: hidden;
+          }
+          details[open] > div {
+            max-height: 1000px; /* Подберите подходящее значение */
+          }
+        `}
+      </style>
+    </div>
+  );
 };
 
-export default Responsibility
+export default Responsibility;

@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import '../styles/widgets/Dropdown.css';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import '../styles/widgets/Dropdown.module.css';
 
 interface DropdownProps {
 	className?: string;
@@ -12,10 +12,15 @@ interface DropdownProps {
 const Dropdown: React.FC<DropdownProps> = ({ className, name, value, onChange, options }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
-  
+
 	const toggleDropdown = () => {
 		setIsOpen((prev) => !prev);
 	};
+
+	const selectedOption = useMemo(
+		() => options.find((option) => option.value === value)?.label || 'Select an option',
+		[options, value]
+	);
   
 	const handleOptionClick = (optionValue: string) => {
 		onChange(optionValue);
@@ -53,7 +58,7 @@ const Dropdown: React.FC<DropdownProps> = ({ className, name, value, onChange, o
 				className={`flex justify-between items-center p-2 text-white bg-[#A9A9A9] cursor-pointer rounded-md`}
 				onClick={toggleDropdown}
 				id={`${name}`} >
-				<span>{options.find(option => option.value === value)?.label || 'Select an option'}</span>
+				<span className="truncate">{selectedOption}</span>
 				<span className="ml-2">{isOpen ? '▲' : '▼'}</span>
 			</div>
 			{isOpen && (

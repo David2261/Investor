@@ -33,6 +33,8 @@ django-filter = "^24.3"
 celery = "^5.4.0"
 redis = "^5.2.0"
 pytest-mock = "^3.14.0"
+django-utils-six = "^2.0"
+django-csp = "^4.0"
 
 
 [build-system]

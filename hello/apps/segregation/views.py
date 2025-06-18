@@ -4,6 +4,7 @@ from articles.models import Articles
 
 
 class BaseArticleList(ListAPIView):
+	authentication_classes = []
 	permission_classes = [permissions.AllowAny]
 	queryset = Articles.objects.filter(
 		is_published=True).select_related(

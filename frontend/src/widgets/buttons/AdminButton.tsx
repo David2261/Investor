@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, ReactNode } from 'react';
-import '@/styles/widgets/buttons/AdminButton.css';
+import '@/styles/widgets/buttons/AdminButton.module.css';
 
 interface AdminButtonProps {
     onClick: () => void;

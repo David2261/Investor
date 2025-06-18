@@ -1,33 +1,70 @@
-import { useContext } from 'react';
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-// Entities
-import AuthContext from "../entities/context/AuthContext.tsx";
+import axios from 'axios';
+import { Bond } from "../types/Bond"
+import useCompressedQuery from '../hooks/useCompressedQuery';
 
-const apiURL = import.meta.env.VITE_API_URL;
 
-const useBonds = () => {
-    const { authTokens } = useContext(AuthContext);
+type BondsAPIResponse = Bond[];
 
-    const fetchBonds = async () => {
-        const response = await axios.get(`${apiURL}/api/bonds/bond/all`, {
-        headers: {
-            Authorization: `Bearer ${authTokens}`,
-        },
-        });
-        return response.data;
-    };
+export const useBonds = (selectedCategory: string = 'all') => {
+  const apiURL = import.meta.env.VITE_API_URL;
 
-    const { data, error, isLoading } = useQuery({
-        queryKey: ["bonds"],
-        queryFn: async () => fetchBonds,
-		staleTime: 5 * 60 * 1000,
-		refetchOnWindowFocus: false,
-        enabled: !!authTokens
-    },
-);
+  // Формируем queryKey, обеспечивая, что все элементы — строки
+  const queryKey = ['bonds', selectedCategory];
 
-    return { data, error, isLoading };
+  // Функция для загрузки данных
+  const fetchBonds = async (): Promise<BondsAPIResponse> => {
+    const params = new URLSearchParams();
+    if (selectedCategory !== 'all') {
+      params.append('category', selectedCategory);
+    }
+
+    const url = `${apiURL}/api/bonds/bond/all${selectedCategory !== 'all' ? `?${params.toString()}` : ''}`;
+    const response = await axios.get<BondsAPIResponse>(url, { withCredentials: true });
+    return response.data;
+  };
+
+  // Используем useCompressedQuery
+  const { data, isLoading, error } = useCompressedQuery<BondsAPIResponse>(
+    queryKey,
+    fetchBonds,
+    {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return {
+    data: data ?? [],
+    isLoading,
+    error: error ? { message: error instanceof Error ? error.message : 'An error occurred' } : null,
+  };
 };
 
-export default useBonds;
+export const useBondsOld = () => {
+  const apiURL = import.meta.env.VITE_API_URL;
+
+  // Формируем queryKey
+  const queryKey = ['bondsOld'];
+
+  // Функция для загрузки старых облигаций
+  const fetchBondsOld = async (): Promise<BondsAPIResponse> => {
+    const response = await axios.get<BondsAPIResponse>(`${apiURL}/api/bonds/bond/all/old`, { withCredentials: true });
+    return response.data;
+  };
+
+  // Используем useCompressedQuery
+  const { data, isLoading, error } = useCompressedQuery<BondsAPIResponse>(
+    queryKey,
+    fetchBondsOld,
+    {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return {
+    data: data ?? [],
+    isLoading,
+    error: error ? { message: error instanceof Error ? error.message : 'An error occurred' } : null,
+  };
+};

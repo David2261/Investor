@@ -1,4 +1,5 @@
 from django.contrib.auth.password_validation import validate_password
+from django.core.validators import EmailValidator
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.validators import UniqueValidator
@@ -8,12 +9,36 @@ from .models import User
 from .models import Member
 
 
+class ResetPasswordRequestSerializer(serializers.Serializer):
+	email = serializers.EmailField()
+
+	def validate_email(self, value):
+		validator = EmailValidator()
+		try:
+			validator(value)
+		except:
+			raise serializers.ValidationError("Неверный формат email.")
+		return value
+
+
+class ResetPasswordConfirmSerializer(serializers.Serializer):
+	new_password = serializers.CharField(min_length=8, write_only=True)
+
+	def validate_new_password(self, value):
+		# Проверка сложности пароля
+		if not any(c.isupper() for c in value) or \
+		   not any(c.islower() for c in value) or \
+		   not any(c.isdigit() for c in value):
+			raise serializers.ValidationError(
+				"Пароль должен содержать буквы разного регистра и цифры."
+			)
+		return value
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 	@classmethod
 	def get_token(cls, user: User) -> Token:
 		token = super().get_token(user)
-
-		# Add custom claims
 		token['username'] = user.username
 
 		return token

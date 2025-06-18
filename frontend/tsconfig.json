@@ -17,7 +17,6 @@
       "@testing-library/jest-dom",
       "vite/client",
       "vitest/globals",
-      "testing-library__jest-dom"
     ],
     "baseUrl": "./src",
     "paths": {
@@ -35,18 +34,24 @@
     "noUnusedLocals": false
   },
   "exclude": [
-    "./src/__mocks__/**/*",
+    "node_modules",
+    "dist",
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.ts",
+    "**/*.test.ts",
     "./src/__tests__/**/*",
-    "./src/api",
+    "./src/__mocks__/**/*",
+    "./src/api/**/*",
+    "./config/*",
     "node_modules"
   ],
   "include": [
-    "src",
     "src/**/*",
     "src/**/*.ts",
     "src/**/*.tsx",
     "config/jest.setup.ts",
     "config/setupTests.ts"
-  ],
+, "server"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

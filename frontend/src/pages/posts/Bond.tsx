@@ -1,216 +1,188 @@
+import React, { useState, Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useState, useContext, Key } from "react";
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 // Hooks
-import useMediaQuery from "@/hooks/useMediaQuery.ts";
-// API
-import { useArticles } from "@/api/useArticles.tsx";
-// Components
-import DataTab from "@/components/Bond/DataTab";
-import Article from "@/components/Bond/Article";
-import tgSuccess from "@/assets/pages/success.webp";
-// Entities
-import AuthContext from '@/entities/context/AuthContext.tsx';
-// Assets
-import '@/styles/Bonds.css';
+import useMediaQuery from '@/hooks/useMediaQuery.ts';
+// Api
+import { useArticles } from '@/api/useArticles.tsx';
+import { useBonds, useBondsOld } from '@/api/useBonds';
+import { BlogAPIType } from '@/types/Articles';
+// Styles
+import '@/styles/Bonds.module.css';
+import tgSuccess from '@/assets/pages/success.webp';
 
-// Months for the dividend calendar
+const DataTab = lazy(() => import('@/components/Bond/DataTab'));
+const Article = lazy(() => import('@/components/Bond/Article'));
+const NotFound = lazy(() => import('@/widgets/handlerError/404'));
+
 const months = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре'];
 
-// Bond data types
-type Bond = {
-	id: Key;
-	title: string;
-	description: string;
-	category: string;
-	price: number;
-	maturity: string;
-	cupon: number;
-	cupon_percent: number;
-	is_published: boolean;
-	slug: string;
-	[key: string]: any;
-};
-
 interface ErrorType {
-    message: string;
+  message: string;
 }
 
-type BondsAPIResponse = Bond[];
+const Bonds: React.FC = () => {
+  const isAboveMediumScreens = useMediaQuery('(min-width: 1060px)');
+  const isMobile = useMediaQuery('(max-width: 640px)');
+  const { data: news, error: errorNews } = useArticles(1, { sortBy: 'popularity', order: 'desc' }, null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-const apiURL = import.meta.env.VITE_API_URL;
+  const { data, isLoading, error } = useBonds(selectedCategory);
+  const { data: dataOld, isLoading: isLoadingOld, error: errorOld } = useBondsOld();
 
-const Bonds = () => {
-	const { authTokens } = useContext(AuthContext);
-	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
-	const { data: news, error: errorNews } = useArticles(1, { sortBy: 'popularity', order: 'desc' }, null);
-	const [selectedCategory, setSelectedCategory] = useState('all');
+  const getErrorMessage = (err: ErrorType | Error | string | null | undefined): string | null => {
+    if (!err) return null;
+    if (typeof err === 'string') return err;
+    if (err instanceof Error) return err.message;
+    return err.message || 'Неизвестная ошибка';
+  };
 
-	const { data, error } = useQuery<BondsAPIResponse, Error>({
-		queryKey: ['bonds'],
-		queryFn: async () => {
-			const response = await axios.get(`${apiURL}/api/bonds/bond/all`, {
-				headers: {
-					Authorization: `Bearer ${authTokens?.access}`
-				}
-			});
-			return response.data;
-		},
-		staleTime: 5 * 60 * 1000,
-		refetchOnWindowFocus: false,
-		enabled: !!authTokens
-	});
+  const errorMessage = getErrorMessage(error) || getErrorMessage(errorNews) || getErrorMessage(errorOld);
+  if (errorMessage) {
+    return (
+      <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>
+        <NotFound />
+      </Suspense>
+    );
+  }
 
-	const { data: dataOld, error: errorOld } = useQuery<BondsAPIResponse, Error>({
-		queryKey: ['bondsOld'],
-		queryFn: async () => {
-			const response = await axios.get(`${apiURL}/api/bonds/bond/all/old`, {
-				headers: {
-					Authorization: `Bearer ${authTokens?.access}`
-				}
-			});
-			return response.data;
-		},
-		enabled: !!authTokens
-	});
+  const currentYear = new Date().getFullYear();
+  const nextYear = currentYear + 1;
 
-	const getErrorMessage = (err: ErrorType | string | null | undefined) => {
-		if (!err) return null;
-		return typeof err === "string" ? err : err.message || "Unknown error";
-	};
-	
-	const errorMessage = getErrorMessage(error) || getErrorMessage(errorNews) || getErrorMessage(errorOld);
-	if (errorMessage) {
-		return <div>Error: {errorMessage}</div>;
-	}
+  const filteredData = selectedCategory === 'old'
+    ? dataOld ?? []
+    : selectedCategory === 'all'
+    ? data ?? []
+    : data?.filter((item) => item.category === selectedCategory) ?? [];
 
-	// Current year and next year for dynamic content
-	const currentYear = new Date().getFullYear();
-	const nextYear = currentYear + 1;
+  // Transform news to ContentItemType[]
+  const dataPostsToDisplay = news
+    ? news.slice(0, 5).map((item) => ({
+        ...item,
+        img: item.img ?? null,
+      })) as BlogAPIType[]
+    : [];
 
-	// Prepare filtered data based on selected category
-	const filteredData = !data && selectedCategory !== "old" 
-		? [] 
-		: selectedCategory === 'old'
-		? dataOld ?? []
-		: selectedCategory === 'all'
-		? data ?? []
-		: data?.filter(item => item.category === selectedCategory) ?? [];
+  if (isLoading || isLoadingOld) {
+    return (
+      <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>
+        <div className="flex justify-center items-center h-screen">Загрузка...</div>
+      </Suspense>
+    );
+  }
 
-	const dataPostsToDisplay = news?.slice(0, 5) || [];
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>
+      <div className="bonds-body">
+        <Helmet>
+          <title>Облигации{selectedCategory !== 'all' ? ` | ${selectedCategory}` : ''}</title>
+          <meta name="description" content="Сервис по облигациям на Московской и Санкт-Петербургской бирже" />
+        </Helmet>
 
-	return (
-		<div className="bonds-body">
-			<Helmet>
-				<title>Облигации{selectedCategory !== 'all' ? ` | ${selectedCategory}` : ''}</title>
-				<meta name='description' content='Bonds page' />
-			</Helmet>
+        {/* Header */}
+        <h1 className="bonds-title">ОФЗ, Муниципальные и Корпоративные Облигации</h1>
+        <p className="bonds-under-title">Сервис по облигациям на Московской и Санкт-Петербургской бирже</p>
 
-			{/* Header */}
-			<h1 className="bonds-title">ОФЗ, Муниципальные и Корпоративные Облигации</h1>
-			<p className="bonds-under-title">Сервис по облигациям на Московской и Санкт-Петербургской бирже</p>
+        {/* News Section */}
+        <div className={isMobile ? 'flex flex-col items-center' : 'sm:flex bonds-news-body'}>
+          <div className={isMobile ? 'w-full' : 'bonds-news-content-block'}>
+            <h1 className={isMobile ? 'text-2xl text-center mb-4' : 'bonds-news-content-block-header'}>
+              Последние новости по облигациям
+            </h1>
+            <Article data={dataPostsToDisplay} />
+          </div>
+          {!isMobile && isAboveMediumScreens && (
+            <div className="bonds-news-add-block">
+              <div className="bonds-news-add-header">
+                <h1>Телеграм по новостям</h1>
+                <img src={tgSuccess} alt="Телеграм-канал по облигациям" loading="lazy" />
+              </div>
+              <p className="bonds-news-add-under-text">@investorhome - официальный канал по облигациям.</p>
+            </div>
+          )}
+          {isMobile && (
+            <div className="mt-6 text-center">
+              <h3 className="text-lg font-semibold">Телеграм по новостям</h3>
+              <p className="text-sm text-gray-600">@investorhome - официальный канал по облигациям.</p>
+              <img
+                src={tgSuccess}
+                alt="Телеграм-канал по облигациям"
+                loading="lazy"
+                className="mt-4 w-32 mx-auto"
+              />
+            </div>
+          )}
+        </div>
 
-			{/* News */}
-			<div className="sm:flex bonds-news-body">
-				{isAboveMediumScreens ?
-					<div className="bonds-news-content-block">
-						<h1 className="bonds-news-content-block-header">Последние новости по облигациям</h1>
-						<Article data={dataPostsToDisplay} />
-					</div>
-					:
-					<div className="flex flex-col">
-						<h1 className="text-2xl justify-center">Последние новости по облигациям</h1>
-						<Article data={dataPostsToDisplay} />
-					</div>
-				}
+        {/* Bonds Content */}
+        <div className={isAboveMediumScreens ? 'bonds-content-body' : 'px-4'}>
+          <h1 className="bonds-content-title">Облигации: календарь на {currentYear}-{nextYear}</h1>
+          <p className="bonds-content-under-title">
+            Дивидендный календарь в {currentYear}-{nextYear} годах. Ближайшие купоны на одну облигацию в{' '}
+            {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
+          </p>
 
-				{isAboveMediumScreens && (
-					<div className="bonds-news-add-block">
-						<div className="bonds-news-add-header">
-							<h1>Телеграм по новостям</h1>
-							<img src={tgSuccess} alt="placeholder+image" />
-						</div>
-						<p className="bonds-news-add-under-text">@investorhome - официальный канал по облигациям.</p>
-					</div>
-				)}
-			</div>
+          {/* Category Selection */}
+          <div className="bonds-content-categories-block flex flex-wrap gap-2 justify-center">
+            <div className="bcc-category flex gap-2" role="group">
+              {[
+                { key: 'all', label: 'Все' },
+                { key: 'federal loan bonds', label: 'ОФЗ' },
+                { key: 'municipal bonds', label: 'Муниципальные' },
+                { key: 'Corporate bonds', label: 'Корпоративные' },
+              ].map(({ key, label }) => (
+                <button
+                  key={key}
+                  className={`bcc-category-btn ${selectedCategory === key ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(key)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <button
+              className={`bonds-content-categories-old-btn ${selectedCategory === 'old' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('old')}
+            >
+              Прошедшие купоны
+            </button>
+          </div>
 
-			{/* Block content bonds */}
-			<div className={isAboveMediumScreens ? "bonds-content-body" : ""}>
-				<h1 className="bonds-content-title">Облигации: календарь на {currentYear}-{nextYear}</h1>
-				<p className="bonds-content-under-title">
-					Дивидендный календарь в {currentYear}-{nextYear} годах. Ближайшие купоны на одну облигацию в {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
-				</p>
-
-				{/* Category selection */}
-				<div className="bonds-content-categories-block">
-					<div className="bcc-category" role="group">
-						<button
-							className="bcc-category-btn"
-							onClick={() => setSelectedCategory('all')}
-						>
-							Все
-						</button>
-						<button
-							className="bcc-category-btn"
-							onClick={() => setSelectedCategory('federal loan bonds')}
-						>
-							ОФЗ
-						</button>
-						<button
-							className="bcc-category-btn"
-							onClick={() => setSelectedCategory('municipal bonds')}
-						>
-							Муниципальные
-						</button>
-						<button
-							className="bcc-category-btn"
-							onClick={() => setSelectedCategory('Corporate bonds')}
-						>
-							Корпоративные
-						</button>
-					</div>
-					<button
-						className="bonds-content-categories-old-btn"
-						onClick={() => setSelectedCategory('old')}
-					>
-						прошедшие купоны
-					</button>
-				</div>
-
-				{/* Table content */}
-				<div className={isAboveMediumScreens ? "bonds-content-table" : "overflow-x-auto"}>
-					<div className="tbl-header">
-						<table cellPadding="0" cellSpacing="0">
-							<thead>
-								<tr>
-									<th>Облигация</th>
-									<th>Реестр</th>
-									<th>Лот</th>
-									<th>Купон</th>
-									<th>Купон в %</th>
-									<th>Дата погашения</th>
-								</tr>
-							</thead>
-						</table>
-					</div>
-					<div className="tbl-content">
-						<table cellPadding="0" cellSpacing="0">
-							<tbody>
-								{/* Ensure filteredData exists before rendering */}
-								{filteredData?.length > 0 ? (
-									<DataTab data={{ results: filteredData }} />
-								) : (
-									<tr><td colSpan={6}>Нет данных</td></tr>
-								)}
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
-}
+          {/* Table Content */}
+          <div className={isMobile ? 'overflow-x-auto w-full' : 'bonds-content-table'}>
+            <div className="tbl-header">
+              <table cellPadding="0" cellSpacing="0" className="w-full">
+                <thead>
+                  <tr>
+                    <th>Облигация</th>
+                    <th>Реестр</th>
+                    <th>Лот</th>
+                    <th>Купон</th>
+                    <th>Купон в %</th>
+                    <th>Дата погашения</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div className="tbl-content">
+              <table cellPadding="0" cellSpacing="0" className="w-full">
+                <tbody>
+                  {filteredData.length > 0 ? (
+                    <DataTab data={{ results: filteredData as any }} />
+                  ) : (
+                    <tr>
+                      <td colSpan={6} className="text-center py-4">
+                        Нет данных
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Suspense>
+  );
+};
 
 export default Bonds;

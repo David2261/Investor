@@ -6,11 +6,17 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     plugins: [react()],
+
+    preview: {
+      port: 5137,
+      host: '127.0.0.1',
+    },
     build: {
       outDir: 'dist',
       rollupOptions: {
         input: 'index.html',
       },
+      ssr: 'src/entry-server.tsx',
     },
     resolve: {
       alias: {
@@ -35,6 +41,9 @@ export default defineConfig(({ mode }) => {
             '@tailwindcss/postcss': {},
           },
         },
+        modules: {
+          generateScopedName: '[name]__[local]___[hash:base64:5]',
+        },
       },
       deps: {
         optimizer: {
@@ -45,6 +54,8 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
+      port: 5137,
+      host: '127.0.0.1',
       historyApiFallback: true,
       proxy: {
         '/api': {
@@ -53,11 +64,16 @@ export default defineConfig(({ mode }) => {
           secure: false,
         },
       },
+      hmr: {
+        host: '127.0.0.1',
+        port: 24678,
+      },
     },
     define: {
-      'import.meta.env': JSON.stringify({
-        VITE_API_URL: env.VITE_API_URL || 'https://mocked-api.local',
-      }),
+      'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || 'https://mocked-api.local'),
+    },
+    ssr: {
+      noExternal: ['react-router-dom', 'react-helmet-async'],
     },
   };
 });

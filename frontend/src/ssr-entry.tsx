@@ -1,8 +1,8 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToPipeableStream } from 'react-dom/server';
 import App from './App';
 
 export function render() {
-  const appString = renderToString(<App />);
+  const appString = renderToPipeableStream(<App />);
   return appString;
 }

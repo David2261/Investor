@@ -12,10 +12,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
-filename = f"{BASE_DIR}/__logs__/error.log"
-os.makedirs(os.path.dirname(filename), exist_ok=True)
-with open(filename, "w") as f:
-	f.write("")
+LOG_DIR = os.path.join(BASE_DIR, '__logs__')
+ERROR_LOG_FILE = os.path.join(LOG_DIR, 'error.log')
+MAIN_LOG_FILE = os.path.join(LOG_DIR, 'main.log')
+
+os.makedirs(LOG_DIR, exist_ok=True)
 
 # Логгирование
 LOGGING = {
@@ -37,17 +38,17 @@ LOGGING = {
 			"level": "INFO",
 			"class": "logging.FileHandler",
 			"formatter": "standart",
-			"filename": f'{BASE_DIR}/__logs__/main.log',
+			"filename": MAIN_LOG_FILE,
 		},
 		"dev_file": {
 			"level": "NOTSET",
 			"class": "logging.FileHandler",
 			"formatter": "exception",
-			"filename": f'{BASE_DIR}/__logs__/error.log',
+			"filename": ERROR_LOG_FILE,
 		},
 	},
 	"loggers": {
-		"root": {
+		"": {
 			"handlers": ["file"],
 			"level": "INFO",
 		},
@@ -72,7 +73,7 @@ DEBUG = env('DEBUG')
 if DEBUG == True:
 	APPEND_SLASH = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 INSTALLED_APPS = [
@@ -83,6 +84,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'django.contrib.sites',
+	'django.contrib.sitemaps',
 	# Authentication and API
 	'allauth',
 	'allauth.account',
@@ -104,8 +106,8 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
-	'django.middleware.security.SecurityMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
+	'django.middleware.security.SecurityMiddleware',
 	'whitenoise.middleware.WhiteNoiseMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
@@ -113,8 +115,12 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'csp.middleware.CSPMiddleware',
 	"allauth.account.middleware.AccountMiddleware",
 ]
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
 
 ROOT_URLCONF = 'hello.urls'
 
@@ -185,6 +191,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hello.wsgi.application'
 
+
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -203,26 +211,33 @@ DATABASES = {
 	}
 }
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOWED_ORIGINS = [
-	"http://localhost:8080",
+	"http://localhost:3000",
+	"http://127.0.0.1:3000",
+	"http://localhost:5137",
+	"http://127.0.0.1:5137",
 	"http://127.0.0.1:8000",
-	"http://localhost:5173",
+	"http://localhost:8080",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
-    "GET",
-    "POST",
-    "PUT",
-    "PATCH",
-    "DELETE",
-    "OPTIONS",
+	"GET",
+	"POST",
+	"PUT",
+	"PATCH",
+	"DELETE",
+	"OPTIONS",
 ]
 
 CORS_ALLOW_HEADERS = [
-    "content-type",
-    "authorization",
+	"content-type",
+	"authorization",
+	"x-csrftoken",
 ]
+
 """
 DATABASES = {
 	'default': {
@@ -258,75 +273,99 @@ AUTH_USER_MODEL = 'authentication.User'
 # DRF
 REST_FRAMEWORK = {
 	'DEFAULT_AUTHENTICATION_CLASSES': [
-		'rest_framework_simplejwt.authentication.JWTAuthentication',
-		'rest_framework.authentication.BasicAuthentication',
-		'rest_framework.authentication.SessionAuthentication',
+		'authentication.backends.CookieJWTAuthentication',
 	],
 	'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 	'DEFAULT_PERMISSION_CLASSES': [
-		'rest_framework.permissions.AllowAny',
-		# 'rest_framework.permissions.IsAuthenticated',
+		'rest_framework.permissions.IsAuthenticated',
 	],
 	'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 	'DEFAULT_PARSER_CLASSES': [
 		'rest_framework.parsers.JSONParser',
 		'rest_framework.parsers.MultiPartParser',
-        'rest_framework.parsers.FormParser',
+		'rest_framework.parsers.FormParser',
 	],
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 	'PAGE_SIZE': 5,
 }
 
+DJOSER = {
+	'LOGIN_FIELD': 'email',
+	'USER_CREATE_PASSWORD_RETYPE': True,
+	'SERIALIZERS': {
+		'user_create': 'djoser.serializers.UserCreateSerializer',
+		'user': 'djoser.serializers.UserSerializer',
+		'current_user': 'djoser.serializers.UserSerializer',
+	},
+	'PERMISSIONS': {
+		'user': ['rest_framework.permissions.IsAuthenticated'],
+		'user_list': ['rest_framework.permissions.IsAdminUser'],
+	},
+	'TOKEN_MODEL': None,
+}
+
 # Authentification JWT
 SIMPLE_JWT = {
+	# Время жизни токенов
 	"ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-	"REFRESH_TOKEN_LIFETIME": timedelta(days=90),
+	"REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 	"ROTATE_REFRESH_TOKENS": True,
 	"BLACKLIST_AFTER_ROTATION": True,
-	"UPDATE_LAST_LOGIN": False,
 
+	# Алгоритмы
 	"ALGORITHM": "HS256",
 	"SIGNING_KEY": SECRET_KEY,
-	"VERIFYING_KEY": "",
-	"AUDIENCE": None,
-	"ISSUER": None,
-	"JSON_ENCODER": None,
-	"JWK_URL": None,
-	"LEEWAY": 0,
 
-	"AUTH_HEADER_TYPES": ("Bearer",),
-	"AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+	# Заголовки не используются, мы работаем через cookies
+	'REFRESH_COOKIE': 'refresh_token',  # Название ключа в куки, в котором хранится refresh токен
+	'AUTH_COOKIE': 'access_token',
+	'AUTH_COOKIE_SECURE': False,  # Куки должны передаваться только по HTTPS (True для production)
+	'AUTH_COOKIE_HTTP_ONLY': False,  # Запрет доступа к куки через JavaScript
+	'AUTH_COOKIE_SAMESITE': 'Lax',  # Ограничение передачи куки при кросс-сайтовых запросах.
+
+
+	# Пользователь
 	"USER_ID_FIELD": "id",
 	"USER_ID_CLAIM": "user_id",
-	"USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
 
-	"AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-	"TOKEN_TYPE_CLAIM": "token_type",
+	# Модель пользователя
 	"TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
 
+	# Классы токенов
+	"AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+	"TOKEN_TYPE_CLAIM": "token_type",
 	"JTI_CLAIM": "jti",
 
-	"SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-	"SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
-	"SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=90),
+	# Слайдинг (если используешь)
+	"SLIDING_TOKEN_LIFETIME": timedelta(minutes=60),
+	"SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 
+	# Сериализаторы
 	"TOKEN_OBTAIN_SERIALIZER": "authentication.serializers.TokenObtainPairSerializer",
 	"TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
-	"TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
-	"TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
-	"SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
-	"SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+CSRF_COOKIE_SECURE = False
+
+CSRF_COOKIE_DOMAIN = '127.0.0.1'
+SESSION_COOKIE_DOMAIN = '127.0.0.1'
+
+CSRF_TRUSTED_ORIGINS  = [
+	"http://127.0.0.1:5137",
+]
+
 
 # myaccount.google.com/lesssecureapps
 # Email Settings
-DEFAULT_FROM_EMAIL = ''
-EMAIL_BACKEND = ''
-EMAIL_HOST = ''
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+# Email for sendgrid
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.brevo.com' # 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'gw2raidar@example.com'
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
