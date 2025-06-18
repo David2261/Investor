@@ -12,10 +12,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
-filename = f"{BASE_DIR}/__logs__/error.log"
-os.makedirs(os.path.dirname(filename), exist_ok=True)
-with open(filename, "w") as f:
-	f.write("")
+LOG_DIR = os.path.join(BASE_DIR, '__logs__')
+ERROR_LOG_FILE = os.path.join(LOG_DIR, 'error.log')
+MAIN_LOG_FILE = os.path.join(LOG_DIR, 'main.log')
+
+os.makedirs(LOG_DIR, exist_ok=True)
 
 # Логгирование
 LOGGING = {
@@ -37,17 +38,17 @@ LOGGING = {
 			"level": "INFO",
 			"class": "logging.FileHandler",
 			"formatter": "standart",
-			"filename": f'{BASE_DIR}/__logs__/main.log',
+			"filename": MAIN_LOG_FILE,
 		},
 		"dev_file": {
 			"level": "NOTSET",
 			"class": "logging.FileHandler",
 			"formatter": "exception",
-			"filename": f'{BASE_DIR}/__logs__/error.log',
+			"filename": ERROR_LOG_FILE,
 		},
 	},
 	"loggers": {
-		"root": {
+		"": {
 			"handlers": ["file"],
 			"level": "INFO",
 		},

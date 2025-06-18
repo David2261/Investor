@@ -3,9 +3,11 @@ import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+// Types
 import { ArticleNewsAPI } from '@/types/Article';
 const AdvertisingBlock = lazy(() => import('@/components/Home/AdvertisingBlock'));
-import "@/styles/pages/posts/ArticleNews.css";
+// Styles
+import "@/styles/pages/posts/ArticleNews.module.css";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
@@ -20,7 +22,7 @@ const LazySection = ({ htmlContent }: { htmlContent: string }) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            observer.unobserve(entry.target); // Отключаем наблюдение после отображения
+            observer.unobserve(entry.target);
           }
         });
       },

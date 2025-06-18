@@ -1,7 +1,7 @@
 import { useMemo, useState, Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 // Styles
-import '@/styles/Blog.css';
+import '@/styles/Blog.module.css';
 // API
 import { useArticles } from '@/api/useArticles.tsx';
 // Widgets
@@ -59,7 +59,6 @@ const News: React.FC = () => {
 				<meta name="description" content="Новости и статьи" />
 			</Helmet>
 			{isDonationOpen && <DonationPopup onClose={() => setIsDonationOpen(false)} />}
-			<h1 className="blog-header">Новости</h1>
 			<div className={isOpenSidebar ? 'flex flex-row gap-4 pl-6 pr-24' : 'relative flex flex-col px-4 md:px-24'}>
 				<div className={isOpenSidebar ? 'flex flex-col' : 'flex justify-between'}>
 					<DataTab

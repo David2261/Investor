@@ -80,7 +80,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	if (response.status === 200) {
 	  await fetchUserData();
-	  navigate(-1);
 	  showNotification("Login successful", "success");
 	} else {
 	  showNotification("Invalid credentials", "error");

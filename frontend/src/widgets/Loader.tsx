@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 // styles
-import '../styles/widgets/Loader.css';
+import '../styles/widgets/Loader.module.css';
 
 
 function GoogleLoader() {

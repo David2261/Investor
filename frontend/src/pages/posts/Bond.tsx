@@ -1,10 +1,13 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
+// Hooks
 import useMediaQuery from '@/hooks/useMediaQuery.ts';
+// Api
 import { useArticles } from '@/api/useArticles.tsx';
 import { useBonds, useBondsOld } from '@/api/useBonds';
 import { BlogAPIType } from '@/types/Articles';
-import '@/styles/Bonds.css';
+// Styles
+import '@/styles/Bonds.module.css';
 import tgSuccess from '@/assets/pages/success.webp';
 
 const DataTab = lazy(() => import('@/components/Bond/DataTab'));

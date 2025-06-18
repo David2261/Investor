@@ -1,5 +1,6 @@
 import os
 import environ
+import logging
 
 from django.conf import settings
 from django.urls import reverse
@@ -48,6 +49,10 @@ from .backends import CookieJWTAuthentication
 
 env = environ.Env()
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
+
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("dev")
+log_info = logging.getLogger("root")
 
 
 """ Для обычных пользователей """
@@ -116,7 +121,6 @@ class CustomTokenRefreshView(TokenRefreshView):
 			raise InvalidToken(f'Invalid token {e}')
 
 		tokens = serializer.validated_data
-		print("Tokens generated:", tokens)
 		response = Response({
 			'access': tokens['access'],
 			'refresh': tokens['refresh']
@@ -132,21 +136,17 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 	@enforce_csrf
 	def post(self, request, *args, **kwargs):
 		try:
-			print(f"Request data: {request.data}")  # Debug
-			print(f"Request cookies: {request.COOKIES}")  # Debug
 			serializer = self.get_serializer(data=request.data)
 			serializer.is_valid(raise_exception=True)
 			tokens = serializer.validated_data
-			print("Tokens generated:", tokens)  # Debug
 			response = Response({
 				'access': tokens['access'],
 				'refresh': tokens['refresh']
 			}, status=status.HTTP_200_OK)
 			response = set_jwt_cookies(response, tokens['access'], tokens['refresh'])
-			print("Response cookies set")  # Debug
 			return response
 		except Exception as e:
-			print(f"Error in CustomTokenObtainPairView: {str(e)}")  # Debug
+			logger(f"Error in CustomTokenObtainPairView: {str(e)}")  # Debug
 			raise
 
 

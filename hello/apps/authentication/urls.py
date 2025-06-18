@@ -13,6 +13,7 @@ from .views import GoogleLoginView
 from .views import YandexLoginView
 from .views import MicrosoftLoginView
 from .views import CustomTokenObtainPairView
+from .private_client.views import ClientMetricsView
 from .views import get_csrf
 
 
@@ -54,4 +55,9 @@ urlpatterns = [
 		'microsoft/login/',
 		MicrosoftLoginView.as_view(),
 		name='microsoft_login'),
+	# Metrics
+	path(
+		'v1/launch-control/',
+		ClientMetricsView.as_view(),
+		name='client_metrics'),
 ]

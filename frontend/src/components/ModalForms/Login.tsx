@@ -1,23 +1,30 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { animated, useSpring } from '@react-spring/web';
-import { IoIosClose } from 'react-icons/io';
-import ForgotPassword from './ForgotPassword';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import AuthContext from '@/entities/context/AuthContext';
-import IH from '@/assets/logo/IH.webp';
-import '@/styles/components/ModalForms/Login.css';
+import styles from '@/styles/components/ModalForms/Login.module.css';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginProps {
-  setIsOpen: () => void;
-  setIsSignUp: () => void;
+  setIsOpen: (value: boolean) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ setIsOpen, setIsSignUp }) => {
-  const { loginUser } = useContext(AuthContext);
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+const Login: React.FC<LoginProps> = ({ setIsOpen }) => {
+  const [isLogin, setIsLogin] = useState(true);
+  const containerRef = useRef(null);
+  const { loginUser, registrationUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const formRef = useRef<HTMLDivElement>(null);
+
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [isLoginMode, setIsLoginMode] = useState(true);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     // Проверка на опасные символы для XSS
     if (/[<>"'`]/.test(value)) {
@@ -27,145 +34,181 @@ const Login: React.FC<LoginProps> = ({ setIsOpen, setIsSignUp }) => {
     setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      setError(null);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
 
-      // Валидация email
-      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      if (!emailPattern.test(form.email)) {
+    // Валидация email
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailPattern.test(form.email)) {
+      setError('Неверный формат email.');
+      return;
+    }
+
+    // Валидация пароля
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
+    if (!passwordPattern.test(form.password)) {
+      if (!isLoginMode) {
+        setError('Пароль должен содержать минимум 8 символов, включая буквы разного регистра и цифры.');
+      } else {
         setError('Неверный формат email.');
+      }
+      return;
+    }
+
+    if (!isLoginMode) {
+      const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
+      if (!usernamePattern.test(form.username)) {
+        setError('Имя пользователя должно быть от 3 до 20 символов и содержать только буквы, цифры или подчеркивания.');
         return;
       }
 
-      // Валидация пароля
-      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
-      if (!passwordPattern.test(form.password)) {
-        setError('Пароль должен содержать минимум 8 символов, включая буквы разного регистра и цифры.');
+      if (form.password !== form.password2) {
+        setError('Пароли не совпадают.');
         return;
       }
 
       try {
-        await loginUser({
-          email: form.email,
-          password: form.password,
-        });
-        setIsOpen();
-      } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'Произошла ошибка при входе.';
-        setError(`Ошибка: ${errorMessage}`);
+        await registrationUser(form);
+        setIsOpen(false);
+      } catch (err: any) {
+        setError(err?.message || 'Ошибка при регистрации.');
       }
-    },
-    [form, loginUser, setIsOpen]
-  );
-
-  const closeForgotPassword = () => setIsForgotPassword(false);
-  const openForgotPassword = () => setIsForgotPassword(true);
-
-  const handleSignUpClick = () => {
-    setIsOpen();
-    setIsSignUp();
-  };
-
-  const handleForgotPasswordClick = () => {
-    openForgotPassword();
-  };
-
-  const styles = useSpring({
-    from: { opacity: 0 },
-    to: { opacity: 1 },
-    config: { duration: 300 },
-  });
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      const formElement = document.querySelector('form');
-      if (formElement) {
-        e.preventDefault();
-        // Создаем синтетическое событие формы
-        const formEvent = new Event('submit', { bubbles: true, cancelable: true }) as unknown as React.FormEvent<HTMLFormElement>;
-        Object.defineProperty(formEvent, 'target', { value: formElement });
-        Object.defineProperty(formEvent, 'currentTarget', { value: formElement });
-        Object.defineProperty(formEvent, 'preventDefault', { value: () => e.preventDefault() });
-        
-        handleSubmit(formEvent);
+    } else {
+      try {
+        await loginUser({ email: form.email, password: form.password });
+        setIsOpen(false);
+      } catch (err: any) {
+        setError(err?.message || 'Ошибка при входе.');
       }
     }
   };
 
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (formRef.current && !formRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
     };
-  }, [handleSubmit]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [formRef, setIsOpen]);
+
+  const toggleForm = () => {
+    setIsLogin(!isLogin);
+  };
+
+  const TermOfUser = () => {
+    toggleForm();
+    setIsOpen(false)
+    navigate("termsofuse");
+  }
 
   return (
-    <>
-      {isForgotPassword ? (
-        <ForgotPassword setIsOpen={closeForgotPassword} setIsForgotPassword={openForgotPassword} />
-      ) : (
-        <div className="fixed z-10 w-full h-full backdrop-blur-sm bg-white/30">
-          <animated.div className="screen" style={styles}>
-            <form onSubmit={handleSubmit}>
-              <div className="screen-1">
-                <img className="logo" alt="Логотип" src={IH} />
-                <button
-                  onClick={setIsOpen}
-                  className="fixed top-16 right-8"
-                  type="button"
-                  aria-label="Закрыть"
-                >
-                  <IoIosClose className="text-black w-16 h-16" />
-                </button>
+    <div ref={formRef} className={styles.container}>
+      <div className={styles.container__buttons}>
+        <div
+          className={styles.container__btnHighlight}
+          style={{ transform: isLogin ? 'translateX(0)' : 'translateX(100%)' }}
+        ></div>
+        <button
+          type="button"
+          className={styles.container__toggleBtn}
+          style={{ color: isLogin ? '#fff' : '#000' }}
+          onClick={toggleForm}
+        >
+          Вход
+        </button>
+        <button
+          type="button"
+          className={styles.container__toggleBtn}
+          style={{ color: isLogin ? '#000' : '#fff' }}
+          onClick={toggleForm}
+        >
+          Регистрация
+        </button>
+      </div>
 
-                {error && <div className="error">{error}</div>}
-
-                <div className="email">
-                  <label htmlFor="email-input">Email</label>
-                  <div className="sec-2">
-                    <input
-                      id="email-input"
-                      type="email"
-                      name="email"
-                      placeholder="example@gmail.com"
-                      autoComplete="email"
-                      value={form.email}
-                      onChange={onInputChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="password">
-                  <label htmlFor="password-input">Пароль</label>
-                  <div className="sec-2">
-                    <input
-                      id="password-input"
-                      className="pas"
-                      type="password"
-                      name="password"
-                      placeholder="············"
-                      autoComplete="current-password"
-                      value={form.password}
-                      onChange={onInputChange}
-                    />
-                  </div>
-                </div>
-
-                <button className="signup" type="submit">
-                  Вход
-                </button>
-                <div className="footer">
-                  <span onClick={handleSignUpClick}>Регистрация</span>
-                  <span onClick={handleForgotPasswordClick}>Забыли пароль?</span>
-                </div>
-              </div>
-            </form>
-          </animated.div>
+      <form
+          id="login"
+          className={styles.form}
+          style={{ transform: isLogin ? 'translateX(0)' : 'translateX(100%)' }}
+          onSubmit={handleSubmit}>
+        <input
+            name="email"
+            type="email"
+            className={styles.form__input}
+            placeholder="Email"
+            required
+            value={form.email}
+            onChange={handleInputChange} />
+        <input
+            name="password"
+            type="password"
+            className={styles.form__input}
+            placeholder="Пароль"
+            required
+            value={form.password}
+            onChange={handleInputChange} />
+        <div className="flex justify-between">
+          <div className={styles.form__options}>
+            <input type="checkbox" className={styles.form__checkBox} id="remember" />
+            <label htmlFor="remember" className={styles.form__terms}>Заполнить меня</label>
+          </div>
+          <div className={styles.form__options}>
+            <label htmlFor="register-terms" className={styles.form__terms}>
+              Забыли <a href="#" className={styles.form__termsLink}>пароль</a>?
+            </label>
+          </div>
         </div>
-      )}
-    </>
+        <button type="submit" className={styles.form__submitBtn}>Вход</button>
+      </form>
+
+      <form id="register" className={styles.form} style={{ transform: isLogin ? 'translateX(100%)' : 'translateX(0)' }}>
+        <input
+            name="username"
+            type="text"
+            className={styles.form__input}
+            placeholder="Имя пользователя"
+            required
+            value={form.username}
+            onChange={handleInputChange}
+            />
+        <input
+            name="email"
+            type="email"
+            className={styles.form__input}
+            placeholder="Email"
+            required
+            value={form.email}
+            onChange={handleInputChange} />
+        <input
+            name="password"
+            type="password"
+            className={styles.form__input}
+            placeholder="Пароль"
+            required
+            value={form.password}
+            onChange={handleInputChange} />
+        <input
+          name="password2"
+          type="password"
+          className={styles.form__input}
+          placeholder="Повторный пароль"
+          required
+          value={form.password2}
+          onChange={handleInputChange} />
+        <div className={styles.form__options}>
+          <input type="checkbox" className={styles.form__checkBox} id="register-terms" />
+          <label htmlFor="register-terms" className={styles.form__terms}>
+            Я соглашаюсь с<span onClick={TermOfUser} className={styles.form__termsLink}> Условием использования</span>
+          </label>
+        </div>
+        <button type="submit" className={styles.form__submitBtn}>Регистрация</button>
+      </form>
+    </div>
   );
 };
 

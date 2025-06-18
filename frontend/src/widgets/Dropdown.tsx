@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import '../styles/widgets/Dropdown.css';
+import '../styles/widgets/Dropdown.module.css';
 
 interface DropdownProps {
 	className?: string;

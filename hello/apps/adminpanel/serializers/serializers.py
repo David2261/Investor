@@ -11,6 +11,18 @@ class AdminCategorySerializer(serializers.ModelSerializer):
 		fields = ['name', "slug"]
 
 
+class AdminCategorySerializerEdit(serializers.ModelSerializer):
+	class Meta:
+		model = Category
+		fields = ["name", "slug"]
+
+	def validate_slug(self, value):
+		instance = self.instance
+		if Category.objects.filter(slug=value).exclude(id=instance.id).exists():
+			raise serializers.ValidationError("Слаг должен быть уникальным.")
+		return value
+
+
 class AdminAllUsersSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
@@ -90,7 +102,8 @@ class AdminArticleSerializerEdit(serializers.ModelSerializer):
 		return value
 
 	def validate_slug(self, value):
-		if Articles.objects.filter(slug=value).exists():
+		instance = self.instance
+		if Articles.objects.filter(slug=value).exclude(id=instance.id).exists():
 			raise serializers.ValidationError("Слаг должен быть уникальным.")
 		return value
 

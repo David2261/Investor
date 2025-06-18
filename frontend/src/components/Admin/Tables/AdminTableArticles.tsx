@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FormatData from '../HomeAdmin/FormatDate.tsx';
 // Widgets
 import Dropdown from '@/widgets/Dropdown.tsx';
@@ -13,7 +14,9 @@ interface Article {
 	is_published: boolean;
 	category: {
 		name: string;
+		slug: string;
 	};
+	slug: string;
 	time_update: string;
 }
 
@@ -22,6 +25,7 @@ interface AdminTableArticlesProps {
 }
 
 const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
+	const navigate = useNavigate();
 	const [filters, setFilters] = useState({
 		date: '',
 		status: '',
@@ -107,7 +111,10 @@ const AdminTableArticles: React.FC<AdminTableArticlesProps> = ({data}) => {
 		</thead>
 		<tbody>
 			{filteredData.map((value, index) => (
-			<tr key={index} className='w-full'>
+			<tr
+			key={index}
+			onClick={() => navigate(`/admin/main/articles/edit/${value.category.slug}/${value.slug}`)}
+			className='w-full transition-all hover:bg-gray-800 cursor-pointer'>
 				<td className="text-center text-white text-sm py-2 px-4"><FormatData date={value.time_update} /></td>
 				<td className="text-center text-white text-sm py-2 px-4">{value.is_published ? "Опубликован" : "Не Опубликован"}</td>
 				<td className="text-center text-white text-sm py-2 px-4">{value.author.username}</td>

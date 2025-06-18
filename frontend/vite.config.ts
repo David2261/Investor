@@ -41,6 +41,9 @@ export default defineConfig(({ mode }) => {
             '@tailwindcss/postcss': {},
           },
         },
+        modules: {
+          generateScopedName: '[name]__[local]___[hash:base64:5]',
+        },
       },
       deps: {
         optimizer: {

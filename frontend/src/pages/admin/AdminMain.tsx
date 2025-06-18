@@ -4,9 +4,8 @@ import { useAdminArticles } from '@/hooks/adminPanel/useAdminArticles.tsx';
 // Components
 import AdminTableArticles from '@/components/Admin/Tables/AdminTableArticles.tsx';
 // Assets
-import '@/styles/pages/admin/AdminMain.css';
+import '@/styles/pages/admin/AdminMain.module.css';
 import SearchBlack from '@/assets/icons/search_black.svg';
-
 
 
 const AdminMain = () => {

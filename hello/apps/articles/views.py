@@ -38,11 +38,13 @@ log_info = logging.getLogger("root")
 
 
 class ArticlesListHome(BaseArticleList):
+	""" Main page """
 	serializer_class = ArticlesSerializerHome
 	pagination_class = None
 
 
 class ArticlesList(BaseArticleList):
+	""" All articles """
 	serializer_class = ArticlesSerializer
 	pagination_class = ArticlesPagination
 	filter_backends = [DjangoFilterBackend, OrderingFilter]
@@ -101,6 +103,7 @@ class ArticleDetail(APIView):
 
 
 class ArticleAPICreator(APIView):
+	""" Article API for creators """
 	permission_classes = [AdminCreatorOnly]
 
 	def get_queryset(self):
@@ -128,7 +131,6 @@ class ArticleAPICreator(APIView):
 	def put(self, request, cat_slug, post_slug):
 		article = self.get_object(cat_slug, post_slug)
 		data = request.data.copy()
-		print(data)
 
 		serializer = ArticlesSerializer(
 			article,
@@ -167,19 +169,20 @@ class ArticleAPICreator(APIView):
 
 
 class CategoriesList(ListAPIView):
+	""" All categories """
+	authentication_classes = []
 	serializer_class = CategorySerializer
 	queryset = Category.objects.all()
-	permissions_classes = [permissions.AllowAny]
+	permission_classes = [permissions.AllowAny]
 
 	@method_decorator(cache_page(60 * 15))
 	def get(self, request, *args, **kwargs):
 		""" List with all categories """
-		return self.list(
-				self.serializer_class.data,
-				status=status.HTTP_200_OK)
+		return super().get(request, *args, **kwargs)
 
 
 class CategoryDetail(APIView):
+	""" Detail category used for filter """
 	permissions_classes = [permissions.IsAuthenticated]
 
 	def get_object(self, cat_slug):

@@ -20,11 +20,12 @@ from .uploads import (
 	AppAdminBondsUploadCSV,
 	AppAdminBondsUploadJSON)
 from .create import (
-	AppAdminArticleEdit,
 	AppAdminArticleCreate,
 	AppAdminCategoryCreate,
+	AppAdminBondCreate)
+from .edit import (
+	AppAdminArticleEdit,
 	AppAdminCategoryEdit,
-	AppAdminBondCreate,
 	AppAdminBondEdit)
 
 
@@ -113,7 +114,7 @@ urlpatterns = [
 		AppAdminBondCreate.as_view(),
 		name="bonds-create"),
 	path(
-		'apps/main/bonds/edit/<slug:post_slug>/',
+		'apps/main/bonds/edit/<slug:bond_slug>/',
 		AppAdminBondEdit.as_view(),
 		name="bonds-edit")
 ]

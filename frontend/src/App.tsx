@@ -1,7 +1,9 @@
 import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-// Entities (оставляем как есть, если они не требуют ленивой загрузки)
+// Widgets
+import Preloader from '@/widgets/preloader.tsx';
+// Entities
 import PrivateRoute from "./entities/routers/PrivateRoute.tsx";
 import LayoutRoute from './entities/routers/LayoutRoute.tsx';
 import AdminLayoutRoute from './entities/routers/AdminLayoutRoute.tsx';
@@ -32,6 +34,7 @@ const AdminMain = lazy(() => import('./pages/admin/AdminMain.tsx'));
 const AdminApps = lazy(() => import('./pages/admin/AdminApps.tsx'));
 const AdminUpload = lazy(() => import('./pages/admin/AdminUpload.tsx'));
 const AdminCreate = lazy(() => import('./pages/admin/AdminCreate.tsx'));
+const AdminEdit = lazy(() => import('./pages/admin/AdminEdit.tsx'));
 
 // Personal
 const Portfolio = lazy(() => import('./pages/personal/Portfolio.tsx'));
@@ -43,7 +46,7 @@ function App() {
         defaultTitle="Investor Home"
         titleTemplate="Investor Home | %s"
       />
-      <Suspense fallback={<div>Загрузка...</div>}>
+      <Suspense fallback={<Preloader />}>
         <Routes>
           <Route path="/" element={<LayoutRoute />}>
             <Route index element={<Home />} />
@@ -59,11 +62,11 @@ function App() {
             <Route path="termsofuse" element={<TermsOfUse />} />
             <Route path="sitemap" element={<SiteMap />} />
             <Route path="emailagreement" element={<Emailagreement />} />
-            <Route path="news" element={<News />} />
             <Route path="resetpassword/:uidb64/:token" element={<ResetPassword />} />
 
             {/* Private pages */}
             <Route element={<PrivateRoute />}>
+              <Route path="news" element={<News />} />
               <Route path="bonds" element={<Bonds />} />
               <Route path="portfolio" element={<Portfolio />} />
               <Route path="news/:category/:slug" element={<ArticleNews />} />
@@ -77,6 +80,7 @@ function App() {
             <Route path="main/:apps" element={<AdminApps />} />
             <Route path="main/:apps/upload" element={<AdminUpload />} />
             <Route path="main/:apps/create" element={<AdminCreate />} />
+            <Route path="main/:apps/edit/:category/:slug" element={<AdminEdit />} />
           </Route>
 
           {/* 404 */}

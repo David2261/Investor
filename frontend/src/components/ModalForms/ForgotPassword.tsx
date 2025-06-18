@@ -3,7 +3,7 @@ import { animated, useSpring } from '@react-spring/web';
 import { IoIosClose } from 'react-icons/io';
 import AuthContext from '@/entities/context/AuthContext';
 import IH from '@/assets/logo/IH.webp';
-import '@/styles/components/ModalForms/ForgotPassword.css';
+import '@/styles/components/ModalForms/ForgotPassword.module.css';
 
 interface ForgotPasswordProps {
   setIsOpen: () => void;

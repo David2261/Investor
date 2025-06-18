@@ -7,10 +7,10 @@ from authentication.models import User
 from authentication.permissions import IsAdminUser
 from .backend import get_custom_apps
 from .backend import get_models_info
-from .serializers import AdminArticleSerializer
-from .serializers import AdminBondSerializer
-from .serializers import AdminCategorySerializer
-from .serializers import AdminAllUsersSerializer
+from .serializers.article_serializers import AdminArticleSerializer
+from .serializers.bond_serializers import AdminBondSerializer
+from .serializers.category_serializers import AdminCategorySerializer
+from .serializers.user_serializers import AdminAllUsersSerializer
 
 
 django_apps = {

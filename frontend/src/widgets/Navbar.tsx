@@ -4,7 +4,6 @@ import { animated, useSpring } from '@react-spring/web';
 // Components
 import HeadLink from './Link.tsx';
 import MenuLink from './MenuLink.tsx';
-import SignUp from '@/components/ModalForms/SignUp.tsx';
 import Login from '@/components/ModalForms/Login.tsx';
 // Hooks
 import useMediaQuery from "@/hooks/useMediaQuery.ts";
@@ -12,13 +11,13 @@ import useMediaQuery from "@/hooks/useMediaQuery.ts";
 import AuthContext from '@/entities/context/AuthContext.tsx';
 // Assets
 import IH from '@/assets/logo/IH.webp';
-import '@/styles/Navbar.css';
+
 
 const Navbar = () => {
 	const styleNav = "uppercase p-2 lg:px-4 md:mx-2 rounded transation-colors duration-300";
 	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
-	const [modalType, setModalType] = useState<"login" | "signup" | null>(null);
+	const [modalType, setModalType] = useState<"login" | null>(null);
 	const { user, logoutUser } = useContext(AuthContext);
 
 	const styles = useSpring({
@@ -29,12 +28,10 @@ const Navbar = () => {
 
 	const closeModal = () => setModalType(null);
 	const openLogin = () => setModalType("login");
-	const openSignUp = () => setModalType("signup");
 
 	return <>
 		{/* SIGN-UP and LOGIN */}
-		{modalType === "login" && <Login setIsOpen={closeModal} setIsSignUp={openSignUp} />}
-		{modalType === "signup" && <SignUp setIsOpen={closeModal} setIsLogin={openLogin} />}
+		{modalType === "login" && <Login setIsOpen={closeModal} />}
 		{/* NAVBAR */}
 		<nav className="bg-white py-2 md:py-4 w-full border-b-2 border-stone-200">
 			<div className="ml-4 flex flex-row justify-between md:px-4 mx-auto md:flex md:items-center">
@@ -50,16 +47,13 @@ const Navbar = () => {
 						<HeadLink page="contact" />
 						{!user ? (<>
 							<button onClick={openLogin} id="login" className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>
-								Login
-							</button>
-							<button onClick={openSignUp} id="signup" className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>
-								Sign-Up
+								Вход
 							</button>
 						</>
 						) : (<>
 							<HeadLink page="portfolio" />
 							<button onClick={logoutUser} className={`${styleNav} text-indigo-600 text-center border border-transparent hover:bg-indigo-100 hover:text-indigo-700`}>
-								Logout
+								Выход
 							</button>
 							</>
 						)}
@@ -107,16 +101,13 @@ const Navbar = () => {
 						<MenuLink page="contact" />
 						{!user ? (<>
 						<button id="login" onClick={() => { openLogin(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
-							Login
-						</button>
-						<button id="sign-up" onClick={() => { openSignUp(); setIsMenuToggled(!isMenuToggled); }} className="uppercase text-zinc-600">
-							Sign-Up
+							Вход
 						</button>
 						</>
 						) : (<>
 							<MenuLink page="portfolio" />
 							<button onClick={logoutUser} className="uppercase text-zinc-600">
-								Logout
+								Выход
 							</button>
 						</>
 						)}

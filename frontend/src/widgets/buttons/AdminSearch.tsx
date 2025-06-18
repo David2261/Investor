@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // Assets
 import SearchWhite from '@/assets/icons/search_white.svg';
 // Styles
-import '@/styles/widgets/buttons/AdminSearch.css';
+import '@/styles/widgets/buttons/AdminSearch.module.css';
 
 const AdminSearch = () => {
     const [searchTerm, setSearchTerm] = useState('');

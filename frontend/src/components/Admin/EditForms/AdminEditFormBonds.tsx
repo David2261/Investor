@@ -11,7 +11,7 @@ import '@/styles/components/Admin/AdminFormsArticles.module.css';
 const apiURL = import.meta.env.VITE_API_URL;
 
 
-const AdminFormBonds = () => {
+const AdminEditFormBonds = () => {
 	const [isOn, setIsOn] = useState(false)
 	const [formData, setFormData] = useState<ExtendedBond>({
 		id: 0,
@@ -234,4 +234,4 @@ const AdminFormBonds = () => {
 	);
 };
 
-export default AdminFormBonds;
+export default AdminEditFormBonds;

@@ -1,4 +1,5 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
+import { useParams } from "react-router-dom";
 import axios, { AxiosError } from 'axios';
 // API
 import { useAllCategories } from "@/api/useAllCategories.tsx";
@@ -16,7 +17,8 @@ interface FormData {
 	is_published: boolean;
 }
 
-const AdminFormArticles = () => {
+const AdminEditFormArticles = () => {
+	const { category, slug } = useParams();
 	const [formData, setFormData] = useState<FormData>({
 		title: "",
 		description: "",
@@ -25,41 +27,60 @@ const AdminFormArticles = () => {
 	});
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const { data: categories, error } = useAllCategories();
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchArticle = async () => {
+			try {
+				const res = await axios.get(`${apiURL}/api/admin/apps/main/articles/edit/${category}/${slug}/`, {
+					withCredentials: true
+				});
+				const articleData = res.data;
+				setFormData({
+					title: articleData.title || "",
+					description: articleData.description || "",
+					category: articleData.category.toString() || "",
+					is_published: articleData.is_published || "",
+				});
+			} catch (err) {
+				console.error("Ошибка при загрузке статьи:", err);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchArticle();
+	}, [category, slug]);
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-	
+
 		const data = new FormData();
-		data.append('title', formData.title);
-		data.append('description', formData.description);
-		data.append('category', formData.category);
-		data.append('is_published', formData.is_published.toString());
-	
+		data.append("title", formData.title);
+		data.append("description", formData.description);
+		data.append("category", formData.category);
+		data.append("is_published", formData.is_published.toString());
 
 		if (selectedFile) {
-			data.append('img', selectedFile);
+			data.append("img", selectedFile);
 		}
-	
+
 		try {
-			await axios.post(
-				`${apiURL}/api/admin/apps/main/articles/create/`,
-				data, { withCredentials: true });
-			alert("Статья успешно создана!");
+			await axios.patch(
+				`${apiURL}/api/admin/apps/main/articles/edit/${category}/${slug}/`,
+				data,
+				{ withCredentials: true }
+			);
+			alert("Статья успешно обновлена!");
 		} catch (error) {
 			const axiosError = error as AxiosError;
-			if (axiosError.response) {
-				console.error("Error creating article:", axiosError.response?.data);
-				alert("Произошла ошибка при создании статьи.");
-			} else {
-				console.error("Unknown error:", error);
-				alert("Произошла неизвестная ошибка.");
-			}
+			console.error("Ошибка при обновлении статьи:", axiosError.response?.data || error);
+			alert("Произошла ошибка при обновлении статьи.");
 		}
 	};
 
-	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
+	if (isLoading) return <div className="text-white p-4">Загрузка статьи...</div>;
+	if (error) return <div>Error: {error.message}</div>;
 
 	return (
 		<>
@@ -88,7 +109,7 @@ const AdminFormArticles = () => {
 					<label className="w-40 font-bold text-white pt-1" htmlFor="content">
 						Текст статьи:
 					</label>
-					<div className="flex-grow bg-white">
+					<div className="flex-grow bg-white text-black">
 						<Description
 							value={formData.description}
 							onChange={(updatedValue) =>
@@ -176,4 +197,4 @@ const AdminFormArticles = () => {
 	);
 };
 
-export default AdminFormArticles;
+export default AdminEditFormArticles;

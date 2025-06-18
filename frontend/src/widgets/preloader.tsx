@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "@/styles/widgets/Preloader.css";
+import "@/styles/widgets/Preloader.module.css";
 
 
 const Preloader = () => {

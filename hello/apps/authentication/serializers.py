@@ -40,7 +40,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 	def get_token(cls, user: User) -> Token:
 		token = super().get_token(user)
 		token['username'] = user.username
-		print(f"Generated token payload: {token}")
 
 		return token
 
