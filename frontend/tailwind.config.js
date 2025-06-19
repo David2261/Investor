@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -21,24 +21,16 @@ module.exports = {
       height: {
         16: '16rem',
       },
-      // backgroundImage: (theme) => ({
-      //   "gradient-yellowred":
-      //     "linear-gradient(90deg, #FF616A 0%, #FFC837 100%)",
-      //   "mobile-home": "url('./assets/HomePageGraphic.png')",
-      // }),
       fontFamily: {
         dmsans: ["DM Sans", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
       },
+      fontSize: {
+        '36px': '36px',
+      },
       rotate: {
         '210': '210deg',
         '-45': '-45deg',
-      },
-      content: {
-        // evolvetext: "url('./assets/EvolveText.png')",
-        // abstractwaves: "url('./assets/AbstractWaves.png')",
-        // sparkles: "url('./assets/Sparkles.png')",
-        // circles: "url('./assets/Circles.png')",
       },
       spacing: {
         6: '1.5rem',

@@ -1,5 +1,7 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
+// Widgets
+import Loader from '@/widgets/Loader';
 // Hooks
 import useMediaQuery from '@/hooks/useMediaQuery.ts';
 // Api
@@ -7,7 +9,7 @@ import { useArticles } from '@/api/useArticles.tsx';
 import { useBonds, useBondsOld } from '@/api/useBonds';
 import { BlogAPIType } from '@/types/Articles';
 // Styles
-import '@/styles/Bonds.module.css';
+import '@/styles/Bonds.css';
 import tgSuccess from '@/assets/pages/success.webp';
 
 const DataTab = lazy(() => import('@/components/Bond/DataTab'));
@@ -39,7 +41,7 @@ const Bonds: React.FC = () => {
   const errorMessage = getErrorMessage(error) || getErrorMessage(errorNews) || getErrorMessage(errorOld);
   if (errorMessage) {
     return (
-      <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>
+      <Suspense fallback={<NotFound />}>
         <NotFound />
       </Suspense>
     );
@@ -64,22 +66,21 @@ const Bonds: React.FC = () => {
 
   if (isLoading || isLoadingOld) {
     return (
-      <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>
-        <div className="flex justify-center items-center h-screen">Загрузка...</div>
+      <Suspense fallback={<Loader />}>
       </Suspense>
     );
   }
 
   return (
-    <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>
-      <div className="bonds-body">
+    <Suspense fallback={<Loader />}>
+      <div className="min-w-full min-h-screen p-4 max-w-7xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
         <Helmet>
           <title>Облигации{selectedCategory !== 'all' ? ` | ${selectedCategory}` : ''}</title>
           <meta name="description" content="Сервис по облигациям на Московской и Санкт-Петербургской бирже" />
         </Helmet>
 
         {/* Header */}
-        <h1 className="bonds-title">ОФЗ, Муниципальные и Корпоративные Облигации</h1>
+        <h1 className="flex justify-center font-bold pt-5 text-36px">ОФЗ, Муниципальные и Корпоративные Облигации</h1>
         <p className="bonds-under-title">Сервис по облигациям на Московской и Санкт-Петербургской бирже</p>
 
         {/* News Section */}

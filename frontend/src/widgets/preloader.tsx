@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "@/styles/widgets/Preloader.module.css";
+import styles from "@/styles/widgets/Preloader.module.css";
 
 
 const Preloader = () => {
@@ -19,11 +19,11 @@ const Preloader = () => {
 		domReadyPromise.then(() => {
 			setTimeout(() => {
 				document.querySelectorAll("#ctn-preloader").forEach((e) => {
-					e.classList.add('loaded');
+					e.classList.add(styles.loaded);
 				});
 
 				Array.from(document.getElementsByTagName('body')).forEach(e => {
-					e.classList.remove('no-scroll-y');
+					e.classList.remove(styles["no-scroll-y"]);
 				});
 
 				const preloader = document.querySelector('#preloader');
@@ -39,19 +39,23 @@ const Preloader = () => {
 	return (
 		<section>
 			<div id="preloader">
-				<div id="ctn-preloader" className="ctn-preloader">
-					<div className="animation-preloader">
-						<div className="spinner"></div>
-						<div className="txt-loading">
-							{['L', 'O', 'A', 'D', 'I', 'N', 'G'].map((letter) => (
-								<span key={letter} data-text-preloader={letter} className="letters-loading">
+				<div id="ctn-preloader" className={styles["ctn-preloader"]}>
+					<div className={styles["animation-preloader"]}>
+						<div className={styles.spinner}></div>
+						<div className={styles["txt-loading"]}>
+							{['L', 'O', 'A', 'D', 'I', 'N', 'G'].map((letter, index) => (
+								<span
+									key={index}
+									data-text-preloader={letter}
+									className={styles["letters-loading"]}
+								>
 									{letter}
 								</span>
 							))}
 						</div>
-					</div>	
-					<div className="loader-section section-left"></div>
-					<div className="loader-section section-right"></div>
+					</div>
+					<div className={`${styles["loader-section"]} ${styles["section-left"]}`}></div>
+					<div className={`${styles["loader-section"]} ${styles["section-right"]}`}></div>
 				</div>
 			</div>
 		</section>
