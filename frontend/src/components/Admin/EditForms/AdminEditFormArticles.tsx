@@ -1,6 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import axios, { AxiosError } from 'axios';
+import Swal from 'sweetalert2';
 // API
 import { useAllCategories } from "@/api/useAllCategories.tsx";
 // Components
@@ -44,6 +45,7 @@ const AdminEditFormArticles = () => {
 				});
 			} catch (err) {
 				console.error("Ошибка при загрузке статьи:", err);
+				Swal.fire('Ошибка', 'Произошла ошибка при загрузке статьи.', 'error');
 			} finally {
 				setIsLoading(false);
 			}
@@ -71,11 +73,11 @@ const AdminEditFormArticles = () => {
 				data,
 				{ withCredentials: true }
 			);
-			alert("Статья успешно обновлена!");
+			Swal.fire('Успешно!', 'Статья успешно обновлена!', 'success');
 		} catch (error) {
 			const axiosError = error as AxiosError;
 			console.error("Ошибка при обновлении статьи:", axiosError.response?.data || error);
-			alert("Произошла ошибка при обновлении статьи.");
+			Swal.fire('Ошибка', 'Произошла ошибка при обновлении статьи.', 'error');
 		}
 	};
 

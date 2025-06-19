@@ -81,6 +81,7 @@ function App() {
             <Route path="main/:apps/upload" element={<AdminUpload />} />
             <Route path="main/:apps/create" element={<AdminCreate />} />
             <Route path="main/:apps/edit/:category/:slug" element={<AdminEdit />} />
+            <Route path="main/:apps/edit/:slug" element={<AdminEdit />} />
           </Route>
 
           {/* 404 */}

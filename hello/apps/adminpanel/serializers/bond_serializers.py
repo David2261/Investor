@@ -73,7 +73,7 @@ class AdminBondSerializerEdit(
 		return value
 
 	def validate_maturity(self, value):
-		if value <= timezone.now().date():
+		if value.date() <= timezone.now().date():
 			raise serializers.ValidationError(
 				"Дата погашения должна быть в будущем.")
 		return value

@@ -1,6 +1,8 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
+import { useParams } from "react-router-dom";
 import axios, { AxiosError } from 'axios';
 import { motion } from "motion/react";
+import Swal from 'sweetalert2';
 // Components
 import Description from './Description.tsx';
 // Types
@@ -12,7 +14,9 @@ const apiURL = import.meta.env.VITE_API_URL;
 
 
 const AdminEditFormBonds = () => {
+	const { slug } = useParams();
 	const [isOn, setIsOn] = useState(false)
+	const [isLoading, setIsLoading] = useState(true);
 	const [formData, setFormData] = useState<ExtendedBond>({
 		id: 0,
 		title: "",
@@ -24,35 +28,72 @@ const AdminEditFormBonds = () => {
 		cupon: 0,
 		cupon_percent: 0,
 		is_published: false,
+		slug: "",
 	});
+
+	useEffect(() => {
+		const fetchBond = async () => {
+			try {
+				const res = await axios.get(`${apiURL}/api/admin/apps/main/bonds/edit/${slug}/`, {
+					withCredentials: true
+				});
+				const bondData = res.data;
+				setFormData({
+					id: bondData.id || "",
+					title: bondData.title || "",
+					description: bondData.description || "",
+					category: bondData.category?.toString() || "",
+					price: bondData.price || "",
+					maturityDate: bondData.maturity?.split("T")[0] || "",
+					maturityTime: bondData.maturity?.split("T")[1]?.slice(0, 5) || "",
+					cupon: bondData.cupon || "",
+					cupon_percent: bondData.cupon_percent || "",
+					is_published: bondData.is_published ?? false,
+					slug: bondData.slug || ""
+				});
+			} catch (err) {
+				console.error("Ошибка при загрузке облигации:", err);
+				Swal.fire('Ошибка', 'Произошла ошибка при загрузке облигации.', 'error');
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchBond();
+	}, [slug]);
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (!formData.maturityDate || !formData.maturityTime) {
+			Swal.fire('Ошибка', 'Укажите дату и время погашения.', 'error');
+			return;
+		}
+
 		const maturity = new Date(`${formData.maturityDate}T${formData.maturityTime}`).toISOString();
 
 		const data = new FormData();
-		data.append('title', formData.title);
-		data.append('description', formData.description);
-		data.append('category', formData.category);
-		data.append('is_published', formData.is_published.toString());
-		data.append('price', formData.price.toString());
+		data.append('title', formData.title || '');
+		data.append('description', formData.description || '');
+		data.append('category', formData.category || '');
+		data.append('is_published', String(formData.is_published ?? false));
+		data.append('price', String(formData.price ?? 0));
 		data.append("maturity", maturity);
-		data.append('cupon', formData.cupon.toString());
-		data.append('cupon_percent', formData.cupon_percent.toString());
+		data.append('cupon', String(formData.cupon ?? 0));
+		data.append('cupon_percent', String(formData.cupon_percent ?? 0));
 
 		try {
-			await axios.post(
-				`${apiURL}/api/admin/apps/main/articles/create/`,
+			await axios.patch(
+				`${apiURL}/api/admin/apps/main/bonds/edit/${slug}/`,
 				data, { withCredentials: true });
-			alert("Статья успешно создана!");
+			Swal.fire('Успешно!', 'Облигация успешно обновлена!', 'success');
 		} catch (error) {
 			const axiosError = error as AxiosError;
 			if (axiosError.response) {
 				console.error("Error creating article:", axiosError.response?.data);
-				alert("Произошла ошибка при создании статьи.");
+				Swal.fire('Ошибка', 'Произошла ошибка при обновлении облигации.', 'error');
 			} else {
 				console.error("Unknown error:", error);
-				alert("Произошла неизвестная ошибка.");
+				Swal.fire('Ошибка', 'Произошла неизвестная ошибка.', 'error');
 			}
 		}
 	};
@@ -64,6 +105,8 @@ const AdminEditFormBonds = () => {
 			return { ...prev, is_published: newState };
 		});
 	};
+
+	if (isLoading) return <div className="text-white p-4">Загрузка статьи...</div>;
 
 	return (
 		<>

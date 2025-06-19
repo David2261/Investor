@@ -1,5 +1,6 @@
 import { useState } from 'react';
 // import { motion } from "motion/react";
+import { useNavigate } from 'react-router-dom';
 // Components
 import FormatData from '../HomeAdmin/FormatDate.tsx';
 // Widgets
@@ -20,6 +21,7 @@ interface AdminTableBondsProps {
 }
 
 const AdminTableBonds: React.FC<AdminTableBondsProps> = ({data}) => {
+	const navigate = useNavigate();
 	const [filters, setFilters] = useState({
 		maturity: '',
 		is_published: '',
@@ -39,31 +41,39 @@ const AdminTableBonds: React.FC<AdminTableBondsProps> = ({data}) => {
 		const filterCoupon = filters.cupon_percent;
 
 		const couponFilterCondition = 
-			(filterCoupon === '' || 
+			(filterCoupon === '' || 	
 			(filterCoupon === 'Менее 5%' && couponPercent < 5) || 
 			(filterCoupon === '5%-10%' && couponPercent >= 5 && couponPercent <= 10) || 
 			(filterCoupon === 'Более 10%' && couponPercent > 10));
 
 		const bondMaturityDate = new Date(bond.maturity);
 		const currentDate = new Date();
+
+		const startOfWeek = new Date();
+		startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+		startOfWeek.setHours(0, 0, 0, 0);
+
+		const endOfWeek = new Date();
+		endOfWeek.setDate(startOfWeek.getDate() + 6);
+		endOfWeek.setHours(23, 59, 59, 999);
+
+		const isMatured = bondMaturityDate <= currentDate;
 		const filterMaturity = filters.maturity;
 
 		const maturityFilterCondition = 
 			(filterMaturity === '' || 
 			(filterMaturity === 'Сегодня' && bondMaturityDate.toDateString() === currentDate.toDateString()) ||
-			(filterMaturity === 'Эта неделя' && 
-				bondMaturityDate >= new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay())) && 
-				bondMaturityDate <= new Date(currentDate.setDate(currentDate.getDate() + 6 - currentDate.getDay()))) ||
-			(filterMaturity === 'Этот месяц' && 
-				bondMaturityDate.getMonth() === currentDate.getMonth() && 
+			(filterMaturity === 'Эта неделя' && bondMaturityDate >= startOfWeek && bondMaturityDate <= endOfWeek) ||
+			(filterMaturity === 'Этот месяц' &&
+				bondMaturityDate.getMonth() === currentDate.getMonth() &&
 				bondMaturityDate.getFullYear() === currentDate.getFullYear()) ||
-			(filterMaturity === 'Этот год' && 
+			(filterMaturity === 'Этот год' &&
 				bondMaturityDate.getFullYear() === currentDate.getFullYear()));
-	
-		const publishedFilterCondition = 
-				(filters.is_published === '' || 
-				(filters.is_published === 'Опубликован' && bond.is_published) || 
-				(filters.is_published === 'Не Опубликован' && !bond.is_published));
+
+		const publishedFilterCondition =
+			(filters.is_published === '' ||
+			(filters.is_published === 'Опубликован' && !isMatured) ||
+			(filters.is_published === 'Не Опубликован' && isMatured));
 
 		return (
 			maturityFilterCondition &&
@@ -113,9 +123,13 @@ const AdminTableBonds: React.FC<AdminTableBondsProps> = ({data}) => {
 		</thead>
 		<tbody>
 			{filteredData.map((value, index) => (
-			<tr key={index}>
+			<tr
+				key={index}
+				onClick={() => navigate(`/admin/main/bonds/edit/${value.slug}`)}
+				className='transition-all cursor-pointer duration-300 ease-in-out text-white transform hover:bg-gray-800'
+				>
 				<td className="text-center text-white text-sm py-2 px-4"><FormatData date={value.maturity} /></td>
-				<td className="text-center text-white text-sm py-2 px-4">{value.is_published ? "Опубликован" : "Не Опубликован"}</td>
+				<td className="text-center text-white text-sm py-2 px-4">{new Date(value.maturity) > new Date() ? "Опубликован" : "Не Опубликован"}</td>
 				<td className="text-center text-white text-sm py-2 px-4">{value.cupon_percent}</td>
 				<td className="text-center text-white text-sm py-2">{value.title}</td>
 				<td className="text-center text-white text-sm py-2 px-4">{TranslateBondType(value.category)}</td>

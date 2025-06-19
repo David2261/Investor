@@ -12,15 +12,6 @@ interface ConnectionInfo {
   rtt: string | number;
 }
 
-interface LogData {
-  userId: string;
-  visitTime: string;
-  ipAddress: string;
-  userAgent: string;
-  timeZone: string;
-  deviceInfo: DeviceInfo;
-  connectionInfo: ConnectionInfo;
-}
 
 (function () {
   // Генерация уникального ID

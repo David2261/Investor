@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import generics
@@ -72,7 +73,7 @@ class AppAdminBondEdit(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = [IsAdminUser]
 
 	def get_object(self):
-		bond_slug = self.kwargs.get('post_slug')
+		bond_slug = self.kwargs.get('bond_slug')
 		return get_object_or_404(Bonds, slug=bond_slug)
 
 	def update(self, request, *args, **kwargs):
@@ -81,7 +82,7 @@ class AppAdminBondEdit(generics.RetrieveUpdateDestroyAPIView):
 		serializer.is_valid(raise_exception=True)
 		self.perform_update(serializer)
 
-		bond_url = bond.get_absolute_url()
+		bond_url = reverse('adminpanel:bonds-edit', kwargs={'bond_slug': bond.slug})
 		return Response({
 			"detail": "Bond updated successfully.",
 			"url": bond_url
