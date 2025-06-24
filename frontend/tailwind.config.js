@@ -26,7 +26,7 @@ module.exports = {
         montserrat: ["Montserrat", "sans-serif"],
       },
       fontSize: {
-        '36px': '36px',
+        '36': '9rem',
       },
       rotate: {
         '210': '210deg',

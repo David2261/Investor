@@ -167,11 +167,19 @@
   transition: 0.3s;
 }
 
+.bcc-category-btn:hover {
+  color: rgb(216, 214, 214);
+}
+
 .bcc-category-btn-active {
   background: #fff;
   color: #000;
-  font-weight: 700;
   text-transform: uppercase;
+  padding-inline: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: 0.3s;
+  font-weight: 300;
 }
 
 /* Table */
@@ -187,7 +195,10 @@ table {
 }
 
 .tbl-header {
-  background-color: rgba(255, 255, 255, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .tbl-content {

@@ -5,7 +5,9 @@ import path from 'path';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
-    plugins: [react()],
+    plugins: [
+      react(),
+    ],
 
     preview: {
       port: 5137,
@@ -36,11 +38,8 @@ export default defineConfig(({ mode }) => {
       },
       isolate: false,
       css: {
-        postcss: {
-          plugins: {
-            '@tailwindcss/postcss': {},
-          },
-        },
+        postcss: './postcss.config.js',
+        devSourcemap: true,
         modules: {
           generateScopedName: '[name]__[local]___[hash:base64:5]',
         },

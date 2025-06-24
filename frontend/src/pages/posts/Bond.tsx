@@ -9,7 +9,7 @@ import { useArticles } from '@/api/useArticles.tsx';
 import { useBonds, useBondsOld } from '@/api/useBonds';
 import { BlogAPIType } from '@/types/Articles';
 // Styles
-import '@/styles/Bonds.css';
+import styles from '../../styles/Bond.module.css';
 import tgSuccess from '@/assets/pages/success.webp';
 
 const DataTab = lazy(() => import('@/components/Bond/DataTab'));
@@ -65,10 +65,7 @@ const Bonds: React.FC = () => {
     : [];
 
   if (isLoading || isLoadingOld) {
-    return (
-      <Suspense fallback={<Loader />}>
-      </Suspense>
-    );
+    return <Loader />;
   }
 
   return (
@@ -80,24 +77,26 @@ const Bonds: React.FC = () => {
         </Helmet>
 
         {/* Header */}
-        <h1 className="flex justify-center font-bold pt-5 text-36px">ОФЗ, Муниципальные и Корпоративные Облигации</h1>
-        <p className="bonds-under-title">Сервис по облигациям на Московской и Санкт-Петербургской бирже</p>
+        <h1
+          className="flex justify-center font-bold pt-5"
+          style={{ fontSize: '2rem' }}>ОФЗ, Муниципальные и Корпоративные Облигации</h1>
+        <p className={styles["bonds-under-title"]}>Сервис по облигациям на Московской и Санкт-Петербургской бирже</p>
 
         {/* News Section */}
-        <div className={isMobile ? 'flex flex-col items-center' : 'sm:flex bonds-news-body'}>
-          <div className={isMobile ? 'w-full' : 'bonds-news-content-block'}>
-            <h1 className={isMobile ? 'text-2xl text-center mb-4' : 'bonds-news-content-block-header'}>
+        <div className={isMobile ? 'flex flex-col items-center' : `sm:flex ${styles['bonds-news-body']}`}>
+          <div className={isMobile ? 'w-full' : styles['bonds-news-content-block']}>
+            <h1 className={isMobile ? 'text-2xl text-center mb-4' : styles['bonds-news-content-block-header']}>
               Последние новости по облигациям
             </h1>
             <Article data={dataPostsToDisplay} />
           </div>
           {!isMobile && isAboveMediumScreens && (
-            <div className="bonds-news-add-block">
-              <div className="bonds-news-add-header">
+            <div className={styles['bonds-news-add-block']}>
+              <div className={styles['bonds-news-add-header']}>
                 <h1>Телеграм по новостям</h1>
                 <img src={tgSuccess} alt="Телеграм-канал по облигациям" loading="lazy" />
               </div>
-              <p className="bonds-news-add-under-text">@investorhome - официальный канал по облигациям.</p>
+              <p className={styles['bonds-news-add-under-text']}>@investorhome - официальный канал по облигациям.</p>
             </div>
           )}
           {isMobile && (
@@ -115,16 +114,16 @@ const Bonds: React.FC = () => {
         </div>
 
         {/* Bonds Content */}
-        <div className={isAboveMediumScreens ? 'bonds-content-body' : 'px-4'}>
-          <h1 className="bonds-content-title">Облигации: календарь на {currentYear}-{nextYear}</h1>
-          <p className="bonds-content-under-title">
+        <div className={isAboveMediumScreens ? styles['bonds-content-body'] : 'px-4'}>
+          <h1 className={styles['bonds-content-title']}>Облигации: календарь на {currentYear}-{nextYear}</h1>
+          <p className={styles['bonds-content-under-title']}>
             Дивидендный календарь в {currentYear}-{nextYear} годах. Ближайшие купоны на одну облигацию в{' '}
             {months[new Date().getMonth()]} и последние (прошедшие) выплаченные купоны.
           </p>
 
           {/* Category Selection */}
-          <div className="bonds-content-categories-block flex flex-wrap gap-2 justify-center">
-            <div className="bcc-category flex gap-2" role="group">
+          <div className={`${styles['bonds-content-categories-block']} flex flex-wrap gap-2 justify-center`}>
+            <div className={`${styles['bcc-category']} flex gap-2`} role="group">
               {[
                 { key: 'all', label: 'Все' },
                 { key: 'federal loan bonds', label: 'ОФЗ' },
@@ -133,7 +132,7 @@ const Bonds: React.FC = () => {
               ].map(({ key, label }) => (
                 <button
                   key={key}
-                  className={`bcc-category-btn ${selectedCategory === key ? 'active' : ''}`}
+                  className={`${selectedCategory === key ? styles['bcc-category-btn-active'] : styles['bcc-category-btn']}`}
                   onClick={() => setSelectedCategory(key)}
                 >
                   {label}
@@ -141,7 +140,7 @@ const Bonds: React.FC = () => {
               ))}
             </div>
             <button
-              className={`bonds-content-categories-old-btn ${selectedCategory === 'old' ? 'active' : ''}`}
+              className={`${styles['bonds-content-categories-old-btn']} ${selectedCategory === 'old' ? 'active' : ''}`}
               onClick={() => setSelectedCategory('old')}
             >
               Прошедшие купоны
@@ -149,10 +148,9 @@ const Bonds: React.FC = () => {
           </div>
 
           {/* Table Content */}
-          <div className={isMobile ? 'overflow-x-auto w-full' : 'bonds-content-table'}>
-            <div className="tbl-header">
-              <table cellPadding="0" cellSpacing="0" className="w-full">
-                <thead>
+          <div className={isMobile ? 'overflow-x-auto w-full' : `${styles['bonds-content-table']} ${styles['tbl-content']}`}>
+              <table cellPadding="0" cellSpacing="0" className={`w-full`}>
+                <thead className={styles['tbl-header']}>
                   <tr>
                     <th>Облигация</th>
                     <th>Реестр</th>
@@ -162,10 +160,6 @@ const Bonds: React.FC = () => {
                     <th>Дата погашения</th>
                   </tr>
                 </thead>
-              </table>
-            </div>
-            <div className="tbl-content">
-              <table cellPadding="0" cellSpacing="0" className="w-full">
                 <tbody>
                   {filteredData.length > 0 ? (
                     <DataTab data={{ results: filteredData as any }} />
@@ -178,7 +172,6 @@ const Bonds: React.FC = () => {
                   )}
                 </tbody>
               </table>
-            </div>
           </div>
         </div>
       </div>

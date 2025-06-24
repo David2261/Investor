@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ArticleNewsAPI } from '@/types/Article';
 const AdvertisingBlock = lazy(() => import('@/components/Home/AdvertisingBlock'));
 // Styles
-import "@/styles/pages/posts/ArticleNews.module.css";
+import styles from "@/styles/pages/posts/ArticleNews.module.css";
 
 const apiURL = import.meta.env.VITE_API_URL;
 
@@ -22,35 +22,28 @@ const LazySection = ({ htmlContent }: { htmlContent: string }) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            observer.unobserve(entry.target);
+            observer.disconnect(); // остановка всех наблюдений
           }
         });
       },
-      {
-        root: null,
-        threshold: 0.1,
-      }
+      { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    const currentRef = sectionRef.current;
+    if (currentRef) observer.observe(currentRef);
 
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
     <div
       ref={sectionRef}
-      className={`transition-opacity duration-500 ${isVisible ? 'opacity-100 animate' : 'opacity-0'}`}
+      className={`${styles.transitionOpacity} duration-500 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
       dangerouslySetInnerHTML={{ __html: isVisible ? htmlContent : '' }}
     />
   );
 };
+
 
 const ArticleNews = () => {
   const { category, slug } = useParams();
@@ -63,20 +56,23 @@ const ArticleNews = () => {
     enabled: !!category && !!slug,
   });
 
-  // Парсинг и разбиение description на секции
+  // Парсинг и разбиение header на секции
   const contentSections = useMemo(() => {
     if (!data?.description) return [];
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(data.description, 'text/html');
-    const elements = Array.from(doc.body.children); // Разбиваем на элементы (p, h2, и т.д.)
-    
+    const elements = Array.from(doc.body.children); // Разбиваем на элементы (h2, и т.д.)
+  
     return elements.map((element, index) => {
-      // Генерируем уникальный ID для каждого элемента
-      const id = element.id || `section-${index + 1}-${element.textContent?.toLowerCase().replace(/\s+/g, '-') || ''}`;
-      element.id = id;
+      // Добавляем id только заголовкам (например, h2)
+      if (element.tagName.toLowerCase() === 'h2') {
+        const id = element.id || `section-${index + 1}-${element.textContent?.toLowerCase().replace(/\s+/g, '-') || ''}`;
+        element.id = id;
+      }
+
       return {
-        id,
+        id: element.id,
         html: element.outerHTML,
       };
     });
@@ -126,7 +122,7 @@ const ArticleNews = () => {
             alt={data.title}
             className="w-full rounded-lg object-cover mb-6"
           />
-          <div className="prose max-w-none text-justify text-gray-800">
+          <div className={`${styles.prose} max-w-none text-justify text-gray-800`}>
             {contentSections.map((section) => (
               <LazySection key={section.id} htmlContent={section.html} />
             ))}
