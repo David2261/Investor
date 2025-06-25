@@ -57,44 +57,34 @@ const ArticleNews = () => {
   });
 
   // Парсинг и разбиение header на секции
-  const contentSections = useMemo(() => {
-    if (!data?.description) return [];
+  const { contentSections, tableOfContents } = useMemo(() => {
+  if (!data?.description) return { contentSections: [], tableOfContents: [] };
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(data.description, 'text/html');
-    const elements = Array.from(doc.body.children); // Разбиваем на элементы (h2, и т.д.)
-  
-    return elements.map((element, index) => {
-      // Добавляем id только заголовкам (например, h2)
-      if (element.tagName.toLowerCase() === 'h2') {
-        const id = element.id || `section-${index + 1}-${element.textContent?.toLowerCase().replace(/\s+/g, '-') || ''}`;
-        element.id = id;
-      }
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(data.description, 'text/html');
+  const elements = Array.from(doc.body.children);
 
-      return {
-        id: element.id,
-        html: element.outerHTML,
-      };
-    });
-  }, [data?.description]);
+  const contentSections = elements.map((element, index) => {
+    if (element.tagName.toLowerCase() === 'h2') {
+      const id = element.id || `section-${index + 1}-${element.textContent?.toLowerCase().replace(/\s+/g, '-')}`;
+      element.id = id;
+    }
 
-  // Генерация оглавления
-  const tableOfContents = useMemo(() => {
-    if (!data?.description) return [];
+    return {
+      id: element.id || '',
+      html: element.outerHTML,
+    };
+  });
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(data.description, 'text/html');
-    const h2Elements = Array.from(doc.querySelectorAll('h2'));
+  const tableOfContents = contentSections
+    .filter((section) => section.html.startsWith('<h2'))
+    .map((section, index) => ({
+      id: section.id,
+      text: section.html.replace(/<[^>]+>/g, '').trim() || `Раздел ${index + 1}`,
+    }));
 
-    return h2Elements.map((h2, index) => {
-      const id = h2.id || `section-${index + 1}-${h2.textContent?.toLowerCase().replace(/\s+/g, '-') || ''}`;
-      h2.id = id;
-      return {
-        id,
-        text: h2.textContent || `Section ${index + 1}`,
-      };
-    });
-  }, [data?.description]);
+  return { contentSections, tableOfContents };
+}, [data?.description]);
 
   if (isLoading) return <div className="text-center py-10">Загрузка...</div>;
   if (error) return <div className="text-center text-red-600">Ошибка: {error.message}</div>;
