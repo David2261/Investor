@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, ReactNode } from 'react';
-import '@/styles/widgets/buttons/AdminButton.module.css';
+import styles from '@/styles/widgets/buttons/AdminButton.module.css';
 
 interface AdminButtonProps {
     onClick: () => void;
@@ -24,21 +24,21 @@ const AdminButton: React.FC<AdminButtonProps> = ({ onClick, children }) => {
 
         const handlePointerEnter = (e: PointerEvent) => {
             if (button) {
-                button.classList.add("hovered");
+                button.classList.add(styles["hovered"]);
                 updatePosition(e);
                 button.style.setProperty("--active", "1.5");
             }
         };
 
         const handlePointerMove = (e: PointerEvent) => {
-            if (button && button.classList.contains("hovered")) {
+            if (button && button.classList.contains(styles["hovered"])) {
                 updatePosition(e);
             }
         };
 
         const handlePointerLeave = () => {
             if (button) {
-                button.classList.remove("hovered");
+                button.classList.remove(styles["hovered"]);
                 button.style.setProperty("--active", "0");
             }
         };
@@ -78,9 +78,9 @@ const AdminButton: React.FC<AdminButtonProps> = ({ onClick, children }) => {
         <button
             ref={buttonRef}
             onClick={onClick}
-            className="blend-button">
-            <span className="back"><span></span></span>
-            <span className="label">{children}</span>
+            className={styles["blend-button"]}>
+            <span className={styles["back"]}><span></span></span>
+            <span className={styles["label"]}>{children}</span>
         </button>
     );
 };

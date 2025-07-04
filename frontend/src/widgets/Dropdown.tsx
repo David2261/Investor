@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import '../styles/widgets/Dropdown.module.css';
+import styles from '../styles/widgets/Dropdown.module.css';
 
 interface DropdownProps {
 	className?: string;
@@ -66,7 +66,7 @@ const Dropdown: React.FC<DropdownProps> = ({ className, name, value, onChange, o
 			{options.map((option, index) => (
 				<li
 					key={option.value}
-					className={`text-white cursor-pointer p-2 dropdown-item transition-all duration-300 ease-in-out delay-${index * 60}ms hover:bg-[#B0B0B0]`}
+					className={`text-white cursor-pointer p-2 ${styles['dropdown-item']} transition-all duration-300 ease-in-out delay-${index * 60}ms hover:bg-[#B0B0B0]`}
 					style={{
 						animation: `scaleZ 300ms ${index * 60}ms ease-in-out forwards`,
 					}}

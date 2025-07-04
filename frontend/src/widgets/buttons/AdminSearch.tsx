@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SearchWhite from '@/assets/icons/search_white.svg';
 import styles from '@/styles/widgets/buttons/AdminSearch.module.css';
 

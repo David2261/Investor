@@ -6,7 +6,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     plugins: [
-      react(),
+      react({
+        fastRefresh: true,
+      }),
     ],
 
     preview: {
@@ -61,9 +63,11 @@ export default defineConfig(({ mode }) => {
           target: 'http://127.0.0.1:8000',
           changeOrigin: true,
           secure: false,
+          ws: true,
         },
       },
       hmr: {
+        protocol: 'ws',
         host: '127.0.0.1',
         port: 24678,
       },
@@ -73,6 +77,9 @@ export default defineConfig(({ mode }) => {
     },
     ssr: {
       noExternal: ['react-router-dom', 'react-helmet-async'],
+      optimizeDeps: {
+        include: ['react', 'react-dom'],
+      },
     },
   };
 });
