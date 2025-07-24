@@ -66,11 +66,12 @@ export default defineConfig(({ mode }) => {
           ws: true,
         },
       },
-      hmr: {
-        protocol: 'ws',
-        host: '127.0.0.1',
-        port: 24678,
-      },
+      hmr: true,
+      // hmr: {
+      //   protocol: 'ws',
+      //   host: '127.0.0.1',
+      //   port: 24678,
+      // },
     },
     define: {
       'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || 'https://mocked-api.local'),

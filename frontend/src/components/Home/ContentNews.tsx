@@ -2,12 +2,14 @@ import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { BlogAPIType as ContentItemType } from "@/types/Articles";
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 interface ContentListProps {
     data: ContentItemType[];
 }
 
 const ContentNews: FunctionComponent<ContentListProps> = ({ data }) => {
+	const contentView = useMediaQuery("(min-width: 650px)");
 	if (!data || data.length === 0) {
         return <div>No content available</div>;
     }
@@ -16,13 +18,12 @@ const ContentNews: FunctionComponent<ContentListProps> = ({ data }) => {
 	return <>
 		<Link to={`/news/${value.category.slug}/${value.slug}`}>
 			<div className="w-full mb-4">
-				<img className="object-cover h-[650px]" src={value.img} alt={value.title} loading="lazy" />
-				<div className="absolute top-2 left-4 bg-white p-2 rounded-full shadow">
-					<p className="text-gray-700 font-semibold">{new Date().toLocaleDateString()}</p>
-				</div>
+				<img className="object-cover md:h-[650px]" src={value.img} alt={value.title} loading="lazy" />
+				{contentView ? <> 
 				<div className="absolute border rounded-full top-6 mt-8 left-4 bg-transparent p-2 border-white rounded shadow">
 					<p className="text-lg text-white font-bold">{value.category.name}</p>
 				</div>
+				</> : null}
 				<div className="absolute top-2 right-4 bg-white p-3 rounded shadow">
 					<h2 className="text-lg font-bold">{limitedTitle}</h2>
 				</div>

@@ -1,4 +1,12 @@
 
+.dataTabSidebarRightBtn {
+  background-color: white;
+}
+
+.dataTabSidebarRightBtn:hover {
+  background-color: #F2F2F2;
+}
+
 .spinner {
 	margin-top: -21px;
 	position: relative;

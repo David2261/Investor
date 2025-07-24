@@ -83,7 +83,7 @@ const Home = () => {
 				</div>
 			</div>
 			<div className="bg-neutral-300 relative w-full mb-10">
-				<div className="mt-4 mb-4 grid col-span-2">
+				<div className="mt-4 mb-4 flex flex-col gap-4 md:grid md:col-span-2">
 					<div className={`col-span-2 ${centerContent} my-4`}>
 						<h1 className="uppercase font-bold text-2xl text-center">ПОСЛЕДНИЕ ОБЗОРЫ И СТАТЬИ</h1>
 					</div>

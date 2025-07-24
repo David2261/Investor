@@ -22,7 +22,7 @@ const LazySection = ({ htmlContent }: { htmlContent: string }) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            observer.disconnect(); // остановка всех наблюдений
+            observer.disconnect();
           }
         });
       },

@@ -20,7 +20,7 @@ const Filter: FunctionComponent<FilterType> = ({ onFilterChange }) => {
     <div className="relative">
       <button
         className="data-tab-sidebar-right-btn flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-        onClick={() => setIsFilterOpen(!isFilterOpen)}
+        onMouseEnter={() => setIsFilterOpen(!isFilterOpen)}
         aria-expanded={isFilterOpen}
         aria-label="Открыть меню сортировки"
       >
@@ -35,6 +35,7 @@ const Filter: FunctionComponent<FilterType> = ({ onFilterChange }) => {
         <div
           className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
           role="menu"
+          onMouseLeave={() => setIsFilterOpen(!isFilterOpen)}
           aria-orientation="vertical"
         >
           <div className="rounded-md">
