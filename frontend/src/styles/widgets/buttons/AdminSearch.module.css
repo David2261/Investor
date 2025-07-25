@@ -4,20 +4,7 @@
     inherits: false;
 }
 
-/* .grid {
-    display: flex;
-    height: 100dvh;
-    width: 100dvw;
-    background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px),
-        linear-gradient(to bottom, #0f0f10 1px, transparent 1px);
-    background-size: 1rem 1rem;
-    background-position: center center;
-    position: absolute;
-    z-index: -1;
-    filter: blur(1px);
-} */
-
-.searchWrapper{
+.searchWrapper {
     position: relative;
     height: 50px;
     width: 300px;
@@ -29,11 +16,14 @@
     width: 300px;
     position: absolute;
     border-radius: 0.4rem;
-    filter:blur(2px);
+    filter: blur(2px);
     box-sizing: border-box;
+    /* по умолчанию без фона */
+    background-image: none;
+    transition: background-image 0.3s ease;
 }
 
-.searchInput{
+.searchInput {
     color: #CCC;
     border: none;
     outline: none;
@@ -43,38 +33,44 @@
     background-color: #0f0f10;
     position: absolute;
     top: 50%;
-    left:50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     padding-left: 1em;
     box-sizing: border-box;
     border-radius: 0.4rem;
     border: 4px solid transparent;
-    background-image: linear-gradient(#0f0f10, #0f0f10), 
-                    linear-gradient(to bottom right, rgb(255, 110, 255), rebeccapurple);
+    background-image:
+      linear-gradient(#0f0f10, #0f0f10),
+      linear-gradient(to bottom right, rgb(255, 110, 255), rebeccapurple);
     background-origin: border-box;
     background-clip: padding-box, border-box;
+    transition: box-shadow 0.3s ease;
 }
+
 @keyframes turning {
     from { --turn: 0turn; }
     to { --turn: 1turn; }
 }
 
-
-
-.searchInput:focus{
+.searchInput:focus {
     border: none;
     box-shadow: inset 0.3em 0.3em 0.4em #060607, inset -0.3em -0.3em 0.4em #29292c;
 }
+
+/* Анимация и фон только у .searchBorder, когда input в фокусе */
 .searchInput:focus ~ .searchBorder {
-    background-image: conic-gradient(from var(--turn), 
+    background-image: conic-gradient(
+        from var(--turn), 
         transparent, transparent, 
         rebeccapurple, rebeccapurple, 
         transparent, transparent, transparent,
         rgb(255, 110, 255), rgb(255, 110, 255), 
-        transparent, transparent, transparent);
+        transparent, transparent, transparent
+    );
     animation: turning 5s linear infinite;
 }
-.searchWrapper > button{
+
+.searchWrapper > button {
     position: absolute;
     z-index: 3;
     top: 50%;
@@ -87,31 +83,37 @@
     border-radius: 0 0.4rem 0.4rem 0;
     transition: 0.5s ease;
 }
-#X{
+
+#X {
     visibility: hidden;
     pointer-events: none;
     opacity: 0;
     cursor: pointer;
 }
+
 .searchInput:focus ~ #S {
     transform: translateY(-50%) translateX(-10%) scaleX(-1);
 }
-.searchInput:placeholder-shown ~ #X{
+
+.searchInput:placeholder-shown ~ #X {
     visibility: hidden;
     pointer-events: none;
     opacity: 0;
 }
-.searchInput:placeholder-shown ~ #S{
+
+.searchInput:placeholder-shown ~ #S {
     visibility: visible;
     pointer-events: all;
     opacity: 1;
 }
-.searchInput:not(placeholder-shown) ~ #X{
+
+.searchInput:not(:placeholder-shown) ~ #X {
     visibility: visible;
     pointer-events: all;
     opacity: 1;
 }
-.searchInput:not(placeholder-shown) ~ #S{
+
+.searchInput:not(:placeholder-shown) ~ #S {
     visibility: hidden;
     pointer-events: none;
     opacity: 0;

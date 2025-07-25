@@ -15,7 +15,7 @@ import IH from '@/assets/logo/IH.webp';
 
 const Navbar = () => {
 	const styleNav = "uppercase p-2 lg:px-4 md:mx-2 rounded transation-colors duration-300";
-	const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
+	const isAboveMediumScreens = useMediaQuery("(min-width: 650px)");
 	const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
 	const [modalType, setModalType] = useState<"login" | null>(null);
 	const { user, logoutUser } = useContext(AuthContext);

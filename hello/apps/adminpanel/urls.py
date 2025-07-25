@@ -26,7 +26,8 @@ from .create import (
 from .edit import (
 	AppAdminArticleEdit,
 	AppAdminCategoryEdit,
-	AppAdminBondEdit)
+	AppAdminBondEdit,
+	AppAdminUserEdit)
 
 
 app_name = 'adminpanel'
@@ -116,5 +117,9 @@ urlpatterns = [
 	path(
 		'apps/main/bonds/edit/<slug:bond_slug>/',
 		AppAdminBondEdit.as_view(),
-		name="bonds-edit")
+		name="bonds-edit"),
+	path(
+		'apps/main/users/edit/<int:pk>/',
+		AppAdminUserEdit.as_view(),
+		name='users-edit')
 ]

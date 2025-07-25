@@ -146,7 +146,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 			response = set_jwt_cookies(response, tokens['access'], tokens['refresh'])
 			return response
 		except Exception as e:
-			logger(f"Error in CustomTokenObtainPairView: {str(e)}")  # Debug
+			logger.error(f"Error in CustomTokenObtainPairView: {str(e)}")
 			raise
 
 

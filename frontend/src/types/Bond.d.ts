@@ -8,4 +8,5 @@ export interface Bond {
 	cupon: number;            // Купон
 	cupon_percent: number;    // Процент купона
 	is_published: boolean;    // Флаг публикации облигации
+	slug: string;
 }

@@ -9,6 +9,11 @@
   }
 }
 
+.prose h2 {
+  font-weight: 700;
+  font-size: 19px;
+}
+
 .transition-opacity {
   transition: opacity 0.5s ease-in-out;
 }

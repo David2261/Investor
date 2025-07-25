@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import AuthContext from '@/entities/context/AuthContext';
 import styles from '@/styles/components/ModalForms/Login.module.css';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 interface LoginProps {
   setIsOpen: (value: boolean) => void;
@@ -9,7 +10,6 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ setIsOpen }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const containerRef = useRef(null);
   const { loginUser, registrationUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -22,7 +22,6 @@ const Login: React.FC<LoginProps> = ({ setIsOpen }) => {
     password2: '',
   });
   const [error, setError] = useState<string | null>(null);
-  const [isLoginMode, setIsLoginMode] = useState(true);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -48,7 +47,7 @@ const Login: React.FC<LoginProps> = ({ setIsOpen }) => {
     // Валидация пароля
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
     if (!passwordPattern.test(form.password)) {
-      if (!isLoginMode) {
+      if (!isLogin) {
         setError('Пароль должен содержать минимум 8 символов, включая буквы разного регистра и цифры.');
       } else {
         setError('Неверный формат email.');
@@ -56,7 +55,7 @@ const Login: React.FC<LoginProps> = ({ setIsOpen }) => {
       return;
     }
 
-    if (!isLoginMode) {
+    if (!isLogin) {
       const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
       if (!usernamePattern.test(form.username)) {
         setError('Имя пользователя должно быть от 3 до 20 символов и содержать только буквы, цифры или подчеркивания.');
@@ -104,6 +103,9 @@ const Login: React.FC<LoginProps> = ({ setIsOpen }) => {
     toggleForm();
     setIsOpen(false)
     navigate("termsofuse");
+  }
+  if (error) {
+    Swal.fire('Ошибка', 'Не удалось отправить данные на сервер.', 'error');
   }
 
   return (

@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 // Components
-import AdminEditFormCategories from '@/components/Admin/EditForms/AdminEditFormCategories.tsx';
 import AdminEditFormArticles from '@/components/Admin/EditForms/AdminEditFormArticles.tsx';
 import AdminEditFormBonds from '@/components/Admin/EditForms/AdminEditFormBonds.tsx';
 import UnderConstruction from '@/components/Admin/HomeAdmin/UnderPage.tsx';
@@ -10,15 +9,15 @@ interface Params {
 }
 
 const AdminCreate = () => {
-    const { apps, id } = useParams<Params>();
+    const { apps } = useParams<Params>();
     const navigate = useNavigate();
     if (!apps) {
         return <div>Нет приложений</div>;
     }
-    const commonProps = {
-        mode: 'edit' as 'edit',
-        itemId: id,
-    };
+    // const commonProps = {
+    //     mode: 'edit' as 'edit',
+    //     itemId: id,
+    // };
     const handleOpenSite = () => {
         navigate('/');
     };
@@ -27,13 +26,10 @@ const AdminCreate = () => {
 
     switch (apps.toLowerCase()) {
     case 'articles':
-      Info = <AdminEditFormArticles {...commonProps} />;
+      Info = <AdminEditFormArticles />;
       break;
     case 'bonds':
-      Info = <AdminEditFormBonds {...commonProps} />;
-      break;
-    case 'category':
-      Info = <AdminEditFormCategories {...commonProps} />;
+      Info = <AdminEditFormBonds />;
       break;
     case 'user':
       Info = <UnderConstruction />;

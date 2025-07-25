@@ -5,7 +5,11 @@ import path from 'path';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
-    plugins: [react()],
+    plugins: [
+      react({
+        fastRefresh: true,
+      }),
+    ],
 
     preview: {
       port: 5137,
@@ -36,11 +40,8 @@ export default defineConfig(({ mode }) => {
       },
       isolate: false,
       css: {
-        postcss: {
-          plugins: {
-            '@tailwindcss/postcss': {},
-          },
-        },
+        postcss: './postcss.config.js',
+        devSourcemap: true,
         modules: {
           generateScopedName: '[name]__[local]___[hash:base64:5]',
         },
@@ -62,18 +63,24 @@ export default defineConfig(({ mode }) => {
           target: 'http://127.0.0.1:8000',
           changeOrigin: true,
           secure: false,
+          ws: true,
         },
       },
-      hmr: {
-        host: '127.0.0.1',
-        port: 24678,
-      },
+      hmr: true,
+      // hmr: {
+      //   protocol: 'ws',
+      //   host: '127.0.0.1',
+      //   port: 24678,
+      // },
     },
     define: {
       'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || 'https://mocked-api.local'),
     },
     ssr: {
       noExternal: ['react-router-dom', 'react-helmet-async'],
+      optimizeDeps: {
+        include: ['react', 'react-dom'],
+      },
     },
   };
 });

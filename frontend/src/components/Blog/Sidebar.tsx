@@ -1,5 +1,5 @@
-import { Key, FunctionComponent } from "react";
-import "@/styles/components/Sidebar.module.css";
+import { Key, FunctionComponent, memo } from "react";
+import styles from "@/styles/components/Blog/Sidebar.module.css";
 
 interface PostType {
     title: string;
@@ -18,7 +18,7 @@ interface CategoryType {
     id: Key;
     name: string;
     slug: string;
-    posts: PostType[];
+    posts?: PostType[];
 }
 
 interface SidebarProps {
@@ -26,23 +26,28 @@ interface SidebarProps {
     onSelectCategory: (category: string) => void;
 }
 
-const Sidebar: FunctionComponent<SidebarProps> = ({ data, onSelectCategory }) => {
-	return (
-        <div className="space-y-4">
-            {data.map((category: CategoryType) => (
-                <div key={category.id} className="p-2 border-b border-gray-300">
-                    <h2 className="text-xl font-bold uppercase mb-2">
-                        <button 
-                            className="hover:text-gray-600 no-underline focus:outline-none" 
-                            onClick={() => onSelectCategory(category.slug)}
-                        >
-                            {category.name}
-                        </button>
-                    </h2>
+const Sidebar: FunctionComponent<SidebarProps> = memo(({ data, onSelectCategory }) => {
+    if (!data || data.length === 0) {
+        return <div className={styles.empty}>No categories found</div>;
+    }
+
+    return (
+        <div className={`grid gap-4 bg-white rounded-xl p-2`}>
+            {data.map((category) => (
+                <div key={category.id} className={`rounded-lg ${styles.dataTabSidebarRightBtn} cursor-pointer p-2`}>
+                    <button     
+                        className={`cursor-pointer text-2xl ${styles.categoryButton}`}
+                        onClick={() => onSelectCategory(category.slug)}
+                        aria-label={`Select ${category.name} category`}
+                    >
+                        {category.name}
+                    </button>
                 </div>
             ))}
         </div>
-	);
-};
+    );
+});
+
+Sidebar.displayName = "Sidebar";
 
 export default Sidebar;

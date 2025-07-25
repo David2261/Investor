@@ -6,6 +6,8 @@ import { useAllCategories } from '@/api/useAllCategories.tsx';
 import homeBlack from '@/assets/icons/menu_black.svg';
 import closeBlack from '@/assets/icons/close_black.svg';
 import searchBlack from '@/assets/icons/search_black.svg';
+// Styles
+import styles from '@/styles/components/Blog/DataTab.module.css'
 
 // Lazy-loaded component
 const Sidebar = lazy(() => import('./Sidebar'));
@@ -64,7 +66,7 @@ const DataTab: FunctionComponent<SideNavbarType> = ({
   return !isSidebarChange ? (
     <button
       className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-      onClick={openModal}
+      onMouseEnter={openModal}
     >
       <img src={homeBlack} alt="Открыть категории" className="w-5 h-5" />
       Категории
@@ -82,7 +84,7 @@ const DataTab: FunctionComponent<SideNavbarType> = ({
         style={slideIn}
         className="relative bg-white w-80 h-full flex flex-col shadow-lg"
       >
-        <div className="flex flex-col w-full h-full p-4">
+        <div className={`flex flex-col w-full h-full p-4 ${styles.backgroundDataTab}`}>
           {/* Header with close button */}
           <div className="flex justify-end mb-4">
             <button onClick={closeModal} className="p-2 hover:bg-gray-100 rounded-full">
@@ -100,7 +102,7 @@ const DataTab: FunctionComponent<SideNavbarType> = ({
             <input
               type="text"
               placeholder="Поиск..."
-              className="w-full bg-white border-b py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="w-full border-b py-2 pl-10 pr-4 focus:outline-none"
               value={searchTerm}
               onChange={handleSearchChange}
             />
