@@ -1,15 +1,21 @@
-FROM node:18-alpine as build
+FROM node:22 AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-ADD *.json ./
-# Устанавливаем все пакеты и зависимости указанные в json
-RUN npm install --global yarn
-RUN yarn install
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-# Добавляем каталоги public и src. 
-# можно воспользоваться командой COPY . . но если вы синхронизировали node_modules,
-# то будете ждать пока зальётся этот каталог целиком. 
-# да и потом могут возникнуть проблемы.
-ADD ./public ./public
-ADD ./src ./src
+COPY . .
+RUN yarn build
+
+# --- Продакшен nginx ---
+FROM nginx:1.24-alpine
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Копируем кастомный nginx конфиг, если нужен
+# COPY ./nginx/react.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

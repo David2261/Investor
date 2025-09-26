@@ -1,0 +1,33 @@
+version: "3.10"
+
+services:
+  db:
+    image: postgres:16
+    env_file:
+      - ./backend/.env.test
+    networks:
+      - backend_net
+
+  redis:
+    image: redis:7
+    networks:
+      - backend_net
+
+  test:
+    build:
+      context: ./backend
+    command: >
+      sh -c "python manage.py migrate &&
+             pytest"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env.test
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend_net
+
+networks:
+  backend_net:
