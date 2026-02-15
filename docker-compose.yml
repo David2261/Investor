@@ -1,0 +1,66 @@
+version: '3.9'
+
+x-app-build: &app-build
+  context: .
+  dockerfile: Dockerfile
+  args:
+    POETRY_GROUPS: "main"
+
+x-common-env: &common-env
+  env_file:
+    - .env
+
+services:
+  web:
+    build: *app-build
+    env_file: *common-env
+    command: ["sh", "-c", "poetry run gunicorn hello.wsgi:application --bind 0.0.0.0:8000 --workers 3"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+
+  db:
+    image: postgres:15
+    env_file: *common-env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    networks:
+      - backend
+
+  celery_worker:
+    build: *app-build
+    env_file: *common-env
+    command: ["sh", "-c", "poetry run celery -A hello worker -l info"]
+    depends_on:
+      - redis
+      - db
+      - web
+    networks:
+      - backend
+
+  celery_beat:
+    build: *app-build
+    env_file: *common-env
+    command: ["sh", "-c", "poetry run celery -A hello beat -l info"]
+    depends_on:
+      - redis
+      - db
+      - web
+    networks:
+      - backend
+
+volumes:
+  db_data:
+
+networks:
+  backend:
+    driver: bridge
