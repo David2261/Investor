@@ -92,8 +92,6 @@ INSTALLED_APPS = [
 	'corsheaders',
 	'rest_framework',
 	'rest_framework_simplejwt.token_blacklist',
-	'djoser',
-	'rest_auth',
 	'django_filters',
 	# apps
 	'articles.apps.ArticlesConfig',
@@ -192,21 +190,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hello.wsgi.application'
 
 
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 DATABASES = {
-	# 'default': {
-	# 	'ENGINE': 'django.db.backends.sqlite3',
-	# 	'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-	# }
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
 		'NAME': env('POSTGRES_DB'),
 		'USER': env('POSTGRES_USER'),
 		'PASSWORD': env('POSTGRES_PASSWORD'),
-		'HOST': ('localhost', 'db'),
+		'HOST': 'localhost',
 		'PORT': '5432',
 	}
 }
@@ -237,15 +227,6 @@ CORS_ALLOW_HEADERS = [
 	"authorization",
 	"x-csrftoken",
 ]
-
-"""
-DATABASES = {
-	'default': {
-	'ENGINE': 'django.db.backends.postgresql_psycopg2',
-	'PORT': '5432'
-	}
-}
-"""
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -287,21 +268,6 @@ REST_FRAMEWORK = {
 	],
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 	'PAGE_SIZE': 5,
-}
-
-DJOSER = {
-	'LOGIN_FIELD': 'email',
-	'USER_CREATE_PASSWORD_RETYPE': True,
-	'SERIALIZERS': {
-		'user_create': 'djoser.serializers.UserCreateSerializer',
-		'user': 'djoser.serializers.UserSerializer',
-		'current_user': 'djoser.serializers.UserSerializer',
-	},
-	'PERMISSIONS': {
-		'user': ['rest_framework.permissions.IsAuthenticated'],
-		'user_list': ['rest_framework.permissions.IsAdminUser'],
-	},
-	'TOKEN_MODEL': None,
 }
 
 # Authentification JWT
